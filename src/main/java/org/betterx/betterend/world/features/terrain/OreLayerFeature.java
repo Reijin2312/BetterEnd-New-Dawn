@@ -31,7 +31,8 @@ public class OreLayerFeature extends Feature<OreLayerFeatureConfig> {
         int posY = MHelper.randRange(cfg.minY, cfg.maxY, random);
 
 
-        SDFSphere sphere = new SDFSphere().setRadius(radius).setBlock(cfg.state);
+        SDFSphere sphere = new SDFSphere().setRadius(radius);
+        sphere.setBlock(cfg.state);
         SDFCoordModify noise = new SDFCoordModify().setFunction((vec) -> {
             double x = (vec.x() + pos.getX()) * 0.1;
             double z = (vec.z() + pos.getZ()) * 0.1;

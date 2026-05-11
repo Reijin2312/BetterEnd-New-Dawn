@@ -310,10 +310,6 @@ public class LakePiece extends BasePiece {
         return Mth.clamp(height, 0, 1);
     }
 
-    private long getCacheKey(BlockPos pos) {
-        return (((long) pos.getX()) << 32) ^ (pos.getZ() & 0xFFFFFFFFL);
-    }
-
     private void makeBoundingBox() {
         int minX = MHelper.floor(center.getX() - radius - 8);
         int minY = MHelper.floor(center.getY() - depth - 8);
