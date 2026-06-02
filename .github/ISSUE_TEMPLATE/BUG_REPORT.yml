@@ -28,7 +28,7 @@ body:
     attributes:
       label: BetterEnd (NeoForge)
       description: What version of BetterEnd are you running?
-      placeholder: 21.0.x
+      placeholder: 21.x.x
     validations:
       required: true
 
@@ -37,7 +37,7 @@ body:
     attributes:
       label: BCLib (NeoForge)
       description: What version of BCLib are you running?
-      placeholder: 21.0.x
+      placeholder: 21.x.x
     validations:
       required: true
 
@@ -46,7 +46,7 @@ body:
     attributes:
       label: WorldWeaver (NeoForge)
       description: What version of WorldWeaver are you running?
-      placeholder: 21.0.x
+      placeholder: 21.x.x
     validations:
       required: true
 
@@ -65,8 +65,9 @@ body:
       label: Minecraft
       description: What version of Minecraft is installed?
       options:
-        - "1.21.1"
         - "1.21"
+        - "1.21.1"
+        - "1.21.11"
     validations:
       required: true
 
