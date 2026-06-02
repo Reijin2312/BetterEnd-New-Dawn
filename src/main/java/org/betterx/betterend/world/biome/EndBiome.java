@@ -1,6 +1,7 @@
 package org.betterx.betterend.world.biome;
 
 import org.betterx.bclib.interfaces.SurfaceMaterialProvider;
+import org.betterx.betterend.config.Configs;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.wover.biome.api.BiomeKey;
 import org.betterx.wover.biome.api.data.BiomeData;
@@ -63,6 +64,16 @@ public class EndBiome extends WoverBiomeData implements SurfaceMaterialProvider 
     @Override
     public KeyDispatchDataCodec<? extends WoverBiomeData> codec() {
         return KEY_CODEC;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return Configs.BIOMES_TOGGLE.isEnabled(biomeKey);
+    }
+
+    @Override
+    public boolean isPickable() {
+        return isEnabled() && super.isPickable();
     }
 
     private boolean hasCaves = true;

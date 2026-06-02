@@ -1,6 +1,7 @@
 package org.betterx.betterend.registry;
 
 import org.betterx.betterend.BetterEnd;
+import org.betterx.betterend.config.Configs;
 import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
 import org.betterx.betterend.world.biome.EndBiomeKey;
@@ -73,7 +74,38 @@ public class EndBiomes {
         BiomeCodecRegistry.register(BetterEnd.C.mk("lush_aurora_cave_biome"), LushAuroraCaveBiome.KEY_CODEC, LushAuroraCaveBiome.NETWORK_KEY_CODEC);
         BiomeCodecRegistry.register(BetterEnd.C.mk("lush_smaragdant_cave_biome"), LushSmaragdantCaveBiome.KEY_CODEC, LushSmaragdantCaveBiome.NETWORK_KEY_CODEC);
 
+        registerBiomeToggles();
         WorldLifecycle.SERVER_LEVEL_READY.subscribe(EndBiomes::onServerLevelReady);
+    }
+
+    private static void registerBiomeToggles() {
+        Configs.BIOMES_TOGGLE.registerBiomes(
+                AMBER_LAND.key,
+                BLOSSOMING_SPIRES.key,
+                CHORUS_FOREST.key,
+                CRYSTAL_MOUNTAINS.key,
+                DRAGON_GRAVEYARDS.key,
+                DRY_SHRUBLAND.key,
+                DUST_WASTELANDS.key,
+                FOGGY_MUSHROOMLAND.key,
+                GLOWING_GRASSLANDS.key,
+                ICE_STARFIELD.key,
+                LANTERN_WOODS.key,
+                MEGALAKE.key,
+                SHADOW_FOREST.key,
+                SULPHUR_SPRINGS.key,
+                UMBRELLA_JUNGLE.key,
+                UMBRA_VALLEY.key,
+                MEGALAKE_GROVE.key,
+                NEON_OASIS.key,
+                PAINTED_MOUNTAINS.key,
+                EMPTY_END_CAVE.key,
+                EMPTY_SMARAGDANT_CAVE.key,
+                LUSH_SMARAGDANT_CAVE.key,
+                EMPTY_AURORA_CAVE.key,
+                LUSH_AURORA_CAVE.key,
+                JADE_CAVE.key
+        );
     }
 
     private static void onServerLevelReady(

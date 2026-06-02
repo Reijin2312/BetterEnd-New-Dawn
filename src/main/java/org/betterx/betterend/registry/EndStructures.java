@@ -1,6 +1,7 @@
 package org.betterx.betterend.registry;
 
 import org.betterx.betterend.BetterEnd;
+import org.betterx.betterend.config.Configs;
 import org.betterx.betterend.world.structures.features.*;
 import org.betterx.betterend.world.structures.piece.*;
 import org.betterx.wover.structure.api.StructureKey;
@@ -48,6 +49,16 @@ public class EndStructures {
             .step(Decoration.SURFACE_STRUCTURES);
 
     public static void register() {
+        Configs.STRUCTURES_TOGGLE.registerStructures(
+                GIANT_MOSSY_GLOWSHROOM,
+                MEGALAKE,
+                MEGALAKE_SMALL,
+                MOUNTAIN,
+                PAINTED_MOUNTAIN,
+                ETERNAL_PORTAL,
+                GIANT_ICE_STAR,
+                END_VILLAGE
+        );
     }
 
 }
