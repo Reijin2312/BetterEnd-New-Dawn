@@ -1,5 +1,6 @@
 package org.betterx.datagen.betterend;
 
+import org.betterx.bclib.complexmaterials.set.wood.WoodSlots;
 import org.betterx.bclib.blocks.BaseVineBlock;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.blocks.EndBlockProperties;
@@ -16,6 +17,7 @@ import org.betterx.wover.core.api.IntegrationCore;
 import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.datagen.api.provider.WoverModelProvider;
 
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.DataProvider;
@@ -35,6 +37,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SaplingBlock;
 
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -269,6 +272,10 @@ public class EndModelProvider extends WoverModelProvider {
                              .override(EndBlocks.MENGER_SPONGE, generator::delegateItemModel)
                              .override(EndBlocks.MENGER_SPONGE_WET, generator::delegateItemModel)
                              .override(EndBlocks.VIOLECITE.brickWall, b -> generator.delegateItemModel(b, BetterEnd.C.mk("block/violecite_bricks_wall_post")))
+                             .override(EndBlocks.MOSSY_GLOWSHROOM.getLog(), createRandomPillarModel(generator))
+                             .override(EndBlocks.MOSSY_GLOWSHROOM.getBark(), createRandomPillarModel(generator))
+                             .override(EndBlocks.MOSSY_GLOWSHROOM.getBlock(WoodSlots.STRIPPED_LOG), createRandomPillarModel(generator))
+                             .override(EndBlocks.MOSSY_GLOWSHROOM.getBlock(WoodSlots.STRIPPED_BARK), createRandomPillarModel(generator))
                              .override(EndBlocks.DRAGON_TREE.getBark(), generator::delegateItemModel)
                              .override(EndBlocks.DRAGON_TREE.getLog(), generator::delegateItemModel)
                              .override(EndBlocks.NEON_CACTUS, b -> generator.delegateItemModel(b, BetterEnd.C.mk("block/neon_cactus_small")))
@@ -337,6 +344,60 @@ public class EndModelProvider extends WoverModelProvider {
 
         generator.acceptBlockState(MultiVariantGenerator.multiVariant(block, variants.toArray(new Variant[0])));
         generator.delegateItemModel(block, models.get(0));
+    }
+
+    private static ModelOverides.@NotNull BlockModelProvider createRandomPillarModel(WoverBlockModelGenerators generator) {
+        return block -> {
+            final var model = ModelLocationUtils.getModelLocation(block);
+            final var models = List.of(
+                    model,
+                    model.withSuffix("_2"),
+                    model.withSuffix("_3"),
+                    model.withSuffix("_4"),
+                    model.withSuffix("_5")
+            );
+
+            generator.acceptBlockState(MultiVariantGenerator
+                    .multiVariant(block)
+                    .with(PropertyDispatch
+                                  .property(RotatedPillarBlock.AXIS)
+                                  .select(Direction.Axis.X, createPillarVariants(
+                                          models,
+                                          VariantProperties.Rotation.R90,
+                                          VariantProperties.Rotation.R90
+                                  ))
+                                  .select(Direction.Axis.Y, createPillarVariants(
+                                          models,
+                                          null,
+                                          null
+                                  ))
+                                  .select(Direction.Axis.Z, createPillarVariants(
+                                          models,
+                                          VariantProperties.Rotation.R90,
+                                          null
+                                  ))
+                    )
+            );
+
+            generator.delegateItemModel(block, model);
+        };
+    }
+
+    private static List<Variant> createPillarVariants(
+            List<ResourceLocation> models,
+            VariantProperties.Rotation xRotation,
+            VariantProperties.Rotation yRotation
+    ) {
+        return models.stream().map(model -> {
+            var variant = Variant.variant().with(VariantProperties.MODEL, model);
+            if (xRotation != null) {
+                variant = variant.with(VariantProperties.X_ROT, xRotation);
+            }
+            if (yRotation != null) {
+                variant = variant.with(VariantProperties.Y_ROT, yRotation);
+            }
+            return variant;
+        }).toList();
     }
 
     private static ModelOverides.@NotNull BlockModelProvider createTwistedVineModel(WoverBlockModelGenerators generator) {
