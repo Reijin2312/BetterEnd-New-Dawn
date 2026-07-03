@@ -84,7 +84,7 @@ public class UmbraValleyBiome extends EndBiome.Config {
                                                     SurfaceRules.state(surfaceMaterial().getTopMaterial())
                                             )
                                     )
-                            ), 2);
+                            ), SurfaceRuleBuilder.FLOOR_PRIORITY);
             }
         };
     }

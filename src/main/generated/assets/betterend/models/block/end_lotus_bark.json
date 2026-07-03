@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/cube_column",
-  "textures": {
-    "end": "betterend:block/end_lotus_log_side",
-    "side": "betterend:block/end_lotus_log_side"
-  }
-}

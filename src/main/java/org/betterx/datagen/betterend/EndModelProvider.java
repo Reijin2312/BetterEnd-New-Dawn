@@ -276,8 +276,42 @@ public class EndModelProvider extends WoverModelProvider {
                              .override(EndBlocks.MOSSY_GLOWSHROOM.getBark(), createRandomPillarModel(generator))
                              .override(EndBlocks.MOSSY_GLOWSHROOM.getBlock(WoodSlots.STRIPPED_LOG), createRandomPillarModel(generator))
                              .override(EndBlocks.MOSSY_GLOWSHROOM.getBlock(WoodSlots.STRIPPED_BARK), createRandomPillarModel(generator))
-                             .override(EndBlocks.DRAGON_TREE.getBark(), generator::delegateItemModel)
-                             .override(EndBlocks.DRAGON_TREE.getLog(), generator::delegateItemModel)
+                             .override(EndBlocks.PYTHADENDRON.getLog(), createRandomPillarModel(generator))
+                             .override(EndBlocks.PYTHADENDRON.getBark(), createRandomPillarModel(generator))
+                             .override(EndBlocks.PYTHADENDRON.getBlock(WoodSlots.STRIPPED_LOG), createRandomPillarModel(generator))
+                             .override(EndBlocks.PYTHADENDRON.getBlock(WoodSlots.STRIPPED_BARK), createRandomPillarModel(generator))
+                             .override(EndBlocks.END_LOTUS.getLog(), createRandomPillarModel(generator))
+                             .override(EndBlocks.END_LOTUS.getBark(), createRandomPillarModel(generator))
+                             .override(EndBlocks.END_LOTUS.getBlock(WoodSlots.STRIPPED_LOG), createRandomPillarModel(generator))
+                             .override(EndBlocks.END_LOTUS.getBlock(WoodSlots.STRIPPED_BARK), createRandomPillarModel(generator))
+                             .override(EndBlocks.LACUGROVE.getLog(), createRandomPillarModel(generator))
+                             .override(EndBlocks.LACUGROVE.getBark(), createRandomPillarModel(generator))
+                             .override(EndBlocks.LACUGROVE.getBlock(WoodSlots.STRIPPED_LOG), createRandomPillarModel(generator))
+                             .override(EndBlocks.LACUGROVE.getBlock(WoodSlots.STRIPPED_BARK), createRandomPillarModel(generator))
+                             .override(EndBlocks.DRAGON_TREE.getLog(), createRandomPillarModel(generator))
+                             .override(EndBlocks.DRAGON_TREE.getBark(), createRandomPillarModel(generator))
+                             .override(EndBlocks.DRAGON_TREE.getBlock(WoodSlots.STRIPPED_LOG), createRandomPillarModel(generator))
+                             .override(EndBlocks.DRAGON_TREE.getBlock(WoodSlots.STRIPPED_BARK), createRandomPillarModel(generator))
+                             .override(EndBlocks.TENANEA.getLog(), createRandomPillarModel(generator))
+                             .override(EndBlocks.TENANEA.getBark(), createRandomPillarModel(generator))
+                             .override(EndBlocks.TENANEA.getBlock(WoodSlots.STRIPPED_LOG), createRandomPillarModel(generator))
+                             .override(EndBlocks.TENANEA.getBlock(WoodSlots.STRIPPED_BARK), createRandomPillarModel(generator))
+                             .override(EndBlocks.HELIX_TREE.getLog(), createRandomPillarModel(generator))
+                             .override(EndBlocks.HELIX_TREE.getBark(), createRandomPillarModel(generator))
+                             .override(EndBlocks.HELIX_TREE.getBlock(WoodSlots.STRIPPED_LOG), createRandomPillarModel(generator))
+                             .override(EndBlocks.HELIX_TREE.getBlock(WoodSlots.STRIPPED_BARK), createRandomPillarModel(generator))
+                             .override(EndBlocks.UMBRELLA_TREE.getLog(), createRandomPillarModel(generator))
+                             .override(EndBlocks.UMBRELLA_TREE.getBark(), createRandomPillarModel(generator))
+                             .override(EndBlocks.UMBRELLA_TREE.getBlock(WoodSlots.STRIPPED_LOG), createRandomPillarModel(generator))
+                             .override(EndBlocks.UMBRELLA_TREE.getBlock(WoodSlots.STRIPPED_BARK), createRandomPillarModel(generator))
+                             .override(EndBlocks.JELLYSHROOM.getLog(), createRandomPillarModel(generator))
+                             .override(EndBlocks.JELLYSHROOM.getBark(), createRandomPillarModel(generator))
+                             .override(EndBlocks.JELLYSHROOM.getBlock(WoodSlots.STRIPPED_LOG), createRandomPillarModel(generator))
+                             .override(EndBlocks.JELLYSHROOM.getBlock(WoodSlots.STRIPPED_BARK), createRandomPillarModel(generator))
+                             .override(EndBlocks.LUCERNIA.getLog(), createRandomPillarModel(generator))
+                             .override(EndBlocks.LUCERNIA.getBark(), createRandomPillarModel(generator))
+                             .override(EndBlocks.LUCERNIA.getBlock(WoodSlots.STRIPPED_LOG), createRandomPillarModel(generator))
+                             .override(EndBlocks.LUCERNIA.getBlock(WoodSlots.STRIPPED_BARK), createRandomPillarModel(generator))
                              .override(EndBlocks.NEON_CACTUS, b -> generator.delegateItemModel(b, BetterEnd.C.mk("block/neon_cactus_small")))
                              .ignore(EndBlocks.AMARANITA_STEM)
                              .ignore(EndBlocks.MOSSY_DRAGON_BONE)
@@ -346,16 +380,17 @@ public class EndModelProvider extends WoverModelProvider {
         generator.delegateItemModel(block, models.get(0));
     }
 
-    private static ModelOverides.@NotNull BlockModelProvider createRandomPillarModel(WoverBlockModelGenerators generator) {
+    private ModelOverides.@NotNull BlockModelProvider createRandomPillarModel(WoverBlockModelGenerators generator) {
         return block -> {
             final var model = ModelLocationUtils.getModelLocation(block);
-            final var models = List.of(
-                    model,
-                    model.withSuffix("_2"),
-                    model.withSuffix("_3"),
-                    model.withSuffix("_4"),
-                    model.withSuffix("_5")
-            );
+            final var models = new ArrayList<ResourceLocation>();
+            models.add(model);
+            for (int i = 2; i <= 5; i++) {
+                ResourceLocation variant = model.withSuffix("_" + i);
+                if (modelExists(variant)) {
+                    models.add(variant);
+                }
+            }
 
             generator.acceptBlockState(MultiVariantGenerator
                     .multiVariant(block)
