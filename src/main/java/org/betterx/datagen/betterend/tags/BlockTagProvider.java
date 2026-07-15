@@ -12,6 +12,7 @@ import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 
 import java.util.Set;
 
@@ -27,6 +28,7 @@ public class BlockTagProvider extends WoverTagProvider.ForBlocks {
 
     @Override
     public void prepareTags(TagBootstrapContext<Block> context) {
+        context.add(CommonBlockTags.END_STONES, Blocks.END_STONE);
         addEndGround(context, EndBlocks.THALLASIUM.ore);
         addEndGround(context, EndBlocks.ENDSTONE_DUST);
         addEndGround(context, EndBlocks.AMBER_ORE);

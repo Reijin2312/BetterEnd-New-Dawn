@@ -87,12 +87,16 @@ public class SulphurSpringsBiome extends EndBiome.Config {
                 );
                 return super
                         .surface()
-                        .rule(SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, surfaceBlockRule), 2)
+                        .rule(
+                                SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, surfaceBlockRule),
+                                SurfaceRuleBuilder.FLOOR_PRIORITY
+                        )
                         .rule(
                                 SurfaceRules.ifTrue(
                                         SurfaceRules.stoneDepthCheck(5, false, CaveSurface.FLOOR),
                                         surfaceBlockRule
-                                ), 2
+                                ),
+                                SurfaceRuleBuilder.BELOW_FLOOR_PRIORITY
                         );
             }
         };
