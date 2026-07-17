@@ -1,20 +1,37 @@
-name: Report a Bug (NeoForge)
-description: File a bug report
+name: "Report a Bug"
+description: "File a bug report for BetterEnd: New Dawn"
 title: "[Bug] "
-labels: ["bug"]
+labels:
+  - bug
+
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to report a Bug in BetterEnd (NeoForge)!
+        Thanks for taking the time to report a bug in BetterEnd: New Dawn!
+
+        Please make sure you are using compatible versions of Minecraft,
+        your mod loader, BetterEnd, and all required dependencies.
 
   - type: textarea
-    id: what-happened
+    id: what_happened
     attributes:
-      label: What happened?
-      description: Also tell us, what did you expect to happen?
-      placeholder: Tell us what you see!
-      value: "A bug happened!"
+      label: "What happened?"
+      description: "Describe the problem and what you expected to happen instead."
+      placeholder: "Tell us what happened."
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction_steps
+    attributes:
+      label: "Steps to reproduce"
+      description: "Provide clear steps that consistently reproduce the issue."
+      placeholder: |
+        1. Install ...
+        2. Create or load a world
+        3. Go to ...
+        4. The issue occurs
     validations:
       required: true
 
@@ -23,68 +40,165 @@ body:
       value: |
         ## Versions
 
-  - type: input
-    id: bn_version
+  - type: dropdown
+    id: mod_loader
     attributes:
-      label: BetterEnd (NeoForge)
-      description: What version of BetterEnd are you running?
-      placeholder: 21.0.x
+      label: "Mod loader"
+      description: "Which mod loader are you using?"
+      options:
+        - NeoForge
+        - Fabric
+        - Quilt
+    validations:
+      required: true
+
+  - type: input
+    id: loader_version
+    attributes:
+      label: "Mod loader version"
+      description: "Enter your NeoForge, Fabric Loader, or Quilt Loader version."
+      placeholder: "NeoForge 21.x.x / Fabric Loader 0.x.x / Quilt Loader 0.x.x"
+    validations:
+      required: true
+
+  - type: input
+    id: loader_api_version
+    attributes:
+      label: "Fabric API / Quilt API version"
+      description: "Required when using Fabric or Quilt. Enter N/A when using NeoForge."
+      placeholder: "Fabric API 0.x.x or N/A"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: minecraft_version
+    attributes:
+      label: "Minecraft version"
+      description: "Which Minecraft version are you using?"
+      options:
+        - "1.21.1"
+        - "1.21.11"
+        - "26.1"
+        - "26.1.1"
+        - "26.1.2"
+        - "Other / development build"
+    validations:
+      required: true
+
+  - type: input
+    id: betterend_version
+    attributes:
+      label: "BetterEnd: New Dawn version"
+      description: "Enter the exact BetterEnd version shown in your mod file or log."
+      placeholder: "21.0.x"
     validations:
       required: true
 
   - type: input
     id: bclib_version
     attributes:
-      label: BCLib (NeoForge)
-      description: What version of BCLib are you running?
-      placeholder: 21.0.x
+      label: "BCLib: New Dawn version"
+      description: "Enter the exact BCLib version you are using."
+      placeholder: "21.0.x"
     validations:
       required: true
 
   - type: input
-    id: wover_version
+    id: worldweaver_version
     attributes:
-      label: WorldWeaver (NeoForge)
-      description: What version of WorldWeaver are you running?
-      placeholder: 21.0.x
+      label: "WorldWeaver: New Dawn version"
+      description: "Enter the exact WorldWeaver version you are using."
+      placeholder: "21.0.x"
     validations:
       required: true
 
   - type: input
-    id: neoforge_version
+    id: wunderlib_version
     attributes:
-      label: NeoForge
-      description: What version of NeoForge are you using?
-      placeholder: 21.x.x
+      label: "WunderLib: New Dawn version"
+      description: "Enter the exact WunderLib version you are using."
+      placeholder: "21.0.x"
     validations:
       required: true
 
-  - type: dropdown
-    id: mc_version
+  - type: input
+    id: java_version
     attributes:
-      label: Minecraft
-      description: What version of Minecraft is installed?
-      options:
-        - "1.21.1"
-        - "1.21"
+      label: "Java version"
+      description: "Enter the Java version shown in the log or by running java -version."
+      placeholder: "21.0.x"
     validations:
-      required: true
+      required: false
 
   - type: markdown
     attributes:
       value: |
-        ## Additional Information
+        ## Environment
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: "Where does the issue happen?"
+      options:
+        - Singleplayer
+        - Dedicated server
+        - Both
+    validations:
+      required: true
+
+  - type: input
+    id: operating_system
+    attributes:
+      label: "Operating system"
+      description: "Enter your operating system and version."
+      placeholder: "Windows 11 / Ubuntu 24.04 / macOS 15"
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Additional information
 
   - type: textarea
     id: logs
     attributes:
-      label: Relevant log output
-      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
-      render: shell
+      label: "Logs or crash report"
+      description: |
+        Attach your latest.log and crash report, if one was generated.
+        You can drag and drop files directly into this field.
+      placeholder: "Attach the files or paste a link here."
+    validations:
+      required: true
 
   - type: textarea
     id: other_mods
     attributes:
-      label: Other Mods
-      description: If you can, please supply a list of installed Mods (besides BetterEnd, BCLib, and WorldWeaver). This information may already be included in the log above.
+      label: "Other installed mods"
+      description: |
+        Provide a complete mod list if possible.
+        This may already be included in your log.
+      placeholder: "Paste your mod list here."
       render: shell
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: "Additional context"
+      description: "Add screenshots, videos, world seeds, coordinates, or other useful information."
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: "Confirmation"
+      options:
+        - label: "I am using matching Minecraft, loader, mod, and dependency versions."
+          required: true
+        - label: "I searched existing issues and did not find a duplicate."
+          required: true
+        - label: "I understand that New Dawn-specific issues should not be reported to the upstream BetterX projects."
+          required: true
