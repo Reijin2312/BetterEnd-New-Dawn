@@ -182,7 +182,7 @@ public class TunelCaveFeature extends EndCaveFeatures {
                 tunnelFloorErrCounter++;
                 BetterEnd.LOGGER.error(biome.biome
                         .unwrapKey()
-                        .map(ResourceKey::location)
+                        .map(ResourceKey::identifier)
                         .orElse(null) + " is not an EndCaveBiome. Unable to place Tunnel Floor");
             }
         });
@@ -193,7 +193,7 @@ public class TunelCaveFeature extends EndCaveFeatures {
                 tunnelCeilErrCounter++;
                 BetterEnd.LOGGER.error(biome.biome
                         .unwrapKey()
-                        .map(ResourceKey::location)
+                        .map(ResourceKey::identifier)
                         .orElse(null) + " is not an EndCaveBiome. Unable to place Tunnel Ceiling");
             }
         });
@@ -204,7 +204,7 @@ public class TunelCaveFeature extends EndCaveFeatures {
             tunnelWallErrCounter++;
             BetterEnd.LOGGER.error(biome.biome
                     .unwrapKey()
-                    .map(ResourceKey::location)
+                    .map(ResourceKey::identifier)
                     .orElse(null) + " is not an EndCaveBiome. Unable to place Tunnel Walls");
         }
         fixBlocks(world, caveBlocks);

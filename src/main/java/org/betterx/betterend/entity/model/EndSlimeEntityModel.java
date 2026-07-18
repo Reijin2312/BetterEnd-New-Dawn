@@ -1,13 +1,10 @@
 package org.betterx.betterend.entity.model;
 
 import org.betterx.bclib.util.MHelper;
-import org.betterx.betterend.entity.EndSlimeEntity;
-import org.betterx.betterend.registry.EndEntitiesRenders;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.ListModel;
-import net.minecraft.client.model.geom.EntityModelSet;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartNames;
 import net.minecraft.client.model.geom.PartPose;
@@ -15,17 +12,22 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 
-import com.google.common.collect.ImmutableList;
+public class EndSlimeEntityModel<T extends LivingEntityRenderState> extends EntityModel<T> {
+    public enum RenderMode {
+        CORE_ONLY,
+        FLOWER_ONLY,
+        CROP_ONLY
+    }
 
-public class EndSlimeEntityModel<T extends EndSlimeEntity> extends ListModel<T> {
     private final ModelPart innerCube;
     private final ModelPart rightEye;
     private final ModelPart leftEye;
     private final ModelPart mouth;
     private final ModelPart flower;
     private final ModelPart crop;
+    private final RenderMode renderMode;
 
     public static LayerDefinition getShellOnlyTexturedModelData() {
         return getTexturedModelData(true);
@@ -99,14 +101,15 @@ public class EndSlimeEntityModel<T extends EndSlimeEntity> extends ListModel<T> 
         return LayerDefinition.create(modelData, 64, 32);
     }
 
-    public EndSlimeEntityModel(EntityModelSet modelSet, boolean onlyShell) {
-        super(RenderType::entityCutout);
+    public EndSlimeEntityModel(ModelPart modelPart, boolean onlyShell) {
+        this(modelPart, onlyShell, RenderMode.CORE_ONLY);
+    }
 
-        ModelPart modelPart = modelSet.bakeLayer(onlyShell
-                ? EndEntitiesRenders.END_SLIME_SHELL_MODEL
-                : EndEntitiesRenders.END_SLIME_MODEL);
+    public EndSlimeEntityModel(ModelPart modelPart, boolean onlyShell, RenderMode renderMode) {
+        super(modelPart);
 
         innerCube = modelPart.getChild(PartNames.BODY);
+        this.renderMode = renderMode;
         if (!onlyShell) {
             rightEye = modelPart.getChild(PartNames.RIGHT_EYE);
             leftEye = modelPart.getChild(PartNames.LEFT_EYE);
@@ -123,14 +126,20 @@ public class EndSlimeEntityModel<T extends EndSlimeEntity> extends ListModel<T> 
     }
 
     @Override
-    public void setupAnim(
-            T entity,
-            float limbAngle,
-            float limbDistance,
-            float animationProgress,
-            float headYaw,
-            float headPitch
-    ) {
+    public void setupAnim(T state) {
+        super.setupAnim(state);
+        if (!isOnlyShell()) {
+            boolean showCore = renderMode == RenderMode.CORE_ONLY;
+            boolean showFlower = renderMode == RenderMode.FLOWER_ONLY;
+            boolean showCrop = renderMode == RenderMode.CROP_ONLY;
+
+            innerCube.visible = showCore;
+            rightEye.visible = showCore;
+            leftEye.visible = showCore;
+            mouth.visible = showCore;
+            flower.visible = showFlower;
+            crop.visible = showCrop;
+        }
     }
 
     public void renderFlower(PoseStack matrices, VertexConsumer vertices, int light, int overlay) {
@@ -143,14 +152,5 @@ public class EndSlimeEntityModel<T extends EndSlimeEntity> extends ListModel<T> 
 
     private boolean isOnlyShell() {
         return rightEye == null;
-    }
-
-    @Override
-    public Iterable<ModelPart> parts() {
-        if (isOnlyShell()) {
-            return ImmutableList.of(this.innerCube);
-        } else {
-            return ImmutableList.of(this.innerCube, this.rightEye, this.leftEye, this.mouth);
-        }
     }
 }

@@ -31,10 +31,6 @@ import java.util.List;
 import java.util.function.Function;
 
 public class LacugroveFeature extends DefaultFeature {
-    private static final Function<BlockState, Boolean> REPLACE;
-    private static final Function<BlockState, Boolean> IGNORE;
-    private static final Function<PosInfo, BlockState> POST;
-
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
         final RandomSource random = featureConfig.random();
@@ -46,7 +42,7 @@ public class LacugroveFeature extends DefaultFeature {
         List<Vector3f> spline = SplineHelper.makeSpline(0, 0, 0, 0, size, 0, 6);
         SplineHelper.offsetParts(spline, random, 1F, 0, 1F);
 
-        if (!SplineHelper.canGenerate(spline, pos, world, REPLACE)) {
+        if (!SplineHelper.canGenerate(spline, pos, world, replaceFunc())) {
             return false;
         }
 
@@ -65,12 +61,12 @@ public class LacugroveFeature extends DefaultFeature {
                 (bpos) -> EndBlocks.LACUGROVE.getBark().defaultBlockState()
         );
 
-        function.setReplaceFunction(REPLACE);
-        function.addPostProcess(POST);
+        function.setReplaceFunction(replaceFunc());
+        function.addPostProcess(postProcessFunc());
         function.fillRecursive(world, pos);
 
         spline = spline.subList(4, 6);
-        SplineHelper.fillSpline(spline, world, EndBlocks.LACUGROVE.getBark().defaultBlockState(), pos, REPLACE);
+        SplineHelper.fillSpline(spline, world, EndBlocks.LACUGROVE.getBark().defaultBlockState(), pos, replaceFunc());
 
         MutableBlockPos mut = new MutableBlockPos();
         int offset = random.nextInt(2);
@@ -101,7 +97,7 @@ public class LacugroveFeature extends DefaultFeature {
                                 BlocksHelper.setWithoutUpdate(
                                         world,
                                         mut,
-                                        EndBlocks.LACUGROVE.getBark()
+                                        y == top ? EndBlocks.LACUGROVE.getBark() : EndBlocks.LACUGROVE.getBark()
                                 );
                             } else {
                                 break;
@@ -168,7 +164,7 @@ public class LacugroveFeature extends DefaultFeature {
             }
             return info.getState();
         });
-        sphere.fillRecursiveIgnore(world, pos, IGNORE);
+        sphere.fillRecursiveIgnore(world, pos, ignoreFunc());
 
         if (radius > 5) {
             int count = (int) (radius * 2.5F);
@@ -195,11 +191,8 @@ public class LacugroveFeature extends DefaultFeature {
         BlocksHelper.setWithoutUpdate(world, pos, EndBlocks.LACUGROVE.getBark());
     }
 
-    static {
-        REPLACE = (state) -> {
-            /*if (state.is(CommonBlockTags.END_STONES)) {
-                return true;
-            }*/
+    private Function<BlockState, Boolean> replaceFunc() {
+        return (state) -> {
             if (EndBlocks.LACUGROVE.isTreeLog(state)) {
                 return true;
             }
@@ -208,10 +201,14 @@ public class LacugroveFeature extends DefaultFeature {
             }
             return BlocksHelper.replaceableOrPlant(state);
         };
+    }
 
-        IGNORE = EndBlocks.LACUGROVE::isTreeLog;
+    private Function<BlockState, Boolean> ignoreFunc() {
+        return EndBlocks.LACUGROVE::isTreeLog;
+    }
 
-        POST = (info) -> {
+    private Function<PosInfo, BlockState> postProcessFunc() {
+        return (info) -> {
             if (EndBlocks.LACUGROVE.isTreeLog(info.getStateUp()) && EndBlocks.LACUGROVE.isTreeLog(info.getStateDown())) {
                 return EndBlocks.LACUGROVE.getBark().defaultBlockState();
             }

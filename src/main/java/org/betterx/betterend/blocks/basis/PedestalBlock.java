@@ -12,29 +12,29 @@ import org.betterx.betterend.rituals.InfusionRitual;
 import org.betterx.wover.block.api.BlockProperties;
 import org.betterx.wover.block.api.BlockTagProvider;
 import org.betterx.wover.block.api.model.BlockModelProvider;
+import org.betterx.wover.block.api.model.DatagenModelDispatch;
 import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
 import org.betterx.wover.tag.api.event.context.TagBootstrapContext;
 
+import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.data.models.blockstates.MultiVariantGenerator;
-import net.minecraft.data.models.blockstates.PropertyDispatch;
-import net.minecraft.data.models.blockstates.Variant;
-import net.minecraft.data.models.blockstates.VariantProperties;
-import net.minecraft.data.models.model.ModelTemplate;
-import net.minecraft.data.models.model.TextureMapping;
-import net.minecraft.data.models.model.TextureSlot;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.data.models.model.ModelTemplate;
+import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -49,9 +49,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.util.RandomSource;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 import com.google.common.collect.Lists;
 
@@ -78,7 +77,7 @@ public class PedestalBlock extends BaseBlockNotFull implements EntityBlock, Bloc
     protected float height = 1.0F;
 
     public PedestalBlock(Block parent) {
-        super(BlockBehaviour.Properties.ofFullCopy(parent).lightLevel(getLuminance(parent.defaultBlockState())));
+        super(BlockBehaviour.Properties.ofLegacyCopy(parent).lightLevel(getLuminance(parent.defaultBlockState())));
         this.registerDefaultState(
                 stateDefinition
                         .any()
@@ -105,7 +104,7 @@ public class PedestalBlock extends BaseBlockNotFull implements EntityBlock, Bloc
     }
 
     @Override
-    public @NotNull ItemInteractionResult useItemOn(
+    public @NotNull InteractionResult useItemOn(
             ItemStack itemStack,
             BlockState state,
             Level level,
@@ -115,28 +114,28 @@ public class PedestalBlock extends BaseBlockNotFull implements EntityBlock, Bloc
             BlockHitResult hit
     ) {
         if (!state.is(this) || !isPlaceable(state)) {
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof PedestalBlockEntity pedestal) {
             if (pedestal.isEmpty()) {
-                if (itemStack.isEmpty()) return ItemInteractionResult.CONSUME;
+                if (itemStack.isEmpty()) return InteractionResult.CONSUME;
                 pedestal.setItem(0, itemStack);
                 level.blockEntityChanged(pos);
                 checkRitual(level, player, pos);
-                return ItemInteractionResult.sidedSuccess(level.isClientSide());
+                return level.isClientSide() ? InteractionResult.SUCCESS : InteractionResult.SUCCESS_SERVER;
             } else {
                 ItemStack stack = pedestal.getItem(0);
                 if (player.addItem(stack)) {
                     pedestal.removeItemNoUpdate(0);
                     level.blockEntityChanged(pos);
                     checkRitual(level, player, pos);
-                    return ItemInteractionResult.sidedSuccess(level.isClientSide());
+                    return level.isClientSide() ? InteractionResult.SUCCESS : InteractionResult.SUCCESS_SERVER;
                 }
-                return ItemInteractionResult.FAIL;
+                return InteractionResult.FAIL;
             }
         }
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return InteractionResult.TRY_WITH_EMPTY_HAND;
     }
 
     @Override
@@ -196,29 +195,33 @@ public class PedestalBlock extends BaseBlockNotFull implements EntityBlock, Bloc
     @Override
     public @NotNull BlockState updateShape(
             BlockState state,
-            Direction direction,
-            BlockState newState,
-            LevelAccessor world,
+            LevelReader world,
+            ScheduledTickAccess scheduledTickAccess,
             BlockPos pos,
-            BlockPos posFrom
+            Direction direction,
+            BlockPos posFrom,
+            BlockState newState,
+            RandomSource random
     ) {
-        BlockState updated = getUpdatedState(state, direction, newState, world, pos, posFrom);
+        BlockState updated = getUpdatedState(state, world, scheduledTickAccess, pos, direction, posFrom, newState, random);
         if (!updated.is(this)) return updated;
-        if (!isPlaceable(updated)) {
-            moveStoredStack(world, updated, pos);
+        if (!isPlaceable(updated) && world instanceof LevelAccessor levelAccessor) {
+            moveStoredStack(levelAccessor, updated, pos);
         }
         return updated;
     }
 
     private BlockState getUpdatedState(
             BlockState state,
-            Direction direction,
-            BlockState newState,
-            LevelAccessor world,
+            LevelReader world,
+            ScheduledTickAccess scheduledTickAccess,
             BlockPos pos,
-            BlockPos posFrom
+            Direction direction,
+            BlockPos posFrom,
+            BlockState newState,
+            RandomSource random
     ) {
-        if (!state.is(this)) return state.updateShape(direction, newState, world, pos, posFrom);
+        if (!state.is(this)) return state.updateShape(world, scheduledTickAccess, pos, direction, posFrom, newState, random);
         if (direction != Direction.UP && direction != Direction.DOWN) return state;
         BlockState upState = world.getBlockState(pos.above());
         BlockState downState = world.getBlockState(pos.below());
@@ -368,57 +371,55 @@ public class PedestalBlock extends BaseBlockNotFull implements EntityBlock, Bloc
     }
 
     @Override
-    public int getAnalogOutputSignal(BlockState state, @NotNull Level world, @NotNull BlockPos pos) {
+    public int getAnalogOutputSignal(BlockState state, @NotNull Level world, @NotNull BlockPos pos, Direction direction) {
         return state.getValue(HAS_ITEM) ? 15 : 0;
     }
-
-    private static final Map<PedestalState, ModelTemplate> PEDESTAL_MODELS = Map.of(
-            PedestalState.DEFAULT, EndModels.PEDESTAL_DEFAULT,
-            PedestalState.PEDESTAL_TOP, EndModels.PEDESTAL_TOP,
-            PedestalState.COLUMN_TOP, EndModels.PEDESTAL_COLUMN_TOP,
-            PedestalState.COLUMN, EndModels.PEDESTAL_COLUMN,
-            PedestalState.BOTTOM, EndModels.PEDESTAL_BOTTOM,
-            PedestalState.PILLAR, EndModels.PEDESTAL_PILLAR
-    );
+    private static Map<PedestalState, ModelTemplate> pedestalModels() {
+        return Map.of(
+                PedestalState.DEFAULT, EndModels.PEDESTAL_DEFAULT,
+                PedestalState.PEDESTAL_TOP, EndModels.PEDESTAL_TOP,
+                PedestalState.COLUMN_TOP, EndModels.PEDESTAL_COLUMN_TOP,
+                PedestalState.COLUMN, EndModels.PEDESTAL_COLUMN,
+                PedestalState.BOTTOM, EndModels.PEDESTAL_BOTTOM,
+                PedestalState.PILLAR, EndModels.PEDESTAL_PILLAR
+        );
+    }
 
     @Override
-    @Environment(EnvType.CLIENT)
-    public void provideBlockModels(WoverBlockModelGenerators generator) {
+    public void provideBlockModels(Object modelGenerator) {
+        WoverBlockModelGenerators generator = (WoverBlockModelGenerators) modelGenerator;
         provideBlockModel(generator, createTextureMapping(), this);
     }
 
-    @Environment(EnvType.CLIENT)
     public static void provideBlockModel(
             WoverBlockModelGenerators generator,
             TextureMapping mapping,
             Block pedestalBlock
     ) {
-        provideBlockModel(generator, mapping, pedestalBlock, PEDESTAL_MODELS);
+        provideBlockModel(generator, mapping, pedestalBlock, pedestalModels());
     }
 
-    @Environment(EnvType.CLIENT)
     public static void provideBlockModel(
             WoverBlockModelGenerators generator,
             TextureMapping mapping,
             Block pedestalBlock,
             Map<PedestalState, ModelTemplate> pdestalModels
     ) {
-        final ResourceLocation id = TextureMapping.getBlockTexture(pedestalBlock);
-        final var properties = PropertyDispatch.property(STATE);
+        final Identifier id = TextureMapping.getBlockTexture(pedestalBlock);
+        final Object properties = DatagenModelDispatch.propertyDispatchInitial(STATE);
 
         for (var entry : pdestalModels.entrySet()) {
             final String suffix = "_" + entry.getKey();
-            ResourceLocation model = entry
+            Identifier model = entry
                     .getValue()
                     .createWithSuffix(pedestalBlock, suffix, mapping, generator.modelOutput());
-            properties.select(entry.getKey(), Variant.variant().with(VariantProperties.MODEL, model));
+            DatagenModelDispatch.propertyDispatchSelect(properties, entry.getKey(), BlockModelGenerators.plainVariant(model));
         }
 
-        generator.acceptBlockState(MultiVariantGenerator.multiVariant(pedestalBlock).with(properties));
+        generator.acceptBlockState(DatagenModelDispatch.dispatchWith(pedestalBlock, properties));
         generator.delegateItemModel(pedestalBlock, id.withSuffix("_default"));
     }
 
-    @Environment(EnvType.CLIENT)
     protected TextureMapping createTextureMapping() {
         final var parentTexture = TextureMapping.getBlockTexture(parent);
         return new TextureMapping()
@@ -448,7 +449,7 @@ public class PedestalBlock extends BaseBlockNotFull implements EntityBlock, Bloc
     }
 
     @Override
-    public void registerBlockTags(ResourceLocation location, TagBootstrapContext<Block> context) {
+    public void registerBlockTags(Identifier location, TagBootstrapContext<Block> context) {
         context.add(EndTags.PEDESTALS, this);
     }
 }

@@ -8,8 +8,8 @@
 	"elements": [ 	 
 		{
 			"__comment": "Box1",
-			"from": [ 3, 2, 3 ],
-			"to": [ 13, 12, 13 ],
+			"from": [ 3, 9.5, 3 ],
+			"to": [ 13, 19.5, 13 ],
 			"faces": {
 				"down": { "uv": [ 3, 3, 13, 13 ], "texture": "#leaves" },
 				"up": { "uv": [ 3, 3, 13, 13 ], "texture": "#leaves" },
@@ -21,8 +21,8 @@
 		},
 		{
 			"__comment": "Box1",
-			"from": [ 7, 0, 7 ],
-			"to": [ 9, 8, 9 ],
+			"from": [ 7, 7.5, 7 ],
+			"to": [ 9, 15.5, 9 ],
 			"faces": {
 				"up": { "uv": [ 7, 7, 9, 9 ], "texture": "#stem" },
 				"north": { "uv": [ 7, 8, 9, 16 ], "texture": "#stem" },

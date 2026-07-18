@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "betterend:item/empty_slot_shovel_head"
+  }
+}

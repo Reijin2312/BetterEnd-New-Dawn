@@ -4,18 +4,10 @@
   "group": "planks",
   "ingredients": [
     [
-      {
-        "item": "betterend:umbrella_tree_log"
-      },
-      {
-        "item": "betterend:umbrella_tree_bark"
-      },
-      {
-        "item": "betterend:umbrella_tree_stripped_log"
-      },
-      {
-        "item": "betterend:umbrella_tree_stripped_bark"
-      }
+      "betterend:umbrella_tree_log",
+      "betterend:umbrella_tree_bark",
+      "betterend:umbrella_tree_stripped_log",
+      "betterend:umbrella_tree_stripped_bark"
     ]
   ],
   "result": {

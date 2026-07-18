@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "minecraft:end_stone_bricks"
-    },
-    {
-      "item": "minecraft:vine"
-    }
+    "minecraft:end_stone_bricks",
+    "minecraft:vine"
   ],
   "result": {
     "count": 1,

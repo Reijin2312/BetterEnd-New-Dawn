@@ -127,18 +127,30 @@ public class EndBiome extends WoverBiomeData implements SurfaceMaterialProvider 
     public abstract static class Config implements EndBiomeBuilder.BiomeFactory {
         public static final SurfaceMaterialProvider DEFAULT_MATERIAL = new DefaultSurfaceMaterialProvider();
 
-        protected static final SurfaceRules.RuleSource END_STONE = SurfaceRules.state(DefaultSurfaceMaterialProvider.END_STONE);
-        protected static final SurfaceRules.RuleSource END_MOSS = SurfaceRules.state(EndBlocks.END_MOSS.defaultBlockState());
-        protected static final SurfaceRules.RuleSource ENDSTONE_DUST = SurfaceRules.state(EndBlocks.ENDSTONE_DUST.defaultBlockState());
-        protected static final SurfaceRules.RuleSource END_MYCELIUM = SurfaceRules.state(EndBlocks.END_MYCELIUM.defaultBlockState());
-        protected static final SurfaceRules.RuleSource FLAVOLITE = SurfaceRules.state(EndBlocks.FLAVOLITE.stone.defaultBlockState());
-        protected static final SurfaceRules.RuleSource SULPHURIC_ROCK = SurfaceRules.state(EndBlocks.SULPHURIC_ROCK.stone.defaultBlockState());
-        protected static final SurfaceRules.RuleSource BRIMSTONE = SurfaceRules.state(EndBlocks.BRIMSTONE.defaultBlockState());
-        protected static final SurfaceRules.RuleSource PALLIDIUM_FULL = SurfaceRules.state(EndBlocks.PALLIDIUM_FULL.defaultBlockState());
-        protected static final SurfaceRules.RuleSource PALLIDIUM_HEAVY = SurfaceRules.state(EndBlocks.PALLIDIUM_HEAVY.defaultBlockState());
-        protected static final SurfaceRules.RuleSource PALLIDIUM_THIN = SurfaceRules.state(EndBlocks.PALLIDIUM_THIN.defaultBlockState());
-        protected static final SurfaceRules.RuleSource PALLIDIUM_TINY = SurfaceRules.state(EndBlocks.PALLIDIUM_TINY.defaultBlockState());
-        protected static final SurfaceRules.RuleSource UMBRALITH = SurfaceRules.state(EndBlocks.UMBRALITH.stone.defaultBlockState());
+        private static final java.util.function.Supplier<SurfaceRules.RuleSource> END_STONE = () -> SurfaceRules.state(
+                DefaultSurfaceMaterialProvider.END_STONE);
+        private static final java.util.function.Supplier<SurfaceRules.RuleSource> END_MOSS = () -> SurfaceRules.state(
+                EndBlocks.END_MOSS.defaultBlockState());
+        private static final java.util.function.Supplier<SurfaceRules.RuleSource> ENDSTONE_DUST = () -> SurfaceRules.state(
+                EndBlocks.ENDSTONE_DUST.defaultBlockState());
+        private static final java.util.function.Supplier<SurfaceRules.RuleSource> END_MYCELIUM = () -> SurfaceRules.state(
+                EndBlocks.END_MYCELIUM.defaultBlockState());
+        private static final java.util.function.Supplier<SurfaceRules.RuleSource> FLAVOLITE = () -> SurfaceRules.state(
+                EndBlocks.FLAVOLITE.stone.defaultBlockState());
+        private static final java.util.function.Supplier<SurfaceRules.RuleSource> SULPHURIC_ROCK = () -> SurfaceRules.state(
+                EndBlocks.SULPHURIC_ROCK.stone.defaultBlockState());
+        private static final java.util.function.Supplier<SurfaceRules.RuleSource> BRIMSTONE = () -> SurfaceRules.state(
+                EndBlocks.BRIMSTONE.defaultBlockState());
+        private static final java.util.function.Supplier<SurfaceRules.RuleSource> PALLIDIUM_FULL = () -> SurfaceRules.state(
+                EndBlocks.PALLIDIUM_FULL.defaultBlockState());
+        private static final java.util.function.Supplier<SurfaceRules.RuleSource> PALLIDIUM_HEAVY = () -> SurfaceRules.state(
+                EndBlocks.PALLIDIUM_HEAVY.defaultBlockState());
+        private static final java.util.function.Supplier<SurfaceRules.RuleSource> PALLIDIUM_THIN = () -> SurfaceRules.state(
+                EndBlocks.PALLIDIUM_THIN.defaultBlockState());
+        private static final java.util.function.Supplier<SurfaceRules.RuleSource> PALLIDIUM_TINY = () -> SurfaceRules.state(
+                EndBlocks.PALLIDIUM_TINY.defaultBlockState());
+        private static final java.util.function.Supplier<SurfaceRules.RuleSource> UMBRALITH = () -> SurfaceRules.state(
+                EndBlocks.UMBRALITH.stone.defaultBlockState());
 
         protected Config() {
         }
@@ -147,6 +159,54 @@ public class EndBiome extends WoverBiomeData implements SurfaceMaterialProvider 
 
         public boolean hasCaves() {
             return true;
+        }
+
+        protected static SurfaceRules.RuleSource endStone() {
+            return END_STONE.get();
+        }
+
+        protected static SurfaceRules.RuleSource endMoss() {
+            return END_MOSS.get();
+        }
+
+        protected static SurfaceRules.RuleSource endstoneDust() {
+            return ENDSTONE_DUST.get();
+        }
+
+        protected static SurfaceRules.RuleSource endMycelium() {
+            return END_MYCELIUM.get();
+        }
+
+        protected static SurfaceRules.RuleSource flavolite() {
+            return FLAVOLITE.get();
+        }
+
+        protected static SurfaceRules.RuleSource sulphuricRock() {
+            return SULPHURIC_ROCK.get();
+        }
+
+        protected static SurfaceRules.RuleSource brimstone() {
+            return BRIMSTONE.get();
+        }
+
+        protected static SurfaceRules.RuleSource pallidiumFull() {
+            return PALLIDIUM_FULL.get();
+        }
+
+        protected static SurfaceRules.RuleSource pallidiumHeavy() {
+            return PALLIDIUM_HEAVY.get();
+        }
+
+        protected static SurfaceRules.RuleSource pallidiumThin() {
+            return PALLIDIUM_THIN.get();
+        }
+
+        protected static SurfaceRules.RuleSource pallidiumTiny() {
+            return PALLIDIUM_TINY.get();
+        }
+
+        protected static SurfaceRules.RuleSource umbralith() {
+            return UMBRALITH.get();
         }
 
         public boolean hasReturnGateway() {

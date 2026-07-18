@@ -8,10 +8,10 @@ import org.betterx.wover.block.api.BlockProperties.TripleShape;
 import org.betterx.wover.loot.api.BlockLootProvider;
 import org.betterx.wover.loot.api.LootLookupProvider;
 
-import net.minecraft.advancements.critereon.StatePropertiesPredicate;
+import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -57,7 +57,7 @@ public class BulbVineBlock extends BaseVineBlock implements BlockLootProvider {
 
     @Override
     public LootTable.Builder registerBlockLoot(
-            @NotNull ResourceLocation location,
+            @NotNull Identifier location,
             @NotNull LootLookupProvider provider,
             @NotNull ResourceKey<LootTable> tableKey
     ) {

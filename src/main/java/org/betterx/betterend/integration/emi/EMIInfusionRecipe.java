@@ -7,7 +7,7 @@ import org.betterx.ui.ColorUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
@@ -41,7 +41,7 @@ public class EMIInfusionRecipe implements EmiRecipe {
             Component.translatable("betterend.infusion.west").setStyle(Style.EMPTY.withColor(ColorUtil.GRAY)),
             Component.translatable("betterend.infusion.north_west").setStyle(Style.EMPTY.withColor(ColorUtil.GRAY)),
     };
-    private final ResourceLocation id;
+    private final Identifier id;
     private final List<EmiIngredient> input;
     private final List<EmiStack> output;
 
@@ -67,7 +67,7 @@ public class EMIInfusionRecipe implements EmiRecipe {
     }
 
     @Override
-    public @Nullable ResourceLocation getId() {
+    public @Nullable Identifier getId() {
         return id;
     }
 

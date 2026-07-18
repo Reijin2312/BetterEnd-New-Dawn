@@ -1,0 +1,22 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "betterend:additional_iron_deepslate_ore"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "betterend:additional_iron_deepslate_ore"
+    ]
+  },
+  "sends_telemetry_event": true
+}

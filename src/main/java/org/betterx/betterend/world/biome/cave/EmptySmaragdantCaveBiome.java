@@ -25,6 +25,9 @@ public class EmptySmaragdantCaveBiome extends EndCaveBiome.Config<EmptySmaragdan
     public static final MapCodec<Biome> CODEC = EndCaveBiome.simpleCaveBiomeCodec(
             EmptySmaragdantCaveBiome.Biome::new);
     public static final KeyDispatchDataCodec<EmptySmaragdantCaveBiome.Biome> KEY_CODEC = KeyDispatchDataCodec.of(CODEC);
+    public static final MapCodec<Biome> NETWORK_CODEC = EndCaveBiome.simpleCaveBiomeNetworkCodec(
+            EmptySmaragdantCaveBiome.Biome::new);
+    public static final KeyDispatchDataCodec<EmptySmaragdantCaveBiome.Biome> NETWORK_KEY_CODEC = KeyDispatchDataCodec.of(NETWORK_CODEC);
 
     public static class Biome extends EndCaveBiome {
         @Override
@@ -38,6 +41,11 @@ public class EmptySmaragdantCaveBiome extends EndCaveBiome.Config<EmptySmaragdan
         @Override
         public KeyDispatchDataCodec<? extends EndCaveBiome> codec() {
             return EmptySmaragdantCaveBiome.KEY_CODEC;
+        }
+
+        @Override
+        public KeyDispatchDataCodec<? extends EndCaveBiome> networkCodec() {
+            return EmptySmaragdantCaveBiome.NETWORK_KEY_CODEC;
         }
 
         protected Biome(

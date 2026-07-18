@@ -4,7 +4,6 @@ import org.betterx.bclib.recipes.BCLRecipeBuilder;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndItems;
-import org.betterx.betterend.registry.EndTags;
 import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.datagen.api.provider.WoverRecipeProvider;
 
@@ -19,21 +18,54 @@ public class AlloyingRecipesProvider extends WoverRecipeProvider {
     }
 
     public void bootstrap(HolderLookup.Provider provider, RecipeOutput context) {
-        BCLRecipeBuilder.alloying(BetterEnd.C.mk("additional_iron"), Items.IRON_INGOT)
-                        .setInput(EndTags.ALLOYING_IRON, EndTags.ALLOYING_IRON)
+        BCLRecipeBuilder.alloying(BetterEnd.C.mk("additional_iron_ore"), Items.IRON_INGOT)
+                        .setInput(Items.IRON_ORE, Items.IRON_ORE)
                         .outputCount(3)
                         .setExperience(2.1F)
                         .build(context);
-        BCLRecipeBuilder.alloying(BetterEnd.C.mk("additional_gold"), Items.GOLD_INGOT)
-                        .setInput(EndTags.ALLOYING_GOLD, EndTags.ALLOYING_GOLD)
+        BCLRecipeBuilder.alloying(BetterEnd.C.mk("additional_iron_deepslate_ore"), Items.IRON_INGOT)
+                        .setInput(Items.DEEPSLATE_IRON_ORE, Items.DEEPSLATE_IRON_ORE)
+                        .outputCount(3)
+                        .setExperience(2.1F)
+                        .build(context);
+        BCLRecipeBuilder.alloying(BetterEnd.C.mk("additional_iron_raw"), Items.IRON_INGOT)
+                        .setInput(Items.RAW_IRON, Items.RAW_IRON)
+                        .outputCount(3)
+                        .setExperience(2.1F)
+                        .build(context);
+
+        BCLRecipeBuilder.alloying(BetterEnd.C.mk("additional_gold_ore"), Items.GOLD_INGOT)
+                        .setInput(Items.GOLD_ORE, Items.GOLD_ORE)
                         .outputCount(3)
                         .setExperience(3F)
                         .build(context);
-        BCLRecipeBuilder.alloying(BetterEnd.C.mk("additional_copper"), Items.COPPER_INGOT)
-                        .setInput(EndTags.ALLOYING_COPPER, EndTags.ALLOYING_COPPER)
+        BCLRecipeBuilder.alloying(BetterEnd.C.mk("additional_gold_deepslate_ore"), Items.GOLD_INGOT)
+                        .setInput(Items.DEEPSLATE_GOLD_ORE, Items.DEEPSLATE_GOLD_ORE)
                         .outputCount(3)
                         .setExperience(3F)
                         .build(context);
+        BCLRecipeBuilder.alloying(BetterEnd.C.mk("additional_gold_raw"), Items.GOLD_INGOT)
+                        .setInput(Items.RAW_GOLD, Items.RAW_GOLD)
+                        .outputCount(3)
+                        .setExperience(3F)
+                        .build(context);
+
+        BCLRecipeBuilder.alloying(BetterEnd.C.mk("additional_copper_ore"), Items.COPPER_INGOT)
+                        .setInput(Items.COPPER_ORE, Items.COPPER_ORE)
+                        .outputCount(3)
+                        .setExperience(3F)
+                        .build(context);
+        BCLRecipeBuilder.alloying(BetterEnd.C.mk("additional_copper_deepslate_ore"), Items.COPPER_INGOT)
+                        .setInput(Items.DEEPSLATE_COPPER_ORE, Items.DEEPSLATE_COPPER_ORE)
+                        .outputCount(3)
+                        .setExperience(3F)
+                        .build(context);
+        BCLRecipeBuilder.alloying(BetterEnd.C.mk("additional_copper_raw"), Items.COPPER_INGOT)
+                        .setInput(Items.RAW_COPPER, Items.RAW_COPPER)
+                        .outputCount(3)
+                        .setExperience(3F)
+                        .build(context);
+
         BCLRecipeBuilder.alloying(BetterEnd.C.mk("additional_netherite"), Items.NETHERITE_SCRAP)
                         .setInput(Blocks.ANCIENT_DEBRIS, Blocks.ANCIENT_DEBRIS)
                         .outputCount(3)

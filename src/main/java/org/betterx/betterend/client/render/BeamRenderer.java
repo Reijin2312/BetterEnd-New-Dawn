@@ -3,20 +3,19 @@ package org.betterx.betterend.client.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 
-import org.joml.Matrix4f;
-
 public class BeamRenderer {
-    private static final ResourceLocation BEAM_TEXTURE = ResourceLocation.withDefaultNamespace("textures/entity/end_gateway_beam.png");
+    private static final Identifier BEAM_TEXTURE = Identifier.withDefaultNamespace("textures/entity/end_gateway_beam.png");
 
     public static void renderLightBeam(
             PoseStack matrices,
-            MultiBufferSource vertexConsumers,
+            SubmitNodeCollector submitNodeCollector,
             int age,
             float tick,
             int minY,
@@ -37,18 +36,26 @@ public class BeamRenderer {
         float minV = Mth.clamp(fractDelta - 1.0F, 0.0F, 1.0F);
         float maxV = (float) maxY * (0.5F / beamIn) + minV;
         float rotation = (age + tick) / 25.0F + 6.0F;
-
-        VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderType.beaconBeam(BEAM_TEXTURE, true));
+        int color = ARGB.color(
+                Mth.clamp(Mth.floor(alpha * 255.0F), 0, 255),
+                Mth.clamp(Mth.floor(red * 255.0F), 0, 255),
+                Mth.clamp(Mth.floor(green * 255.0F), 0, 255),
+                Mth.clamp(Mth.floor(blue * 255.0F), 0, 255)
+        );
+        int glowColor = ARGB.color(
+                Mth.clamp(Mth.floor(alpha * 0.125F * 255.0F), 0, 255),
+                Mth.clamp(Mth.floor(red * 255.0F), 0, 255),
+                Mth.clamp(Mth.floor(green * 255.0F), 0, 255),
+                Mth.clamp(Mth.floor(blue * 255.0F), 0, 255)
+        );
 
         matrices.pushPose();
         matrices.mulPose(Axis.YP.rotation(-rotation));
-        renderBeam(
+
+        submitBeam(
                 matrices,
-                vertexConsumer,
-                red,
-                green,
-                blue,
-                alpha,
+                submitNodeCollector,
+                color,
                 minY,
                 maxBY,
                 beamIn,
@@ -67,13 +74,10 @@ public class BeamRenderer {
 
         float xOut = -beamOut;
         maxV = (float) maxY + minV;
-        renderBeam(
+        submitBeam(
                 matrices,
-                vertexConsumer,
-                red,
-                green,
-                blue,
-                alpha,
+                submitNodeCollector,
+                glowColor,
                 minY,
                 maxBY,
                 xOut,
@@ -89,16 +93,14 @@ public class BeamRenderer {
                 minV,
                 maxV
         );
+
         matrices.popPose();
     }
 
-    private static void renderBeam(
+    private static void submitBeam(
             PoseStack matrices,
-            VertexConsumer vertexConsumer,
-            float red,
-            float green,
-            float blue,
-            float alpha,
+            SubmitNodeCollector submitNodeCollector,
+            int color,
             int minY,
             int maxY,
             float x1,
@@ -114,95 +116,16 @@ public class BeamRenderer {
             float minV,
             float maxV
     ) {
-        PoseStack.Pose entry = matrices.last();
-        Matrix4f matrix4f = entry.pose();
-        PoseStack.Pose matrix3f = entry;
-        renderBeam(
-                matrix4f,
-                matrix3f,
-                vertexConsumer,
-                red,
-                green,
-                blue,
-                alpha,
-                maxY,
-                minY,
-                x1,
-                d1,
-                x2,
-                d2,
-                minU,
-                maxU,
-                minV,
-                maxV
-        );
-        renderBeam(
-                matrix4f,
-                matrix3f,
-                vertexConsumer,
-                red,
-                green,
-                blue,
-                alpha,
-                maxY,
-                minY,
-                x4,
-                d4,
-                x3,
-                d3,
-                minU,
-                maxU,
-                minV,
-                maxV
-        );
-        renderBeam(
-                matrix4f,
-                matrix3f,
-                vertexConsumer,
-                red,
-                green,
-                blue,
-                alpha,
-                maxY,
-                minY,
-                x2,
-                d2,
-                x4,
-                d4,
-                minU,
-                maxU,
-                minV,
-                maxV
-        );
-        renderBeam(
-                matrix4f,
-                matrix3f,
-                vertexConsumer,
-                red,
-                green,
-                blue,
-                alpha,
-                maxY,
-                minY,
-                x3,
-                d3,
-                x1,
-                d1,
-                minU,
-                maxU,
-                minV,
-                maxV
-        );
+        submitQuad(matrices, submitNodeCollector, color, minY, maxY, x1, d1, x2, d2, minU, maxU, minV, maxV);
+        submitQuad(matrices, submitNodeCollector, color, minY, maxY, x4, d4, x3, d3, minU, maxU, minV, maxV);
+        submitQuad(matrices, submitNodeCollector, color, minY, maxY, x2, d2, x4, d4, minU, maxU, minV, maxV);
+        submitQuad(matrices, submitNodeCollector, color, minY, maxY, x3, d3, x1, d1, minU, maxU, minV, maxV);
     }
 
-    private static void renderBeam(
-            Matrix4f matrix4f,
-            PoseStack.Pose matrix3f,
-            VertexConsumer vertexConsumer,
-            float red,
-            float green,
-            float blue,
-            float alpha,
+    private static void submitQuad(
+            PoseStack matrices,
+            SubmitNodeCollector submitNodeCollector,
+            int color,
             int minY,
             int maxY,
             float minX,
@@ -214,31 +137,33 @@ public class BeamRenderer {
             float minV,
             float maxV
     ) {
-        addVertex(matrix4f, matrix3f, vertexConsumer, red, green, blue, alpha, maxX, minY, maxD, maxU, minV);
-        addVertex(matrix4f, matrix3f, vertexConsumer, red, green, blue, alpha, maxX, maxY, maxD, maxU, maxV);
-        addVertex(matrix4f, matrix3f, vertexConsumer, red, green, blue, alpha, minX, maxY, minD, minU, maxV);
-        addVertex(matrix4f, matrix3f, vertexConsumer, red, green, blue, alpha, minX, minY, minD, minU, minV);
+        submitNodeCollector.submitCustomGeometry(
+                matrices,
+                RenderTypes.beaconBeam(BEAM_TEXTURE, color >>> 24 < 255),
+                (entry, vertexConsumer) -> {
+                    addVertex(entry, vertexConsumer, color, maxX, minY, maxD, maxU, minV);
+                    addVertex(entry, vertexConsumer, color, maxX, maxY, maxD, maxU, maxV);
+                    addVertex(entry, vertexConsumer, color, minX, maxY, minD, minU, maxV);
+                    addVertex(entry, vertexConsumer, color, minX, minY, minD, minU, minV);
+                }
+        );
     }
 
     private static void addVertex(
-            Matrix4f matrix4f,
-            PoseStack.Pose matrix3f,
+            PoseStack.Pose entry,
             VertexConsumer vertexConsumer,
-            float red,
-            float green,
-            float blue,
-            float alpha,
+            int color,
             float x,
             float y,
             float d,
             float u,
             float v
     ) {
-        vertexConsumer.addVertex(matrix4f, x, y, d)
-                      .setColor(red, green, blue, alpha)
+        vertexConsumer.addVertex(entry, x, y, d)
+                      .setColor(color)
                       .setUv(u, v)
                       .setOverlay(OverlayTexture.NO_OVERLAY)
                       .setLight(15728880)
-                      .setNormal(matrix3f, 0.0F, 1.0F, 0.0F);
+                      .setNormal(entry, 0.0F, 1.0F, 0.0F);
     }
 }

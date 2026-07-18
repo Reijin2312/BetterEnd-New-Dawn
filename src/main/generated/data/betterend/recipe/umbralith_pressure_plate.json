@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "end_stone_plates",
   "key": {
-    "#": {
-      "item": "betterend:umbralith"
-    }
+    "#": "betterend:umbralith"
   },
   "pattern": [
     "##"

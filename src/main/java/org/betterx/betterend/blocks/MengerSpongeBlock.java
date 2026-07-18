@@ -10,10 +10,13 @@ import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BucketPickup;
 import net.minecraft.world.level.block.LiquidBlock;
@@ -24,7 +27,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import com.google.common.collect.Lists;
 
@@ -36,7 +39,7 @@ public class MengerSpongeBlock extends BaseBlockNotFull implements RenderLayerPr
     public static final VoxelShape SHAPE;
 
     public MengerSpongeBlock() {
-        super(FabricBlockSettings.copyOf(Blocks.SPONGE).noOcclusion());
+        super(BlockBehaviour.Properties.ofLegacyCopy(Blocks.SPONGE).noOcclusion());
     }
 
     @Override
@@ -50,13 +53,15 @@ public class MengerSpongeBlock extends BaseBlockNotFull implements RenderLayerPr
     @Override
     public @NotNull BlockState updateShape(
             BlockState state,
-            Direction facing,
-            BlockState neighborState,
-            LevelAccessor world,
+            LevelReader world,
+            ScheduledTickAccess scheduledTickAccess,
             BlockPos pos,
-            BlockPos neighborPos
+            Direction facing,
+            BlockPos neighborPos,
+            BlockState neighborState,
+            RandomSource random
     ) {
-        if (absorbWater(world, pos)) {
+        if (world instanceof LevelAccessor levelAccessor && absorbWater(levelAccessor, pos)) {
             return EndBlocks.MENGER_SPONGE_WET.defaultBlockState();
         }
         return state;

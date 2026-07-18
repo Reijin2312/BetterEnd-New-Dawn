@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "composter",
   "key": {
-    "#": {
-      "item": "betterend:tenanea_slab"
-    }
+    "#": "betterend:tenanea_slab"
   },
   "pattern": [
     "# #",

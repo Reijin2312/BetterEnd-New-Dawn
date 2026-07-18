@@ -23,6 +23,8 @@ import org.jetbrains.annotations.Nullable;
 public class EmptyEndCaveBiome extends EndCaveBiome.Config<EmptyEndCaveBiome> {
     public static final MapCodec<Biome> CODEC = EndCaveBiome.simpleCaveBiomeCodec(EmptyEndCaveBiome.Biome::new);
     public static final KeyDispatchDataCodec<EmptyEndCaveBiome.Biome> KEY_CODEC = KeyDispatchDataCodec.of(CODEC);
+    public static final MapCodec<Biome> NETWORK_CODEC = EndCaveBiome.simpleCaveBiomeNetworkCodec(EmptyEndCaveBiome.Biome::new);
+    public static final KeyDispatchDataCodec<EmptyEndCaveBiome.Biome> NETWORK_KEY_CODEC = KeyDispatchDataCodec.of(NETWORK_CODEC);
 
     public static class Biome extends EndCaveBiome {
         @Override
@@ -34,6 +36,11 @@ public class EmptyEndCaveBiome extends EndCaveBiome.Config<EmptyEndCaveBiome> {
         @Override
         public KeyDispatchDataCodec<? extends EndCaveBiome> codec() {
             return EmptyEndCaveBiome.KEY_CODEC;
+        }
+
+        @Override
+        public KeyDispatchDataCodec<? extends EndCaveBiome> networkCodec() {
+            return EmptyEndCaveBiome.NETWORK_KEY_CODEC;
         }
 
         protected Biome(

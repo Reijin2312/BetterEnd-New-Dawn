@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "betterend:azure_jadestone_pillar"
-    },
-    "S": {
-      "item": "betterend:azure_jadestone_slab"
-    }
+    "#": "betterend:azure_jadestone_pillar",
+    "S": "betterend:azure_jadestone_slab"
   },
   "pattern": [
     "S",

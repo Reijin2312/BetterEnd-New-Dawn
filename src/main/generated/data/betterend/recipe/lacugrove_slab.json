@@ -3,9 +3,7 @@
   "category": "building",
   "group": "slab",
   "key": {
-    "#": {
-      "item": "betterend:lacugrove_planks"
-    }
+    "#": "betterend:lacugrove_planks"
   },
   "pattern": [
     "###"

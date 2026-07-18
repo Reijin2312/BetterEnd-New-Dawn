@@ -151,5 +151,6 @@
         "min": 4.0
       }
     }
-  ]
+  ],
+  "random_sequence": "betterend:chests/foggy_mushroomland"
 }

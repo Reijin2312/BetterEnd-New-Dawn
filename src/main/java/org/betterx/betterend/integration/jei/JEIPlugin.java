@@ -9,7 +9,8 @@ import org.betterx.betterend.recipe.builders.InfusionRecipe;
 import org.betterx.betterend.registry.EndBlocks;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.server.IntegratedServer;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.BlastingRecipe;
 import net.minecraft.world.item.crafting.Recipe;
@@ -24,24 +25,25 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
-import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.types.IRecipeType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 @JeiPlugin
 public class JEIPlugin implements IModPlugin {
-    public static final RecipeType<AlloyingDisplay> ALLOYING_RECIPE_TYPE =
-            RecipeType.create(BetterEnd.MOD_ID, "alloying", AlloyingDisplay.class);
-    public static final RecipeType<AnvilRecipe> ANVIL_RECIPE_TYPE =
-            RecipeType.create(BetterEnd.MOD_ID, "anvil", AnvilRecipe.class);
-    public static final RecipeType<InfusionDisplay> INFUSION_RECIPE_TYPE =
-            RecipeType.create(BetterEnd.MOD_ID, "infusion", InfusionDisplay.class);
+    public static final IRecipeType<AlloyingDisplay> ALLOYING_RECIPE_TYPE =
+            IRecipeType.create(BetterEnd.MOD_ID, "alloying", AlloyingDisplay.class);
+    public static final IRecipeType<AnvilRecipe> ANVIL_RECIPE_TYPE =
+            IRecipeType.create(BetterEnd.MOD_ID, "anvil", AnvilRecipe.class);
+    public static final IRecipeType<InfusionDisplay> INFUSION_RECIPE_TYPE =
+            IRecipeType.create(BetterEnd.MOD_ID, "infusion", InfusionDisplay.class);
 
     public static List<ItemStack> ALLOYING_FUELS = List.of();
 
     @Override
-    public @NotNull ResourceLocation getPluginUid() {
+    public @NotNull Identifier getPluginUid() {
         return BetterEnd.C.mk("jei_plugin");
     }
 
@@ -56,8 +58,8 @@ public class JEIPlugin implements IModPlugin {
     @Override
     public void registerRecipes(@NotNull IRecipeRegistration registration) {
         Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.level == null) return;
-        RecipeManager recipeManager = minecraft.level.getRecipeManager();
+        RecipeManager recipeManager = resolveRecipeManager(minecraft);
+        if (recipeManager == null) return;
 
         if (ALLOYING_FUELS.isEmpty()) {
             ALLOYING_FUELS = EndStoneSmelterBlockEntity.availableFuels()
@@ -101,12 +103,12 @@ public class JEIPlugin implements IModPlugin {
                 .map(ItemStack::new)
                 .toList();
 
-        registration.addRecipeCatalyst(new ItemStack(Blocks.ANVIL), ANVIL_RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(EndBlocks.END_STONE_SMELTER), ALLOYING_RECIPE_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(EndBlocks.INFUSION_PEDESTAL), INFUSION_RECIPE_TYPE);
+        registration.addCraftingStation(ANVIL_RECIPE_TYPE, new ItemStack(Blocks.ANVIL));
+        registration.addCraftingStation(ALLOYING_RECIPE_TYPE, new ItemStack(EndBlocks.END_STONE_SMELTER));
+        registration.addCraftingStation(INFUSION_RECIPE_TYPE, new ItemStack(EndBlocks.INFUSION_PEDESTAL));
 
         for (ItemStack stack : anvils) {
-            registration.addRecipeCatalyst(stack, ANVIL_RECIPE_TYPE);
+            registration.addCraftingStation(ANVIL_RECIPE_TYPE, stack);
         }
     }
 
@@ -120,5 +122,21 @@ public class JEIPlugin implements IModPlugin {
                             .filter(recipeHolder -> recipeClass.isInstance(recipeHolder.value()))
                             .map(recipeHolder -> (RecipeHolder<T>) recipeHolder)
                             .toList();
+    }
+
+    @Nullable
+    private static RecipeManager resolveRecipeManager(Minecraft minecraft) {
+        // 1.21.11 client level no longer exposes full custom recipes via recipeAccess().
+        // For singleplayer/dev this remains available from the integrated server.
+        IntegratedServer server = minecraft.getSingleplayerServer();
+        if (server != null) {
+            return server.getRecipeManager();
+        }
+
+        if (minecraft.level != null && minecraft.level.recipeAccess() instanceof RecipeManager recipeManager) {
+            return recipeManager;
+        }
+
+        return null;
     }
 }

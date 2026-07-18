@@ -32,9 +32,14 @@ import java.util.function.Function;
 
 public class TenaneaFeature extends DefaultFeature {
     private static final Direction[] DIRECTIONS = Direction.values();
-    private static final Function<BlockState, Boolean> REPLACE;
-    private static final Function<BlockState, Boolean> IGNORE;
-    private static final List<Vector3f> SPLINE;
+    private static final List<Vector3f> SPLINE = Lists.newArrayList(
+            new Vector3f(0.00F, 0.00F, 0.00F),
+            new Vector3f(0.10F, 0.35F, 0.00F),
+            new Vector3f(0.20F, 0.50F, 0.00F),
+            new Vector3f(0.30F, 0.55F, 0.00F),
+            new Vector3f(0.42F, 0.70F, 0.00F),
+            new Vector3f(0.50F, 1.00F, 0.00F)
+    );
 
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
@@ -53,7 +58,7 @@ public class TenaneaFeature extends DefaultFeature {
             SplineHelper.rotateSpline(spline, angle);
             SplineHelper.scale(spline, size + MHelper.randRange(0, size * 0.5F, random));
             SplineHelper.offsetParts(spline, random, 1F, 0, 1F);
-            SplineHelper.fillSpline(spline, world, EndBlocks.TENANEA.getBark().defaultBlockState(), pos, REPLACE);
+            SplineHelper.fillSpline(spline, world, EndBlocks.TENANEA.getBark().defaultBlockState(), pos, replaceFunc());
             Vector3f last = spline.get(spline.size() - 1);
             float leavesRadius = (size * 0.3F + MHelper.randRange(0.8F, 1.5F, random)) * 1.4F;
             OpenSimplexNoise noise = new OpenSimplexNoise(random.nextLong());
@@ -151,7 +156,7 @@ public class TenaneaFeature extends DefaultFeature {
             }
             return info.getState();
         });
-        sphere.fillRecursiveIgnore(world, pos, IGNORE);
+        sphere.fillRecursiveIgnore(world, pos, ignoreFunc());
         BlocksHelper.setWithoutUpdate(world, pos, EndBlocks.TENANEA.getBark());
 
         support.forEach((bpos) -> {
@@ -175,26 +180,16 @@ public class TenaneaFeature extends DefaultFeature {
         });
     }
 
-    static {
-        REPLACE = (state) -> {
-            /*if (state.is(CommonBlockTags.END_STONES)) {
-                return true;
-            }*/
+    private Function<BlockState, Boolean> replaceFunc() {
+        return (state) -> {
             if (state.getBlock() == EndBlocks.TENANEA_LEAVES) {
                 return true;
             }
             return BlocksHelper.replaceableOrPlant(state);
         };
+    }
 
-        IGNORE = EndBlocks.TENANEA::isTreeLog;
-
-        SPLINE = Lists.newArrayList(
-                new Vector3f(0.00F, 0.00F, 0.00F),
-                new Vector3f(0.10F, 0.35F, 0.00F),
-                new Vector3f(0.20F, 0.50F, 0.00F),
-                new Vector3f(0.30F, 0.55F, 0.00F),
-                new Vector3f(0.42F, 0.70F, 0.00F),
-                new Vector3f(0.50F, 1.00F, 0.00F)
-        );
+    private Function<BlockState, Boolean> ignoreFunc() {
+        return EndBlocks.TENANEA::isTreeLog;
     }
 }

@@ -3,7 +3,6 @@ package org.betterx.betterend.world.generator;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.interfaces.BETargetChecker;
 import org.betterx.betterend.mixin.common.NoiseBasedChunkGeneratorAccessor;
-import org.betterx.betterend.mixin.common.NoiseChunkAccessor;
 import org.betterx.betterend.mixin.common.NoiseInterpolatorAccessor;
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.wover.biome.api.BiomeManager;
@@ -300,23 +299,23 @@ public class TerrainGenerator {
             boolean primarySlice,
             int x,
             List<NoiseChunk.NoiseInterpolator> interpolators,
-            NoiseChunkAccessor accessor,
-            NoiseSettings noiseSettings
+            int cellCountXZ,
+            int firstCellZ,
+            int cellWidth,
+            int cellHeight,
+            int noiseHeight
     ) {
-        final int sizeY = noiseSettings.getCellHeight();
-        final int sizeXZ = noiseSettings.getCellWidth();
-        final int cellSizeXZ = accessor.bnv_getCellCountXZ() + 1;
-        final int firstCellZ = accessor.bnv_getFirstCellZ();
+        final int cellSizeXZ = cellCountXZ + 1;
 
-        x *= sizeXZ;
+        x *= cellWidth;
         for (int cellXZ = 0; cellXZ < cellSizeXZ; ++cellXZ) {
-            int z = (firstCellZ + cellXZ) * sizeXZ;
+            int z = (firstCellZ + cellXZ) * cellWidth;
             for (NoiseChunk.NoiseInterpolator noiseInterpolator : interpolators) {
                 if (noiseInterpolator instanceof NoiseInterpolatorAccessor interpolator) {
                     final double[] ds = (primarySlice
                             ? interpolator.be_getSlice0()
                             : interpolator.be_getSlice1())[cellXZ];
-                    fillTerrainDensity(ds, x, z, sizeXZ, sizeY, noiseSettings.height());
+                    fillTerrainDensity(ds, x, z, cellWidth, cellHeight, noiseHeight);
                 }
             }
         }

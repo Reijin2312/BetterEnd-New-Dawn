@@ -18,6 +18,10 @@ public class EndEnchantments {
             (builder) -> builder.persistent(Unit.CODEC)
     );
 
+    public static DataComponentType<Unit> getEndVeilState() {
+        return END_VEIL_STATE;
+    }
+
     @ApiStatus.Internal
     public static void ensureStaticallyLoaded() {
         EndStatusEffects.ensureStaticallyLoaded();

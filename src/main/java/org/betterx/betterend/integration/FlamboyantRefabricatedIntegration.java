@@ -7,6 +7,7 @@ import org.betterx.betterend.complexmaterials.ColoredMaterial;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.ui.ColorUtil;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.ItemLike;
 
 import com.google.common.collect.Maps;
@@ -21,6 +22,10 @@ public class FlamboyantRefabricatedIntegration extends ModIntegration {
 
     @Override
     public void init() {
+        // Blocks are registered during EndBlocks.registerBlocks to avoid late intrusive holders.
+    }
+
+    public static void registerBlocks() {
         Map<Integer, String> colors = Maps.newHashMap();
         Map<Integer, ItemLike> dyes = Maps.newHashMap();
 
@@ -41,13 +46,23 @@ public class FlamboyantRefabricatedIntegration extends ModIntegration {
         addColor("6e8c9c", "slate_gray", colors, dyes);
         addColor("b02454", "violet", colors, dyes);
 
-        new ColoredMaterial(HydraluxPetalColoredBlock::new, EndBlocks.HYDRALUX_PETAL_BLOCK, colors, dyes, true);
+        new ColoredMaterial(
+                "hydralux_petal_block",
+                HydraluxPetalColoredBlock::new,
+                EndBlocks.HYDRALUX_PETAL_BLOCK,
+                colors,
+                dyes,
+                true
+        );
     }
 
-    private void addColor(String hex, String name, Map<Integer, String> colors, Map<Integer, ItemLike> dyes) {
+    private static void addColor(String hex, String name, Map<Integer, String> colors, Map<Integer, ItemLike> dyes) {
         int color = ColorUtil.color(hex);
         colors.put(color, name);
-        dyes.put(color, getItem(name + "_dye"));
+        ItemLike dye = BuiltInRegistries.ITEM.getValue(BetterEnd.FLAMBOYANT.mk(name + "_dye"));
+        if (dye != null) {
+            dyes.put(color, dye);
+        }
 
         System.out.println(name + " " + color + " " + new Color(color));
     }

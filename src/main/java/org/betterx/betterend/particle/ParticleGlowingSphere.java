@@ -9,11 +9,9 @@ import net.minecraft.client.particle.SimpleAnimatedParticle;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
-@Environment(EnvType.CLIENT)
 public class ParticleGlowingSphere extends SimpleAnimatedParticle {
     private int ticks;
     private double preVX;
@@ -70,7 +68,6 @@ public class ParticleGlowingSphere extends SimpleAnimatedParticle {
         super.tick();
     }
 
-    @Environment(EnvType.CLIENT)
     public static class FactoryGlowingSphere implements ParticleProvider<SimpleParticleType> {
 
         private final SpriteSet sprites;
@@ -88,7 +85,8 @@ public class ParticleGlowingSphere extends SimpleAnimatedParticle {
                 double z,
                 double vX,
                 double vY,
-                double vZ
+                double vZ,
+                RandomSource random
         ) {
             return new ParticleGlowingSphere(world, x, y, z, sprites, 1, 1, 1);
         }

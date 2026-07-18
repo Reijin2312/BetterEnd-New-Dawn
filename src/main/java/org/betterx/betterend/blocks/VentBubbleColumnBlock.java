@@ -12,13 +12,15 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
@@ -28,9 +30,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
@@ -38,12 +38,12 @@ import org.jetbrains.annotations.Nullable;
 
 public class VentBubbleColumnBlock extends Block implements BucketPickup, LiquidBlockContainer {
     public VentBubbleColumnBlock() {
-        super(FabricBlockSettings.copyOf(Blocks.BUBBLE_COLUMN).nonOpaque().noCollision().noLootTable());
+        super(BlockBehaviour.Properties.ofLegacyCopy(Blocks.BUBBLE_COLUMN).noOcclusion().noCollision().noLootTable());
     }
 
     @Override
     public @NotNull ItemStack pickupBlock(
-            @Nullable Player player,
+            @Nullable LivingEntity player,
             LevelAccessor world,
             BlockPos pos,
             BlockState state
@@ -75,25 +75,29 @@ public class VentBubbleColumnBlock extends Block implements BucketPickup, Liquid
     @SuppressWarnings("deprecation")
     public BlockState updateShape(
             BlockState state,
-            Direction direction,
-            BlockState newState,
-            LevelAccessor world,
+            LevelReader world,
+            ScheduledTickAccess scheduledTickAccess,
             BlockPos pos,
-            BlockPos posFrom
+            Direction direction,
+            BlockPos posFrom,
+            BlockState newState,
+            RandomSource random
     ) {
         if (!state.canSurvive(world, pos)) {
             return Blocks.WATER.defaultBlockState();
         } else {
+            if (!(world instanceof LevelAccessor levelAccessor)) {
+                return state;
+            }
             BlockPos up = pos.above();
-            if (world.getBlockState(up).is(Blocks.WATER)) {
-                BlocksHelper.setWithoutUpdate(world, up, this);
-                world.scheduleTick(up, this, 5);
+            if (levelAccessor.getBlockState(up).is(Blocks.WATER)) {
+                BlocksHelper.setWithoutUpdate(levelAccessor, up, this);
+                scheduledTickAccess.scheduleTick(up, this, 5);
             }
         }
         return state;
     }
 
-    @Environment(EnvType.CLIENT)
     public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
         if (random.nextInt(4) == 0) {
             double px = pos.getX() + random.nextDouble();
@@ -115,13 +119,12 @@ public class VentBubbleColumnBlock extends Block implements BucketPickup, Liquid
         }
     }
 
-    @Environment(EnvType.CLIENT)
     @SuppressWarnings("deprecation")
-    public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
+    public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity, InsideBlockEffectApplier applier, boolean checkInside) {
         BlockState blockState = world.getBlockState(pos.above());
         if (blockState.isAir()) {
-            entity.onAboveBubbleCol(false);
-            if (!world.isClientSide) {
+            entity.onAboveBubbleColumn(false, pos);
+            if (!world.isClientSide()) {
                 ServerLevel serverWorld = (ServerLevel) world;
 
                 for (int i = 0; i < 2; ++i) {
@@ -156,7 +159,7 @@ public class VentBubbleColumnBlock extends Block implements BucketPickup, Liquid
 
     @Override
     public boolean canPlaceLiquid(
-            @Nullable Player player,
+            @Nullable LivingEntity player,
             BlockGetter blockGetter,
             BlockPos blockPos,
             BlockState blockState,

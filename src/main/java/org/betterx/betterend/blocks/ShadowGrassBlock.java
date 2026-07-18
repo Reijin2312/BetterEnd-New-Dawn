@@ -9,15 +9,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 public class ShadowGrassBlock extends EndTerrainBlock {
     public ShadowGrassBlock() {
         super(MapColor.COLOR_BLACK);
     }
 
-    @Environment(EnvType.CLIENT)
     public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
         super.animateTick(state, world, pos, random);
         if (random.nextInt(32) == 0) {

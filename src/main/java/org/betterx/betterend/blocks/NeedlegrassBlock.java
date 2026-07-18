@@ -8,8 +8,9 @@ import org.betterx.wover.loot.api.LootLookupProvider;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -37,7 +38,7 @@ public class NeedlegrassBlock extends EndPlantBlock implements SurvivesOnShadowG
 
     @Override
     @SuppressWarnings("deprecation")
-    public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
+    public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity, InsideBlockEffectApplier applier, boolean checkInside) {
         if (entity instanceof LivingEntity) {
             entity.hurt(world.damageSources().cactus(), 0.1F);
         }
@@ -45,7 +46,7 @@ public class NeedlegrassBlock extends EndPlantBlock implements SurvivesOnShadowG
 
     @Override
     public @Nullable LootTable.Builder registerBlockLoot(
-            @NotNull ResourceLocation location,
+            @NotNull Identifier location,
             @NotNull LootLookupProvider provider,
             @NotNull ResourceKey<LootTable> tableKey
     ) {

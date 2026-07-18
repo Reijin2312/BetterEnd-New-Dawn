@@ -7,7 +7,7 @@ import org.betterx.wover.block.api.BlockTagProvider;
 import org.betterx.wover.tag.api.event.context.TagBootstrapContext;
 import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.MapColor;
@@ -18,7 +18,7 @@ public class EndTerrainBlock extends BaseTerrainBlock implements PottableTerrain
     }
 
     @Override
-    public void registerBlockTags(ResourceLocation location, TagBootstrapContext<Block> context) {
+    public void registerBlockTags(Identifier location, TagBootstrapContext<Block> context) {
         context.add(CommonBlockTags.END_STONES, this);
     }
 }

@@ -1,0 +1,12 @@
+{
+  "type": "bclib:alloying",
+  "experience": 3.0,
+  "ingredients": [
+    "minecraft:gold_ore",
+    "minecraft:gold_ore"
+  ],
+  "result": {
+    "count": 3,
+    "item": "minecraft:gold_ingot"
+  }
+}

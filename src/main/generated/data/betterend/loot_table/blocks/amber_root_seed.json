@@ -84,5 +84,6 @@
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "betterend:blocks/amber_root_seed"
 }

@@ -1010,12 +1010,15 @@
   "upgrade.betterend.terminite_upgrade": "终末合金升级",
   "upgrade.betterend.thallasium_upgrade": "塔拉斯金剑柄",
   "upgrade.betterend.tool_assembly": "组装剑",
+  "betterend.jei.container.anvil": "铁砧配方",
+  "betterend.jei.damage.amount&dmg": "工具损耗：%s",
+  "betterend.jei.recipe_level.anvil": "等级：%s",
+  "betterend.jei.infusion.time&val": "%s 刻",
+  "betterend.jei.container.infusion": "灌注配方",
   "betterend.jei.alloying.experience_time": "%s 经验 | %s 秒",
   "betterend.jei.container.alloying": "合金与高炉熔炼",
-  "betterend.jei.container.anvil": "铁砧配方",
-  "betterend.jei.container.infusion": "灌注配方",
-  "betterend.jei.damage.amount&dmg": "工具损耗：%s",
-  "betterend.jei.infusion.time&val": "%s 刻",
-  "betterend.jei.recipe_level.anvil": "等级：%s",
-  "config.jade.plugin_betterend.plant_growth": "BetterEnd 植物"
+  "jukebox_song.betterend.strange_and_alien": "§5Firel§r - §fStrange And Alien§r",
+  "jukebox_song.betterend.grasping_at_stars": "§5Firel§r - §fGrasping At Stars§r",
+  "jukebox_song.betterend.endseeker": "§5Firel§r - §fEndseeker§r",
+  "jukebox_song.betterend.eo_dracona": "§5Firel§r - §fEo Dracona§r"
 }

@@ -1,0 +1,6 @@
+{
+  "parent": "bclib:block/chest_item",
+  "textures": {
+    "texture": "betterend:block/chest/end_lotus_chest"
+  }
+}

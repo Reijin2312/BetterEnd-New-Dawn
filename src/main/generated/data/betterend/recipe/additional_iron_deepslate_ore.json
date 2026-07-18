@@ -1,0 +1,12 @@
+{
+  "type": "bclib:alloying",
+  "experience": 2.1,
+  "ingredients": [
+    "minecraft:deepslate_iron_ore",
+    "minecraft:deepslate_iron_ore"
+  ],
+  "result": {
+    "count": 3,
+    "item": "minecraft:iron_ingot"
+  }
+}

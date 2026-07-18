@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "bar_stool",
   "key": {
-    "#": {
-      "item": "betterend:lucernia_slab"
-    },
-    "I": {
-      "item": "minecraft:stick"
-    }
+    "#": "betterend:lucernia_slab",
+    "I": "minecraft:stick"
   },
   "pattern": [
     "##",

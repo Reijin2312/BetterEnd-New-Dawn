@@ -81,22 +81,19 @@ public class SulphurSpringsBiome extends EndBiome.Config {
                         List.of(
                                 SurfaceRules.state(surfaceMaterial().getAltTopMaterial()),
                                 SurfaceRules.state(surfaceMaterial().getTopMaterial()),
-                                SULPHURIC_ROCK,
-                                BRIMSTONE
+                                sulphuricRock(),
+                                brimstone()
                         )
                 );
                 return super
                         .surface()
-                        .rule(
-                                SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, surfaceBlockRule),
-                                SurfaceRuleBuilder.FLOOR_PRIORITY
-                        )
+                        .rule(SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, surfaceBlockRule), 2)
                         .rule(
                                 SurfaceRules.ifTrue(
                                         SurfaceRules.stoneDepthCheck(5, false, CaveSurface.FLOOR),
                                         surfaceBlockRule
                                 ),
-                                SurfaceRuleBuilder.BELOW_FLOOR_PRIORITY
+                                2
                         );
             }
         };

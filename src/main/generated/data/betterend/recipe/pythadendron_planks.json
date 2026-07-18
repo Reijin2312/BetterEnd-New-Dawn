@@ -4,18 +4,10 @@
   "group": "planks",
   "ingredients": [
     [
-      {
-        "item": "betterend:pythadendron_log"
-      },
-      {
-        "item": "betterend:pythadendron_bark"
-      },
-      {
-        "item": "betterend:pythadendron_stripped_log"
-      },
-      {
-        "item": "betterend:pythadendron_stripped_bark"
-      }
+      "betterend:pythadendron_log",
+      "betterend:pythadendron_bark",
+      "betterend:pythadendron_stripped_log",
+      "betterend:pythadendron_stripped_bark"
     ]
   ],
   "result": {

@@ -52,16 +52,28 @@ public class NoiseChunkMixin implements BETargetChecker {
     @Final
     private List<NoiseChunk.NoiseInterpolator> interpolators;
 
+    @Shadow @Final private int cellCountXZ;
+    @Shadow @Final private int cellCountY;
+    @Shadow @Final private int firstCellZ;
+    @Shadow @Final private int cellWidth;
+    @Shadow @Final private int cellHeight;
+
     @Inject(method = "fillSlice", at = @At("HEAD"), cancellable = true)
     private void be_fillSlice(boolean primarySlice, int x, CallbackInfo info) {
         if (!be_isTarget()) return;
 
         info.cancel();
 
-        NoiseChunkAccessor accessor = (NoiseChunkAccessor) this;
-        NoiseSettings noiseSettings = accessor.bnv_getNoiseSettings();
-
-        TerrainGenerator.fillSlice(primarySlice, x, interpolators, accessor, noiseSettings);
+        TerrainGenerator.fillSlice(
+                primarySlice,
+                x,
+                interpolators,
+                cellCountXZ,
+                firstCellZ,
+                cellWidth,
+                cellHeight,
+                cellCountY * cellHeight
+        );
     }
 
 }

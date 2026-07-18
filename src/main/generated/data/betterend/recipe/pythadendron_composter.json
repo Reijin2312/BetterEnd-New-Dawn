@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "composter",
   "key": {
-    "#": {
-      "item": "betterend:pythadendron_slab"
-    }
+    "#": "betterend:pythadendron_slab"
   },
   "pattern": [
     "# #",

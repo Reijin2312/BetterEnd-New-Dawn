@@ -15,9 +15,8 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
@@ -69,22 +68,22 @@ public class LakePiece extends BasePiece {
 
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
-        tag.put("center", NbtUtils.writeBlockPos(center));
+        tag.store("center", BlockPos.CODEC, center);
         tag.putFloat("radius", radius);
         tag.putFloat("depth", depth);
         tag.putInt("seed", seed);
-        tag.putString("biome", biomeID.location().toString());
+        tag.putString("biome", biomeID.identifier().toString());
     }
 
     @Override
     protected void fromNbt(CompoundTag tag) {
-        center = NbtUtils.readBlockPos(tag, "center").orElse(BlockPos.ZERO);
-        radius = tag.getFloat("radius");
-        depth = tag.getFloat("depth");
-        seed = tag.getInt("seed");
+        center = tag.read("center", BlockPos.CODEC).orElse(BlockPos.ZERO);
+        radius = tag.getFloatOr("radius", 0.0F);
+        depth = tag.getFloatOr("depth", 0.0F);
+        seed = tag.getIntOr("seed", 0);
         noise = new OpenSimplexNoise(seed);
         aspect = radius / depth;
-        biomeID = ResourceKey.create(Registries.BIOME, ResourceLocation.parse(tag.getString("biome")));
+        biomeID = ResourceKey.create(Registries.BIOME, Identifier.parse(tag.getStringOr("biome", "minecraft:the_end")));
     }
 
     @Override
@@ -132,7 +131,7 @@ public class LakePiece extends BasePiece {
                         BlockState state = chunk.getBlockState(mut);
                         if (state.is(CommonBlockTags.END_STONES) || state.isAir()) {
                             state = mut.getY() < center.getY() ? WATER : CAVE_AIR;
-                            chunk.setBlockState(mut, state, false);
+                            chunk.setBlockState(mut, state, 0);
                         }
                     } else if (dist <= r3 && mut.getY() < center.getY()) {
                         BlockState state = chunk.getBlockState(mut);
@@ -152,7 +151,7 @@ public class LakePiece extends BasePiece {
                                         ? ENDSTONE
                                         : EndBlocks.ENDSTONE_DUST.defaultBlockState();
                             }
-                            chunk.setBlockState(mut, state, false);
+                            chunk.setBlockState(mut, state, 0);
                         }
                     }
                 }
@@ -230,10 +229,10 @@ public class LakePiece extends BasePiece {
     }
 
     private void makeEndstonePillar(ChunkAccess chunk, MutableBlockPos mut, BlockState terrain) {
-        chunk.setBlockState(mut, terrain, false);
+        chunk.setBlockState(mut, terrain, 0);
         mut.setY(mut.getY() - 1);
         while (!chunk.getFluidState(mut).isEmpty()) {
-            chunk.setBlockState(mut, ENDSTONE, false);
+            chunk.setBlockState(mut, ENDSTONE, 0);
             mut.setY(mut.getY() - 1);
         }
     }

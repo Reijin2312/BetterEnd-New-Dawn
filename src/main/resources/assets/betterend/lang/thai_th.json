@@ -818,12 +818,15 @@
   "block.betterend.pallidium_thin": "Pallidium (Thin Cover)",
   "block.betterend.pallidium_tiny": "Pallidium (Tiny Cover)",
   "block.betterend.flammalix": "Flammalix",
+  "betterend.jei.container.anvil": "สูตรทั่งตีเหล็ก",
+  "betterend.jei.damage.amount&dmg": "ความเสียหายเครื่องมือ: %s",
+  "betterend.jei.recipe_level.anvil": "ระดับ: %s",
+  "betterend.jei.infusion.time&val": "%s ทิก",
+  "betterend.jei.container.infusion": "สูตรผสานพลัง",
   "betterend.jei.alloying.experience_time": "%s XP | %s วินาที",
   "betterend.jei.container.alloying": "การผสมโลหะและถลุง",
-  "betterend.jei.container.anvil": "สูตรทั่งตีเหล็ก",
-  "betterend.jei.container.infusion": "สูตรผสานพลัง",
-  "betterend.jei.damage.amount&dmg": "ความเสียหายเครื่องมือ: %s",
-  "betterend.jei.infusion.time&val": "%s ทิก",
-  "betterend.jei.recipe_level.anvil": "ระดับ: %s",
-  "config.jade.plugin_betterend.plant_growth": "พืช BetterEnd"
+  "jukebox_song.betterend.strange_and_alien": "§5Firel§r - §fStrange And Alien§r",
+  "jukebox_song.betterend.grasping_at_stars": "§5Firel§r - §fGrasping At Stars§r",
+  "jukebox_song.betterend.endseeker": "§5Firel§r - §fEndseeker§r",
+  "jukebox_song.betterend.eo_dracona": "§5Firel§r - §fEo Dracona§r"
 }

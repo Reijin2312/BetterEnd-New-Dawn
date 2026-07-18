@@ -5,7 +5,7 @@ import org.betterx.betterend.blocks.basis.EndAnvilBlock;
 import org.betterx.betterend.item.material.EndToolMaterial;
 import org.betterx.betterend.registry.EndBlocks;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 
@@ -23,7 +23,7 @@ public class AeterniumAnvil extends EndAnvilBlock {
     }
 
     @Override
-    public BlockItem getCustomBlockItem(ResourceLocation blockID, Item.Properties settings) {
+    public BlockItem getCustomBlockItem(Identifier blockID, Item.Properties settings) {
         return new BaseAnvilItem(this, settings.fireResistant());
     }
 }

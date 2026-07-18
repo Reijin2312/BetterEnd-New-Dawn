@@ -2,8 +2,8 @@ package org.betterx.betterend.client.models;
 
 import org.betterx.betterend.BetterEnd;
 
-import net.minecraft.data.models.model.ModelTemplate;
-import net.minecraft.data.models.model.TextureSlot;
+import net.minecraft.client.data.models.model.ModelTemplate;
+import net.minecraft.client.data.models.model.TextureSlot;
 
 import java.util.Optional;
 

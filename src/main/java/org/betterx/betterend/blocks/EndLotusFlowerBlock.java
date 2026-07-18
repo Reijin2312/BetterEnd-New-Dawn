@@ -17,8 +17,6 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 import com.google.common.collect.Lists;
 
@@ -55,8 +53,7 @@ public class EndLotusFlowerBlock extends EndPlantBlock implements BehaviourPlant
     }
 
     @Override
-    @Environment(EnvType.CLIENT)
-    public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
+    public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState, boolean includeData) {
         return new ItemStack(EndBlocks.END_LOTUS_SEED);
     }
 }

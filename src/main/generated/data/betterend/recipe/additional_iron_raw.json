@@ -1,0 +1,12 @@
+{
+  "type": "bclib:alloying",
+  "experience": 2.1,
+  "ingredients": [
+    "minecraft:raw_iron",
+    "minecraft:raw_iron"
+  ],
+  "result": {
+    "count": 3,
+    "item": "minecraft:iron_ingot"
+  }
+}

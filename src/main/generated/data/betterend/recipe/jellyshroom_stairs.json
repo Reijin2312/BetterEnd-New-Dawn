@@ -3,9 +3,7 @@
   "category": "building",
   "group": "stairs",
   "key": {
-    "#": {
-      "item": "betterend:jellyshroom_planks"
-    }
+    "#": "betterend:jellyshroom_planks"
   },
   "pattern": [
     "#  ",

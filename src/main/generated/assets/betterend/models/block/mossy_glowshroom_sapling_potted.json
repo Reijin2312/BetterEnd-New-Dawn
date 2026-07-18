@@ -1,6 +1,0 @@
-{
-  "parent": "betterend:block/potted_cross",
-  "textures": {
-    "plant": "betterend:block/mossy_glowshroom_sapling"
-  }
-}

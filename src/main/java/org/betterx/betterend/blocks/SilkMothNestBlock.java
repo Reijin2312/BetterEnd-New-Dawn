@@ -19,20 +19,21 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.AABB;
@@ -41,22 +42,21 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import java.util.Collections;
 import java.util.List;
 
 public class SilkMothNestBlock extends BaseBlock implements RenderLayerProvider, AddMineableShears {
     public static final BooleanProperty ACTIVE = EndBlockProperties.ACTIVE;
-    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final IntegerProperty FULLNESS = EndBlockProperties.FULLNESS;
     private static final VoxelShape TOP = box(6, 0, 6, 10, 16, 10);
     private static final VoxelShape BOTTOM = box(0, 0, 0, 16, 16, 16);
 
     public SilkMothNestBlock() {
-        super(FabricBlockSettings.copyOf(Blocks.WHITE_WOOL)
-                                 .hardness(0.5F)
-                                 .resistance(0.1F)
+        super(BlockBehaviour.Properties.ofLegacyCopy(Blocks.WHITE_WOOL)
+                                 .strength(0.5F, 0.1F)
                                  .sound(SoundType.WOOL)
                                  .noOcclusion()
                                  .randomTicks());
@@ -89,11 +89,13 @@ public class SilkMothNestBlock extends BaseBlock implements RenderLayerProvider,
     @SuppressWarnings("deprecation")
     public BlockState updateShape(
             BlockState state,
-            Direction facing,
-            BlockState neighborState,
-            LevelAccessor world,
+            LevelReader world,
+            ScheduledTickAccess scheduledTickAccess,
             BlockPos pos,
-            BlockPos neighborPos
+            Direction facing,
+            BlockPos neighborPos,
+            BlockState neighborState,
+            RandomSource random
     ) {
         if (!state.getValue(ACTIVE)) {
             if (canSupportCenter(world, pos.above(), Direction.DOWN) || world.getBlockState(pos.above())
@@ -156,7 +158,7 @@ public class SilkMothNestBlock extends BaseBlock implements RenderLayerProvider,
             return;
         }
         SilkMothEntity moth = new SilkMothEntity(EndEntities.SILK_MOTH.type(), world);
-        moth.moveTo(spawn.getX() + 0.5, spawn.getY() + 0.5, spawn.getZ() + 0.5, dir.toYRot(), 0);
+        moth.snapTo(spawn.getX() + 0.5, spawn.getY() + 0.5, spawn.getZ() + 0.5, dir.toYRot(), 0F);
         moth.setDeltaMovement(new Vec3(dir.getStepX() * 0.4, 0, dir.getStepZ() * 0.4));
         moth.setHive(world, pos);
         world.addFreshEntity(moth);
@@ -164,7 +166,7 @@ public class SilkMothNestBlock extends BaseBlock implements RenderLayerProvider,
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(
+    public InteractionResult useItemOn(
             ItemStack stack,
             BlockState state,
             Level world,
@@ -189,9 +191,9 @@ public class SilkMothNestBlock extends BaseBlock implements RenderLayerProvider,
                 if (!player.isCreative()) {
                     stack.setDamageValue(stack.getDamageValue() + 1);
                 }
-                return ItemInteractionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
-        return ItemInteractionResult.FAIL;
+        return InteractionResult.FAIL;
     }
 }

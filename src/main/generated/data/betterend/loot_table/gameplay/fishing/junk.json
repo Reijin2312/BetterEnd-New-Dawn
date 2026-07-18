@@ -235,5 +235,6 @@
         "min": 1.0
       }
     }
-  ]
+  ],
+  "random_sequence": "betterend:gameplay/fishing/junk"
 }

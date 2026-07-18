@@ -5,7 +5,7 @@ import org.betterx.bclib.complexmaterials.entry.SlotMap;
 import org.betterx.bclib.complexmaterials.set.wood.WoodSlots;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.betterend.registry.EndItems;
+import org.betterx.wover.item.api.ItemRegistry;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -23,7 +23,7 @@ public class EndWoodenComplexMaterial extends WoodenComplexMaterial {
     public EndWoodenComplexMaterial init() {
         return (EndWoodenComplexMaterial) super.init(
                 EndBlocks.getBlockRegistry(),
-                EndItems.getItemRegistry()
+                ItemRegistry.forMod(BetterEnd.C)
         );
     }
 

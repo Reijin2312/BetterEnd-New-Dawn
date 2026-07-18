@@ -15,9 +15,10 @@ import org.betterx.wover.feature.api.FeatureManager;
 import org.betterx.wover.state.api.WorldState;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
@@ -93,24 +94,24 @@ public class EndFeatures {
     public static final CavePumpkinFeature CAVE_PUMPKIN_FEATURE = inlineBuild("cave_pumpkin", new CavePumpkinFeature());
 
     public static <F extends Feature<FC>, FC extends FeatureConfiguration> F inlineBuild(String name, F feature) {
-        ResourceLocation l = BetterEnd.C.mk(name);
+        Identifier l = BetterEnd.C.mk(name);
 
         final Registry<Feature<?>> features;
         if (WorldState.registryAccess() != null) {
-            features = WorldState.allStageRegistryAccess().registryOrThrow(Registries.FEATURE);
+            features = WorldState.allStageRegistryAccess().lookupOrThrow(Registries.FEATURE);
         } else {
             features = BuiltInRegistries.FEATURE;
         }
 
         if (features.containsKey(l)) {
-            return (F) features.get(l);
+            return (F) features.get(l).map(Holder.Reference::value).orElse(null);
         }
 
 
         return FeatureManager.register(l, feature);
     }
 
-//    public static void addBiomeFeatures(ResourceLocation id, Holder<Biome> biome) {
+//    public static void addBiomeFeatures(Identifier id, Holder<Biome> biome) {
 //        if (!BetterEnd.MOD_ID.equals(id.getNamespace())) {
 //            BiomeAPI.addBiomeFeature(biome, EndOreFeatures.FLAVOLITE_LAYER);
 //            BiomeAPI.addBiomeFeature(biome, EndOreFeatures.THALLASIUM_ORE);

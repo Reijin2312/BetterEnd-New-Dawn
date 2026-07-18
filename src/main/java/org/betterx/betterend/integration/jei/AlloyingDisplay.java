@@ -3,7 +3,7 @@ package org.betterx.betterend.integration.jei;
 import org.betterx.bclib.recipes.AlloyingRecipe;
 
 import net.minecraft.core.HolderLookup;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.BlastingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -29,7 +29,7 @@ public class AlloyingDisplay {
     }
 
     public static AlloyingDisplay fromBlasting(RecipeHolder<BlastingRecipe> recipe) {
-        return new AlloyingDisplay(recipe, recipe.value().getExperience(), recipe.value().getCookingTime());
+        return new AlloyingDisplay(recipe, recipe.value().experience(), recipe.value().cookingTime());
     }
 
     public float getExperience() {
@@ -45,7 +45,7 @@ public class AlloyingDisplay {
             return alloyingRecipe.getIngredients();
         }
         if (recipe.value() instanceof BlastingRecipe blastingRecipe) {
-            return blastingRecipe.getIngredients();
+            return List.of(blastingRecipe.input());
         }
         return List.of();
     }
@@ -55,11 +55,11 @@ public class AlloyingDisplay {
             return alloyingRecipe.getResultItem(provider);
         }
         if (recipe.value() instanceof BlastingRecipe blastingRecipe) {
-            if (blastingRecipe.getIngredients().isEmpty()) {
-                return ItemStack.EMPTY;
-            }
-            ItemStack[] items = blastingRecipe.getIngredients().get(0).getItems();
-            ItemStack sampleInput = items.length > 0 ? items[0].copyWithCount(1) : ItemStack.EMPTY;
+            ItemStack sampleInput = blastingRecipe.input()
+                                                  .items()
+                                                  .findFirst()
+                                                  .map(item -> new ItemStack(item.value()))
+                                                  .orElse(ItemStack.EMPTY);
             if (sampleInput.isEmpty()) {
                 return ItemStack.EMPTY;
             }
@@ -68,7 +68,7 @@ public class AlloyingDisplay {
         return ItemStack.EMPTY;
     }
 
-    public ResourceLocation getId() {
-        return recipe.id();
+    public Identifier getId() {
+        return recipe.id().identifier();
     }
 }

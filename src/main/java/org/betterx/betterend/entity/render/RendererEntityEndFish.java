@@ -6,68 +6,86 @@ import org.betterx.betterend.entity.model.EndFishEntityModel;
 import org.betterx.betterend.registry.EndEntitiesRenders;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.EyesLayer;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
-public class RendererEntityEndFish extends MobRenderer<EndFishEntity, EndFishEntityModel> {
-    private static final ResourceLocation[] TEXTURE = new ResourceLocation[EndFishEntity.VARIANTS];
+public class RendererEntityEndFish extends MobRenderer<EndFishEntity, RendererEntityEndFish.EndFishRenderState, EndFishEntityModel<RendererEntityEndFish.EndFishRenderState>> {
+    private static final Identifier[] TEXTURE = new Identifier[EndFishEntity.VARIANTS];
     private static final RenderType[] GLOW = new RenderType[EndFishEntity.VARIANTS];
 
     public RendererEntityEndFish(EntityRendererProvider.Context ctx) {
-        super(ctx, new EndFishEntityModel(ctx.bakeLayer(EndEntitiesRenders.END_FISH_MODEL)), 0.5f);
-        this.addLayer(new EyesLayer<EndFishEntity, EndFishEntityModel>(this) {
+        super(ctx, new EndFishEntityModel<>(ctx.bakeLayer(EndEntitiesRenders.END_FISH_MODEL)), 0.5F);
+        this.addLayer(new EyesLayer<EndFishRenderState, EndFishEntityModel<EndFishRenderState>>(this) {
             @Override
             public RenderType renderType() {
                 return GLOW[0];
             }
 
             @Override
-            public void render(
+            public void submit(
                     PoseStack matrices,
-                    MultiBufferSource vertexConsumers,
+                    SubmitNodeCollector submitNodeCollector,
                     int light,
-                    EndFishEntity entity,
-                    float limbAngle,
-                    float limbDistance,
-                    float tickDelta,
-                    float animationProgress,
-                    float headYaw,
-                    float headPitch
+                    EndFishRenderState state,
+                    float yRot,
+                    float xRot
             ) {
-                VertexConsumer vertexConsumer = vertexConsumers.getBuffer(GLOW[entity.getVariant()]);
-                this.getParentModel()
-                    .renderToBuffer(
+                submitNodeCollector.order(1)
+                    .submitModel(
+                            this.getParentModel(),
+                            state,
                             matrices,
-                            vertexConsumer,
+                            GLOW[state.variant],
                             15728640,
                             OverlayTexture.NO_OVERLAY,
-                            0xffffffff
+                            -1,
+                            null,
+                            state.outlineColor,
+                            null
                     );
             }
         });
     }
 
     @Override
-    protected void scale(EndFishEntity entity, PoseStack matrixStack, float f) {
-        float scale = entity.getScale();
+    protected void scale(EndFishRenderState state, PoseStack matrixStack) {
+        float scale = state.scale;
         matrixStack.scale(scale, scale, scale);
     }
 
     @Override
-    public ResourceLocation getTextureLocation(EndFishEntity entity) {
-        return TEXTURE[entity.getVariant()];
+    public Identifier getTextureLocation(EndFishRenderState state) {
+        return TEXTURE[state.variant];
+    }
+
+    @Override
+    public EndFishRenderState createRenderState() {
+        return new EndFishRenderState();
+    }
+
+    @Override
+    public void extractRenderState(EndFishEntity entity, EndFishRenderState state, float partialTick) {
+        super.extractRenderState(entity, state, partialTick);
+        state.variant = entity.getVariant();
+        state.scale = entity.getFishScale();
     }
 
     static {
         for (int i = 0; i < EndFishEntity.VARIANTS; i++) {
             TEXTURE[i] = BetterEnd.C.mk("textures/entity/end_fish/end_fish_" + i + ".png");
-            GLOW[i] = RenderType.eyes(BetterEnd.C.mk("textures/entity/end_fish/end_fish_" + i + "_glow.png"));
+            GLOW[i] = RenderTypes.eyes(BetterEnd.C.mk("textures/entity/end_fish/end_fish_" + i + "_glow.png"));
         }
+    }
+
+    public static class EndFishRenderState extends LivingEntityRenderState {
+        public int variant;
+        public float scale = 1.0F;
     }
 }

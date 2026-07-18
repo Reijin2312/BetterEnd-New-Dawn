@@ -3,9 +3,7 @@
   "category": "building",
   "group": "slab",
   "key": {
-    "#": {
-      "item": "betterend:umbrella_tree_planks"
-    }
+    "#": "betterend:umbrella_tree_planks"
   },
   "pattern": [
     "###"

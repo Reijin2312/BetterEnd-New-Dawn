@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "end_stone_ITEM_FURNACES",
   "key": {
-    "#": {
-      "item": "betterend:sulphuric_rock"
-    }
+    "#": "betterend:sulphuric_rock"
   },
   "pattern": [
     "###",

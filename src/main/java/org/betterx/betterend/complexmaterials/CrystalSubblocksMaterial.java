@@ -39,18 +39,18 @@ public class CrystalSubblocksMaterial implements MaterialManager.Material {
         this.source = source;
         this.name = name;
 
-        BlockBehaviour.Properties material = BlockBehaviour.Properties.ofFullCopy(source);
-        polished = EndBlocks.registerBlock(name + "_polished", new LitBaseBlock(material));
-        tiles = EndBlocks.registerBlock(name + "_tiles", new LitBaseBlock(material));
-        pillar = EndBlocks.registerBlock(name + "_pillar", new LitPillarBlock(material));
-        stairs = EndBlocks.registerBlock(name + "_stairs", new BaseStairsBlock.Stone(source));
-        slab = EndBlocks.registerBlock(name + "_slab", new BaseSlabBlock.Stone(source));
-        wall = EndBlocks.registerBlock(name + "_wall", new BaseWallBlock.Stone(source));
-        pedestal = EndBlocks.registerBlock(name + "_pedestal", new EndPedestal.Stone(source));
-        bricks = EndBlocks.registerBlock(name + "_bricks", new LitBaseBlock(material));
-        brick_stairs = EndBlocks.registerBlock(name + "_bricks_stairs", new BaseStairsBlock.Stone(bricks));
-        brick_slab = EndBlocks.registerBlock(name + "_bricks_slab", new BaseSlabBlock.Stone(bricks));
-        brick_wall = EndBlocks.registerBlock(name + "_bricks_wall", new BaseWallBlock.Stone(bricks));
+        BlockBehaviour.Properties material = BlockBehaviour.Properties.ofLegacyCopy(source);
+        polished = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_polished"), new LitBaseBlock(material));
+        tiles = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_tiles"), new LitBaseBlock(material));
+        pillar = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_pillar"), new LitPillarBlock(material));
+        stairs = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_stairs"), new BaseStairsBlock.Stone(source));
+        slab = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_slab"), new BaseSlabBlock.Stone(source));
+        wall = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_wall"), new BaseWallBlock.Stone(source));
+        pedestal = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_pedestal"), new EndPedestal.Stone(source));
+        bricks = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_bricks"), new LitBaseBlock(material));
+        brick_stairs = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_bricks_stairs"), new BaseStairsBlock.Stone(bricks));
+        brick_slab = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_bricks_slab"), new BaseSlabBlock.Stone(bricks));
+        brick_wall = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_bricks_wall"), new BaseWallBlock.Stone(bricks));
 
 
         MaterialManager.register(this);

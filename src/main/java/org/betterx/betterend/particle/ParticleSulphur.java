@@ -7,11 +7,8 @@ import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
-@Environment(EnvType.CLIENT)
-public class ParticleSulphur extends TextureSheetParticle {
+public class ParticleSulphur extends SingleQuadParticle {
     private int ticks;
     private double preVX;
     private double preVY;
@@ -30,8 +27,8 @@ public class ParticleSulphur extends TextureSheetParticle {
             double b,
             SpriteSet sprites
     ) {
-        super(world, x, y, z, r, g, b);
-        pickSprite(sprites);
+        super(world, x, y, z, r, g, b, sprites.first());
+        setSprite(sprites.get(random));
 
         this.lifetime = MHelper.randRange(150, 300, random);
         this.quadSize = MHelper.randRange(0.05F, 0.15F, random);
@@ -82,11 +79,10 @@ public class ParticleSulphur extends TextureSheetParticle {
     }
 
     @Override
-    public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+    protected Layer getLayer() {
+        return Layer.TRANSLUCENT;
     }
 
-    @Environment(EnvType.CLIENT)
     public static class FactorySulphur implements ParticleProvider<SimpleParticleType> {
 
         private final SpriteSet sprites;
@@ -104,7 +100,8 @@ public class ParticleSulphur extends TextureSheetParticle {
                 double z,
                 double vX,
                 double vY,
-                double vZ
+                double vZ,
+                net.minecraft.util.RandomSource random
         ) {
             return new ParticleSulphur(world, x, y, z, 1, 1, 1, sprites);
         }

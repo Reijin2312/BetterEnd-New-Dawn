@@ -13,7 +13,6 @@ import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -21,6 +20,7 @@ import net.minecraft.commands.arguments.ResourceOrTagKeyArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -40,7 +40,6 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import com.google.common.base.Stopwatch;
 import org.joml.Vector3d;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -57,17 +56,17 @@ public class CommandRegistry {
     ) {
         dispatcher.register(
                 Commands.literal("be")
-                        .requires(source -> source.hasPermission(Commands.LEVEL_OWNERS))
+                        .requires(Commands.hasPermission(Commands.LEVEL_OWNERS))
                         .then(Commands.literal("locate_portal")
-                                      .requires(source -> source.hasPermission(Commands.LEVEL_OWNERS))
+                                      .requires(Commands.hasPermission(Commands.LEVEL_OWNERS))
                                       .executes(ctx -> find_poi(ctx, EndPoiTypes.ETERNAL_PORTAL))
                         )
                         .then(Commands.literal("locate_portal_frame")
-                                      .requires(source -> source.hasPermission(Commands.LEVEL_OWNERS))
+                                      .requires(Commands.hasPermission(Commands.LEVEL_OWNERS))
                                       .executes(ctx -> find_poi(ctx, EndPoiTypes.ETERNAL_PORTAL_FRAME))
                         )
                         .then(Commands.literal("tpnext")
-                                      .requires(source -> source.hasPermission(Commands.LEVEL_OWNERS))
+                                      .requires(Commands.hasPermission(Commands.LEVEL_OWNERS))
                                       .executes(CommandRegistry::teleportToNextBiome)
                         )
         );
@@ -107,9 +106,8 @@ public class CommandRegistry {
         final CommandSourceStack source = ctx.getSource();
         final var biomeIterator = WorldState
                 .registryAccess()
-                .registry(Registries.BIOME)
-                .orElseThrow()
-                .getTagOrEmpty(BiomeTags.IS_END);
+                .lookupOrThrow(Registries.BIOME)
+                .getOrThrow(BiomeTags.IS_END);
         final List<Holder<Biome>> biomes = new LinkedList<>();
         for (Holder<Biome> biome : biomeIterator) biomes.add(biome);
 
@@ -152,31 +150,23 @@ public class CommandRegistry {
                 target = new BlockPos(biomePosition.getX(), (int) yPos, biomePosition.getZ());
                 state = player.level().getBlockState(target);
                 yPos--;
-                if (yPos <= player.level().getMinBuildHeight() + 1) {
+                if (yPos <= player.level().getMinY() + 1) {
                     if (didWrap) break;
                     yPos = 127;
                     didWrap = true;
                 }
-            } while (!state.isAir() && yPos > player.level().getMinBuildHeight() && yPos < player.level()
-                                                                                                 .getMaxBuildHeight());
+            } while (!state.isAir() && yPos > player.level().getMinY() && yPos < player.level().getMaxY());
             Vector3d targetPlayerPos = new Vector3d(target.getX() + 0.5, target.getY() - 1, target.getZ() + 0.5);
 
-            player.connection.teleport(
-                    targetPlayerPos.x,
-                    targetPlayerPos.y,
-                    targetPlayerPos.z,
-                    0,
-                    0,
-                    Collections.EMPTY_SET
-            );
-            ResourceOrTagKeyArgument.Result result = new ResourceOrTagKeyArgument.Result() {
+            player.teleportTo(targetPlayerPos.x, targetPlayerPos.y, targetPlayerPos.z);
+            ResourceOrTagKeyArgument.Result<Biome> result = new ResourceOrTagKeyArgument.Result<>() {
                 @Override
-                public Either<ResourceKey, TagKey> unwrap() {
+                public Either<ResourceKey<Biome>, TagKey<Biome>> unwrap() {
                     return Either.left(biome.unwrap().orThrow());
                 }
 
                 @Override
-                public Optional<ResourceOrTagKeyArgument.Result> cast(ResourceKey resourceKey) {
+                public <E> Optional<ResourceOrTagKeyArgument.Result<E>> cast(ResourceKey<? extends Registry<E>> resourceKey) {
                     return Optional.empty();
                 }
 
@@ -186,16 +176,16 @@ public class CommandRegistry {
                 }
 
                 @Override
-                public boolean test(Object o) {
+                public boolean test(Holder<Biome> o) {
                     return false;
                 }
             };
             ResourceKey<Biome> a = biome.unwrapKey().orElseThrow();
             if (WorldState.allStageRegistryAccess() != null) {
-                Stopwatch stopwatch = Stopwatch.createStarted(Util.TICKER);
+                Stopwatch stopwatch = Stopwatch.createStarted();
                 Holder<Biome> h = WorldState.allStageRegistryAccess()
-                                            .registryOrThrow(Registries.BIOME)
-                                            .getHolder(a)
+                                            .lookupOrThrow(Registries.BIOME)
+                                            .get(a)
                                             .orElseThrow();
                 stopwatch.stop();
                 return LocateCommand.showLocateResult(

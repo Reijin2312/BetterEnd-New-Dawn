@@ -10,7 +10,7 @@ import org.betterx.wover.biome.api.BiomeKey;
 import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.datagen.api.provider.WoverLootTableProvider;
 
-import net.minecraft.advancements.critereon.LocationPredicate;
+import net.minecraft.advancements.criterion.LocationPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
@@ -202,7 +202,7 @@ public class EndChestLootTableProvider extends WoverLootTableProvider {
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4)))
                 )
                 .add(LootItem
-                        .lootTableItem(EndBlocks.FLAVOLITE_RUNED_ETERNAL)
+                        .lootTableItem(EndBlocks.FLAVOLITE_RUNED)
                         .setWeight(4)
                         .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1)))
                 )

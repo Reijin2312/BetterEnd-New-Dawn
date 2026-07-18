@@ -18,14 +18,10 @@ import org.betterx.wover.datagen.api.PackBuilder;
 import org.betterx.wover.datagen.api.WoverDataGenEntryPoint;
 
 import net.minecraft.core.RegistrySetBuilder;
-import net.minecraft.data.worldgen.features.EndFeatures;
 
 public class BetterEndDatagen extends WoverDataGenEntryPoint {
     @Override
     protected void onInitializeProviders(PackBuilder globalPack) {
-        System.out.println(
-                EndFeatures.CHORUS_PLANT
-        );
         EndBiomesProvider.loadAllBiomeConfigs();
         EndBlocks.ensureStaticallyLoaded();
         EndItems.ensureStaticallyLoaded();
@@ -51,17 +47,15 @@ public class BetterEndDatagen extends WoverDataGenEntryPoint {
         globalPack.addProvider(EndMaterialRecipesProvider::new);
         globalPack.addProvider(EndEnchantmentProvider::new);
         globalPack.addProvider(EndChestLootTableProvider::new);
+        globalPack.addProvider(EndBlockLootTableProvider::new);
         globalPack.addProvider(EndModelProvider::new);
+        globalPack.addProvider(EndEquipmentAssetProvider::new);
+        globalPack.addProvider(modCore -> (output, registries) ->
+                new EndAdvancementDataProvider(output, registries));
 
-
-        globalPack.callOnInitializeDatapack((generator, pack, location) -> {
-            if (location == null) {
-                pack.addProvider(EndAdvancementDataProvider::new);
-                pack.addProvider(EndBlockLootTableProvider::new);
-            }
-        });
-
-        //Add providers for the byg integration
+        // Keep default behavior aligned with 1.21: BYG worldgen content is not part of the
+        // main BetterEnd pack by default. Otherwise BYG biomes can spawn as empty biomes when
+        // BYG itself is not installed.
 //        addDatapack(BetterEnd.BYG_ADDITIONS_PACK)
 //                .addMultiProvider(BYGFeatureProvider::new)
 //                .addProvider(BYGBlockTagsProvider::new)
@@ -72,8 +66,10 @@ public class BetterEndDatagen extends WoverDataGenEntryPoint {
                 .addProvider(NourishItemTagProvider::new);
 
         //Add providers for the patchouli integration
-        addDatapack(BetterEnd.PATCHOULI_ADDITIONS_PACK)
-                .addProvider(PatchouliBookProvider::new);
+        if (BetterEnd.ENABLE_GUIDEBOOK && BetterEnd.PATCHOULI_ADDITIONS_PACK != null) {
+            addDatapack(BetterEnd.PATCHOULI_ADDITIONS_PACK)
+                    .addProvider(PatchouliBookProvider::new);
+        }
     }
 
     @Override

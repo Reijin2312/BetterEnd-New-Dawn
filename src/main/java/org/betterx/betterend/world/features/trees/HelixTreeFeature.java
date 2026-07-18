@@ -30,8 +30,6 @@ import java.util.List;
 import java.util.function.Function;
 
 public class HelixTreeFeature extends DefaultFeature {
-    private static final Function<PosInfo, BlockState> POST;
-
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
         final RandomSource random = featureConfig.random();
@@ -72,7 +70,7 @@ public class HelixTreeFeature extends DefaultFeature {
         dx = 30 * scale;
         float dy1 = -20 * scale;
         float dy2 = 100 * scale;
-        sdf.addPostProcess(POST)
+        sdf.addPostProcess(postProcessFunc())
            .fillArea(
                    world,
                    pos,
@@ -211,8 +209,8 @@ public class HelixTreeFeature extends DefaultFeature {
         }
     }
 
-    static {
-        POST = (info) -> {
+    private Function<PosInfo, BlockState> postProcessFunc() {
+        return (info) -> {
             if (EndBlocks.HELIX_TREE.isTreeLog(info.getStateUp()) && EndBlocks.HELIX_TREE.isTreeLog(info.getStateDown())) {
                 return EndBlocks.HELIX_TREE.getBark().defaultBlockState();
             }

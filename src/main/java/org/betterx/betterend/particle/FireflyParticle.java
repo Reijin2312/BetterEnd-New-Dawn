@@ -9,11 +9,9 @@ import net.minecraft.client.particle.SimpleAnimatedParticle;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
-@Environment(EnvType.CLIENT)
 public class FireflyParticle extends SimpleAnimatedParticle {
     private double preVX;
     private double preVY;
@@ -75,7 +73,6 @@ public class FireflyParticle extends SimpleAnimatedParticle {
         super.tick();
     }
 
-    @Environment(EnvType.CLIENT)
     public static class FireflyParticleFactory implements ParticleProvider<SimpleParticleType> {
         private final SpriteSet sprites;
 
@@ -92,7 +89,8 @@ public class FireflyParticle extends SimpleAnimatedParticle {
                 double z,
                 double vX,
                 double vY,
-                double vZ
+                double vZ,
+                RandomSource random
         ) {
             return new FireflyParticle(world, x, y, z, sprites, 1, 1, 1);
         }

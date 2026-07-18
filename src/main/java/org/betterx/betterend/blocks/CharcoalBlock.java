@@ -6,11 +6,11 @@ import org.betterx.bclib.interfaces.Fuel;
 
 import net.minecraft.world.level.block.Blocks;
 
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public class CharcoalBlock extends BaseBlock implements Fuel, BehaviourStone {
     public CharcoalBlock() {
-        super(FabricBlockSettings.copyOf(Blocks.COAL_BLOCK));
+        super(BlockBehaviour.Properties.ofLegacyCopy(Blocks.COAL_BLOCK));
     }
 
     @Override

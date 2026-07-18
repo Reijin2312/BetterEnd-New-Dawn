@@ -87,7 +87,7 @@ public class GiantMossyGlowshroomStructure extends SDFStructureFeature {
         List<Vector3f> spline = SplineHelper.makeSpline(0, 0, 0, 0, height, 0, count);
         SplineHelper.offsetParts(spline, random, 1F, 0, 1F);
         SDF sdf = SplineHelper.buildSDF(spline, 2.1F, 1.5F, (pos) -> {
-            return EndBlocks.MOSSY_GLOWSHROOM.getLog().defaultBlockState();
+            return EndBlocks.MOSSY_GLOWSHROOM.getBark().defaultBlockState();
         });
         Vector3f pos = spline.get(spline.size() - 1);
         float scale = MHelper.randRange(2F, 3.5F, random);

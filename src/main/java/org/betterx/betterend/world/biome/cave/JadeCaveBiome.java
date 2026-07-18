@@ -25,6 +25,8 @@ import org.jetbrains.annotations.Nullable;
 public class JadeCaveBiome extends EndCaveBiome.Config<JadeCaveBiome> {
     public static final MapCodec<Biome> CODEC = EndCaveBiome.simpleCaveBiomeCodec(JadeCaveBiome.Biome::new);
     public static final KeyDispatchDataCodec<JadeCaveBiome.Biome> KEY_CODEC = KeyDispatchDataCodec.of(CODEC);
+    public static final MapCodec<Biome> NETWORK_CODEC = EndCaveBiome.simpleCaveBiomeNetworkCodec(JadeCaveBiome.Biome::new);
+    public static final KeyDispatchDataCodec<JadeCaveBiome.Biome> NETWORK_KEY_CODEC = KeyDispatchDataCodec.of(NETWORK_CODEC);
 
     public static class Biome extends EndCaveBiome {
         private static final OpenSimplexNoise WALL_NOISE = new OpenSimplexNoise("jade_cave".hashCode());
@@ -34,6 +36,11 @@ public class JadeCaveBiome extends EndCaveBiome.Config<JadeCaveBiome> {
         @Override
         public KeyDispatchDataCodec<? extends EndCaveBiome> codec() {
             return JadeCaveBiome.KEY_CODEC;
+        }
+
+        @Override
+        public KeyDispatchDataCodec<? extends EndCaveBiome> networkCodec() {
+            return JadeCaveBiome.NETWORK_KEY_CODEC;
         }
 
         protected Biome(

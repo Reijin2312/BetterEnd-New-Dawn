@@ -6,7 +6,7 @@ import org.betterx.betterend.registry.EndBlocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -35,7 +35,7 @@ public class PallidiumBlock extends EndTerrainBlock {
 
 
     @Override
-    public ItemInteractionResult useItemOn(
+    public InteractionResult useItemOn(
             ItemStack itemStack,
             BlockState state,
             Level level,
@@ -45,9 +45,9 @@ public class PallidiumBlock extends EndTerrainBlock {
             BlockHitResult hit
     ) {
         if (nextLevel == null) {
-            return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
-        } else if (level.isClientSide) {
-            return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+            return InteractionResult.PASS;
+        } else if (level.isClientSide()) {
+            return InteractionResult.PASS;
         }
 
         if (itemStack.is(Items.BONE_MEAL)) {
@@ -55,8 +55,8 @@ public class PallidiumBlock extends EndTerrainBlock {
             if (!player.isCreative()) {
                 itemStack.shrink(1);
             }
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
-        return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+        return InteractionResult.PASS;
     }
 }

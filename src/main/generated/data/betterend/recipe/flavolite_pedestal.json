@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "betterend:flavolite_pillar"
-    },
-    "S": {
-      "item": "betterend:flavolite_slab"
-    }
+    "#": "betterend:flavolite_pillar",
+    "S": "betterend:flavolite_slab"
   },
   "pattern": [
     "S",

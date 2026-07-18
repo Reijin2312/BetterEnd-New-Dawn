@@ -26,7 +26,7 @@ public class BonemealFeatureProvider extends WoverFeatureProvider {
         EndConfiguredBonemealFeature.BONEMEAL_END_MOSS
                 .bootstrap(context)
                 .configuration(new ConditionFeatureConfig(
-                        InBiome.matchingID(EndBiomes.GLOWING_GRASSLANDS.key.location()),
+                        InBiome.matchingID(EndBiomes.GLOWING_GRASSLANDS.key.identifier()),
                         EndBonemealFeature.BONEMEAL_END_MOSS_GLOWING_GRASSLANDS.getHolder(context),
                         EndBonemealFeature.BONEMEAL_END_MOSS_NOT_GLOWING_GRASSLANDS.getHolder(context)
                 ))
@@ -35,7 +35,7 @@ public class BonemealFeatureProvider extends WoverFeatureProvider {
         EndConfiguredBonemealFeature.BONEMEAL_RUTISCUS
                 .bootstrap(context)
                 .configuration(new ConditionFeatureConfig(
-                        InBiome.matchingID(EndBiomes.LANTERN_WOODS.key.location()),
+                        InBiome.matchingID(EndBiomes.LANTERN_WOODS.key.identifier()),
                         EndBonemealFeature.BONEMEAL_RUTISCUS_LANTERN_WOODS.getHolder(context),
                         EndBonemealFeature.BONEMEAL_RUTISCUS_NOT_LANTERN_WOODS.getHolder(context)
                 ))

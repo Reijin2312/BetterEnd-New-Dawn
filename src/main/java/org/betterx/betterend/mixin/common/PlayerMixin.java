@@ -31,15 +31,18 @@ public abstract class PlayerMixin extends LivingEntity {
 
     private static Direction[] horizontal;
 
-    @Inject(method = "findRespawnAndUseSpawnBlock", at = @At(value = "HEAD"), cancellable = true)
+    @Inject(method = "findRespawnAndUseSpawnBlock", at = @At(value = "HEAD"), cancellable = true, remap = false, require = 0)
     private static void be_findRespawnAndUseSpawnBlock(
             ServerLevel world,
-            BlockPos pos,
-            float angle,
+            ServerPlayer.RespawnConfig respawnConfig,
             boolean bl,
-            boolean bl2,
             CallbackInfoReturnable<Optional<ServerPlayer.RespawnPosAngle>> info
     ) {
+        if (respawnConfig == null || respawnConfig.respawnData() == null) {
+            return;
+        }
+        BlockPos pos = respawnConfig.respawnData().pos();
+        float angle = respawnConfig.respawnData().yaw();
         BlockState blockState = world.getBlockState(pos);
         if (blockState.is(EndBlocks.RESPAWN_OBELISK)) {
             info.setReturnValue(be_obeliskRespawnPosition(world, pos, angle, blockState));
@@ -66,7 +69,7 @@ public abstract class PlayerMixin extends LivingEntity {
             BlockPos p = pos.relative(dir);
             BlockState state2 = world.getBlockState(p);
             if (!state2.blocksMotion() && state2.getCollisionShape(world, pos).isEmpty()) {
-                return Optional.of(new ServerPlayer.RespawnPosAngle(Vec3.atLowerCornerOf(p).add(0.5, 0, 0.5), angle));
+                return Optional.of(new ServerPlayer.RespawnPosAngle(Vec3.atLowerCornerOf(p).add(0.5, 0, 0.5), angle, 0.0F));
             }
         }
         return Optional.empty();

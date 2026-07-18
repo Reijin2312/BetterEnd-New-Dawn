@@ -1,7 +1,9 @@
 package org.betterx.betterend.blocks;
 
 import org.betterx.bclib.client.render.BCLRenderLayer;
+import org.betterx.bclib.interfaces.BlockColorProvider;
 import org.betterx.bclib.interfaces.CustomColorProvider;
+import org.betterx.bclib.interfaces.ItemColorProvider;
 import org.betterx.bclib.interfaces.RenderLayerProvider;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.advancements.BECriteria;
@@ -9,9 +11,6 @@ import org.betterx.betterend.portal.PortalBuilder;
 import org.betterx.betterend.registry.EndParticles;
 import org.betterx.betterend.registry.EndPortals;
 
-import net.minecraft.BlockUtil;
-import net.minecraft.client.color.block.BlockColor;
-import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
@@ -19,11 +18,14 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.BlockUtil;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.NetherPortalBlock;
@@ -35,12 +37,10 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.border.WorldBorder;
 import net.minecraft.world.level.dimension.DimensionType;
-import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.level.portal.PortalShape;
+import net.minecraft.world.level.portal.TeleportTransition;
 import net.minecraft.world.phys.Vec3;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 import java.util.Optional;
 
@@ -48,7 +48,7 @@ public class EndPortalBlock extends NetherPortalBlock implements RenderLayerProv
     public static final IntegerProperty PORTAL = EndBlockProperties.PORTAL;
 
     public EndPortalBlock() {
-        super(BlockBehaviour.Properties.ofFullCopy(Blocks.NETHER_PORTAL)
+        super(BlockBehaviour.Properties.ofLegacyCopy(Blocks.NETHER_PORTAL)
                                        .destroyTime(Blocks.BEDROCK.getExplosionResistance())
                                        .lightLevel((bs) -> 15));
     }
@@ -60,7 +60,6 @@ public class EndPortalBlock extends NetherPortalBlock implements RenderLayerProv
     }
 
     @Override
-    @Environment(EnvType.CLIENT)
     public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
         if (random.nextInt(100) == 0) {
             world.playLocalSound(
@@ -95,18 +94,27 @@ public class EndPortalBlock extends NetherPortalBlock implements RenderLayerProv
     @Override
     public BlockState updateShape(
             BlockState state,
-            Direction direction,
-            BlockState newState,
-            LevelAccessor world,
+            LevelReader world,
+            ScheduledTickAccess scheduledTickAccess,
             BlockPos pos,
-            BlockPos posFrom
+            Direction direction,
+            BlockPos posFrom,
+            BlockState newState,
+            RandomSource random
     ) {
         return state;
     }
 
 
     @Override
-    public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
+    protected void entityInside(
+            BlockState state,
+            Level world,
+            BlockPos pos,
+            Entity entity,
+            InsideBlockEffectApplier insideBlockEffectApplier,
+            boolean isMoving
+    ) {
         //if (entity instanceof TravelingEntity te && te.be_getTravelerState() != null) {
         if (validate(entity)) {
             //te.be_getTravelerState().handleInsidePortal(pos);
@@ -125,17 +133,17 @@ public class EndPortalBlock extends NetherPortalBlock implements RenderLayerProv
     }
 
     @Override
-    public BlockColor getProvider() {
+    public BlockColorProvider getProvider() {
         return (state, world, pos, tintIndex) -> EndPortals.getColor(state.getValue(PORTAL));
     }
 
     @Override
-    public ItemColor getItemProvider() {
+    public ItemColorProvider getItemProvider() {
         return (stack, tintIndex) -> EndPortals.getColor(0);
     }
 
     @Override
-    public DimensionTransition getPortalDestination(ServerLevel serverLevel, Entity entity, BlockPos blockPos) {
+    public TeleportTransition getPortalDestination(ServerLevel serverLevel, Entity entity, BlockPos blockPos) {
         final ResourceKey<Level> destination = serverLevel.dimension() == Level.END ? Level.OVERWORLD : Level.END;
         final ServerLevel destinationLevel = serverLevel.getServer().getLevel(destination);
         if (destinationLevel == null) {
@@ -148,7 +156,7 @@ public class EndPortalBlock extends NetherPortalBlock implements RenderLayerProv
         }
     }
 
-    private DimensionTransition getExitPortal(
+    private TeleportTransition getExitPortal(
             ServerLevel sourceLevel,
             ServerLevel destinationLevel,
             Entity entity,
@@ -163,7 +171,7 @@ public class EndPortalBlock extends NetherPortalBlock implements RenderLayerProv
         );
         if (portalRectangle.isPresent()) {
             BlockUtil.FoundRectangle foundRectangle = portalRectangle.get().rect();
-            DimensionTransition.PostDimensionTransition postDimensionTransition = DimensionTransition.PLAY_PORTAL_SOUND.then((x) -> {
+            TeleportTransition.PostTeleportTransition postDimensionTransition = TeleportTransition.PLAY_PORTAL_SOUND.then((x) -> {
                 x.placePortalTicket(portalRectangle.get().pos());
                 if (entity instanceof ServerPlayer sp) {
                     BECriteria.PORTAL_TRAVEL.trigger(sp);
@@ -176,12 +184,12 @@ public class EndPortalBlock extends NetherPortalBlock implements RenderLayerProv
         }
     }
 
-    private static DimensionTransition getDimensionTransitionFromExit(
+    private static TeleportTransition getDimensionTransitionFromExit(
             Entity entity,
             ServerLevel destinationLevel,
             BlockPos portalEntrancePos,
             BlockUtil.FoundRectangle foundRectangle,
-            DimensionTransition.PostDimensionTransition postDimensionTransition
+            TeleportTransition.PostTeleportTransition postDimensionTransition
     ) {
         BlockState blockState = entity.level().getBlockState(portalEntrancePos);
         Direction.Axis portalAxis;
@@ -202,14 +210,14 @@ public class EndPortalBlock extends NetherPortalBlock implements RenderLayerProv
         return createDimensionTransition(destinationLevel, entity, entity.getDeltaMovement(), foundRectangle, portalAxis, exitPos, entity.getYRot(), entity.getXRot(), postDimensionTransition);
     }
 
-    private static DimensionTransition createDimensionTransition(
+    private static TeleportTransition createDimensionTransition(
             ServerLevel destinationLevel,
             Entity entity, Vec3 entityMovementDirection, BlockUtil.FoundRectangle foundRectangle,
             Direction.Axis portalAxis,
             Vec3 exitPos,
             float yRot,
             float xRot,
-            DimensionTransition.PostDimensionTransition postDimensionTransition
+            TeleportTransition.PostTeleportTransition postDimensionTransition
     ) {
         BlockPos portalBasePos = foundRectangle.minCorner;
         BlockState exitPortalState = destinationLevel.getBlockState(portalBasePos);
@@ -233,6 +241,6 @@ public class EndPortalBlock extends NetherPortalBlock implements RenderLayerProv
                 portalBasePos.getY() + (foundRectangle.axis2Size - entityDimensions.height()) * exitPos.y(),
                 portalBasePos.getZ() + (exitInX ? relZ : relX)
         ), destinationLevel, entity, entityDimensions);
-        return new DimensionTransition(destinationLevel, teleportPosition, exitMovementDirection, yRot + rotationOffset, xRot, postDimensionTransition);
+        return new TeleportTransition(destinationLevel, teleportPosition, exitMovementDirection, yRot + rotationOffset, xRot, postDimensionTransition);
     }
 }

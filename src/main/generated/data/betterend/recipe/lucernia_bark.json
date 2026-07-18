@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "betterend:lucernia_log"
-    }
+    "#": "betterend:lucernia_log"
   },
   "pattern": [
     "##",

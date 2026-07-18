@@ -14,28 +14,30 @@ import org.betterx.wover.recipe.api.BaseUnlockableRecipeBuilder;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.PlacementInfo;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeBookCategories;
+import net.minecraft.world.item.crafting.RecipeBookCategory;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 import java.util.Arrays;
 import org.jetbrains.annotations.NotNull;
@@ -55,6 +57,9 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
     final private ItemStack output;
     final private int time;
     final private String group;
+    private PlacementInfo placementInfo;
+    // 1.21.11 disallows empty Ingredient instances; treat this sentinel as an empty catalyst slot.
+    private static final Ingredient EMPTY_INGREDIENT = Ingredient.of(Items.BARRIER);
 
     private InfusionRecipe(Ingredient input, ItemStack output, Ingredient[] catalysts, int time, String group) {
         this.input = input;
@@ -68,7 +73,7 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
         return create(BetterEnd.C.mk(id), output);
     }
 
-    public static Builder create(ResourceLocation id, ItemLike output) {
+    public static Builder create(Identifier id, ItemLike output) {
         return new BuilderImpl(id, output);
     }
 
@@ -76,7 +81,7 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
         return create(BetterEnd.C.mk(id), output);
     }
 
-    public static Builder create(ResourceLocation id, ItemStack output) {
+    public static Builder create(Identifier id, ItemStack output) {
         return new BuilderImpl(id, output);
     }
 
@@ -90,7 +95,7 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
     }
 
     public static Builder create(
-            ResourceLocation id,
+            Identifier id,
             ResourceKey<Enchantment> enchantment,
             int level,
             HolderLookup.RegistryLookup<Enchantment> lookup
@@ -103,7 +108,12 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
             int level,
             HolderLookup.RegistryLookup<Enchantment> lookup
     ) {
-        return EnchantedBookItem.createForEnchantment(new EnchantmentInstance(EnchantmentUtils.getEnchantment(lookup, enchantment), level));
+        final Holder<Enchantment> holder = EnchantmentUtils.getEnchantment(lookup, enchantment);
+        final ItemStack stack = new ItemStack(Items.ENCHANTED_BOOK);
+        if (holder != null) {
+            stack.enchant(holder, level);
+        }
+        return stack;
     }
 
     public int getInfusionTime() {
@@ -115,9 +125,16 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
         boolean valid = this.input.test(inv.getItem(0));
         if (!valid) return false;
         for (int i = 0; i < 8; i++) {
-            valid &= this.catalysts[i].test(inv.getItem(i + 1));
+            valid &= testCatalyst(this.catalysts[i], inv.getItem(i + 1));
         }
         return valid;
+    }
+
+    private static boolean testCatalyst(Ingredient ingredient, ItemStack stack) {
+        if (EMPTY_INGREDIENT.equals(ingredient)) {
+            return stack.isEmpty();
+        }
+        return ingredient.test(stack);
     }
 
     @Override
@@ -125,12 +142,10 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
         return output.copy();
     }
 
-    @Override
     public boolean canCraftInDimensions(int width, int height) {
         return true;
     }
 
-    @Override
     public @NotNull NonNullList<Ingredient> getIngredients() {
         NonNullList<Ingredient> defaultedList = NonNullList.create();
         defaultedList.add(input);
@@ -138,26 +153,36 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
         return defaultedList;
     }
 
-    @Override
     public @NotNull ItemStack getResultItem(HolderLookup.Provider acc) {
         return this.output;
     }
 
+    @Override
+    public PlacementInfo placementInfo() {
+        if (this.placementInfo == null) {
+            this.placementInfo = PlacementInfo.create(this.getIngredients());
+        }
+        return this.placementInfo;
+    }
 
     @Override
-    @Environment(EnvType.CLIENT)
-    public @NotNull String getGroup() {
+    public @NotNull String group() {
         return this.group;
     }
 
     @Override
-    public @NotNull RecipeSerializer<?> getSerializer() {
+    public @NotNull RecipeSerializer<InfusionRecipe> getSerializer() {
         return SERIALIZER;
     }
 
     @Override
-    public @NotNull RecipeType<?> getType() {
+    public @NotNull RecipeType<InfusionRecipe> getType() {
         return TYPE;
+    }
+
+    @Override
+    public @NotNull RecipeBookCategory recipeBookCategory() {
+        return RecipeBookCategories.CRAFTING_MISC;
     }
 
     public interface Builder extends BaseRecipeBuilder<Builder>, BaseUnlockableRecipeBuilder<Builder> {
@@ -178,15 +203,15 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
         private final Ingredient[] catalysts;
         private int time;
 
-        protected BuilderImpl(ResourceLocation id, ItemLike output) {
+        protected BuilderImpl(Identifier id, ItemLike output) {
             this(id, new ItemStack(output, 1));
         }
 
-        protected BuilderImpl(ResourceLocation id, ItemStack output) {
+        protected BuilderImpl(Identifier id, ItemStack output) {
             super(id, output, false);
             this.catalysts = new Ingredient[]{
-                    Ingredient.EMPTY, Ingredient.EMPTY, Ingredient.EMPTY, Ingredient.EMPTY,
-                    Ingredient.EMPTY, Ingredient.EMPTY, Ingredient.EMPTY, Ingredient.EMPTY
+                    EMPTY_INGREDIENT, EMPTY_INGREDIENT, EMPTY_INGREDIENT, EMPTY_INGREDIENT,
+                    EMPTY_INGREDIENT, EMPTY_INGREDIENT, EMPTY_INGREDIENT, EMPTY_INGREDIENT
             };
             this.time = 1;
         }
@@ -203,12 +228,12 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
         }
 
         public Builder addCatalyst(CatalystSlot slot, ItemStack stack) {
-            this.catalysts[slot.index] = Ingredient.of(stack);
+            this.catalysts[slot.index] = stack.isEmpty() ? EMPTY_INGREDIENT : Ingredient.of(stack.getItem());
             return this;
         }
 
         public Builder addCatalyst(CatalystSlot slot, TagKey<Item> tag) {
-            this.catalysts[slot.index] = Ingredient.of(tag);
+            this.catalysts[slot.index] = Ingredient.of(BuiltInRegistries.ITEM.getOrThrow(tag));
             return this;
         }
 
@@ -223,7 +248,7 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
         }
 
         @Override
-        protected InfusionRecipe createRecipe(ResourceLocation id) {
+        protected InfusionRecipe createRecipe(Identifier id) {
             return new InfusionRecipe(
                     this.primaryInput,
                     this.output,
@@ -287,28 +312,28 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
         public static final MapCodec<Ingredient[]> CODEC_CATALYSTS = RecordCodecBuilder.mapCodec(instance -> instance
                 .group(
                         ItemUtil.CODEC_INGREDIENT_WITH_NBT
-                                .lenientOptionalFieldOf(CatalystSlot.NORTH.key, Ingredient.EMPTY)
+                                .lenientOptionalFieldOf(CatalystSlot.NORTH.key, EMPTY_INGREDIENT)
                                 .forGetter(catalysts -> catalysts[CatalystSlot.NORTH.index]),
                         ItemUtil.CODEC_INGREDIENT_WITH_NBT
-                                .lenientOptionalFieldOf(CatalystSlot.NORTH_EAST.key, Ingredient.EMPTY)
+                                .lenientOptionalFieldOf(CatalystSlot.NORTH_EAST.key, EMPTY_INGREDIENT)
                                 .forGetter(catalysts -> catalysts[CatalystSlot.NORTH_EAST.index]),
                         ItemUtil.CODEC_INGREDIENT_WITH_NBT
-                                .lenientOptionalFieldOf(CatalystSlot.EAST.key, Ingredient.EMPTY)
+                                .lenientOptionalFieldOf(CatalystSlot.EAST.key, EMPTY_INGREDIENT)
                                 .forGetter(catalysts -> catalysts[CatalystSlot.EAST.index]),
                         ItemUtil.CODEC_INGREDIENT_WITH_NBT
-                                .lenientOptionalFieldOf(CatalystSlot.SOUTH_EAST.key, Ingredient.EMPTY)
+                                .lenientOptionalFieldOf(CatalystSlot.SOUTH_EAST.key, EMPTY_INGREDIENT)
                                 .forGetter(catalysts -> catalysts[CatalystSlot.SOUTH_EAST.index]),
                         ItemUtil.CODEC_INGREDIENT_WITH_NBT
-                                .lenientOptionalFieldOf(CatalystSlot.SOUTH.key, Ingredient.EMPTY)
+                                .lenientOptionalFieldOf(CatalystSlot.SOUTH.key, EMPTY_INGREDIENT)
                                 .forGetter(catalysts -> catalysts[CatalystSlot.SOUTH.index]),
                         ItemUtil.CODEC_INGREDIENT_WITH_NBT
-                                .lenientOptionalFieldOf(CatalystSlot.SOUTH_WEST.key, Ingredient.EMPTY)
+                                .lenientOptionalFieldOf(CatalystSlot.SOUTH_WEST.key, EMPTY_INGREDIENT)
                                 .forGetter(catalysts -> catalysts[CatalystSlot.SOUTH_WEST.index]),
                         ItemUtil.CODEC_INGREDIENT_WITH_NBT
-                                .lenientOptionalFieldOf(CatalystSlot.WEST.key, Ingredient.EMPTY)
+                                .lenientOptionalFieldOf(CatalystSlot.WEST.key, EMPTY_INGREDIENT)
                                 .forGetter(catalysts -> catalysts[CatalystSlot.WEST.index]),
                         ItemUtil.CODEC_INGREDIENT_WITH_NBT
-                                .lenientOptionalFieldOf(CatalystSlot.NORTH_WEST.key, Ingredient.EMPTY)
+                                .lenientOptionalFieldOf(CatalystSlot.NORTH_WEST.key, EMPTY_INGREDIENT)
                                 .forGetter(catalysts -> catalysts[CatalystSlot.NORTH_WEST.index])
                 )
                 .apply(instance, (n, ne, e, se, s, sw, w, nw) -> new Ingredient[]{n, ne, e, se, s, sw, w, nw}));

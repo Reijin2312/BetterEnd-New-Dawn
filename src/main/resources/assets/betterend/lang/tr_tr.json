@@ -860,12 +860,15 @@
   "advancements.betterend.infusion.description": "Bir İnfüzyon Kadiesi Elde Et",
   "advancements.betterend.infusion_finished.title": "Bitmek Bilmeyen Büyü",
   "advancements.betterend.infusion_finished.description": "Son bulduğunda bir Infüzyon Ritüeline yakın ol",
+  "betterend.jei.container.anvil": "Örs Tarifleri",
+  "betterend.jei.damage.amount&dmg": "Alet hasarı: %s",
+  "betterend.jei.recipe_level.anvil": "Seviye: %s",
+  "betterend.jei.infusion.time&val": "%s tik",
+  "betterend.jei.container.infusion": "İnfüzyon Tarifleri",
   "betterend.jei.alloying.experience_time": "%s XP | %s sn",
   "betterend.jei.container.alloying": "Alaşımlama ve Yüksek Fırın",
-  "betterend.jei.container.anvil": "Örs Tarifleri",
-  "betterend.jei.container.infusion": "İnfüzyon Tarifleri",
-  "betterend.jei.damage.amount&dmg": "Alet hasarı: %s",
-  "betterend.jei.infusion.time&val": "%s tik",
-  "betterend.jei.recipe_level.anvil": "Seviye: %s",
-  "config.jade.plugin_betterend.plant_growth": "BetterEnd Bitkileri"
+  "jukebox_song.betterend.strange_and_alien": "§5Firel§r - §fStrange And Alien§r",
+  "jukebox_song.betterend.grasping_at_stars": "§5Firel§r - §fGrasping At Stars§r",
+  "jukebox_song.betterend.endseeker": "§5Firel§r - §fEndseeker§r",
+  "jukebox_song.betterend.eo_dracona": "§5Firel§r - §fEo Dracona§r"
 }

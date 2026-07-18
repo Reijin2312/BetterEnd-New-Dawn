@@ -26,14 +26,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 import com.google.common.collect.Lists;
 
@@ -41,7 +39,7 @@ import java.util.List;
 import org.jetbrains.annotations.Nullable;
 
 public class EndStoneSmelter extends BaseBlockWithEntity.Stone implements AlloyingRecipeWorkstation {
-    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+    public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
     public static final String ID = "end_stone_smelter";
 
@@ -62,7 +60,7 @@ public class EndStoneSmelter extends BaseBlockWithEntity.Stone implements Alloyi
             Player player,
             BlockHitResult blockHitResult
     ) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return InteractionResult.SUCCESS;
         }
         this.openScreen(level, blockPos, player);
@@ -110,7 +108,7 @@ public class EndStoneSmelter extends BaseBlockWithEntity.Stone implements Alloyi
 
     @Override
     @SuppressWarnings("deprecation")
-    public int getAnalogOutputSignal(BlockState state, Level world, BlockPos pos) {
+    protected int getAnalogOutputSignal(BlockState state, Level world, BlockPos pos, Direction direction) {
         return AbstractContainerMenu.getRedstoneSignalFromBlockEntity(world.getBlockEntity(pos));
     }
 
@@ -136,7 +134,6 @@ public class EndStoneSmelter extends BaseBlockWithEntity.Stone implements Alloyi
         builder.add(FACING, LIT);
     }
 
-    @Environment(EnvType.CLIENT)
     public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
         if (state.getValue(LIT)) {
             double x = pos.getX() + 0.5D;

@@ -16,20 +16,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 public class UmbrellaMossBlock extends EndPlantBlock implements BehaviourPlant, SurvivesOnJungleMossOrMycelium {
     public UmbrellaMossBlock() {
         super(BehaviourBuilders.createGrass(MapColor.COLOR_ORANGE).ignitedByLava().lightLevel((state) -> 11));
     }
 
-    @Environment(EnvType.CLIENT)
     public boolean hasEmissiveLighting(BlockGetter world, BlockPos pos) {
         return true;
     }
 
-    @Environment(EnvType.CLIENT)
     public float getAmbientOcclusionLightLevel(BlockGetter world, BlockPos pos) {
         return 1F;
     }

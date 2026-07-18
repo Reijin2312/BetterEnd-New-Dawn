@@ -1,0 +1,12 @@
+{
+  "type": "bclib:alloying",
+  "experience": 3.0,
+  "ingredients": [
+    "minecraft:deepslate_gold_ore",
+    "minecraft:deepslate_gold_ore"
+  ],
+  "result": {
+    "count": 3,
+    "item": "minecraft:gold_ingot"
+  }
+}

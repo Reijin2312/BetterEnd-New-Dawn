@@ -10,7 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -23,14 +23,14 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public class UmbrellaTreeClusterBlock extends BaseBlock.Wood {
     public static final BooleanProperty NATURAL = BlockProperties.NATURAL;
 
     public UmbrellaTreeClusterBlock() {
-        super(FabricBlockSettings
-                .copyOf(Blocks.NETHER_WART_BLOCK)
+        super(BlockBehaviour.Properties
+                .ofLegacyCopy(Blocks.NETHER_WART_BLOCK)
                 .mapColor(MapColor.COLOR_PURPLE)
                 .lightLevel((bs) -> 15)
         );
@@ -43,7 +43,7 @@ public class UmbrellaTreeClusterBlock extends BaseBlock.Wood {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(
+    public InteractionResult useItemOn(
             ItemStack stack,
             BlockState state,
             Level world,
@@ -73,8 +73,8 @@ public class UmbrellaTreeClusterBlock extends BaseBlock.Wood {
                     pos,
                     EndBlocks.UMBRELLA_TREE_CLUSTER_EMPTY.defaultBlockState().setValue(NATURAL, state.getValue(NATURAL))
             );
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
-        return ItemInteractionResult.FAIL;
+        return InteractionResult.FAIL;
     }
 }

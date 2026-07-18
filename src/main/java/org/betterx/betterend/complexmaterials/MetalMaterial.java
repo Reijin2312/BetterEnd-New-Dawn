@@ -33,7 +33,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SmithingTemplateItem;
-import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -92,11 +92,12 @@ public class MetalMaterial implements MaterialManager.Material {
     public final String name;
     public final int anvilLevel;
     public final TagKey<Item> anvilTools;
+    private final Supplier<Properties> itemSettings;
 
     public static MetalMaterial makeNormal(
             String name,
             MapColor color,
-            Tier material,
+            ToolMaterial material,
             ArmorTier armor,
             int anvilLevel,
             TagKey<Item> anvilTools,
@@ -106,9 +107,9 @@ public class MetalMaterial implements MaterialManager.Material {
                 name,
                 true,
                 () -> BlockBehaviour.Properties
-                        .ofFullCopy(Blocks.IRON_BLOCK)
+                        .ofLegacyCopy(Blocks.IRON_BLOCK)
                         .mapColor(color),
-                EndItems.makeEndItemSettings(),
+                EndItems::makeEndItemSettings,
                 material,
                 armor,
                 anvilLevel,
@@ -123,7 +124,7 @@ public class MetalMaterial implements MaterialManager.Material {
             MapColor color,
             float hardness,
             float resistance,
-            Tier material,
+            ToolMaterial material,
             ArmorTier armor,
             int anvilLevel,
             TagKey<Item> anvilTools,
@@ -133,11 +134,11 @@ public class MetalMaterial implements MaterialManager.Material {
                 name,
                 false,
                 () -> BlockBehaviour.Properties
-                        .ofFullCopy(Blocks.IRON_BLOCK)
+                        .ofLegacyCopy(Blocks.IRON_BLOCK)
                         .mapColor(color)
                         .destroyTime(hardness)
                         .explosionResistance(resistance),
-                EndItems.makeEndItemSettings(),
+                EndItems::makeEndItemSettings,
                 material,
                 armor,
                 anvilLevel,
@@ -150,8 +151,8 @@ public class MetalMaterial implements MaterialManager.Material {
             String name,
             boolean hasOre,
             Supplier<BlockBehaviour.Properties> settingsSupplier,
-            Properties itemSettings,
-            Tier material,
+            Supplier<Properties> itemSettings,
+            ToolMaterial material,
             ArmorTier armor,
             int anvilLevel,
             TagKey<Item> anvilTools,
@@ -170,30 +171,35 @@ public class MetalMaterial implements MaterialManager.Material {
         this.hasOre = hasOre;
         this.name = name;
         this.swordHandleTemplate = swordHandleTemplate;
-        rawOre = hasOre ? EndItems.registerEndItem(name + "_raw", new ModelProviderItem(itemSettings)) : null;
-        ore = hasOre ? EndBlocks.registerBlock(name + "_ore", new BaseOreBlock(() -> rawOre, 1, 3, 1)) : null;
+        this.itemSettings = itemSettings;
+        rawOre = hasOre ? EndItems.registerEndItem(EndItems.prepareItemPath(name + "_raw"), new ModelProviderItem(newItemSettings())) : null;
+        ore = hasOre ? EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_ore"), new BaseOreBlock(() -> rawOre, 1, 3, 1)) : null;
         alloyingOre = hasOre ? TagManager.ITEMS.makeTag(BetterEnd.C, name + "_alloying") : null;
 
 
-        block = EndBlocks.registerBlock(name + "_block", new BaseBlock.Metal(settings));
-        tile = EndBlocks.registerBlock(name + "_tile", new BaseBlock.Metal(settings));
-        stairs = EndBlocks.registerBlock(name + "_stairs", new BaseStairsBlock.Metal(tile));
-        slab = EndBlocks.registerBlock(name + "_slab", new BaseSlabBlock.Metal(tile));
-        door = EndBlocks.registerBlock(name + "_door", new BaseDoorBlock.Metal(block, BlockSetType.IRON));
-        trapdoor = EndBlocks.registerBlock(name + "_trapdoor", new BaseTrapdoorBlock.Metal(block, BlockSetType.IRON));
-        bars = EndBlocks.registerBlock(name + "_bars", new BaseBarsBlock.Metal(block));
-        chain = EndBlocks.registerBlock(name + "_chain", new BaseChainBlock.Metal(block.defaultMapColor()));
-        pressurePlate = EndBlocks.registerBlock(
-                name + "_plate",
+        block = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_block"), new BaseBlock.Metal(settings));
+        tile = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_tile"), new BaseBlock.Metal(settings));
+        stairs = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_stairs"), new BaseStairsBlock.Metal(tile));
+        slab = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_slab"), new BaseSlabBlock.Metal(tile));
+        door = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_door"), new BaseDoorBlock.Metal(block, BlockSetType.IRON));
+        trapdoor = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_trapdoor"), new BaseTrapdoorBlock.Metal(block, BlockSetType.IRON));
+        bars = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_bars"), new BaseBarsBlock.Metal(block));
+        chain = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_chain"), new BaseChainBlock.Metal(block.defaultMapColor()));
+        pressurePlate = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_plate"),
                 new BasePressurePlateBlock.Wood(block, BlockSetType.IRON)
         );
 
-        chandelier = EndBlocks.registerBlock(name + "_chandelier", new ChandelierBlock(block));
-        bulb_lantern = EndBlocks.registerBlock(name + "_bulb_lantern", new BulbVineLanternBlock(lanternProperties));
-        bulb_lantern_colored = new ColoredMaterial(BulbVineLanternColoredBlock::new, bulb_lantern, false);
+        chandelier = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_chandelier"), new ChandelierBlock(block));
+        bulb_lantern = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_bulb_lantern"), new BulbVineLanternBlock(lanternProperties));
+        bulb_lantern_colored = new ColoredMaterial(
+                name + "_bulb_lantern",
+                BulbVineLanternColoredBlock::new,
+                bulb_lantern,
+                false
+        );
 
-        nugget = EndItems.registerEndItem(name + "_nugget", new ModelProviderItem(itemSettings));
-        ingot = EndItems.registerEndItem(name + "_ingot", new ModelProviderItem(itemSettings));
+        nugget = EndItems.registerEndItem(EndItems.prepareItemPath(name + "_nugget"), new ModelProviderItem(newItemSettings()));
+        ingot = EndItems.registerEndItem(EndItems.prepareItemPath(name + "_ingot"), new ModelProviderItem(newItemSettings()));
 
         shovelHead = EndItems.registerEndItem(name + "_shovel_head");
         pickaxeHead = EndItems.registerEndItem(name + "_pickaxe_head");
@@ -202,37 +208,46 @@ public class MetalMaterial implements MaterialManager.Material {
         swordBlade = EndItems.registerEndItem(name + "_sword_blade");
         swordHandle = EndItems.registerEndItem(name + "_sword_handle");
 
-        shovel = EndItems.registerEndTool(name + "_shovel", new BaseShovelItem(material, 1.5F, -3.0F, itemSettings));
-        sword = EndItems.registerEndTool(name + "_sword", new BaseSwordItem(material, 3, -2.4F, itemSettings));
-        pickaxe = EndItems.registerEndTool(name + "_pickaxe", new EndPickaxe(material, 1, -2.8F, itemSettings));
-        axe = EndItems.registerEndTool(name + "_axe", new BaseAxeItem(material, 6.0F, -3.0F, itemSettings));
-        hoe = EndItems.registerEndTool(name + "_hoe", new BaseHoeItem(material, -3, 0.0F, itemSettings));
-        hammer = EndItems.registerEndTool(
-                name + "_hammer",
-                new EndHammerItem(material, 5.0F, -3.2F, 0.3f, itemSettings)
+        shovel = EndItems.registerEndTool(EndItems.prepareItemPath(name + "_shovel"), new BaseShovelItem(material, 1.5F, -3.0F, newItemSettings()));
+        sword = EndItems.registerEndTool(EndItems.prepareItemPath(name + "_sword"), new BaseSwordItem(material, 3, -2.4F, newItemSettings()));
+        pickaxe = EndItems.registerEndTool(EndItems.prepareItemPath(name + "_pickaxe"), new EndPickaxe(material, 1, -2.8F, newItemSettings()));
+        axe = EndItems.registerEndTool(EndItems.prepareItemPath(name + "_axe"), new BaseAxeItem(material, 6.0F, -3.0F, newItemSettings()));
+        hoe = EndItems.registerEndTool(EndItems.prepareItemPath(name + "_hoe"), new BaseHoeItem(material, -3, 0.0F, newItemSettings()));
+        hammer = EndItems.registerEndTool(EndItems.prepareItemPath(name + "_hammer"),
+                new EndHammerItem(material, 5.0F, -3.2F, 0.3f, newItemSettings())
         );
 
-        forgedPlate = EndItems.registerEndItem(name + "_forged_plate");
-        helmet = EndItems.registerEndItem(
-                name + "_helmet",
-                new EndArmorItem(armor, ArmorSlot.HELMET_SLOT, EndArmorItem.createDefaultEndArmorSettings(ArmorSlot.HELMET_SLOT, armor))
+        forgedPlate = EndItems.registerEndItem(EndItems.prepareItemPath(name + "_forged_plate"), new ModelProviderItem(newItemSettings()));
+        helmet = EndItems.registerEndItem(EndItems.prepareItemPath(name + "_helmet"),
+                new EndArmorItem(armor, ArmorSlot.HELMET_SLOT, newArmorSettings(ArmorSlot.HELMET_SLOT, armor))
         );
-        chestplate = EndItems.registerEndItem(
-                name + "_chestplate",
-                new EndArmorItem(armor, ArmorSlot.CHESTPLATE_SLOT, EndArmorItem.createDefaultEndArmorSettings(ArmorSlot.CHESTPLATE_SLOT, armor))
+        chestplate = EndItems.registerEndItem(EndItems.prepareItemPath(name + "_chestplate"),
+                new EndArmorItem(armor, ArmorSlot.CHESTPLATE_SLOT, newArmorSettings(ArmorSlot.CHESTPLATE_SLOT, armor))
         );
-        leggings = EndItems.registerEndItem(
-                name + "_leggings",
-                new EndArmorItem(armor, ArmorSlot.LEGGINGS_SLOT, EndArmorItem.createDefaultEndArmorSettings(ArmorSlot.LEGGINGS_SLOT, armor))
+        leggings = EndItems.registerEndItem(EndItems.prepareItemPath(name + "_leggings"),
+                new EndArmorItem(armor, ArmorSlot.LEGGINGS_SLOT, newArmorSettings(ArmorSlot.LEGGINGS_SLOT, armor))
         );
-        boots = EndItems.registerEndItem(name + "_boots", new EndArmorItem(armor, ArmorSlot.BOOTS_SLOT, EndArmorItem.createDefaultEndArmorSettings(ArmorSlot.BOOTS_SLOT, armor)));
+        boots = EndItems.registerEndItem(EndItems.prepareItemPath(name + "_boots"),
+                new EndArmorItem(armor, ArmorSlot.BOOTS_SLOT, newArmorSettings(ArmorSlot.BOOTS_SLOT, armor))
+        );
 
-        anvilBlock = EndBlocks.registerBlock(
-                name + "_anvil",
+        anvilBlock = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_anvil"),
                 new EndAnvilBlock(this, block.defaultMapColor(), anvilLevel)
         );
 
         MaterialManager.register(this);
+    }
+
+    private Properties newItemSettings() {
+        return itemSettings.get();
+    }
+
+    private Properties newArmorSettings(ArmorSlot slot, ArmorTier tier) {
+        var values = tier.getValues(slot);
+        if (values == null) {
+            throw new IllegalArgumentException("Values for " + slot + " are not defined for " + tier);
+        }
+        return newItemSettings().durability(slot.armorType.getDurability(values.durability()));
     }
 
     @Override
@@ -244,8 +259,13 @@ public class MetalMaterial implements MaterialManager.Material {
             RecipeBuilder.blasting(BetterEnd.C.mk(name + "_ingot_furnace_raw"), ingot)
                          .input(rawOre)
                          .build(context);
-            BCLRecipeBuilder.alloying(BetterEnd.C.mk(name + "_ingot_alloy"), ingot)
-                            .setInput(alloyingOre, alloyingOre)
+            BCLRecipeBuilder.alloying(BetterEnd.C.mk(name + "_ingot_alloy_ore"), ingot)
+                            .setInput(ore, ore)
+                            .outputCount(3)
+                            .setExperience(2.1F)
+                            .build(context);
+            BCLRecipeBuilder.alloying(BetterEnd.C.mk(name + "_ingot_alloy_raw"), ingot)
+                            .setInput(rawOre, rawOre)
                             .outputCount(3)
                             .setExperience(2.1F)
                             .build(context);

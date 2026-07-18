@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "wall",
   "key": {
-    "*": {
-      "item": "betterend:mossy_glowshroom_planks"
-    },
-    "|": {
-      "item": "betterend:mossy_glowshroom_fence"
-    }
+    "*": "betterend:mossy_glowshroom_planks",
+    "|": "betterend:mossy_glowshroom_fence"
   },
   "pattern": [
     "* *",

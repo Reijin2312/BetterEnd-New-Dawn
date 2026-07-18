@@ -4,18 +4,10 @@
   "group": "planks",
   "ingredients": [
     [
-      {
-        "item": "betterend:end_lotus_log"
-      },
-      {
-        "item": "betterend:end_lotus_bark"
-      },
-      {
-        "item": "betterend:end_lotus_stripped_log"
-      },
-      {
-        "item": "betterend:end_lotus_stripped_bark"
-      }
+      "betterend:end_lotus_log",
+      "betterend:end_lotus_bark",
+      "betterend:end_lotus_stripped_log",
+      "betterend:end_lotus_stripped_bark"
     ]
   ],
   "result": {

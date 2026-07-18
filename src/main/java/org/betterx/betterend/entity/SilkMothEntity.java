@@ -11,10 +11,8 @@ import org.betterx.wover.enchantment.api.EnchantmentUtils;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -42,6 +40,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
@@ -66,6 +66,7 @@ public class SilkMothEntity extends Animal implements FlyingAnimal {
                 .createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, 2.0D)
                 .add(Attributes.FOLLOW_RANGE, 16.0D)
+                .add(Attributes.TEMPT_RANGE, 10.0D)
                 .add(Attributes.FLYING_SPEED, 0.4D)
                 .add(Attributes.MOVEMENT_SPEED, 0.1D);
     }
@@ -81,20 +82,20 @@ public class SilkMothEntity extends Animal implements FlyingAnimal {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
+    protected void addAdditionalSaveData(ValueOutput tag) {
         super.addAdditionalSaveData(tag);
         if (hivePos != null) {
-            tag.put("HivePos", NbtUtils.writeBlockPos(hivePos));
-            tag.putString("HiveWorld", hiveWorld.dimension().location().toString());
+            tag.store("HivePos", BlockPos.CODEC, hivePos);
+            tag.putString("HiveWorld", hiveWorld.dimension().identifier().toString());
         }
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
+    protected void readAdditionalSaveData(ValueInput tag) {
         super.readAdditionalSaveData(tag);
-        if (tag.contains("HivePos")) {
-            hivePos = NbtUtils.readBlockPos(tag, "HivePos").orElse(BlockPos.ZERO);
-            ResourceLocation worldID = ResourceLocation.parse(tag.getString("HiveWorld"));
+        if (tag.read("HivePos", BlockPos.CODEC).isPresent()) {
+            hivePos = tag.read("HivePos", BlockPos.CODEC).orElse(BlockPos.ZERO);
+            Identifier worldID = Identifier.parse(tag.getStringOr("HiveWorld", Level.OVERWORLD.identifier().toString()));
             try {
                 hiveWorld = level().getServer().getLevel(ResourceKey.create(Registries.DIMENSION, worldID));
             } catch (Exception e) {
@@ -128,7 +129,6 @@ public class SilkMothEntity extends Animal implements FlyingAnimal {
         };
         birdNavigation.setCanOpenDoors(false);
         birdNavigation.setCanFloat(false);
-        birdNavigation.setCanPassDoors(true);
         return birdNavigation;
     }
 
@@ -138,7 +138,7 @@ public class SilkMothEntity extends Animal implements FlyingAnimal {
     }
 
     @Override
-    public boolean causeFallDamage(float fallDistance, float damageMultiplier, DamageSource damageSource) {
+    public boolean causeFallDamage(double fallDistance, float damageMultiplier, DamageSource damageSource) {
         return false;
     }
 
@@ -159,15 +159,16 @@ public class SilkMothEntity extends Animal implements FlyingAnimal {
 
     @Override
     public AgeableMob getBreedOffspring(ServerLevel world, AgeableMob entity) {
-        return EndEntities.SILK_MOTH.type().create(world);
+        return EndEntities.SILK_MOTH.type().create(world, EntitySpawnReason.BREEDING);
     }
 
     @Override
-    protected void dropFromLootTable(DamageSource source, boolean causedByPlayer) {
+    protected void dropFromLootTable(ServerLevel serverLevel, DamageSource source, boolean causedByPlayer) {
         int minCount = 0;
         int maxCount = 1;
-        if (causedByPlayer && this.lastHurtByPlayer != null) {
-            int looting = EnchantmentUtils.getItemEnchantmentLevel(this.lastHurtByPlayer.level(), Enchantments.LOOTING, this.lastHurtByPlayer);
+        Player attacker = this.getLastHurtByPlayer();
+        if (causedByPlayer && attacker != null) {
+            int looting = EnchantmentUtils.getItemEnchantmentLevel(attacker.level(), Enchantments.LOOTING, attacker);
             minCount += looting;
             maxCount += looting;
             if (maxCount > 2) {
@@ -175,7 +176,7 @@ public class SilkMothEntity extends Animal implements FlyingAnimal {
             }
         }
         int count = minCount < maxCount ? MHelper.randRange(minCount, maxCount, random) : maxCount;
-        ItemEntity drop = new ItemEntity(level(), getX(), getY(), getZ(), new ItemStack(EndItems.SILK_FIBER, count));
+        ItemEntity drop = new ItemEntity(this.level(), this.getX(), this.getY(), this.getZ(), new ItemStack(EndItems.SILK_FIBER, count));
         this.level().addFreshEntity(drop);
     }
 

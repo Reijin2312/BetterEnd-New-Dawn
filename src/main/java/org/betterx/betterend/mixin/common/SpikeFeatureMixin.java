@@ -1,8 +1,8 @@
 package org.betterx.betterend.mixin.common;
 
 import org.betterx.bclib.util.BlocksHelper;
-import org.betterx.bclib.util.StructureHelper;
 import org.betterx.betterend.BetterEnd;
+import org.betterx.betterend.util.EndStructureHelper;
 import org.betterx.betterend.world.generator.GeneratorOptions;
 import org.betterx.wover.state.api.WorldConfig;
 
@@ -13,6 +13,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.boss.enderdragon.EndCrystal;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
@@ -63,7 +64,7 @@ public class SpikeFeatureMixin {
             CompoundTag pillar = WorldConfig.getCompoundTag(BetterEnd.C, "pillars");
             boolean haveValue = pillar.contains(pillarID);
             minY = haveValue
-                    ? pillar.getInt(pillarID)
+                    ? pillar.getIntOr(pillarID, 0)
                     : world.getChunk(x >> 4, z >> 4).getHeight(Types.WORLD_SURFACE, x & 15, z);
             if (!haveValue) {
                 pillar.putInt(pillarID, minY);
@@ -78,13 +79,13 @@ public class SpikeFeatureMixin {
 
         if (GeneratorOptions.replacePillars() && be_radiusInRange(radius)) {
             radius--;
-            StructureTemplate base = StructureHelper.readStructure(BetterEnd.C.mk("pillars/pillar_base_" + radius));
+            StructureTemplate base = EndStructureHelper.readStructure(BetterEnd.C.mk("pillars/pillar_base_" + radius));
             String path = "pillars/pillar_top_" + radius + (
                     spike
                             .isGuarded()
                             ? "_cage"
                             : "");
-            StructureTemplate top = StructureHelper.readStructure(BetterEnd.C.mk(path));
+            StructureTemplate top = EndStructureHelper.readStructure(BetterEnd.C.mk(path));
             Vec3i side = base.getSize();
             BlockPos pos1 = new BlockPos(x - (side.getX() >> 1), minY - 3, z - (side.getZ() >> 1));
             minY = pos1.getY() + side.getY();
@@ -144,11 +145,13 @@ public class SpikeFeatureMixin {
             mut.setY(maxY);
             BlocksHelper.setWithoutUpdate(world, mut, Blocks.BEDROCK);
 
-            EndCrystal crystal = EntityType.END_CRYSTAL.create(world.getLevel());
+            EndCrystal crystal = EntityType.END_CRYSTAL.create(world.getLevel(), EntitySpawnReason.TRIGGERED);
             crystal.setBeamTarget(config.getCrystalBeamTarget());
             crystal.setInvulnerable(config.isCrystalInvulnerable());
-            crystal.moveTo(x + 0.5D, maxY + 1, z + 0.5D, random.nextFloat() * 360.0F, 0.0F);
-            world.addFreshEntity(crystal);
+            if (crystal != null) {
+                crystal.snapTo(x + 0.5D, maxY + 1, z + 0.5D, random.nextFloat() * 360.0F, 0.0F);
+                world.addFreshEntity(crystal);
+            }
 
             if (spike.isGuarded()) {
                 for (int px = -2; px <= 2; ++px) {

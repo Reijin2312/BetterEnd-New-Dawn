@@ -4,7 +4,7 @@ import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndBlocks;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import com.google.common.collect.Lists;
 import me.shedaniel.math.Point;
@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class REIInfusionCategory implements DisplayCategory<REIInfusionDisplay> {
 
-    private final static ResourceLocation BACKGROUND = BetterEnd.C.mk("textures/gui/rei_infusion.png");
+    private final static Identifier BACKGROUND = BetterEnd.C.mk("textures/gui/rei_infusion.png");
     private final EntryStack ICON;
 
     REIInfusionCategory(EntryStack icon) {

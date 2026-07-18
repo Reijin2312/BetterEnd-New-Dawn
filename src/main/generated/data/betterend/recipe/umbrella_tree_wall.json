@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "wall",
   "key": {
-    "*": {
-      "item": "betterend:umbrella_tree_planks"
-    },
-    "|": {
-      "item": "betterend:umbrella_tree_fence"
-    }
+    "*": "betterend:umbrella_tree_planks",
+    "|": "betterend:umbrella_tree_fence"
   },
   "pattern": [
     "* *",

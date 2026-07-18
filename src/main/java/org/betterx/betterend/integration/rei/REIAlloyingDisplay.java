@@ -6,7 +6,7 @@ import org.betterx.betterend.blocks.entities.EndStoneSmelterBlockEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
@@ -54,7 +54,7 @@ public class REIAlloyingDisplay extends BasicDisplay implements SimpleGridMenuDi
     }
 
     @Override
-    public @NotNull Optional<ResourceLocation> getDisplayLocation() {
+    public @NotNull Optional<Identifier> getDisplayLocation() {
         return Optional.ofNullable(recipe).map(RecipeHolder::id);
     }
 

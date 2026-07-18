@@ -1,22 +1,19 @@
 package org.betterx.betterend.particle;
 
 import org.betterx.bclib.interfaces.CustomColorProvider;
+import org.betterx.bclib.interfaces.BlockColorProvider;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.registry.EndBlocks;
 
-import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
-@Environment(EnvType.CLIENT)
-public class ParticleTenaneaPetal extends TextureSheetParticle {
-    private static BlockColor provider;
+public class ParticleTenaneaPetal extends SingleQuadParticle {
+    private static BlockColorProvider provider;
 
     private double preVX;
     private double preVY;
@@ -35,8 +32,8 @@ public class ParticleTenaneaPetal extends TextureSheetParticle {
             double b,
             SpriteSet sprites
     ) {
-        super(world, x, y, z, r, g, b);
-        pickSprite(sprites);
+        super(world, x, y, z, r, g, b, sprites.first());
+        setSprite(sprites.get(random));
 
         if (provider == null) {
             CustomColorProvider block = (CustomColorProvider) EndBlocks.TENANEA_FLOWERS;
@@ -96,11 +93,10 @@ public class ParticleTenaneaPetal extends TextureSheetParticle {
     }
 
     @Override
-    public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+    protected Layer getLayer() {
+        return Layer.TRANSLUCENT;
     }
 
-    @Environment(EnvType.CLIENT)
     public static class FactoryTenaneaPetal implements ParticleProvider<SimpleParticleType> {
 
         private final SpriteSet sprites;
@@ -118,7 +114,8 @@ public class ParticleTenaneaPetal extends TextureSheetParticle {
                 double z,
                 double vX,
                 double vY,
-                double vZ
+                double vZ,
+                net.minecraft.util.RandomSource random
         ) {
             return new ParticleTenaneaPetal(world, x, y, z, 1, 1, 1, sprites);
         }

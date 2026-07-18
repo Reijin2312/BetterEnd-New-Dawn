@@ -7,11 +7,8 @@ import net.minecraft.client.particle.*;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
-@Environment(EnvType.CLIENT)
-public class ParticleGeyser extends TextureSheetParticle {
+public class ParticleGeyser extends SingleQuadParticle {
     private final MutableBlockPos mut = new MutableBlockPos();
     private boolean changeDir = false;
     private boolean check = true;
@@ -26,8 +23,8 @@ public class ParticleGeyser extends TextureSheetParticle {
             double vz,
             SpriteSet sprites
     ) {
-        super(world, x, y, z, vx, vy, vz);
-        pickSprite(sprites);
+        super(world, x, y, z, vx, vy, vz, sprites.first());
+        setSprite(sprites.get(random));
         this.lifetime = MHelper.randRange(400, 800, random);
         this.quadSize = MHelper.randRange(0.5F, 1.0F, random);
         this.xd = vx;
@@ -63,11 +60,10 @@ public class ParticleGeyser extends TextureSheetParticle {
     }
 
     @Override
-    public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+    protected Layer getLayer() {
+        return Layer.TRANSLUCENT;
     }
 
-    @Environment(EnvType.CLIENT)
     public static class FactoryGeyser implements ParticleProvider<SimpleParticleType> {
 
         private final SpriteSet sprites;
@@ -85,7 +81,8 @@ public class ParticleGeyser extends TextureSheetParticle {
                 double z,
                 double vX,
                 double vY,
-                double vZ
+                double vZ,
+                net.minecraft.util.RandomSource random
         ) {
             return new ParticleGeyser(world, x, y, z, 0, 0.125, 0, sprites);
         }

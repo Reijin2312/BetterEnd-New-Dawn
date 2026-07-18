@@ -1,8 +1,8 @@
 {
 	"__comment": "Designed by Paulevs with Cubik Studio - https://cubik.studio",
 	"textures": {
-		"particle": "betterend:block/lumecorn_bark",
-		"texture": "betterend:block/lumecorn_bark",
+		"particle": "betterend:block/lumecorn_stem",
+		"texture": "betterend:block/lumecorn_stem",
 		"leaf_2": "betterend:block/lumecorn_leaf_2",
 		"leaf_1": "betterend:block/lumecorn_leaf_1",
 		"roots": "betterend:block/lumecorn_roots"

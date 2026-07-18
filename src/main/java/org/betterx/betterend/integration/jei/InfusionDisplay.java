@@ -2,7 +2,7 @@ package org.betterx.betterend.integration.jei;
 
 import org.betterx.betterend.recipe.builders.InfusionRecipe;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
@@ -21,7 +21,7 @@ public class InfusionDisplay {
         return recipe.value().getIngredients();
     }
 
-    public ResourceLocation getId() {
-        return recipe.id();
+    public Identifier getId() {
+        return recipe.id().identifier();
     }
 }

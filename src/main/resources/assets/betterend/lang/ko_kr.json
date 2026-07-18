@@ -910,12 +910,15 @@
 	"block.betterend.pallidium_thin": "팔리디움 (경형 커버)",
 	"block.betterend.pallidium_tiny": "팔리디움 (초경형 커버)",
 	"block.betterend.flammalix": "플래멀릭스",
+	"betterend.jei.container.anvil": "모루 레시피",
+	"betterend.jei.damage.amount&dmg": "도구 손상: %s",
+	"betterend.jei.recipe_level.anvil": "레벨: %s",
+	"betterend.jei.infusion.time&val": "%s틱",
+	"betterend.jei.container.infusion": "주입 레시피",
 	"betterend.jei.alloying.experience_time": "%s XP | %s초",
 	"betterend.jei.container.alloying": "합금 및 제련",
-	"betterend.jei.container.anvil": "모루 레시피",
-	"betterend.jei.container.infusion": "주입 레시피",
-	"betterend.jei.damage.amount&dmg": "도구 손상: %s",
-	"betterend.jei.infusion.time&val": "%s틱",
-	"betterend.jei.recipe_level.anvil": "레벨: %s",
-	"config.jade.plugin_betterend.plant_growth": "BetterEnd 식물"
+	"jukebox_song.betterend.strange_and_alien": "§5Firel§r - §fStrange And Alien§r",
+	"jukebox_song.betterend.grasping_at_stars": "§5Firel§r - §fGrasping At Stars§r",
+	"jukebox_song.betterend.endseeker": "§5Firel§r - §fEndseeker§r",
+	"jukebox_song.betterend.eo_dracona": "§5Firel§r - §fEo Dracona§r"
 }

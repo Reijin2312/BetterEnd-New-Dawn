@@ -1,68 +1,74 @@
 package org.betterx.betterend.client.gui;
 
-import org.betterx.betterend.blocks.entities.EndStoneSmelterBlockEntity;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.recipebook.BlastingRecipeBookComponent;
-import net.minecraft.core.NonNullList;
+import net.minecraft.client.gui.components.WidgetSprites;
+import net.minecraft.client.gui.screens.recipebook.GhostSlots;
+import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
+import net.minecraft.client.gui.screens.recipebook.RecipeCollection;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.context.ContextMap;
+import net.minecraft.world.entity.player.StackedItemContents;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.display.FurnaceRecipeDisplay;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
-@Environment(EnvType.CLIENT)
-public class EndStoneSmelterRecipeBookScreen extends BlastingRecipeBookComponent {
-    private Ingredient fuels;
-    private Slot fuelSlot;
+public class EndStoneSmelterRecipeBookScreen extends RecipeBookComponent<EndStoneSmelterMenu> {
+    private static final WidgetSprites FILTER_SPRITES = new WidgetSprites(
+            Identifier.withDefaultNamespace("recipe_book/furnace_filter_enabled"),
+            Identifier.withDefaultNamespace("recipe_book/furnace_filter_disabled"),
+            Identifier.withDefaultNamespace("recipe_book/furnace_filter_enabled_highlighted"),
+            Identifier.withDefaultNamespace("recipe_book/furnace_filter_disabled_highlighted")
+    );
 
-    @Override
-    protected Set<Item> getFuelItems() {
-        return EndStoneSmelterBlockEntity.availableFuels().keySet();
+    private final Component recipeFilterName;
+
+    public EndStoneSmelterRecipeBookScreen(
+            EndStoneSmelterMenu menu,
+            Component recipeFilterName,
+            List<RecipeBookComponent.TabInfo> tabs
+    ) {
+        super(menu, tabs);
+        this.recipeFilterName = recipeFilterName;
     }
 
     @Override
-    public void slotClicked(Slot slot) {
-        super.slotClicked(slot);
-        if (slot != null && slot.index < this.menu.getSize()) {
-            this.fuelSlot = null;
+    protected WidgetSprites getFilterButtonTextures() {
+        return FILTER_SPRITES;
+    }
+
+    @Override
+    protected boolean isCraftingSlot(Slot slot) {
+        return switch (slot.index) {
+            case EndStoneSmelterMenu.INGREDIENT_SLOT_A,
+                 EndStoneSmelterMenu.INGREDIENT_SLOT_B,
+                 EndStoneSmelterMenu.FUEL_SLOT,
+                 EndStoneSmelterMenu.RESULT_SLOT -> true;
+            default -> false;
+        };
+    }
+
+    @Override
+    protected void fillGhostRecipe(GhostSlots ghostSlots, RecipeDisplay recipeDisplay, ContextMap context) {
+        ghostSlots.setResult(this.menu.getResultSlot(), context, recipeDisplay.result());
+        if (recipeDisplay instanceof FurnaceRecipeDisplay furnaceRecipeDisplay) {
+            ghostSlots.setInput(this.menu.getInputSlotA(), context, furnaceRecipeDisplay.ingredient());
+            Slot fuelSlot = this.menu.getFuelSlot();
+            if (fuelSlot.getItem().isEmpty()) {
+                ghostSlots.setInput(fuelSlot, context, furnaceRecipeDisplay.fuel());
+            }
         }
     }
 
     @Override
-    public void setupGhostRecipe(RecipeHolder<?> recipe, List<Slot> slots) {
+    protected Component getRecipeFilterName() {
+        return this.recipeFilterName;
+    }
 
-        this.ghostRecipe.clear();
-        ItemStack result = recipe.value().getResultItem(Minecraft.getInstance().level.registryAccess());
-        this.ghostRecipe.setRecipe(recipe);
-        this.ghostRecipe.addIngredient(Ingredient.of(result), (slots.get(3)).x, (slots.get(3)).y);
-        NonNullList<Ingredient> inputs = recipe.value().getIngredients();
-
-        this.fuelSlot = slots.get(2);
-        if (fuelSlot.getItem().isEmpty()) {
-            if (this.fuels == null) {
-                this.fuels = Ingredient.of(this.getFuelItems().stream().map(ItemStack::new));
-            }
-            this.ghostRecipe.addIngredient(this.fuels, fuelSlot.x, fuelSlot.y);
-        }
-
-        Iterator<Ingredient> iterator = inputs.iterator();
-        for (int i = 0; i < 2; i++) {
-            if (!iterator.hasNext()) {
-                return;
-            }
-            Ingredient ingredient = iterator.next();
-            if (!ingredient.isEmpty()) {
-                Slot slot = slots.get(i);
-                this.ghostRecipe.addIngredient(ingredient, slot.x, slot.y);
-            }
-        }
+    @Override
+    protected void selectMatchingRecipes(RecipeCollection recipeCollection, StackedItemContents stackedItemContents) {
+        recipeCollection.selectRecipes(stackedItemContents, recipeDisplay -> recipeDisplay instanceof FurnaceRecipeDisplay);
     }
 }

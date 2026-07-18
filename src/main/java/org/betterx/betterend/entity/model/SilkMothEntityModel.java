@@ -1,9 +1,5 @@
 package org.betterx.betterend.entity.model;
 
-import org.betterx.betterend.entity.SilkMothEntity;
-
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartNames;
@@ -12,10 +8,10 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
 
-public class SilkMothEntityModel extends EntityModel<SilkMothEntity> {
+public class SilkMothEntityModel extends EntityModel<LivingEntityRenderState> {
     private final ModelPart legsL;
     private final ModelPart cube_r1;
     private final ModelPart cube_r2;
@@ -130,7 +126,7 @@ public class SilkMothEntityModel extends EntityModel<SilkMothEntity> {
     }
 
     public SilkMothEntityModel(ModelPart modelPart) {
-        super(RenderType::entityCutout);
+        super(modelPart);
 
         legsL = modelPart.getChild(PartNames.LEFT_LEG);
         cube_r1 = legsL.getChild("cube_r1");
@@ -150,43 +146,15 @@ public class SilkMothEntityModel extends EntityModel<SilkMothEntity> {
     }
 
     @Override
-    public void setupAnim(
-            SilkMothEntity entity,
-            float limbAngle,
-            float limbDistance,
-            float animationProgress,
-            float headYaw,
-            float headPitch
-    ) {
-        wingR_r1.zRot = Mth.sin(animationProgress * 2F) * 0.4F + 0.3927F;
+    public void setupAnim(LivingEntityRenderState state) {
+        super.setupAnim(state);
+        wingR_r1.zRot = Mth.sin(state.ageInTicks * 2F) * 0.4F + 0.3927F;
         wingL_r1.zRot = -wingR_r1.zRot;
-        head_pivot.xRot = Mth.sin(animationProgress * 0.03F) * 0.1F;
-        tendril_r_r1.zRot = Mth.sin(animationProgress * 0.07F) * 0.2F + 0.3927F;
+        head_pivot.xRot = Mth.sin(state.ageInTicks * 0.03F) * 0.1F;
+        tendril_r_r1.zRot = Mth.sin(state.ageInTicks * 0.07F) * 0.2F + 0.3927F;
         tendril_r_r2.zRot = -tendril_r_r1.zRot;
-        abdomen_r1.xRot = Mth.sin(animationProgress * 0.05F) * 0.1F - 0.3927F;
-        legsR.zRot = Mth.sin(animationProgress * 0.07F) * 0.1F - 0.6545F;
+        abdomen_r1.xRot = Mth.sin(state.ageInTicks * 0.05F) * 0.1F - 0.3927F;
+        legsR.zRot = Mth.sin(state.ageInTicks * 0.07F) * 0.1F - 0.6545F;
         legsL.zRot = -legsR.zRot;
-    }
-
-    @Override
-    public void renderToBuffer(
-            PoseStack matrices,
-            VertexConsumer vertices,
-            int light,
-            int overlay,
-            int color
-    ) {
-        if (this.young) {
-            matrices.pushPose();
-            matrices.scale(0.6f, 0.6f, 0.6f);
-            matrices.translate(0f, 0.5f, 0f);
-        }
-        bb_main.render(matrices, vertices, light, overlay);
-        head_pivot.render(matrices, vertices, light, overlay);
-        legsL.render(matrices, vertices, light, overlay);
-        legsR.render(matrices, vertices, light, overlay);
-        if (this.young) {
-            matrices.popPose();
-        }
     }
 }

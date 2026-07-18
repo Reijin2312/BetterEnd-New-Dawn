@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "wall",
   "key": {
-    "*": {
-      "item": "betterend:helix_tree_planks"
-    },
-    "|": {
-      "item": "betterend:helix_tree_fence"
-    }
+    "*": "betterend:helix_tree_planks",
+    "|": "betterend:helix_tree_fence"
   },
   "pattern": [
     "* *",

@@ -1,16 +1,9 @@
 {
   "type": "minecraft:smithing_transform",
-  "addition": {
-    "item": "betterend:terminite_ingot"
-  },
-  "base": {
-    "item": "minecraft:stick"
-  },
+  "addition": "betterend:terminite_ingot",
+  "base": "minecraft:stick",
   "result": {
-    "count": 1,
     "id": "betterend:terminite_sword_handle"
   },
-  "template": {
-    "item": "betterend:terminite_upgrade_smithing_template"
-  }
+  "template": "betterend:terminite_upgrade_smithing_template"
 }

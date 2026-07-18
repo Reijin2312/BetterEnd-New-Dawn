@@ -8,12 +8,12 @@ import org.betterx.betterend.registry.EndItems;
 import org.betterx.wover.loot.api.BlockLootProvider;
 import org.betterx.wover.loot.api.LootLookupProvider;
 
-import net.minecraft.advancements.critereon.StatePropertiesPredicate;
+import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
@@ -64,7 +64,7 @@ public class SulphurCrystalBlock extends BaseAttachedBlock.Glass implements Rend
                         .mapColor(MapColor.COLOR_YELLOW)
                         .sound(SoundType.GLASS)
                         .requiresCorrectToolForDrops()
-                        .noCollission());
+                        .noCollision());
     }
 
 
@@ -95,7 +95,7 @@ public class SulphurCrystalBlock extends BaseAttachedBlock.Glass implements Rend
 
     @Override
     public LootTable.Builder registerBlockLoot(
-            @NotNull ResourceLocation location,
+            @NotNull Identifier location,
             @NotNull LootLookupProvider provider,
             @NotNull ResourceKey<LootTable> tableKey
     ) {
@@ -138,7 +138,7 @@ public class SulphurCrystalBlock extends BaseAttachedBlock.Glass implements Rend
 
     @Override
     public boolean canPlaceLiquid(
-            @Nullable Player player,
+            @Nullable LivingEntity player,
             BlockGetter blockGetter,
             BlockPos blockPos,
             BlockState blockState,

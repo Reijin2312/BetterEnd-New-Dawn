@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "composter",
   "key": {
-    "#": {
-      "item": "betterend:jellyshroom_slab"
-    }
+    "#": "betterend:jellyshroom_slab"
   },
   "pattern": [
     "# #",

@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "chair",
   "key": {
-    "#": {
-      "item": "betterend:tenanea_slab"
-    },
-    "I": {
-      "item": "minecraft:stick"
-    }
+    "#": "betterend:tenanea_slab",
+    "I": "minecraft:stick"
   },
   "pattern": [
     "I ",

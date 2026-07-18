@@ -9,34 +9,37 @@ import org.betterx.betterend.blocks.basis.PedestalBlock;
 import org.betterx.betterend.blocks.entities.EternalPedestalEntity;
 import org.betterx.betterend.client.models.EndModels;
 import org.betterx.betterend.client.render.EternalCrystalRenderer;
-import org.betterx.betterend.client.render.PedestalItemRenderer;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndPortals;
 import org.betterx.betterend.rituals.EternalRitual;
 import org.betterx.wover.block.api.model.BlockModelProvider;
+import org.betterx.wover.block.api.model.DatagenModelDispatch;
 import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
 
+import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.client.data.models.MultiVariant;
+import net.minecraft.client.data.models.model.ModelTemplate;
+import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.renderer.block.model.Variant;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.particles.SpellParticleOption;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.models.blockstates.MultiVariantGenerator;
-import net.minecraft.data.models.blockstates.PropertyDispatch;
-import net.minecraft.data.models.blockstates.Variant;
-import net.minecraft.data.models.blockstates.VariantProperties;
-import net.minecraft.data.models.model.ModelTemplate;
-import net.minecraft.data.models.model.TextureMapping;
-import net.minecraft.data.models.model.TextureSlot;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -46,8 +49,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 import com.google.common.collect.Lists;
 
@@ -73,7 +74,7 @@ public class EternalPedestal extends PedestalBlock implements BehaviourStone, Bl
                     EternalRitual ritual = pedestal.getRitual();
                     if (ritual.isActive()) {
                         if (ritual.getWorld() == null) ritual.setWorld(sourceLevel);
-                        ResourceLocation targetWorld = ritual.getTargetWorldId();
+                        Identifier targetWorld = ritual.getTargetWorldId();
                         int portalId;
                         if (targetWorld != null) {
                             portalId = EndPortals.getPortalIdByWorld(targetWorld);
@@ -86,7 +87,7 @@ public class EternalPedestal extends PedestalBlock implements BehaviourStone, Bl
                 sourceLevel.setBlockAndUpdate(pos, updatedState.setValue(ACTIVATED, false).setValue(HAS_LIGHT, false));
             } else {
                 ItemStack itemStack = pedestal.getItem(0);
-                ResourceLocation id = BuiltInRegistries.ITEM.getKey(itemStack.getItem());
+                Identifier id = BuiltInRegistries.ITEM.getKey(itemStack.getItem());
                 if (EndPortals.isAvailableItem(id)) {
                     sourceLevel.setBlockAndUpdate(
                             pos,
@@ -109,13 +110,15 @@ public class EternalPedestal extends PedestalBlock implements BehaviourStone, Bl
     @Deprecated
     public @NotNull BlockState updateShape(
             BlockState state,
-            Direction direction,
-            BlockState newState,
-            LevelAccessor world,
+            LevelReader world,
+            ScheduledTickAccess scheduledTickAccess,
             BlockPos pos,
-            BlockPos posFrom
+            Direction direction,
+            BlockPos posFrom,
+            BlockState newState,
+            RandomSource random
     ) {
-        BlockState updated = super.updateShape(state, direction, newState, world, pos, posFrom);
+        BlockState updated = super.updateShape(state, world, scheduledTickAccess, pos, direction, posFrom, newState, random);
         if (!updated.is(this)) return updated;
         if (!this.isPlaceable(updated)) {
             return updated.setValue(ACTIVATED, false);
@@ -173,77 +176,80 @@ public class EternalPedestal extends PedestalBlock implements BehaviourStone, Bl
         return true;
     }
 
-    @Environment(EnvType.CLIENT)
     private void dispatchParticles(Level level, BlockPos blockPos, RandomSource random) {
         if (level instanceof ClientLevelAccess clientLevel) {
             if (level.getBlockEntity(blockPos) instanceof EternalPedestalEntity pedestal
                     && pedestal.hasRitual()) {
-                BlockState state = level.getBlockState(blockPos);
-                //if (state.getOptionalValue(ACTIVATED).orElse(false))
-                {
-                    EternalRitual ritual = pedestal.getRitual();
-                    if (ritual != null
-                            && ritual.getCenter() != null
-                            && (ritual.isActive() || ritual.willActivate())
-                    ) {
-                        final boolean powerUp = ritual.willActivate();
-                        final boolean inX = ritual.getAxis() == Direction.Axis.X;
-                        final var start = Float3.of(blockPos);
-                        final var center = Float3.of(ritual.getCenter());
-                        final var dir = center
-                                .sub(start)
-                                .normalized()
-                                .mul(powerUp ? 0.2 : 0.05);
-                        float[] color = ColorHelper.toFloatArrayRGBA(EternalCrystalRenderer.colors(PedestalItemRenderer.getGemAge()));
+                EternalRitual ritual = pedestal.getRitual();
+                if (ritual != null
+                        && ritual.getCenter() != null
+                        && (ritual.isActive() || ritual.willActivate())
+                ) {
+                    final boolean powerUp = ritual.willActivate();
+                    final boolean inX = ritual.getAxis() == Direction.Axis.X;
+                    final var start = Float3.of(blockPos);
+                    final var center = Float3.of(ritual.getCenter());
+                    final var dir = center
+                            .sub(start)
+                            .normalized()
+                            .mul(powerUp ? 0.2 : 0.05);
+                    final int age = (int) (level.getGameTime() % 314);
+                    float[] color = ColorHelper.toFloatArrayRGBA(EternalCrystalRenderer.colors(age));
 
-                        if (powerUp) {
-                            for (int i = 0; i < 30; i++) {
-                                Float3 rnd = Float3.of(
-                                        random.nextFloat() * 0.3 - 0.15,
-                                        random.nextFloat() * -0.1,
-                                        random.nextFloat() * 0.3 - 0.15
-                                ).sub(dir);
-                                SimpleParticleType particleOptions = ParticleTypes.GLOW;
-                                final Particle particle = clientLevel.bcl_addParticle(
-                                        particleOptions,
-                                        center.x + (inX ? 0 : random.nextFloat() * 3 - 1.5),
-                                        center.y + 1 + random.nextFloat() * 3,
-                                        center.z + (inX ? random.nextFloat() * 3 - 1.5 : 0),
-                                        0,
-                                        0,
-                                        0
-                                );
-                                if (particle == null) continue;
-                                particle.setColor(color[0], color[1], color[2]);
-                                particle.setParticleSpeed(rnd.x, rnd.y, rnd.z);
-                            }
-                        }
-
-                        for (int i = 0; i < random.nextInt(
-                                powerUp ? 20 : 2,
-                                powerUp ? 40 : 10
-                        ); i++) {
+                    if (powerUp) {
+                        for (int i = 0; i < 30; i++) {
                             Float3 rnd = Float3.of(
                                     random.nextFloat() * 0.3 - 0.15,
                                     random.nextFloat() * -0.1,
                                     random.nextFloat() * 0.3 - 0.15
-                            ).add(dir.mul(powerUp ? random.nextFloat() * 4 : 1));
-                            SimpleParticleType particleOptions = ParticleTypes.EFFECT;
+                            ).sub(dir);
+                            SimpleParticleType particleOptions = ParticleTypes.GLOW;
                             final Particle particle = clientLevel.bcl_addParticle(
                                     particleOptions,
-                                    start.x + 0.3 + random.nextFloat() * 0.4,
-                                    start.y + 1 + random.nextFloat() * 0.7,
-                                    start.z + 0.3 + random.nextFloat() * 0.4,
+                                    center.x + (inX ? 0 : random.nextFloat() * 3 - 1.5),
+                                    center.y + 1 + random.nextFloat() * 3,
+                                    center.z + (inX ? random.nextFloat() * 3 - 1.5 : 0),
                                     0,
                                     0,
                                     0
                             );
                             if (particle == null) continue;
-                            particle.setColor(color[0], color[1], color[2]);
-                            particle.setParticleSpeed(rnd.x, rnd.y, rnd.z);
-                            if (powerUp) {
-                                particle.setLifetime(6 + random.nextInt(4));
+                            if (particle instanceof SingleQuadParticle quadParticle) {
+                                quadParticle.setColor(color[0], color[1], color[2]);
                             }
+                            particle.setParticleSpeed(rnd.x, rnd.y, rnd.z);
+                        }
+                    }
+
+                    for (int i = 0; i < random.nextInt(
+                            powerUp ? 20 : 2,
+                            powerUp ? 40 : 10
+                    ); i++) {
+                        Float3 rnd = Float3.of(
+                                random.nextFloat() * 0.3 - 0.15,
+                                random.nextFloat() * -0.1,
+                                random.nextFloat() * 0.3 - 0.15
+                        ).add(dir.mul(powerUp ? random.nextFloat() * 4 : 1));
+                        ParticleOptions particleOptions = SpellParticleOption.create(
+                                ParticleTypes.EFFECT,
+                                color[0],
+                                color[1],
+                                color[2],
+                                1.0F
+                        );
+                        final Particle particle = clientLevel.bcl_addParticle(
+                                particleOptions,
+                                start.x + 0.3 + random.nextFloat() * 0.4,
+                                start.y + 1 + random.nextFloat() * 0.7,
+                                start.z + 0.3 + random.nextFloat() * 0.4,
+                                0,
+                                0,
+                                0
+                        );
+                        if (particle == null) continue;
+                        particle.setParticleSpeed(rnd.x, rnd.y, rnd.z);
+                        if (powerUp) {
+                            particle.setLifetime(6 + random.nextInt(4));
                         }
                     }
                 }
@@ -252,7 +258,6 @@ public class EternalPedestal extends PedestalBlock implements BehaviourStone, Bl
     }
 
     @Override
-    @Environment(EnvType.CLIENT)
     public void animateTick(
             @NotNull BlockState blockState,
             @NotNull Level level,
@@ -263,100 +268,86 @@ public class EternalPedestal extends PedestalBlock implements BehaviourStone, Bl
         dispatchParticles(level, blockPos, randomSource);
     }
 
-    private static List<Variant> createVariants(
+    private static MultiVariant createVariants(
             WoverBlockModelGenerators generator,
             TextureMapping mapping,
-            ResourceLocation modelLocation,
+            Identifier modelLocation,
             ModelTemplate template,
-            ResourceLocation textureLocation,
+            Identifier textureLocation,
             int count
     ) {
         final List<Variant> variants = new ArrayList<>(count);
 
         for (int i = 0; i < count; i++) {
-            ResourceLocation topTexture = textureLocation.withSuffix("_" + (i + 1));
+            Identifier topTexture = textureLocation.withSuffix("_" + (i + 1));
             mapping.put(TextureSlot.TOP, topTexture);
 
-            variants.add(Variant
-                    .variant()
-                    .with(VariantProperties.MODEL, template.create(modelLocation.withSuffix("_" + (i + 1)), mapping, generator.modelOutput())));
+            variants.add(BlockModelGenerators.plainModel(
+                    template.create(modelLocation.withSuffix("_" + (i + 1)), mapping, generator.modelOutput())
+            ));
         }
-        return variants;
+        return BlockModelGenerators.variants(variants.toArray(new Variant[0]));
     }
 
     @Override
-    @Environment(EnvType.CLIENT)
-    public void provideBlockModels(WoverBlockModelGenerators generator) {
-        final ResourceLocation id = TextureMapping.getBlockTexture(this);
-        final ResourceLocation baseTexture = BetterEnd.C.mk("block/flavolite_polished");
-        final ResourceLocation pillarTexture = BetterEnd.C.mk("block/flavolite_pillar_side");
+    public void provideBlockModels(Object modelGenerator) {
+        WoverBlockModelGenerators generator = (WoverBlockModelGenerators) modelGenerator;
+        final Identifier id = TextureMapping.getBlockTexture(this);
+        final Identifier baseTexture = BetterEnd.C.mk("block/flavolite_polished");
+        final Identifier pillarTexture = BetterEnd.C.mk("block/flavolite_pillar_side");
         final TextureMapping mapping = new TextureMapping()
                 .put(EndModels.BASE, baseTexture)
                 .put(TextureSlot.BOTTOM, baseTexture)
                 .put(EndModels.PILLAR, pillarTexture);
 
-        final ResourceLocation column = EndModels.PEDESTAL_COLUMN.create(id.withSuffix("_column"), mapping, generator.modelOutput());
-        final ResourceLocation top = EndModels.PEDESTAL_COLUMN_TOP.create(id.withSuffix("_column_top"), mapping, generator.modelOutput());
-        final ResourceLocation bottom = EndModels.PEDESTAL_BOTTOM.create(id.withSuffix("_bottom"), mapping, generator.modelOutput());
-        final ResourceLocation pillar = EndModels.PEDESTAL_PILLAR.create(id.withSuffix("_pillar"), mapping, generator.modelOutput());
+        final Identifier column = EndModels.PEDESTAL_COLUMN.create(id.withSuffix("_column"), mapping, generator.modelOutput());
+        final Identifier top = EndModels.PEDESTAL_COLUMN_TOP.create(id.withSuffix("_column_top"), mapping, generator.modelOutput());
+        final Identifier bottom = EndModels.PEDESTAL_BOTTOM.create(id.withSuffix("_bottom"), mapping, generator.modelOutput());
+        final Identifier pillar = EndModels.PEDESTAL_PILLAR.create(id.withSuffix("_pillar"), mapping, generator.modelOutput());
 
-        final var properties = PropertyDispatch
-                .properties(STATE, ACTIVATED)
-                .select(EndBlockProperties.PedestalState.DEFAULT, false, createVariants(
-                        generator, mapping,
-                        id.withSuffix("_default"),
-                        EndModels.PEDESTAL_DEFAULT,
-                        BetterEnd.C.mk("block/flavolite_runed"),
-                        7
-                ))
-                .select(EndBlockProperties.PedestalState.DEFAULT, true, createVariants(
-                        generator, mapping,
-                        id.withSuffix("_default_active"),
-                        EndModels.PEDESTAL_DEFAULT,
-                        BetterEnd.C.mk("block/flavolite_runed_active"),
-                        7
-                ))
-                .select(EndBlockProperties.PedestalState.PEDESTAL_TOP, false, createVariants(
-                        generator, mapping,
-                        id.withSuffix("_top"),
-                        EndModels.PEDESTAL_TOP,
-                        BetterEnd.C.mk("block/flavolite_runed"),
-                        7
-                ))
-                .select(EndBlockProperties.PedestalState.PEDESTAL_TOP, true, createVariants(
-                        generator, mapping,
-                        id.withSuffix("_top_active"),
-                        EndModels.PEDESTAL_TOP,
-                        BetterEnd.C.mk("block/flavolite_runed_active"),
-                        7
-                ))
-                .select(EndBlockProperties.PedestalState.COLUMN, true,
-                        Variant.variant().with(VariantProperties.MODEL, column)
-                )
-                .select(EndBlockProperties.PedestalState.COLUMN, false,
-                        Variant.variant().with(VariantProperties.MODEL, column)
-                )
-                .select(EndBlockProperties.PedestalState.COLUMN_TOP, true,
-                        Variant.variant().with(VariantProperties.MODEL, top)
-                )
-                .select(EndBlockProperties.PedestalState.COLUMN_TOP, false,
-                        Variant.variant().with(VariantProperties.MODEL, top)
-                )
-                .select(EndBlockProperties.PedestalState.BOTTOM, true,
-                        Variant.variant().with(VariantProperties.MODEL, bottom)
-                )
-                .select(EndBlockProperties.PedestalState.BOTTOM, false,
-                        Variant.variant().with(VariantProperties.MODEL, bottom)
-                )
-                .select(EndBlockProperties.PedestalState.PILLAR, true,
-                        Variant.variant().with(VariantProperties.MODEL, pillar)
-                )
-                .select(EndBlockProperties.PedestalState.PILLAR, false,
-                        Variant.variant().with(VariantProperties.MODEL, pillar)
-                );
-        ;
+        final Object properties = DatagenModelDispatch.propertyDispatchInitial(STATE, ACTIVATED);
+        DatagenModelDispatch.propertyDispatchSelect(properties, EndBlockProperties.PedestalState.DEFAULT, false, createVariants(
+                generator,
+                mapping,
+                id.withSuffix("_default"),
+                EndModels.PEDESTAL_DEFAULT,
+                BetterEnd.C.mk("block/flavolite_runed"),
+                7
+        ));
+        DatagenModelDispatch.propertyDispatchSelect(properties, EndBlockProperties.PedestalState.DEFAULT, true, createVariants(
+                generator,
+                mapping,
+                id.withSuffix("_default_active"),
+                EndModels.PEDESTAL_DEFAULT,
+                BetterEnd.C.mk("block/flavolite_runed_active"),
+                7
+        ));
+        DatagenModelDispatch.propertyDispatchSelect(properties, EndBlockProperties.PedestalState.PEDESTAL_TOP, false, createVariants(
+                generator,
+                mapping,
+                id.withSuffix("_top"),
+                EndModels.PEDESTAL_TOP,
+                BetterEnd.C.mk("block/flavolite_runed"),
+                7
+        ));
+        DatagenModelDispatch.propertyDispatchSelect(properties, EndBlockProperties.PedestalState.PEDESTAL_TOP, true, createVariants(
+                generator,
+                mapping,
+                id.withSuffix("_top_active"),
+                EndModels.PEDESTAL_TOP,
+                BetterEnd.C.mk("block/flavolite_runed_active"),
+                7
+        ));
+        DatagenModelDispatch.propertyDispatchSelect(properties, EndBlockProperties.PedestalState.COLUMN, true, BlockModelGenerators.plainVariant(column));
+        DatagenModelDispatch.propertyDispatchSelect(properties, EndBlockProperties.PedestalState.COLUMN, false, BlockModelGenerators.plainVariant(column));
+        DatagenModelDispatch.propertyDispatchSelect(properties, EndBlockProperties.PedestalState.COLUMN_TOP, true, BlockModelGenerators.plainVariant(top));
+        DatagenModelDispatch.propertyDispatchSelect(properties, EndBlockProperties.PedestalState.COLUMN_TOP, false, BlockModelGenerators.plainVariant(top));
+        DatagenModelDispatch.propertyDispatchSelect(properties, EndBlockProperties.PedestalState.BOTTOM, true, BlockModelGenerators.plainVariant(bottom));
+        DatagenModelDispatch.propertyDispatchSelect(properties, EndBlockProperties.PedestalState.BOTTOM, false, BlockModelGenerators.plainVariant(bottom));
+        DatagenModelDispatch.propertyDispatchSelect(properties, EndBlockProperties.PedestalState.PILLAR, true, BlockModelGenerators.plainVariant(pillar));
+        DatagenModelDispatch.propertyDispatchSelect(properties, EndBlockProperties.PedestalState.PILLAR, false, BlockModelGenerators.plainVariant(pillar));
 
-        generator.acceptBlockState(MultiVariantGenerator.multiVariant(this).with(properties));
+        generator.acceptBlockState(DatagenModelDispatch.dispatchWith(this, properties));
         generator.delegateItemModel(this, id.withSuffix("_default_1"));
     }
 }

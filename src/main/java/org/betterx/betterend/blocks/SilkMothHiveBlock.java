@@ -15,7 +15,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -28,14 +28,14 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class SilkMothHiveBlock extends BaseBlock.Wood {
-    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final IntegerProperty FULLNESS = EndBlockProperties.FULLNESS;
 
     public SilkMothHiveBlock() {
@@ -85,7 +85,7 @@ public class SilkMothHiveBlock extends BaseBlock.Wood {
             return;
         }
         SilkMothEntity moth = new SilkMothEntity(EndEntities.SILK_MOTH.type(), world);
-        moth.moveTo(spawn.getX() + 0.5, spawn.getY() + 0.5, spawn.getZ() + 0.5, dir.toYRot(), 0);
+        moth.snapTo(spawn.getX() + 0.5, spawn.getY() + 0.5, spawn.getZ() + 0.5, dir.toYRot(), 0F);
         moth.setDeltaMovement(new Vec3(dir.getStepX() * 0.4, 0, dir.getStepZ() * 0.4));
         moth.setHive(world, pos);
         world.addFreshEntity(moth);
@@ -95,7 +95,7 @@ public class SilkMothHiveBlock extends BaseBlock.Wood {
 
     @Override
     @SuppressWarnings("deprecation")
-    public ItemInteractionResult useItemOn(
+    protected InteractionResult useItemOn(
             ItemStack itemStack,
             BlockState state,
             Level world,
@@ -123,9 +123,9 @@ public class SilkMothHiveBlock extends BaseBlock.Wood {
                 if (!player.isCreative()) {
                     stack.setDamageValue(stack.getDamageValue() + 1);
                 }
-                return ItemInteractionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
-        return ItemInteractionResult.FAIL;
+        return InteractionResult.FAIL;
     }
 }

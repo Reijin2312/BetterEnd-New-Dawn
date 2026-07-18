@@ -50,8 +50,14 @@ public class EndStructures {
 
     public static void register() {
         Configs.STRUCTURES_TOGGLE.registerStructures(
-                GIANT_MOSSY_GLOWSHROOM, MEGALAKE, MEGALAKE_SMALL, MOUNTAIN,
-                PAINTED_MOUNTAIN, ETERNAL_PORTAL, GIANT_ICE_STAR, END_VILLAGE
+                GIANT_MOSSY_GLOWSHROOM,
+                MEGALAKE,
+                MEGALAKE_SMALL,
+                MOUNTAIN,
+                PAINTED_MOUNTAIN,
+                ETERNAL_PORTAL,
+                GIANT_ICE_STAR,
+                END_VILLAGE
         );
     }
 

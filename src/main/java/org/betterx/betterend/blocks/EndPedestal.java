@@ -7,12 +7,10 @@ import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.blocks.basis.PedestalBlock;
 import org.betterx.betterend.client.models.EndModels;
 
-import net.minecraft.data.models.model.TextureMapping;
-import net.minecraft.data.models.model.TextureSlot;
+import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.world.level.block.Block;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 public abstract class EndPedestal extends PedestalBlock {
 
@@ -22,7 +20,6 @@ public abstract class EndPedestal extends PedestalBlock {
 
 
     @Override
-    @Environment(EnvType.CLIENT)
     protected TextureMapping createTextureMapping() {
         final var parentTexture = BetterEnd.C.convertNamespace(TextureMapping.getBlockTexture(parent));
         final var polishedTexture = BetterEnd.C.convertNamespace(TextureMapping.getBlockTexture(parent, "_polished"));

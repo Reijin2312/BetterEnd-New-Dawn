@@ -8,7 +8,6 @@ import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.datagen.api.provider.WoverRecipeProvider;
 import org.betterx.wover.recipe.api.CraftingRecipeBuilder;
 import org.betterx.wover.recipe.api.RecipeBuilder;
-import org.betterx.wover.tag.api.predefined.CommonItemTags;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -46,7 +45,7 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
         craftingRecipeBuilder61.shape("T#T", "V V", "T#T")
                                .addMaterial('#', Blocks.END_STONE_BRICKS)
                                .addMaterial('T', EndBlocks.THALLASIUM.ingot)
-                               .addMaterial('V', CommonItemTags.FURNACES)
+                               .addMaterial('V', Items.FURNACE, Items.BLAST_FURNACE, Items.SMOKER)
                                .build(context);
 
         registerPedestal(
@@ -168,7 +167,7 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
                                .build(context);
         CraftingRecipeBuilder craftingRecipeBuilder53 = RecipeBuilder.crafting(BetterEnd.C.mk("iron_bulb_lantern"), EndBlocks.IRON_BULB_LANTERN);
         craftingRecipeBuilder53.shape("C", "I", "#")
-                               .addMaterial('C', Items.CHAIN)
+                               .addMaterial('C', Items.IRON_CHAIN)
                                .addMaterial('I', Items.IRON_INGOT)
                                .addMaterial('#', EndItems.GLOWING_BULB)
                                .build(context);
@@ -227,7 +226,7 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
                 .crafting(BetterEnd.C.mk("sweet_berry_jelly"), EndItems.SWEET_BERRY_JELLY)
                 .shapeless()
                 .addMaterial('J', EndItems.GELATINE)
-                .addMaterial('W', CommonItemTags.WATER_BOTTLES)
+                .addMaterial('W', waterPotion())
                 .addMaterial('S', Items.SUGAR)
                 .addMaterial('B', Items.SWEET_BERRIES);
         craftingRecipeBuilder5.group("end_berries")
@@ -237,7 +236,7 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
                 .crafting(BetterEnd.C.mk("shadow_berry_jelly"), EndItems.SHADOW_BERRY_JELLY)
                 .shapeless()
                 .addMaterial('J', EndItems.GELATINE)
-                .addMaterial('W', CommonItemTags.WATER_BOTTLES)
+                .addMaterial('W', waterPotion())
                 .addMaterial('S', Items.SUGAR)
                 .addMaterial('B', EndItems.SHADOW_BERRY_COOKED);
         craftingRecipeBuilder4.group("end_berries")
@@ -247,7 +246,7 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
                 .crafting(BetterEnd.C.mk("blossom_berry_jelly"), EndItems.BLOSSOM_BERRY_JELLY)
                 .shapeless()
                 .addMaterial('J', EndItems.GELATINE)
-                .addMaterial('W', CommonItemTags.WATER_BOTTLES)
+                .addMaterial('W', waterPotion())
                 .addMaterial('S', Items.SUGAR)
                 .addMaterial('B', EndItems.BLOSSOM_BERRY);
         craftingRecipeBuilder3.group("end_berries")

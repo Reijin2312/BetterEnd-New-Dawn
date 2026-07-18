@@ -3,9 +3,7 @@
   "category": "building",
   "group": "slab",
   "key": {
-    "#": {
-      "item": "betterend:helix_tree_planks"
-    }
+    "#": "betterend:helix_tree_planks"
   },
   "pattern": [
     "###"

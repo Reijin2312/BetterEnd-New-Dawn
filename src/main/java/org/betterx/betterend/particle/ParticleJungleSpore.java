@@ -8,11 +8,9 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SimpleAnimatedParticle;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.RandomSource;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
-@Environment(EnvType.CLIENT)
 public class ParticleJungleSpore extends SimpleAnimatedParticle {
 
     protected ParticleJungleSpore(
@@ -62,7 +60,6 @@ public class ParticleJungleSpore extends SimpleAnimatedParticle {
         this.zd *= 0.99F;
     }
 
-    @Environment(EnvType.CLIENT)
     public static class FactoryJungleSpore implements ParticleProvider<SimpleParticleType> {
         private final SpriteSet sprites;
 
@@ -79,7 +76,8 @@ public class ParticleJungleSpore extends SimpleAnimatedParticle {
                 double z,
                 double vX,
                 double vY,
-                double vZ
+                double vZ,
+                RandomSource random
         ) {
             return new ParticleJungleSpore(world, x, y, z, sprites, 1, 1, 1);
         }

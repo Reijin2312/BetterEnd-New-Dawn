@@ -9,23 +9,45 @@ import org.betterx.wover.complex.api.equipment.ArmorTier;
 import org.betterx.wover.item.api.ItemTagProvider;
 import org.betterx.wover.tag.api.event.context.ItemTagBootstrapContext;
 
-import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.Identifier;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.world.item.ElytraItem;
+import net.minecraft.util.Unit;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.equipment.ArmorMaterial;
+import net.minecraft.world.item.equipment.EquipmentAsset;
+import net.minecraft.world.item.equipment.EquipmentAssets;
+import net.minecraft.world.item.equipment.ArmorType;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 public class ArmoredElytra extends BaseArmorItem implements MultiModelItem, BetterEndElytra, ItemTagProvider {
-    private final ResourceLocation wingTexture;
+    private final Identifier wingTexture;
     private final Item repairItem;
     private final double movementFactor;
     private final float toughness;
     private final int defense;
+
+    private static ResourceKey<EquipmentAsset> getElytraAssetKey(String name) {
+        return ResourceKey.create(EquipmentAssets.ROOT_ID, BetterEnd.C.mk(name));
+    }
+
+    private static ArmorMaterial getElytraArmorMaterial(ArmorTier material, String name) {
+        ArmorMaterial base = material.armorMaterial;
+        return new ArmorMaterial(
+                base.durability(),
+                base.defense(),
+                base.enchantmentValue(),
+                SoundEvents.ARMOR_EQUIP_ELYTRA,
+                base.toughness(),
+                base.knockbackResistance(),
+                base.repairIngredient(),
+                getElytraAssetKey(name)
+        );
+    }
 
     private static Properties defaultSettings(
             ArmorTier material,
@@ -35,22 +57,22 @@ public class ArmoredElytra extends BaseArmorItem implements MultiModelItem, Bett
             boolean fireproof
     ) {
         final float defense = material.armorMaterial
-                .value()
-                .getDefense(Type.CHESTPLATE) / defenseDivider;
+                .defense()
+                .getOrDefault(ArmorType.CHESTPLATE, 0) / defenseDivider;
 
         final float toughness = material.armorMaterial
-                .value()
                 .toughness() / toughnessDivider;
 
         final Properties props = EndArmorItem.createDefaultEndArmorSettings(
                                                      ArmorSlot.CHESTPLATE_SLOT, material,
                                                      EndArmorItem.startAttributeBuilder(
-                                                             ArmorSlot.CHESTPLATE_SLOT,
-                                                             material,
-                                                             (int) defense, toughness, 0.5f
-                                                     ).build()
-                                             ).rarity(Rarity.EPIC)
-                                             .durability(durability);
+                                                     ArmorSlot.CHESTPLATE_SLOT,
+                                                     material,
+                                                     defense, toughness, 0.5f
+                                             ).build()
+                                     ).rarity(Rarity.EPIC)
+                                     .durability(durability)
+                                     .component(DataComponents.GLIDER, Unit.INSTANCE);
         if (fireproof) {
             props.fireResistant();
         }
@@ -68,19 +90,18 @@ public class ArmoredElytra extends BaseArmorItem implements MultiModelItem, Bett
             boolean fireproof
     ) {
         super(
-                material.armorMaterial,
-                Type.CHESTPLATE,
+                getElytraArmorMaterial(material, name),
+                ArmorType.CHESTPLATE,
                 defaultSettings(material, durability, defenseDivider, toughnessDivider, fireproof)
         );
         this.wingTexture = BetterEnd.C.mk("textures/entity/" + name + ".png");
         this.repairItem = repairItem;
         this.movementFactor = movementFactor;
         this.defense = (int) (material.armorMaterial
-                .value()
-                .getDefense(Type.CHESTPLATE) / defenseDivider);
+                .defense()
+                .getOrDefault(ArmorType.CHESTPLATE, 0) / defenseDivider);
 
         this.toughness = material.armorMaterial
-                .value()
                 .toughness() / toughnessDivider;
 
     }
@@ -91,38 +112,29 @@ public class ArmoredElytra extends BaseArmorItem implements MultiModelItem, Bett
     }
 
     @Override
-    @Environment(EnvType.CLIENT)
-    public ResourceLocation getModelTexture() {
+    public Identifier getModelTexture() {
         return wingTexture;
     }
 
-    @Override
     public boolean isValidRepairItem(ItemStack itemStack, ItemStack itemStack2) {
-        return super.isValidRepairItem(itemStack, itemStack2) || itemStack2.getItem() == repairItem;
+        return itemStack2.getItem() == repairItem;
     }
 
-    @Override
     public int getDefense() {
         return defense;
     }
 
-    @Override
     public float getToughness() {
         return toughness;
     }
 
     @Override
-    @Environment(EnvType.CLIENT)
     public void registerModelPredicate() {
-        ItemProperties.register(
-                this,
-                ResourceLocation.withDefaultNamespace("broken"),
-                (itemStack, clientLevel, livingEntity, id) -> ElytraItem.isFlyEnabled(itemStack) ? 0.0F : 1.0F
-        );
+        // In 1.21+, item model conditions are data-driven and "broken" is a built-in property.
     }
 
     @Override
-    public void registerItemTags(ResourceLocation location, ItemTagBootstrapContext context) {
+    public void registerItemTags(Identifier location, ItemTagBootstrapContext context) {
         context.add(this, ItemTags.DURABILITY_ENCHANTABLE, ItemTags.EQUIPPABLE_ENCHANTABLE);
     }
 }

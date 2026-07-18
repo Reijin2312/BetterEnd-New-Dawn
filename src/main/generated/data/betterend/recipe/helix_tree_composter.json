@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "composter",
   "key": {
-    "#": {
-      "item": "betterend:helix_tree_slab"
-    }
+    "#": "betterend:helix_tree_slab"
   },
   "pattern": [
     "# #",

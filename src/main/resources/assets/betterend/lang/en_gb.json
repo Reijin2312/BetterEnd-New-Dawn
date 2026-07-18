@@ -18,12 +18,15 @@
 	"item.betterend.crystalline_sulphur": "Sulphur",
 	"biome.betterend.sulphur_springs": "Sulphur Springs",
 	"block.betterend.sulphuric_rock_furnace": "Sulphuric Rock Furnace",
+	"betterend.jei.container.anvil": "Anvil Recipes",
+	"betterend.jei.damage.amount&dmg": "Tool damage: %s",
+	"betterend.jei.recipe_level.anvil": "Lvl: %s",
+	"betterend.jei.infusion.time&val": "%s ticks",
+	"betterend.jei.container.infusion": "Infusion Recipes",
 	"betterend.jei.alloying.experience_time": "%s XP | %s s",
 	"betterend.jei.container.alloying": "Alloying and Blasting",
-	"betterend.jei.container.anvil": "Anvil Recipes",
-	"betterend.jei.container.infusion": "Infusion Recipes",
-	"betterend.jei.damage.amount&dmg": "Tool damage: %s",
-	"betterend.jei.infusion.time&val": "%s ticks",
-	"betterend.jei.recipe_level.anvil": "Lvl: %s",
-	"config.jade.plugin_betterend.plant_growth": "BetterEnd Plants"
+	"jukebox_song.betterend.strange_and_alien": "§5Firel§r - §fStrange And Alien§r",
+	"jukebox_song.betterend.grasping_at_stars": "§5Firel§r - §fGrasping At Stars§r",
+	"jukebox_song.betterend.endseeker": "§5Firel§r - §fEndseeker§r",
+	"jukebox_song.betterend.eo_dracona": "§5Firel§r - §fEo Dracona§r"
 }

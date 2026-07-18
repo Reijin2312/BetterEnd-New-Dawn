@@ -66,13 +66,13 @@ public class EndBiomes {
 
     public static void register() {
         BiomeCodecRegistry.register(BetterEnd.C.mk("biome"), EndBiome.KEY_CODEC);
-        BiomeCodecRegistry.register(BetterEnd.C.mk("cave_biome"), EndCaveBiome.KEY_CODEC);
-        BiomeCodecRegistry.register(BetterEnd.C.mk("empty_aurora_cave_biome"), EmptyAuroraCaveBiome.KEY_CODEC);
-        BiomeCodecRegistry.register(BetterEnd.C.mk("empty_end_cave_biome"), EmptyEndCaveBiome.KEY_CODEC);
-        BiomeCodecRegistry.register(BetterEnd.C.mk("empty_smaragdant_cave_biome"), EmptySmaragdantCaveBiome.KEY_CODEC);
-        BiomeCodecRegistry.register(BetterEnd.C.mk("jade_cave_biome"), JadeCaveBiome.KEY_CODEC);
-        BiomeCodecRegistry.register(BetterEnd.C.mk("lush_aurora_cave_biome"), LushAuroraCaveBiome.KEY_CODEC);
-        BiomeCodecRegistry.register(BetterEnd.C.mk("lush_smaragdant_cave_biome"), LushSmaragdantCaveBiome.KEY_CODEC);
+        BiomeCodecRegistry.register(BetterEnd.C.mk("cave_biome"), EndCaveBiome.KEY_CODEC, EndCaveBiome.NETWORK_KEY_CODEC);
+        BiomeCodecRegistry.register(BetterEnd.C.mk("empty_aurora_cave_biome"), EmptyAuroraCaveBiome.KEY_CODEC, EmptyAuroraCaveBiome.NETWORK_KEY_CODEC);
+        BiomeCodecRegistry.register(BetterEnd.C.mk("empty_end_cave_biome"), EmptyEndCaveBiome.KEY_CODEC, EmptyEndCaveBiome.NETWORK_KEY_CODEC);
+        BiomeCodecRegistry.register(BetterEnd.C.mk("empty_smaragdant_cave_biome"), EmptySmaragdantCaveBiome.KEY_CODEC, EmptySmaragdantCaveBiome.NETWORK_KEY_CODEC);
+        BiomeCodecRegistry.register(BetterEnd.C.mk("jade_cave_biome"), JadeCaveBiome.KEY_CODEC, JadeCaveBiome.NETWORK_KEY_CODEC);
+        BiomeCodecRegistry.register(BetterEnd.C.mk("lush_aurora_cave_biome"), LushAuroraCaveBiome.KEY_CODEC, LushAuroraCaveBiome.NETWORK_KEY_CODEC);
+        BiomeCodecRegistry.register(BetterEnd.C.mk("lush_smaragdant_cave_biome"), LushSmaragdantCaveBiome.KEY_CODEC, LushSmaragdantCaveBiome.NETWORK_KEY_CODEC);
 
         registerBiomeToggles();
         WorldLifecycle.SERVER_LEVEL_READY.subscribe(EndBiomes::onServerLevelReady);
@@ -80,13 +80,31 @@ public class EndBiomes {
 
     private static void registerBiomeToggles() {
         Configs.BIOMES_TOGGLE.registerBiomes(
-                AMBER_LAND.key, BLOSSOMING_SPIRES.key, CHORUS_FOREST.key, CRYSTAL_MOUNTAINS.key,
-                DRAGON_GRAVEYARDS.key, DRY_SHRUBLAND.key, DUST_WASTELANDS.key, FOGGY_MUSHROOMLAND.key,
-                GLOWING_GRASSLANDS.key, ICE_STARFIELD.key, LANTERN_WOODS.key, MEGALAKE.key,
-                SHADOW_FOREST.key, SULPHUR_SPRINGS.key, UMBRELLA_JUNGLE.key, UMBRA_VALLEY.key,
-                MEGALAKE_GROVE.key, NEON_OASIS.key, PAINTED_MOUNTAINS.key, EMPTY_END_CAVE.key,
-                EMPTY_SMARAGDANT_CAVE.key, LUSH_SMARAGDANT_CAVE.key, EMPTY_AURORA_CAVE.key,
-                LUSH_AURORA_CAVE.key, JADE_CAVE.key
+                AMBER_LAND.key,
+                BLOSSOMING_SPIRES.key,
+                CHORUS_FOREST.key,
+                CRYSTAL_MOUNTAINS.key,
+                DRAGON_GRAVEYARDS.key,
+                DRY_SHRUBLAND.key,
+                DUST_WASTELANDS.key,
+                FOGGY_MUSHROOMLAND.key,
+                GLOWING_GRASSLANDS.key,
+                ICE_STARFIELD.key,
+                LANTERN_WOODS.key,
+                MEGALAKE.key,
+                SHADOW_FOREST.key,
+                SULPHUR_SPRINGS.key,
+                UMBRELLA_JUNGLE.key,
+                UMBRA_VALLEY.key,
+                MEGALAKE_GROVE.key,
+                NEON_OASIS.key,
+                PAINTED_MOUNTAINS.key,
+                EMPTY_END_CAVE.key,
+                EMPTY_SMARAGDANT_CAVE.key,
+                LUSH_SMARAGDANT_CAVE.key,
+                EMPTY_AURORA_CAVE.key,
+                LUSH_AURORA_CAVE.key,
+                JADE_CAVE.key
         );
     }
 
@@ -96,22 +114,22 @@ public class EndBiomes {
             LevelStem levelStem,
             long seed
     ) {
-        final Registry<Biome> registry = WorldState.allStageRegistryAccess().registryOrThrow(Registries.BIOME);
+        final Registry<Biome> registry = WorldState.allStageRegistryAccess().lookupOrThrow(Registries.BIOME);
         var dataRegistry = WorldState
                 .allStageRegistryAccess()
-                .registry(BiomeDataRegistry.BIOME_DATA_REGISTRY)
+                .lookup(BiomeDataRegistry.BIOME_DATA_REGISTRY)
                 .orElseThrow();
 
 
         if (CAVE_BIOMES == null || CAVE_BIOMES.biomeRegistry != registry) {
             CAVE_BIOMES = new WoverBiomePicker(Biomes.END_HIGHLANDS);
-            registry.getTag(EndTags.IS_END_CAVE)
+            registry.get(EndTags.IS_END_CAVE)
                     .map(tag -> tag
                             .stream()
                             .map(Holder::unwrapKey)
                             .filter(Optional::isPresent)
                             .map(Optional::orElseThrow)
-                            .map(k -> dataRegistry.get(k.location()))
+                            .map(k -> dataRegistry.getOptional(BiomeDataRegistry.createKey(k)).orElse(null))
                             .filter(Objects::nonNull)
                     ).ifPresent(
                             list -> list.forEach(data -> CAVE_BIOMES.addBiome(data))

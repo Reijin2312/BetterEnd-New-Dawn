@@ -22,7 +22,7 @@ import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.types.IRecipeType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -55,7 +55,7 @@ public class JEIAnvilCategory implements IRecipeCategory<AnvilRecipe> {
     }
 
     @Override
-    public @NotNull RecipeType<AnvilRecipe> getRecipeType() {
+    public @NotNull IRecipeType<AnvilRecipe> getRecipeType() {
         return JEIPlugin.ANVIL_RECIPE_TYPE;
     }
 
@@ -102,12 +102,12 @@ public class JEIAnvilCategory implements IRecipeCategory<AnvilRecipe> {
                                                    return anvilLevel <= 1;
                                                })
                                                .toList();
-        builder.addSlot(RecipeIngredientRole.CATALYST, 15, 25).addItemStacks(validAnvils);
+        builder.addSlot(RecipeIngredientRole.CRAFTING_STATION, 15, 25).addItemStacks(validAnvils);
 
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.level != null) {
             builder.addSlot(RecipeIngredientRole.OUTPUT, 85, 6)
-                   .addItemStack(recipe.getResultItem(minecraft.level.registryAccess()));
+                   .add(recipe.getResultItem(minecraft.level.registryAccess()));
         }
     }
 
@@ -127,13 +127,11 @@ public class JEIAnvilCategory implements IRecipeCategory<AnvilRecipe> {
     }
 
     private static List<ItemStack> toCountedStacks(Ingredient ingredient, int count) {
-        ItemStack[] stacks = ingredient.getItems();
-        List<ItemStack> out = new ArrayList<>(stacks.length);
-        for (ItemStack stack : stacks) {
-            ItemStack copy = stack.copy();
-            copy.setCount(count);
-            out.add(copy);
-        }
+        List<ItemStack> out = new ArrayList<>();
+        ingredient.items().forEach(item -> {
+            ItemStack stack = new ItemStack(item.value(), count);
+            out.add(stack);
+        });
         return out;
     }
 

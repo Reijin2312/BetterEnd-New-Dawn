@@ -4,10 +4,11 @@ import org.betterx.betterend.registry.EndBlockEntities;
 import org.betterx.betterend.rituals.EternalRitual;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class EternalPedestalEntity extends PedestalBlockEntity {
     private EternalRitual linkedRitual;
@@ -37,19 +38,19 @@ public class EternalPedestalEntity extends PedestalBlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
+    protected void saveAdditional(ValueOutput tag) {
         if (hasRitual()) {
-            tag.put("ritual", linkedRitual.toTag(new CompoundTag()));
+            tag.store("ritual", CompoundTag.CODEC, linkedRitual.toTag(new CompoundTag()));
         }
-        super.saveAdditional(tag, provider);
+        super.saveAdditional(tag);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        if (tag.contains("ritual")) {
+    protected void loadAdditional(ValueInput tag) {
+        tag.read("ritual", CompoundTag.CODEC).ifPresent(ritualTag -> {
             linkedRitual = new EternalRitual(level);
-            linkedRitual.fromTag(tag.getCompound("ritual"));
-        }
-        super.loadAdditional(tag, provider);
+            linkedRitual.fromTag(ritualTag);
+        });
+        super.loadAdditional(tag);
     }
 }

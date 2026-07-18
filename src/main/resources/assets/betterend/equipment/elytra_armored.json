@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "betterend:elytra_armored"
+      }
+    ],
+    "wings": [
+      {
+        "texture": "betterend:elytra_armored"
+      }
+    ]
+  }
+}

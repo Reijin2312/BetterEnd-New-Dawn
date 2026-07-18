@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "end_small_tile",
   "key": {
-    "#": {
-      "item": "betterend:violecite_polished"
-    }
+    "#": "betterend:violecite_polished"
   },
   "pattern": [
     "##",

@@ -1055,12 +1055,15 @@
   "upgrade.betterend.terminite_upgrade": "Terminiteverbesserung",
   "upgrade.betterend.thallasium_upgrade": "Thallasium Schwertgriff",
   "upgrade.betterend.tool_assembly": "Schwerter Zusammensetzen",
+  "betterend.jei.container.anvil": "Amboss-Rezepte",
+  "betterend.jei.damage.amount&dmg": "Werkzeugschaden: %s",
+  "betterend.jei.recipe_level.anvil": "Stufe: %s",
+  "betterend.jei.infusion.time&val": "%s Ticks",
+  "betterend.jei.container.infusion": "Infusionsrezepte",
   "betterend.jei.alloying.experience_time": "%s EP | %s s",
   "betterend.jei.container.alloying": "Legieren und Schmelzen",
-  "betterend.jei.container.anvil": "Amboss-Rezepte",
-  "betterend.jei.container.infusion": "Infusionsrezepte",
-  "betterend.jei.damage.amount&dmg": "Werkzeugschaden: %s",
-  "betterend.jei.infusion.time&val": "%s Ticks",
-  "betterend.jei.recipe_level.anvil": "Stufe: %s",
-  "config.jade.plugin_betterend.plant_growth": "BetterEnd-Pflanzen"
+  "jukebox_song.betterend.strange_and_alien": "§5Firel§r - §fStrange And Alien§r",
+  "jukebox_song.betterend.grasping_at_stars": "§5Firel§r - §fGrasping At Stars§r",
+  "jukebox_song.betterend.endseeker": "§5Firel§r - §fEndseeker§r",
+  "jukebox_song.betterend.eo_dracona": "§5Firel§r - §fEo Dracona§r"
 }

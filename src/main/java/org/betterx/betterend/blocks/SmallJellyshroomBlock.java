@@ -15,7 +15,7 @@ import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
@@ -33,8 +33,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 import com.google.common.collect.Maps;
 
@@ -58,7 +56,7 @@ public class SmallJellyshroomBlock extends BaseAttachedBlock implements RenderLa
 
     @Override
     public LootTable.Builder registerBlockLoot(
-            @NotNull ResourceLocation location,
+            @NotNull Identifier location,
             @NotNull LootLookupProvider provider,
             @NotNull ResourceKey<LootTable> tableKey
     ) {
@@ -111,7 +109,6 @@ public class SmallJellyshroomBlock extends BaseAttachedBlock implements RenderLa
     }
 
     @Override
-    @Environment(EnvType.CLIENT)
     public String getPottedState() {
         return "facing=up";
     }

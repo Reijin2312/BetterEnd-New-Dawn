@@ -9,9 +9,9 @@ import org.betterx.wover.block.api.model.BlockModelProvider;
 import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.data.models.model.ModelTemplate;
-import net.minecraft.data.models.model.TextureMapping;
-import net.minecraft.data.models.model.TextureSlot;
+import net.minecraft.client.data.models.model.ModelTemplate;
+import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -25,8 +25,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 import java.util.Map;
 import org.jetbrains.annotations.NotNull;
@@ -97,17 +95,17 @@ public class InfusionPedestal extends PedestalBlock implements BehaviourStone, B
     ) {
         return InfusionPedestalEntity::tickEntity;
     }
+    private static Map<EndBlockProperties.PedestalState, ModelTemplate> pedestalModels() {
+        return Map.of(
+                EndBlockProperties.PedestalState.DEFAULT, EndModels.INFUSION_PEDESTAL_DEFAULT,
+                EndBlockProperties.PedestalState.PEDESTAL_TOP, EndModels.INFUSION_PEDESTAL_TOP,
+                EndBlockProperties.PedestalState.COLUMN_TOP, EndModels.PEDESTAL_COLUMN_TOP,
+                EndBlockProperties.PedestalState.COLUMN, EndModels.PEDESTAL_COLUMN,
+                EndBlockProperties.PedestalState.BOTTOM, EndModels.PEDESTAL_BOTTOM,
+                EndBlockProperties.PedestalState.PILLAR, EndModels.PEDESTAL_PILLAR
+        );
+    }
 
-    private static final Map<EndBlockProperties.PedestalState, ModelTemplate> PEDESTAL_MODELS = Map.of(
-            EndBlockProperties.PedestalState.DEFAULT, EndModels.INFUSION_PEDESTAL_DEFAULT,
-            EndBlockProperties.PedestalState.PEDESTAL_TOP, EndModels.INFUSION_PEDESTAL_TOP,
-            EndBlockProperties.PedestalState.COLUMN_TOP, EndModels.PEDESTAL_COLUMN_TOP,
-            EndBlockProperties.PedestalState.COLUMN, EndModels.PEDESTAL_COLUMN,
-            EndBlockProperties.PedestalState.BOTTOM, EndModels.PEDESTAL_BOTTOM,
-            EndBlockProperties.PedestalState.PILLAR, EndModels.PEDESTAL_PILLAR
-    );
-
-    @Environment(EnvType.CLIENT)
     protected TextureMapping createTextureMapping() {
         final var parentTexture = TextureMapping.getBlockTexture(this);
         return new TextureMapping()
@@ -118,9 +116,9 @@ public class InfusionPedestal extends PedestalBlock implements BehaviourStone, B
     }
 
     @Override
-    @Environment(EnvType.CLIENT)
-    public void provideBlockModels(WoverBlockModelGenerators generator) {
-        provideBlockModel(generator, createTextureMapping(), this, PEDESTAL_MODELS);
+    public void provideBlockModels(Object modelGenerator) {
+        WoverBlockModelGenerators generator = (WoverBlockModelGenerators) modelGenerator;
+        provideBlockModel(generator, createTextureMapping(), this, pedestalModels());
     }
 
     static {

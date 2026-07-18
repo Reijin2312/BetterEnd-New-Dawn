@@ -4,12 +4,8 @@
   "group": "end_metal_slabs",
   "key": {
     "#": [
-      {
-        "item": "betterend:thallasium_block"
-      },
-      {
-        "item": "betterend:thallasium_tile"
-      }
+      "betterend:thallasium_block",
+      "betterend:thallasium_tile"
     ]
   },
   "pattern": [

@@ -11,7 +11,7 @@ import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -19,9 +19,7 @@ import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootTable;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -31,8 +29,8 @@ public class EndstoneDustBlock extends FallingBlock implements BlockTagProvider,
     public static final MapCodec<EndstoneDustBlock> CODEC = MapCodec.unit(EndstoneDustBlock::new);
 
     public EndstoneDustBlock() {
-        super(FabricBlockSettings
-                .copyOf(Blocks.SAND)
+        super(BlockBehaviour.Properties
+                .ofLegacyCopy(Blocks.SAND)
                 .mapColor(Blocks.END_STONE.defaultMapColor())
         );
     }
@@ -44,20 +42,19 @@ public class EndstoneDustBlock extends FallingBlock implements BlockTagProvider,
 
     @Override
     public LootTable.Builder registerBlockLoot(
-            @NotNull ResourceLocation location,
+            @NotNull Identifier location,
             @NotNull LootLookupProvider provider,
             @NotNull ResourceKey<LootTable> tableKey
     ) {
         return provider.drop(this);
     }
 
-    @Environment(EnvType.CLIENT)
     public int getDustColor(BlockState state, BlockGetter world, BlockPos pos) {
         return COLOR;
     }
 
     @Override
-    public void registerBlockTags(ResourceLocation location, TagBootstrapContext<Block> context) {
+    public void registerBlockTags(Identifier location, TagBootstrapContext<Block> context) {
         context.add(this, CommonBlockTags.END_STONES);
     }
 }

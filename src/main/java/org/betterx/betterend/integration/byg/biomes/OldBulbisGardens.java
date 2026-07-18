@@ -7,20 +7,14 @@ import org.betterx.betterend.registry.features.EndLakeFeatures;
 import org.betterx.betterend.registry.features.EndVegetationFeatures;
 import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
-import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.surface.api.Conditions;
 import org.betterx.wover.surface.api.SurfaceRuleBuilder;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.BiomeSpecialEffects;
-import net.minecraft.world.level.biome.MobSpawnSettings.SpawnerData;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraft.world.level.levelgen.Noises;
@@ -53,33 +47,10 @@ public class OldBulbisGardens extends EndBiome.Config {
         Holder<Biome> biome = Integrations.BYG.getBiome("bulbis_gardens");
         if (biome == null) return;
 
-        if (ModCore.isClient()) {
-            BiomeSpecialEffects effects = biome.value().getSpecialEffects();
-
-            Holder<SoundEvent> loop = effects.getAmbientLoopSoundEvent()
-                                             .get();
-            Holder<SoundEvent> music = effects.getBackgroundMusic()
-                                              .get()
-                                              .getEvent();
-            Holder<SoundEvent> additions = effects.getAmbientAdditionsSettings()
-                                                  .get()
-                                                  .getSoundEvent();
-            Holder<SoundEvent> mood = effects.getAmbientMoodSettings()
-                                             .get()
-                                             .getSoundEvent();
-            builder.loop(loop)
-                   .music(music)
-                   .additions(additions)
-                   .mood(mood);
-        }
-
         for (MobCategory group : MobCategory.values()) {
-            List<SpawnerData> list = biome.value()
-                                          .getMobSettings()
-                                          .getMobs(group)
-                                          .unwrap();
-            list.forEach((entry) -> {
-                builder.spawn((EntityType<? extends Mob>) entry.type, 1, entry.minCount, entry.maxCount);
+            biome.value().getMobSettings().getMobs(group).unwrap().forEach(entry -> {
+                var data = entry.value();
+                builder.spawn(data.type(), entry.weight(), data.minCount(), data.maxCount());
             });
         }
 
@@ -96,7 +67,7 @@ public class OldBulbisGardens extends EndBiome.Config {
 //			for (int i = 0; i < 2; i++) {
 //				getter = vegetal.get(i);
 //				Holder<PlacedFeature> feature = getter.get();
-//				ResourceLocation id = BetterEnd.makeID("obg_feature_" + i);
+//				Identifier id = BetterEnd.makeID("obg_feature_" + i);
 //				feature = Registry.register(
 //						BuiltinRegistries.PLACED_FEATURE,
 //						id,

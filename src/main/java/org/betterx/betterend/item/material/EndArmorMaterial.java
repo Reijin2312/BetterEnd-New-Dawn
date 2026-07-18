@@ -7,8 +7,8 @@ import org.betterx.wover.item.api.armor.CustomArmorMaterial;
 
 import net.minecraft.core.Holder;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.equipment.ArmorMaterial;
 
 public class EndArmorMaterial {
     public static final Holder<ArmorMaterial> THALLASIUM = CustomArmorMaterial

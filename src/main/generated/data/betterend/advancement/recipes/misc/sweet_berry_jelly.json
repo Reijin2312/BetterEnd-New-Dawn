@@ -11,6 +11,16 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "has_potion": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:potion"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "has_sugar": {
       "conditions": {
         "items": [
@@ -31,16 +41,6 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_tag_wover_water_bottles": {
-      "conditions": {
-        "items": [
-          {
-            "items": "#wover:water_bottles"
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
     "has_the_recipe": {
       "conditions": {
         "recipe": "betterend:sweet_berry_jelly"
@@ -53,8 +53,8 @@
       "has_the_recipe",
       "has_sugar",
       "has_sweet_berries",
-      "has_gelatine",
-      "has_tag_wover_water_bottles"
+      "has_potion",
+      "has_gelatine"
     ]
   ],
   "rewards": {

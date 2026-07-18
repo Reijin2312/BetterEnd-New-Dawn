@@ -10,18 +10,22 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.equipment.ArmorType;
 
 public class CrystaliteArmor extends BaseArmorItem {
     public final static MutableComponent CHEST_DESC;
     public final static MutableComponent BOOTS_DESC;
 
-    public CrystaliteArmor(Type type, Properties settings) {
-        super(EndArmorMaterial.CRYSTALITE, type, settings);
+    public CrystaliteArmor(ArmorType type, Properties settings, ItemAttributeModifiers attributes) {
+        super(EndArmorMaterial.CRYSTALITE, type, settings, attributes);
     }
 
     public static boolean hasFullSet(LivingEntity owner) {
-        for (ItemStack armorStack : owner.getArmorSlots()) {
+        for (EquipmentSlot slot : new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET}) {
+            ItemStack armorStack = owner.getItemBySlot(slot);
             if (!(armorStack.getItem() instanceof CrystaliteArmor)) {
                 return false;
             }

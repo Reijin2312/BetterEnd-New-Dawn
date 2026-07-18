@@ -1,0 +1,12 @@
+{
+  "type": "bclib:alloying",
+  "experience": 3.0,
+  "ingredients": [
+    "minecraft:copper_ore",
+    "minecraft:copper_ore"
+  ],
+  "result": {
+    "count": 3,
+    "item": "minecraft:copper_ingot"
+  }
+}

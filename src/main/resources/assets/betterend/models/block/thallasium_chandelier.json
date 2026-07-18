@@ -1,8 +1,8 @@
 {
 	"__comment": "Designed by Paulevs with Cubik Studio - https://cubik.studio",
 	"textures": {
-		"particle": "betterend:block/thallasium_chandelier",
-		"texture": "betterend:block/thallasium_chandelier"
+		"particle": "betterend:block/thallasium_chandelier_floor",
+		"texture": "betterend:block/thallasium_chandelier_floor"
 	},
 	"elements": [ 	 
 		{

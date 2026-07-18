@@ -11,11 +11,17 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_tag_wover_furnaces": {
+    "has_furnace_blast_furnace_smoker": {
       "conditions": {
         "items": [
           {
-            "items": "#wover:furnaces"
+            "items": "minecraft:furnace"
+          },
+          {
+            "items": "minecraft:blast_furnace"
+          },
+          {
+            "items": "minecraft:smoker"
           }
         ]
       },
@@ -42,8 +48,8 @@
     [
       "has_the_recipe",
       "has_thallasium_ingot",
-      "has_tag_wover_furnaces",
-      "has_end_stone_bricks"
+      "has_end_stone_bricks",
+      "has_furnace_blast_furnace_smoker"
     ]
   ],
   "rewards": {

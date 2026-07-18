@@ -1,6 +1,7 @@
 {
   "parent": "bclib:block/chest_item",
   "textures": {
-    "texture": "betterend:entity/chest/umbrella_tree_chest"
+    "particle": "betterend:block/chest/umbrella_tree_chest",
+    "texture": "betterend:block/chest/umbrella_tree_chest"
   }
 }

@@ -18,8 +18,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -56,7 +55,7 @@ public class EternalRitual {
 
     private Level world;
     private Direction.Axis axis;
-    private ResourceLocation targetWorldId;
+    private Identifier targetWorldId;
     private BlockPos center;
     private BlockPos exit;
     private boolean active = false;
@@ -88,7 +87,7 @@ public class EternalRitual {
     }
 
     @Nullable
-    public ResourceLocation getTargetWorldId() {
+    public Identifier getTargetWorldId() {
         return targetWorldId;
     }
 
@@ -208,10 +207,10 @@ public class EternalRitual {
         willActivate = true;
         updateActiveStateOnPedestals();
 
-        ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(keyItem);
+        Identifier itemId = BuiltInRegistries.ITEM.getKey(keyItem);
         int portalId = EndPortals.getPortalIdByItem(itemId);
         Level targetWorld = getTargetWorld(portalId);
-        ResourceLocation worldId = targetWorld.dimension().location();
+        Identifier worldId = targetWorld.dimension().identifier();
         try {
             if (exit == null) {
                 initPortal(player, worldId, portalId);
@@ -241,7 +240,7 @@ public class EternalRitual {
         }
     }
 
-    private void initPortal(Player player, ResourceLocation worldId, int portalId) {
+    private void initPortal(Player player, Identifier worldId, int portalId) {
         targetWorldId = worldId;
         if (world instanceof ServerLevel sourceWorld) {
             ServerLevel targetLevel = (ServerLevel) getTargetWorld(portalId);
@@ -491,7 +490,7 @@ public class EternalRitual {
 
     public CompoundTag toTag(CompoundTag tag) {
         if (center != null && axis != null) {
-            tag.put("center", NbtUtils.writeBlockPos(center));
+            tag.store("center", BlockPos.CODEC, center);
             tag.putString("axis", axis.getName());
         }
         tag.putBoolean("active", active);
@@ -499,20 +498,20 @@ public class EternalRitual {
             tag.putString("key_item", targetWorldId.toString());
         }
         if (exit != null) {
-            tag.put("exit", NbtUtils.writeBlockPos(exit));
+            tag.store("exit", BlockPos.CODEC, exit);
         }
         return tag;
     }
 
     public void fromTag(CompoundTag tag) {
-        axis = Direction.Axis.byName(tag.getString("axis"));
-        center = NbtUtils.readBlockPos(tag, "center").orElse(BlockPos.ZERO);
-        active = tag.getBoolean("active");
+        axis = Direction.Axis.byName(tag.getStringOr("axis", Direction.Axis.X.getName()));
+        center = tag.read("center", BlockPos.CODEC).orElse(BlockPos.ZERO);
+        active = tag.getBooleanOr("active", false);
         if (tag.contains("exit")) {
-            exit = NbtUtils.readBlockPos(tag, "exit").orElse(BlockPos.ZERO);
+            exit = tag.read("exit", BlockPos.CODEC).orElse(BlockPos.ZERO);
         }
         if (tag.contains("key_item")) {
-            targetWorldId = ResourceLocation.parse(tag.getString("key_item"));
+            targetWorldId = Identifier.parse(tag.getStringOr("key_item", Level.OVERWORLD.identifier().toString()));
         }
     }
 

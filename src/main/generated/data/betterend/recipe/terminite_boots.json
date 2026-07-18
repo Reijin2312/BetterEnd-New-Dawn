@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "end_metal_boots",
   "key": {
-    "#": {
-      "item": "betterend:terminite_forged_plate"
-    }
+    "#": "betterend:terminite_forged_plate"
   },
   "pattern": [
     "# #",

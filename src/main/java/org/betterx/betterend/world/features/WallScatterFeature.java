@@ -14,20 +14,22 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
 public abstract class WallScatterFeature<FC extends ScatterFeatureConfig> extends Feature<FC> {
-    private static final Direction[] HORIZONTAL = BlocksHelper.makeHorizontal();
+    private static final Direction[] DIR = BlocksHelper.makeHorizontal();
 
     public WallScatterFeature(Codec<FC> codec) {
         super(codec);
     }
 
-    public abstract boolean generate(FC cfg, WorldGenLevel world, RandomSource random, BlockPos pos, Direction dir);
+    public abstract boolean canGenerate(FC cfg, WorldGenLevel world, RandomSource random, BlockPos pos, Direction dir);
+
+    public abstract void generate(FC cfg, WorldGenLevel world, RandomSource random, BlockPos pos, Direction dir);
 
     @Override
     public boolean place(FeaturePlaceContext<FC> featureConfig) {
         FC cfg = featureConfig.config();
-        RandomSource random = featureConfig.random();
-        BlockPos center = featureConfig.origin();
-        WorldGenLevel world = featureConfig.level();
+        final RandomSource random = featureConfig.random();
+        final BlockPos center = featureConfig.origin();
+        final WorldGenLevel world = featureConfig.level();
         int maxY = world.getHeight(Heightmap.Types.WORLD_SURFACE, center.getX(), center.getZ());
         int minY = BlocksHelper.upRay(world, new BlockPos(center.getX(), 0, center.getZ()), maxY);
         if (maxY < 10 || maxY < minY) {
@@ -36,7 +38,6 @@ public abstract class WallScatterFeature<FC extends ScatterFeatureConfig> extend
         int py = MHelper.randRange(minY, maxY, random);
 
         MutableBlockPos mut = new MutableBlockPos();
-        Direction[] directions = HORIZONTAL.clone();
         for (int x = -cfg.radius; x <= cfg.radius; x++) {
             mut.setX(center.getX() + x);
             for (int y = -cfg.radius; y <= cfg.radius; y++) {
@@ -44,9 +45,10 @@ public abstract class WallScatterFeature<FC extends ScatterFeatureConfig> extend
                 for (int z = -cfg.radius; z <= cfg.radius; z++) {
                     mut.setZ(center.getZ() + z);
                     if (random.nextInt(4) == 0 && world.isEmptyBlock(mut)) {
-                        shuffle(random, directions);
-                        for (Direction dir : directions) {
-                            if (generate(cfg, world, random, mut, dir)) {
+                        shuffle(random);
+                        for (Direction dir : DIR) {
+                            if (canGenerate(cfg, world, random, mut, dir)) {
+                                generate(cfg, world, random, mut, dir);
                                 break;
                             }
                         }
@@ -54,15 +56,16 @@ public abstract class WallScatterFeature<FC extends ScatterFeatureConfig> extend
                 }
             }
         }
+
         return true;
     }
 
-    private static void shuffle(RandomSource random, Direction[] directions) {
-        for (int i = 0; i < directions.length; i++) {
-            int j = random.nextInt(directions.length);
-            Direction direction = directions[i];
-            directions[i] = directions[j];
-            directions[j] = direction;
+    private void shuffle(RandomSource random) {
+        for (int i = 0; i < 4; i++) {
+            int j = random.nextInt(4);
+            Direction d = DIR[i];
+            DIR[i] = DIR[j];
+            DIR[j] = d;
         }
     }
 }

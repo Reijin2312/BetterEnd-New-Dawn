@@ -2,7 +2,9 @@ package org.betterx.betterend.blocks;
 
 import org.betterx.bclib.client.models.ModelsHelper;
 import org.betterx.bclib.client.render.BCLRenderLayer;
+import org.betterx.bclib.interfaces.BlockColorProvider;
 import org.betterx.bclib.interfaces.CustomColorProvider;
+import org.betterx.bclib.interfaces.ItemColorProvider;
 import org.betterx.bclib.interfaces.RenderLayerProvider;
 import org.betterx.bclib.interfaces.RuntimeBlockModelProvider;
 import org.betterx.bclib.util.MHelper;
@@ -10,11 +12,9 @@ import org.betterx.betterend.client.models.Patterns;
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.ui.ColorUtil;
 
-import net.minecraft.client.color.block.BlockColor;
-import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.core.Vec3i;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -26,9 +26,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.storage.loot.LootParams;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import com.google.common.collect.Lists;
 
@@ -44,7 +42,7 @@ public class JellyshroomCapBlock extends SlimeBlock implements RenderLayerProvid
     private final int coloritem;
 
     public JellyshroomCapBlock(int r1, int g1, int b1, int r2, int g2, int b2) {
-        super(FabricBlockSettings.copyOf(Blocks.SLIME_BLOCK));
+        super(BlockBehaviour.Properties.ofLegacyCopy(Blocks.SLIME_BLOCK));
         colorStart = new Vec3i(r1, g1, b1);
         colorEnd = new Vec3i(r2, g2, b2);
         coloritem = ColorUtil.color((r1 + r2) >> 1, (g1 + g2) >> 1, (b1 + b2) >> 1);
@@ -75,20 +73,18 @@ public class JellyshroomCapBlock extends SlimeBlock implements RenderLayerProvid
     }
 
     @Override
-    @Environment(EnvType.CLIENT)
-    public BlockModel getItemModel(ResourceLocation resourceLocation) {
+    public BlockModel getItemModel(Identifier resourceLocation) {
         return getBlockModel(resourceLocation, defaultBlockState());
     }
 
     @Override
-    @Environment(EnvType.CLIENT)
-    public @Nullable BlockModel getBlockModel(ResourceLocation resourceLocation, BlockState blockState) {
+    public @Nullable BlockModel getBlockModel(Identifier resourceLocation, BlockState blockState) {
         Optional<String> pattern = Patterns.createJson(Patterns.BLOCK_COLORED, "jellyshroom_cap");
         return ModelsHelper.fromPattern(pattern);
     }
 
     @Override
-    public BlockColor getProvider() {
+    public BlockColorProvider getProvider() {
         return (state, world, pos, tintIndex) -> {
             float delta = (float) state.getValue(COLOR) / 7F;
             int r = Mth.floor(Mth.lerp(delta, colorStart.getX() / 255F, colorEnd.getX() / 255F) * 255F);
@@ -99,7 +95,7 @@ public class JellyshroomCapBlock extends SlimeBlock implements RenderLayerProvid
     }
 
     @Override
-    public ItemColor getItemProvider() {
+    public ItemColorProvider getItemProvider() {
         return (stack, tintIndex) -> {
             return coloritem;
         };

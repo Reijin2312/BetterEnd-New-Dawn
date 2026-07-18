@@ -24,6 +24,8 @@ import org.jetbrains.annotations.Nullable;
 public class EmptyAuroraCaveBiome extends EndCaveBiome.Config<EmptyAuroraCaveBiome> {
     public static final MapCodec<Biome> CODEC = EndCaveBiome.simpleCaveBiomeCodec(EmptyAuroraCaveBiome.Biome::new);
     public static final KeyDispatchDataCodec<EmptyAuroraCaveBiome.Biome> KEY_CODEC = KeyDispatchDataCodec.of(CODEC);
+    public static final MapCodec<Biome> NETWORK_CODEC = EndCaveBiome.simpleCaveBiomeNetworkCodec(EmptyAuroraCaveBiome.Biome::new);
+    public static final KeyDispatchDataCodec<EmptyAuroraCaveBiome.Biome> NETWORK_KEY_CODEC = KeyDispatchDataCodec.of(NETWORK_CODEC);
 
 
     public static class Biome extends EndCaveBiome {
@@ -36,6 +38,11 @@ public class EmptyAuroraCaveBiome extends EndCaveBiome.Config<EmptyAuroraCaveBio
         @Override
         public KeyDispatchDataCodec<? extends EndCaveBiome> codec() {
             return EmptyAuroraCaveBiome.KEY_CODEC;
+        }
+
+        @Override
+        public KeyDispatchDataCodec<? extends EndCaveBiome> networkCodec() {
+            return EmptyAuroraCaveBiome.NETWORK_KEY_CODEC;
         }
 
         protected Biome(

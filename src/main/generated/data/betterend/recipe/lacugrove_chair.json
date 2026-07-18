@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "chair",
   "key": {
-    "#": {
-      "item": "betterend:lacugrove_slab"
-    },
-    "I": {
-      "item": "minecraft:stick"
-    }
+    "#": "betterend:lacugrove_slab",
+    "I": "minecraft:stick"
   },
   "pattern": [
     "I ",

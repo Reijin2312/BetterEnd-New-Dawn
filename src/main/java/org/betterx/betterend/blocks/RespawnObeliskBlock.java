@@ -2,7 +2,9 @@ package org.betterx.betterend.blocks;
 
 import org.betterx.bclib.blocks.BaseBlock;
 import org.betterx.bclib.client.render.BCLRenderLayer;
+import org.betterx.bclib.interfaces.BlockColorProvider;
 import org.betterx.bclib.interfaces.CustomColorProvider;
+import org.betterx.bclib.interfaces.ItemColorProvider;
 import org.betterx.bclib.interfaces.RenderLayerProvider;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.particle.InfusionParticleType;
@@ -12,8 +14,6 @@ import org.betterx.ui.ColorUtil;
 import org.betterx.wover.block.api.BlockProperties;
 import org.betterx.wover.block.api.BlockProperties.TripleShape;
 
-import net.minecraft.client.color.block.BlockColor;
-import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -22,26 +22,28 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.storage.LevelData;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.util.RandomSource;
 
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import com.google.common.collect.Lists;
 
@@ -55,7 +57,7 @@ public class RespawnObeliskBlock extends BaseBlock.Stone implements CustomColorP
     public static final EnumProperty<TripleShape> SHAPE = BlockProperties.TRIPLE_SHAPE;
 
     public RespawnObeliskBlock() {
-        super(FabricBlockSettings.copyOf(Blocks.END_STONE).luminance((state) -> {
+        super(BlockBehaviour.Properties.ofLegacyCopy(Blocks.END_STONE).lightLevel((state) -> {
             return (state.getValue(SHAPE) == TripleShape.BOTTOM) ? 0 : 15;
         }));
     }
@@ -100,11 +102,13 @@ public class RespawnObeliskBlock extends BaseBlock.Stone implements CustomColorP
     @SuppressWarnings("deprecation")
     public BlockState updateShape(
             BlockState state,
-            Direction facing,
-            BlockState neighborState,
-            LevelAccessor world,
+            LevelReader world,
+            ScheduledTickAccess scheduledTickAccess,
             BlockPos pos,
-            BlockPos neighborPos
+            Direction facing,
+            BlockPos neighborPos,
+            BlockState neighborState,
+            RandomSource random
     ) {
         TripleShape shape = state.getValue(SHAPE);
         if (shape == TripleShape.BOTTOM) {
@@ -156,12 +160,12 @@ public class RespawnObeliskBlock extends BaseBlock.Stone implements CustomColorP
     }
 
     @Override
-    public BlockColor getProvider() {
+    public BlockColorProvider getProvider() {
         return ((CustomColorProvider) EndBlocks.AURORA_CRYSTAL).getProvider();
     }
 
     @Override
-    public ItemColor getItemProvider() {
+    public ItemColorProvider getItemProvider() {
         return (stack, tintIndex) -> {
             return ColorUtil.color(255, 255, 255);
         };
@@ -169,7 +173,7 @@ public class RespawnObeliskBlock extends BaseBlock.Stone implements CustomColorP
 
     @Override
     @SuppressWarnings("deprecation")
-    public ItemInteractionResult useItemOn(
+    public InteractionResult useItemOn(
             ItemStack itemStack,
             BlockState state,
             Level world,
@@ -180,17 +184,23 @@ public class RespawnObeliskBlock extends BaseBlock.Stone implements CustomColorP
     ) {
         boolean canActivate = itemStack.getItem() == EndItems.AMBER_GEM && itemStack.getCount() > 5;
         if (hand != InteractionHand.MAIN_HAND || !canActivate) {
-            if (!world.isClientSide && !(itemStack.getItem() instanceof BlockItem) && !player.isCreative()) {
+            if (!world.isClientSide() && !(itemStack.getItem() instanceof BlockItem) && !player.isCreative()) {
                 ServerPlayer serverPlayerEntity = (ServerPlayer) player;
                 serverPlayerEntity.displayClientMessage(
                         Component.translatable("message.betterend.fail_spawn"),
                         true
                 );
             }
-            return ItemInteractionResult.FAIL;
-        } else if (!world.isClientSide) {
+            return InteractionResult.FAIL;
+        } else if (!world.isClientSide()) {
             ServerPlayer serverPlayerEntity = (ServerPlayer) player;
-            serverPlayerEntity.setRespawnPosition(world.dimension(), pos, 0.0F, false, false);
+            serverPlayerEntity.setRespawnPosition(
+                    new ServerPlayer.RespawnConfig(
+                            LevelData.RespawnData.of(world.dimension(), pos, 0.0F, 0.0F),
+                            false
+                    ),
+                    false
+            );
             serverPlayerEntity.displayClientMessage(Component.translatable("message.betterend.set_spawn"), true);
             double px = pos.getX() + 0.5;
             double py = pos.getY() + 0.5;
@@ -211,13 +221,13 @@ public class RespawnObeliskBlock extends BaseBlock.Stone implements CustomColorP
                 ((ServerLevel) world).sendParticles(particle, px, py1, pz, 20, 0.14, 0.5, 0.14, 0.1);
                 ((ServerLevel) world).sendParticles(particle, px, py2, pz, 20, 0.14, 0.3, 0.14, 0.1);
             }
-            world.playSound(null, px, py, py, SoundEvents.RESPAWN_ANCHOR_SET_SPAWN, SoundSource.BLOCKS, 1F, 1F);
+            world.playSound(null, px, py, pz, SoundEvents.RESPAWN_ANCHOR_SET_SPAWN, SoundSource.BLOCKS, 1F, 1F);
             if (!player.isCreative()) {
                 itemStack.shrink(6);
             }
         }
         return player.isCreative()
-                ? ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION
-                : ItemInteractionResult.sidedSuccess(world.isClientSide);
+                ? InteractionResult.TRY_WITH_EMPTY_HAND
+                : (world.isClientSide() ? InteractionResult.SUCCESS : InteractionResult.SUCCESS_SERVER);
     }
 }

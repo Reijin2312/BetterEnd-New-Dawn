@@ -11,10 +11,11 @@ import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,8 +25,6 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 import java.util.Collections;
 import java.util.List;
@@ -77,11 +76,13 @@ public class LumecornBlock extends BaseBlockNotFull.Wood implements RenderLayerP
     @Override
     public BlockState updateShape(
             BlockState state,
-            Direction facing,
-            BlockState neighborState,
-            LevelAccessor world,
+            LevelReader world,
+            ScheduledTickAccess scheduledTickAccess,
             BlockPos pos,
-            BlockPos neighborPos
+            Direction facing,
+            BlockPos neighborPos,
+            BlockState neighborState,
+            RandomSource random
     ) {
         if (!canSurvive(state, world, pos)) {
             return Blocks.AIR.defaultBlockState();
@@ -106,8 +107,7 @@ public class LumecornBlock extends BaseBlockNotFull.Wood implements RenderLayerP
     }
 
     @Override
-    @Environment(EnvType.CLIENT)
-    public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
+    public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState, boolean includeData) {
         EndBlockProperties.LumecornShape shape = blockState.getValue(SHAPE);
         if (shape == EndBlockProperties.LumecornShape.BOTTOM_BIG || shape == EndBlockProperties.LumecornShape.BOTTOM_SMALL || shape == EndBlockProperties.LumecornShape.MIDDLE) {
             return new ItemStack(EndBlocks.LUMECORN_SEED);

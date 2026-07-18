@@ -37,7 +37,7 @@ public class JellyLucerniaWoodMaterial extends EndWoodenComplexMaterial {
                     CraftingRecipeBuilder craftingRecipeBuilder = craftingRecipeBuilder2.shape("I I", "o#o", "o#o")
                                                                                         .addMaterial('#', EndBlocks.LUCERNIA.getBlock(WoodSlots.STRIPPED_LOG))
                                                                                         .addMaterial('o', EndBlocks.JELLYSHROOM.getBlock(WoodSlots.LOG))
-                                                                                        .addMaterial('I', Items.CHAIN);
+                                                                                        .addMaterial('I', Items.IRON_CHAIN);
                     craftingRecipeBuilder.group("sign")
                                          .setCategory(RecipeCategory.DECORATIONS)
                                          .build(ctx);

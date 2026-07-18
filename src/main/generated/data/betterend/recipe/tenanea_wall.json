@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "wall",
   "key": {
-    "*": {
-      "item": "betterend:tenanea_planks"
-    },
-    "|": {
-      "item": "betterend:tenanea_fence"
-    }
+    "*": "betterend:tenanea_planks",
+    "|": "betterend:tenanea_fence"
   },
   "pattern": [
     "* *",

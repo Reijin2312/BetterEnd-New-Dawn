@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "wall",
   "key": {
-    "*": {
-      "item": "betterend:jellyshroom_planks"
-    },
-    "|": {
-      "item": "betterend:jellyshroom_fence"
-    }
+    "*": "betterend:jellyshroom_planks",
+    "|": "betterend:jellyshroom_fence"
   },
   "pattern": [
     "* *",

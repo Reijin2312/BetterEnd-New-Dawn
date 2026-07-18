@@ -1,6 +1,7 @@
 {
   "parent": "bclib:block/chest_item",
   "textures": {
-    "texture": "betterend:entity/chest/mossy_glowshroom_chest"
+    "particle": "betterend:block/chest/mossy_glowshroom_chest",
+    "texture": "betterend:block/chest/mossy_glowshroom_chest"
   }
 }

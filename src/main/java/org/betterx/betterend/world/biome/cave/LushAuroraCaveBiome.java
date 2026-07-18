@@ -28,6 +28,8 @@ import org.jetbrains.annotations.Nullable;
 public class LushAuroraCaveBiome extends EndCaveBiome.Config<LushAuroraCaveBiome> {
     public static final MapCodec<Biome> CODEC = EndCaveBiome.simpleCaveBiomeCodec(LushAuroraCaveBiome.Biome::new);
     public static final KeyDispatchDataCodec<LushAuroraCaveBiome.Biome> KEY_CODEC = KeyDispatchDataCodec.of(CODEC);
+    public static final MapCodec<Biome> NETWORK_CODEC = EndCaveBiome.simpleCaveBiomeNetworkCodec(LushAuroraCaveBiome.Biome::new);
+    public static final KeyDispatchDataCodec<LushAuroraCaveBiome.Biome> NETWORK_KEY_CODEC = KeyDispatchDataCodec.of(NETWORK_CODEC);
 
     public static class Biome extends EndCaveBiome {
         @Override
@@ -47,6 +49,11 @@ public class LushAuroraCaveBiome extends EndCaveBiome.Config<LushAuroraCaveBiome
         @Override
         public KeyDispatchDataCodec<? extends EndCaveBiome> codec() {
             return LushAuroraCaveBiome.KEY_CODEC;
+        }
+
+        @Override
+        public KeyDispatchDataCodec<? extends EndCaveBiome> networkCodec() {
+            return LushAuroraCaveBiome.NETWORK_KEY_CODEC;
         }
 
         protected Biome(

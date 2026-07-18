@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "end_small_tile",
   "key": {
-    "#": {
-      "item": "betterend:azure_jadestone_polished"
-    }
+    "#": "betterend:azure_jadestone_polished"
   },
   "pattern": [
     "##",

@@ -8,13 +8,14 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChorusPlantBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.util.RandomSource;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -62,14 +63,16 @@ public abstract class ChorusPlantBlockMixin extends Block {
         }
     }
 
-    @Inject(method = "updateShape", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "updateShape", at = @At("RETURN"), cancellable = true, remap = false, require = 0)
     private void be_updateShape(
             BlockState state,
-            Direction direction,
-            BlockState newState,
-            LevelAccessor world,
+            LevelReader world,
+            ScheduledTickAccess scheduledTickAccess,
             BlockPos pos,
+            Direction direction,
             BlockPos posFrom,
+            BlockState newState,
+            RandomSource random,
             CallbackInfoReturnable<BlockState> info
     ) {
         BlockState plant = info.getReturnValue();

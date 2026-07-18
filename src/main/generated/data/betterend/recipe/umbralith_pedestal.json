@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "betterend:umbralith_pillar"
-    },
-    "S": {
-      "item": "betterend:umbralith_slab"
-    }
+    "#": "betterend:umbralith_pillar",
+    "S": "betterend:umbralith_slab"
   },
   "pattern": [
     "S",

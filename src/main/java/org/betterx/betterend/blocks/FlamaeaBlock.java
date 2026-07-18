@@ -7,7 +7,7 @@ import org.betterx.betterend.blocks.basis.EndPlantBlock;
 import org.betterx.wover.block.api.CustomBlockItemProvider;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -52,7 +52,7 @@ public class FlamaeaBlock extends EndPlantBlock implements CustomBlockItemProvid
 
 
     @Override
-    public BlockItem getCustomBlockItem(ResourceLocation blockID, Item.Properties settings) {
+    public BlockItem getCustomBlockItem(Identifier blockID, Item.Properties settings) {
         return new PlaceOnWaterBlockItem(this, settings);
     }
 

@@ -1,30 +1,19 @@
 package org.betterx.betterend.item.material;
 
-import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.betterend.registry.EndItems;
 import org.betterx.betterend.registry.EndTags;
+import org.betterx.wover.tag.api.TagManager;
 
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.Tiers;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.level.block.Block;
 
-import java.util.function.Supplier;
-import org.jetbrains.annotations.NotNull;
+public enum EndToolMaterial {
+    THALLASIUM(ToolMaterial.IRON.incorrectBlocksForDrops(), 2, 320, 7.0F, 1.5F, 12, "ingots/thallasium"),
+    TERMINITE(ToolMaterial.DIAMOND.incorrectBlocksForDrops(), 3, 1230, 8.5F, 3.0F, 14, "ingots/terminite"),
+    AETERNIUM(EndTags.INCORRECT_FOR_AETERNIUM_TOOL, 5, 2196, 10.0F, 4.5F, 18, "ingots/aeternium");
 
-public enum EndToolMaterial implements Tier {
-    THALLASIUM(Tiers.IRON.getIncorrectBlocksForDrops(), 2, 320, 7.0F, 1.5F, 12, () -> EndBlocks.THALLASIUM.ingot),
-    TERMINITE(Tiers.DIAMOND.getIncorrectBlocksForDrops(), 3, 1230, 8.5F, 3.0F, 14, () -> EndBlocks.TERMINITE.ingot),
-    AETERNIUM(EndTags.INCORRECT_FOR_AETERNIUM_TOOL, 5, 2196, 10.0F, 4.5F, 18, () -> EndItems.AETERNIUM_INGOT);
-
-    private final int uses;
-    private final float speed;
+    private final ToolMaterial toolMaterial;
     private final int level;
-    private final int enchantibility;
-    private final float damage;
-    private final Supplier<ItemLike> reapair;
     public final TagKey<Block> incorrectBlocksForDrops;
 
     EndToolMaterial(
@@ -34,50 +23,25 @@ public enum EndToolMaterial implements Tier {
             float speed,
             float damage,
             int enchantibility,
-            Supplier<ItemLike> reapair
+            String repairTag
     ) {
-
         this.incorrectBlocksForDrops = incorrectBlocksForDrops;
-        this.uses = uses;
-        this.speed = speed;
         this.level = level;
-        this.enchantibility = enchantibility;
-        this.damage = damage;
-        this.reapair = reapair;
-    }
-
-    @Override
-    public int getUses() {
-        return uses;
-    }
-
-    @Override
-    public float getSpeed() {
-        return speed;
-    }
-
-    @Override
-    public float getAttackDamageBonus() {
-        return damage;
-    }
-
-    @Override
-    public @NotNull TagKey<Block> getIncorrectBlocksForDrops() {
-        return this.incorrectBlocksForDrops;
+        this.toolMaterial = new ToolMaterial(
+                incorrectBlocksForDrops,
+                uses,
+                speed,
+                damage,
+                enchantibility,
+                TagManager.ITEMS.makeCommonTag(repairTag)
+        );
     }
 
     public int getLevel() {
         return level;
     }
 
-    @Override
-    public int getEnchantmentValue() {
-        return enchantibility;
+    public ToolMaterial toolMaterial() {
+        return toolMaterial;
     }
-
-    @Override
-    public @NotNull Ingredient getRepairIngredient() {
-        return Ingredient.of(reapair.get());
-    }
-
 }

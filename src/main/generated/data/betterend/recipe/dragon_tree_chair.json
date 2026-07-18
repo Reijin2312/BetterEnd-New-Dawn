@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "chair",
   "key": {
-    "#": {
-      "item": "betterend:dragon_tree_slab"
-    },
-    "I": {
-      "item": "minecraft:stick"
-    }
+    "#": "betterend:dragon_tree_slab",
+    "I": "minecraft:stick"
   },
   "pattern": [
     "I ",

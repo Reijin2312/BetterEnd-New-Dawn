@@ -19,6 +19,7 @@ import net.minecraft.core.Direction.Axis;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
@@ -26,7 +27,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
@@ -34,9 +34,7 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -49,7 +47,7 @@ public class NeonCactusPlantBlock extends BaseBlockNotFull implements SimpleWate
     public static final EnumProperty<TripleShape> SHAPE = BlockProperties.TRIPLE_SHAPE;
     public static final EnumProperty<CactusBottom> CACTUS_BOTTOM = EndBlockProperties.CACTUS_BOTTOM;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    public static final DirectionProperty FACING = BlockStateProperties.FACING;
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
 
     private static final EnumMap<Direction, VoxelShape> BIG_SHAPES_OPEN = Maps.newEnumMap(Direction.class);
     private static final EnumMap<Direction, VoxelShape> MEDIUM_SHAPES_OPEN = Maps.newEnumMap(Direction.class);
@@ -60,7 +58,7 @@ public class NeonCactusPlantBlock extends BaseBlockNotFull implements SimpleWate
     private static final int MAX_LENGTH = 12;
 
     public NeonCactusPlantBlock() {
-        super(FabricBlockSettings.copyOf(Blocks.CACTUS).lightLevel((bs) -> 15).randomTicks());
+        super(BlockBehaviour.Properties.ofLegacyCopy(Blocks.CACTUS).lightLevel((bs) -> 15).randomTicks());
         registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false)
                                                 .setValue(FACING, Direction.UP)
                                                 .setValue(SHAPE, TripleShape.TOP));
@@ -108,18 +106,23 @@ public class NeonCactusPlantBlock extends BaseBlockNotFull implements SimpleWate
     @Override
     public BlockState updateShape(
             BlockState state,
-            Direction direction,
-            BlockState newState,
-            LevelAccessor world,
+            LevelReader world,
+            ScheduledTickAccess scheduledTickAccess,
             BlockPos pos,
-            BlockPos posFrom
+            Direction direction,
+            BlockPos posFrom,
+            BlockState newState,
+            RandomSource random
     ) {
-        world.scheduleTick(pos, this, 2);
+        scheduledTickAccess.scheduleTick(pos, this, 2);
         if (state.getValue(WATERLOGGED)) {
-            world.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
+            scheduledTickAccess.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
+        }
+        if (!(world instanceof LevelAccessor levelAccessor)) {
+            return state;
         }
         Direction dir = state.getValue(FACING);
-        BlockState downState = world.getBlockState(pos.relative(dir.getOpposite()));
+        BlockState downState = levelAccessor.getBlockState(pos.relative(dir.getOpposite()));
         if (downState.is(Blocks.END_STONE) || downState.is(EndBlocks.ENDSTONE_DUST)) {
             state = state.setValue(CACTUS_BOTTOM, CactusBottom.SAND);
         } else if (downState.is(EndBlocks.END_MOSS)) {
@@ -323,7 +326,14 @@ public class NeonCactusPlantBlock extends BaseBlockNotFull implements SimpleWate
     }
 
     @Override
-    public void entityInside(BlockState blockState, Level level, BlockPos blockPos, Entity entity) {
+    public void entityInside(
+            BlockState blockState,
+            Level level,
+            BlockPos blockPos,
+            Entity entity,
+            InsideBlockEffectApplier applier,
+            boolean checkInside
+    ) {
         entity.hurt(level.damageSources().cactus(), 1.0F);
     }
 
@@ -426,7 +436,6 @@ public class NeonCactusPlantBlock extends BaseBlockNotFull implements SimpleWate
     }
 
     @Override
-    @Environment(EnvType.CLIENT)
     public String getPottedState() {
         return "bottom=moss,shape=top,facing=up";
     }

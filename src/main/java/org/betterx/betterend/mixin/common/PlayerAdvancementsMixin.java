@@ -24,11 +24,10 @@ public abstract class PlayerAdvancementsMixin {
             String criterionName,
             CallbackInfoReturnable<Boolean> cir
     ) {
-        PlayerAdvancementsCallback.PLAYER_ADVANCEMENT_COMPLETE.invoker()
-                                                              .onAdvancementComplete(
-                                                                      player,
-                                                                      advancementHolder,
-                                                                      criterionName
-                                                              );
+        PlayerAdvancementsCallback.fire(
+                player,
+                advancementHolder,
+                criterionName
+        );
     }
 }

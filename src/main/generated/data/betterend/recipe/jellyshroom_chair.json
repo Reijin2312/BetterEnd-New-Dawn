@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "chair",
   "key": {
-    "#": {
-      "item": "betterend:jellyshroom_slab"
-    },
-    "I": {
-      "item": "minecraft:stick"
-    }
+    "#": "betterend:jellyshroom_slab",
+    "I": "minecraft:stick"
   },
   "pattern": [
     "I ",

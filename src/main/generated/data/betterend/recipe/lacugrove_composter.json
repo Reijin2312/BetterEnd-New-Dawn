@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "composter",
   "key": {
-    "#": {
-      "item": "betterend:lacugrove_slab"
-    }
+    "#": "betterend:lacugrove_slab"
   },
   "pattern": [
     "# #",

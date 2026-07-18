@@ -6,7 +6,7 @@ import org.betterx.betterend.registry.EndBlocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
@@ -16,18 +16,17 @@ import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.types.IRecipeType;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
 import java.util.List;
 
 public class JEIAlloyingCategory implements IRecipeCategory<AlloyingDisplay> {
-    private static final ResourceLocation GUI_TEXTURE = BetterEnd.C.mk("textures/gui/smelter_gui.png");
+    private static final Identifier GUI_TEXTURE = BetterEnd.C.mk("textures/gui/smelter_gui.png");
     private static final int WIDTH = 124;
     private static final int HEIGHT = 62;
     private static final DecimalFormat DF = new DecimalFormat("###.##");
@@ -53,7 +52,7 @@ public class JEIAlloyingCategory implements IRecipeCategory<AlloyingDisplay> {
     }
 
     @Override
-    public @NotNull RecipeType<AlloyingDisplay> getRecipeType() {
+    public @NotNull IRecipeType<AlloyingDisplay> getRecipeType() {
         return JEIPlugin.ALLOYING_RECIPE_TYPE;
     }
 
@@ -78,20 +77,15 @@ public class JEIAlloyingCategory implements IRecipeCategory<AlloyingDisplay> {
     }
 
     @Override
-    public void createRecipeExtras(IRecipeExtrasBuilder builder, AlloyingDisplay recipe, IFocusGroup focuses) {
-        builder.addDrawable(background, 0, 0);
-    }
-
-    @Override
     public void setRecipe(IRecipeLayoutBuilder builder, AlloyingDisplay display, IFocusGroup focuses) {
         List<Ingredient> ingredients = display.getIngredients();
         if (!ingredients.isEmpty()) {
             builder.addSlot(RecipeIngredientRole.INPUT, 19, 5)
-                   .addIngredients(ingredients.get(0));
+                   .add(ingredients.get(0));
         }
         if (ingredients.size() > 1 && !ingredients.get(1).isEmpty()) {
             builder.addSlot(RecipeIngredientRole.INPUT, 41, 5)
-                   .addIngredients(ingredients.get(1));
+                   .add(ingredients.get(1));
         }
 
         List<ItemStack> fuels = JEIPlugin.ALLOYING_FUELS.isEmpty() ? List.of() : JEIPlugin.ALLOYING_FUELS;
@@ -103,7 +97,7 @@ public class JEIAlloyingCategory implements IRecipeCategory<AlloyingDisplay> {
             ItemStack result = display.getResultItem(minecraft.level.registryAccess());
             if (!result.isEmpty()) {
                 builder.addSlot(RecipeIngredientRole.OUTPUT, 103, 23)
-                       .addItemStack(result);
+                       .add(result);
             }
         }
     }
@@ -116,6 +110,7 @@ public class JEIAlloyingCategory implements IRecipeCategory<AlloyingDisplay> {
             double mouseX,
             double mouseY
     ) {
+        background.draw(guiGraphics, 0, 0);
         fire.draw(guiGraphics, 32, 25);
         arrow.draw(guiGraphics, 64, 23);
 

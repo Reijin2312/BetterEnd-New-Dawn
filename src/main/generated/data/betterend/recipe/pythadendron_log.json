@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "betterend:pythadendron_bark"
-    }
+    "#": "betterend:pythadendron_bark"
   },
   "pattern": [
     "##",

@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "wall",
   "key": {
-    "*": {
-      "item": "betterend:lucernia_planks"
-    },
-    "|": {
-      "item": "betterend:lucernia_fence"
-    }
+    "*": "betterend:lucernia_planks",
+    "|": "betterend:lucernia_fence"
   },
   "pattern": [
     "* *",

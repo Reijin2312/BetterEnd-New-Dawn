@@ -2,7 +2,9 @@ package org.betterx.betterend.blocks;
 
 import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.bclib.client.render.BCLRenderLayer;
+import org.betterx.bclib.interfaces.BlockColorProvider;
 import org.betterx.bclib.interfaces.CustomColorProvider;
+import org.betterx.bclib.interfaces.ItemColorProvider;
 import org.betterx.bclib.interfaces.RenderLayerProvider;
 import org.betterx.bclib.interfaces.tools.AddMineableHammer;
 import org.betterx.bclib.interfaces.tools.AddMineablePickaxe;
@@ -12,12 +14,10 @@ import org.betterx.ui.ColorUtil;
 import org.betterx.wover.loot.api.BlockLootProvider;
 import org.betterx.wover.loot.api.LootLookupProvider;
 
-import net.minecraft.client.color.block.BlockColor;
-import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.TransparentBlock;
@@ -54,7 +54,7 @@ public class AuroraCrystalBlock extends TransparentBlock implements BlockLootPro
     }
 
     @Override
-    public BlockColor getProvider() {
+    public BlockColorProvider getProvider() {
         return (state, world, pos, tintIndex) -> {
             if (pos == null) {
                 pos = BlockPos.ZERO;
@@ -79,7 +79,7 @@ public class AuroraCrystalBlock extends TransparentBlock implements BlockLootPro
     }
 
     @Override
-    public ItemColor getItemProvider() {
+    public ItemColorProvider getItemProvider() {
         return (stack, tintIndex) -> {
             return ColorUtil.color(COLORS[3].getX(), COLORS[3].getY(), COLORS[3].getZ());
         };
@@ -92,7 +92,7 @@ public class AuroraCrystalBlock extends TransparentBlock implements BlockLootPro
 
     @Override
     public LootTable.Builder registerBlockLoot(
-            @NotNull ResourceLocation location,
+            @NotNull Identifier location,
             @NotNull LootLookupProvider provider,
             @NotNull ResourceKey<LootTable> tableKey
     ) {

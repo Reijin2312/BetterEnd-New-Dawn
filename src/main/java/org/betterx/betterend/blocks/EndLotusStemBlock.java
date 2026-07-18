@@ -11,9 +11,12 @@ import org.betterx.bclib.util.BlocksHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -25,7 +28,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import com.google.common.collect.Maps;
 
@@ -39,7 +42,7 @@ public class EndLotusStemBlock extends BaseBlock implements SimpleWaterloggedBlo
     private static final Map<Axis, VoxelShape> SHAPES = Maps.newEnumMap(Axis.class);
 
     public EndLotusStemBlock() {
-        super(FabricBlockSettings.copyOf(Blocks.OAK_PLANKS));
+        super(BlockBehaviour.Properties.ofLegacyCopy(Blocks.OAK_PLANKS));
         this.registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false)
                                                      .setValue(SHAPE, TripleShape.MIDDLE)
                                                      .setValue(LEAF, false)
@@ -88,14 +91,16 @@ public class EndLotusStemBlock extends BaseBlock implements SimpleWaterloggedBlo
     @SuppressWarnings("deprecation")
     public BlockState updateShape(
             BlockState state,
-            Direction direction,
-            BlockState newState,
-            LevelAccessor world,
+            LevelReader world,
+            ScheduledTickAccess scheduledTickAccess,
             BlockPos pos,
-            BlockPos posFrom
+            Direction direction,
+            BlockPos posFrom,
+            BlockState newState,
+            RandomSource random
     ) {
         if (state.getValue(WATERLOGGED)) {
-            world.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
+            scheduledTickAccess.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
         }
         return state;
     }

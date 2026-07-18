@@ -12,8 +12,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -59,13 +59,15 @@ public class CavePumpkinVineBlock extends EndPlantWithAgeBlock implements Surviv
     @Override
     public BlockState updateShape(
             BlockState state,
-            Direction facing,
-            BlockState neighborState,
-            LevelAccessor world,
+            LevelReader world,
+            ScheduledTickAccess scheduledTickAccess,
             BlockPos pos,
-            BlockPos neighborPos
+            Direction facing,
+            BlockPos neighborPos,
+            BlockState neighborState,
+            RandomSource random
     ) {
-        state = super.updateShape(state, facing, neighborState, world, pos, neighborPos);
+        state = super.updateShape(state, world, scheduledTickAccess, pos, facing, neighborPos, neighborState, random);
         if (state.is(this) && state.getValue(BlockProperties.AGE) > 1) {
             BlockState down = world.getBlockState(pos.below());
             if (!down.is(EndBlocks.CAVE_PUMPKIN)) {

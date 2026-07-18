@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "composter",
   "key": {
-    "#": {
-      "item": "betterend:end_lotus_slab"
-    }
+    "#": "betterend:end_lotus_slab"
   },
   "pattern": [
     "# #",

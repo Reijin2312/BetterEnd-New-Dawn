@@ -2,10 +2,8 @@ package org.betterx.betterend.blocks.basis;
 
 import org.betterx.bclib.blocks.BaseRotatedPillarBlock;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 import java.util.Optional;
 
@@ -16,17 +14,15 @@ public class LitPillarBlock extends BaseRotatedPillarBlock {
         super(settings);
     }
 
-    @Environment(EnvType.CLIENT)
-    protected Optional<String> createBlockPattern(ResourceLocation blockId) {
+    protected Optional<String> createBlockPattern(Identifier blockId) {
         String name = blockId.getPath();
         return Optional.of(PATTERN.replace("name", name));
     }
 
-//    @Environment(EnvType.CLIENT)
 //    @Override
 //    public void provideBlockModels(WoverBlockModelGenerators generator) {
 //        var res = TextureMapping.getBlockTexture(this);
-//        var side = ResourceLocation.fromNamespaceAndPath(res.getNamespace(), res
+//        var side = Identifier.fromNamespaceAndPath(res.getNamespace(), res
 //                .getPath()
 //                .replace("_bark", "_log_side"));
 //        generator.createRotatedPillar(this, new TextureMapping()

@@ -3,7 +3,7 @@ package org.betterx.betterend.integration.rei;
 import org.betterx.bclib.recipes.AnvilRecipe;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
@@ -45,7 +45,7 @@ public class REIAnvilDisplay extends BasicDisplay implements SimpleGridMenuDispl
     }
 
     @Override
-    public @NotNull Optional<ResourceLocation> getDisplayLocation() {
+    public @NotNull Optional<Identifier> getDisplayLocation() {
         return Optional.ofNullable(recipe).map(RecipeHolder::id);
     }
 

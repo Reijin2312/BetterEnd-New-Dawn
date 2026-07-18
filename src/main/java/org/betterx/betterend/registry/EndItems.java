@@ -19,8 +19,8 @@ import org.betterx.betterend.item.material.EndToolMaterial;
 import org.betterx.betterend.item.tool.EndHammerItem;
 import org.betterx.betterend.item.tool.EndPickaxe;
 import org.betterx.betterend.util.DebugHelpers;
-import org.betterx.wover.item.api.ItemRegistry;
 import org.betterx.wover.complex.api.equipment.ArmorSlot;
+import org.betterx.wover.item.api.ItemRegistry;
 import org.betterx.wover.tag.api.predefined.CommonItemTags;
 
 import net.minecraft.resources.ResourceKey;
@@ -31,6 +31,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.equipment.ArmorType;
 
 import java.util.List;
 import org.jetbrains.annotations.ApiStatus;
@@ -43,11 +44,10 @@ public class EndItems {
     public final static Item ENDER_DUST = registerEndItem("ender_dust");
     public final static Item ENDER_SHARD = registerEndItem("ender_shard");
     public final static Item AETERNIUM_INGOT = registerEndItem(
-            "aeternium_ingot",
+            EndItems.prepareItemPath("aeternium_ingot"),
             new ModelProviderItem(makeEndItemSettings().fireResistant())
     );
-    public final static Item AETERNIUM_FORGED_PLATE = registerEndItem(
-            "aeternium_forged_plate",
+    public final static Item AETERNIUM_FORGED_PLATE = registerEndItem(EndItems.prepareItemPath("aeternium_forged_plate"),
             new ModelProviderItem(makeEndItemSettings().fireResistant())
     );
     public final static Item END_LILY_LEAF = registerEndItem("end_lily_leaf");
@@ -59,17 +59,23 @@ public class EndItems {
     public final static Item CRYSTALLINE_SULPHUR = registerEndItem("crystalline_sulphur");
     public final static Item HYDRALUX_PETAL = registerEndItem("hydralux_petal");
     public final static Item GELATINE = registerEndItem("gelatine");
-    public static final Item ETERNAL_CRYSTAL = registerEndItem("eternal_crystal", new EternalCrystalItem());
-    public final static Item ENCHANTED_PETAL = registerEndItem("enchanted_petal", new EnchantedItem(HYDRALUX_PETAL));
+    public static final Item ETERNAL_CRYSTAL = registerEndItem(
+            EndItems.prepareItemPath("eternal_crystal"),
+            new EternalCrystalItem()
+    );
+    public final static Item ENCHANTED_PETAL = registerEndItem(EndItems.prepareItemPath("enchanted_petal"), new EnchantedItem(HYDRALUX_PETAL));
     public final static Item LEATHER_STRIPE = registerEndItem("leather_stripe");
     public final static Item LEATHER_WRAPPED_STICK = registerEndItem("leather_wrapped_stick");
     public final static Item SILK_FIBER = registerEndItem("silk_fiber");
     public final static Item LUMECORN_ROD = registerEndItem("lumecorn_rod");
     public final static Item SILK_MOTH_MATRIX = registerEndItem("silk_moth_matrix");
     public final static Item ENCHANTED_MEMBRANE = registerEndItem(
-            "enchanted_membrane",
+            EndItems.prepareItemPath("enchanted_membrane"),
             new EnchantedItem(Items.PHANTOM_MEMBRANE)
     );
+    public static final Item GUIDE_BOOK = BetterEnd.ENABLE_GUIDEBOOK
+            ? registerEndItem(EndItems.prepareItemPath("guidebook"), new GuideBookItem())
+            : Items.AIR;
 
     // Music Discs
     public final static Item MUSIC_DISC_STRANGE_AND_ALIEN = registerEndDisc(
@@ -90,47 +96,45 @@ public class EndItems {
     );
 
     // Armor //
-    public static final Item AETERNIUM_HELMET = registerEndItem(
-            "aeternium_helmet",
+    public static final Item AETERNIUM_HELMET = registerEndItem(EndItems.prepareItemPath("aeternium_helmet"),
             new BaseArmorItem(
                     EndArmorMaterial.AETERNIUM,
-                    ArmorItem.Type.HELMET,
-                    EndArmorItem.createDefaultEndArmorSettings(ArmorSlot.HELMET_SLOT, EndArmorTier.AETERNIUM).fireResistant()
+                    ArmorType.HELMET,
+                    EndArmorItem.createDefaultEndArmorSettings(ArmorSlot.HELMET_SLOT, EndArmorTier.AETERNIUM)
+                                .fireResistant()
             )
     );
-    public static final Item AETERNIUM_CHESTPLATE = registerEndItem(
-            "aeternium_chestplate",
+    public static final Item AETERNIUM_CHESTPLATE = registerEndItem(EndItems.prepareItemPath("aeternium_chestplate"),
             new BaseArmorItem(
                     EndArmorMaterial.AETERNIUM,
-                    ArmorItem.Type.CHESTPLATE,
-                    EndArmorItem.createDefaultEndArmorSettings(ArmorSlot.CHESTPLATE_SLOT, EndArmorTier.AETERNIUM).fireResistant()
+                    ArmorType.CHESTPLATE,
+                    EndArmorItem.createDefaultEndArmorSettings(ArmorSlot.CHESTPLATE_SLOT, EndArmorTier.AETERNIUM)
+                                .fireResistant()
             )
     );
-    public static final Item AETERNIUM_LEGGINGS = registerEndItem(
-            "aeternium_leggings",
+    public static final Item AETERNIUM_LEGGINGS = registerEndItem(EndItems.prepareItemPath("aeternium_leggings"),
             new BaseArmorItem(
                     EndArmorMaterial.AETERNIUM,
-                    ArmorItem.Type.LEGGINGS,
-                    EndArmorItem.createDefaultEndArmorSettings(ArmorSlot.LEGGINGS_SLOT, EndArmorTier.AETERNIUM).fireResistant()
+                    ArmorType.LEGGINGS,
+                    EndArmorItem.createDefaultEndArmorSettings(ArmorSlot.LEGGINGS_SLOT, EndArmorTier.AETERNIUM)
+                                .fireResistant()
             )
     );
-    public static final Item AETERNIUM_BOOTS = registerEndItem(
-            "aeternium_boots",
+    public static final Item AETERNIUM_BOOTS = registerEndItem(EndItems.prepareItemPath("aeternium_boots"),
             new BaseArmorItem(
                     EndArmorMaterial.AETERNIUM,
-                    ArmorItem.Type.BOOTS,
-                    EndArmorItem.createDefaultEndArmorSettings(ArmorSlot.BOOTS_SLOT, EndArmorTier.AETERNIUM).fireResistant()
+                    ArmorType.BOOTS,
+                    EndArmorItem.createDefaultEndArmorSettings(ArmorSlot.BOOTS_SLOT, EndArmorTier.AETERNIUM)
+                                .fireResistant()
             )
     );
-    public static final Item CRYSTALITE_HELMET = registerEndItem("crystalite_helmet", new CrystaliteHelmet());
-    public static final Item CRYSTALITE_CHESTPLATE = registerEndItem(
-            "crystalite_chestplate",
+    public static final Item CRYSTALITE_HELMET = registerEndItem(EndItems.prepareItemPath("crystalite_helmet"), new CrystaliteHelmet());
+    public static final Item CRYSTALITE_CHESTPLATE = registerEndItem(EndItems.prepareItemPath("crystalite_chestplate"),
             new CrystaliteChestplate()
     );
-    public static final Item CRYSTALITE_LEGGINGS = registerEndItem("crystalite_leggings", new CrystaliteLeggings());
-    public static final Item CRYSTALITE_BOOTS = registerEndItem("crystalite_boots", new CrystaliteBoots());
-    public static final Item ARMORED_ELYTRA = registerEndItem(
-            "elytra_armored",
+    public static final Item CRYSTALITE_LEGGINGS = registerEndItem(EndItems.prepareItemPath("crystalite_leggings"), new CrystaliteLeggings());
+    public static final Item CRYSTALITE_BOOTS = registerEndItem(EndItems.prepareItemPath("crystalite_boots"), new CrystaliteBoots());
+    public static final Item ARMORED_ELYTRA = registerEndItem(EndItems.prepareItemPath("elytra_armored"),
             new ArmoredElytra(
                     "elytra_armored",
                     EndArmorTier.AETERNIUM,
@@ -142,51 +146,46 @@ public class EndItems {
                     true
             )
     );
-    public static final Item CRYSTALITE_ELYTRA = registerEndItem("elytra_crystalite", new CrystaliteElytra(650, 1.0D));
+    public static final Item CRYSTALITE_ELYTRA = registerEndItem(EndItems.prepareItemPath("elytra_crystalite"), new CrystaliteElytra(650, 1.0D));
 
     // Tools //
-    public static final TieredItem AETERNIUM_SHOVEL = registerEndTool("aeternium_shovel", new BaseShovelItem(
-            EndToolMaterial.AETERNIUM, 1.5F, -3.0F, makeEndItemSettings().fireResistant()));
-    public static final TieredItem AETERNIUM_SWORD = registerEndTool(
-            "aeternium_sword",
+    public static final Item AETERNIUM_SHOVEL = registerEndTool(EndItems.prepareItemPath("aeternium_shovel"), new BaseShovelItem(
+            EndToolMaterial.AETERNIUM.toolMaterial(), 1.5F, -3.0F, makeEndItemSettings().fireResistant()));
+    public static final Item AETERNIUM_SWORD = registerEndTool(EndItems.prepareItemPath("aeternium_sword"),
             new BaseSwordItem(
-                    EndToolMaterial.AETERNIUM,
+                    EndToolMaterial.AETERNIUM.toolMaterial(),
                     3,
                     -2.4F,
                     makeEndItemSettings().fireResistant()
             )
     );
-    public static final TieredItem AETERNIUM_PICKAXE = registerEndTool(
-            "aeternium_pickaxe",
+    public static final Item AETERNIUM_PICKAXE = registerEndTool(EndItems.prepareItemPath("aeternium_pickaxe"),
             new EndPickaxe(
-                    EndToolMaterial.AETERNIUM,
+                    EndToolMaterial.AETERNIUM.toolMaterial(),
                     1,
                     -2.8F,
                     makeEndItemSettings().fireResistant()
             )
     );
-    public static final TieredItem AETERNIUM_AXE = registerEndTool(
-            "aeternium_axe",
+    public static final Item AETERNIUM_AXE = registerEndTool(EndItems.prepareItemPath("aeternium_axe"),
             new BaseAxeItem(
-                    EndToolMaterial.AETERNIUM,
+                    EndToolMaterial.AETERNIUM.toolMaterial(),
                     5.0F,
                     -3.0F,
                     makeEndItemSettings().fireResistant()
             )
     );
-    public static final TieredItem AETERNIUM_HOE = registerEndTool(
-            "aeternium_hoe",
+    public static final Item AETERNIUM_HOE = registerEndTool(EndItems.prepareItemPath("aeternium_hoe"),
             new BaseHoeItem(
-                    EndToolMaterial.AETERNIUM,
+                    EndToolMaterial.AETERNIUM.toolMaterial(),
                     -3,
                     0.0F,
                     makeEndItemSettings().fireResistant()
             )
     );
-    public static final TieredItem AETERNIUM_HAMMER = registerEndTool(
-            "aeternium_hammer",
+    public static final Item AETERNIUM_HAMMER = registerEndTool(EndItems.prepareItemPath("aeternium_hammer"),
             new EndHammerItem(
-                    EndToolMaterial.AETERNIUM,
+                    EndToolMaterial.AETERNIUM.toolMaterial(),
                     6.0F,
                     -3.0F,
                     0.3f,
@@ -195,70 +194,59 @@ public class EndItems {
     );
 
     // Toolparts //
-    public final static Item AETERNIUM_SHOVEL_HEAD = registerEndItem(
-            "aeternium_shovel_head",
+    public final static Item AETERNIUM_SHOVEL_HEAD = registerEndItem(EndItems.prepareItemPath("aeternium_shovel_head"),
             new ModelProviderItem(makeEndItemSettings().fireResistant())
     );
-    public final static Item AETERNIUM_PICKAXE_HEAD = registerEndItem(
-            "aeternium_pickaxe_head",
+    public final static Item AETERNIUM_PICKAXE_HEAD = registerEndItem(EndItems.prepareItemPath("aeternium_pickaxe_head"),
             new ModelProviderItem(makeEndItemSettings().fireResistant())
     );
-    public final static Item AETERNIUM_AXE_HEAD = registerEndItem(
-            "aeternium_axe_head",
+    public final static Item AETERNIUM_AXE_HEAD = registerEndItem(EndItems.prepareItemPath("aeternium_axe_head"),
             new ModelProviderItem(makeEndItemSettings().fireResistant())
     );
-    public final static Item AETERNIUM_HOE_HEAD = registerEndItem(
-            "aeternium_hoe_head",
+    public final static Item AETERNIUM_HOE_HEAD = registerEndItem(EndItems.prepareItemPath("aeternium_hoe_head"),
             new ModelProviderItem(makeEndItemSettings().fireResistant())
     );
-    public final static Item AETERNIUM_HAMMER_HEAD = registerEndItem(
-            "aeternium_hammer_head",
+    public final static Item AETERNIUM_HAMMER_HEAD = registerEndItem(EndItems.prepareItemPath("aeternium_hammer_head"),
             new ModelProviderItem(makeEndItemSettings().fireResistant())
     );
-    public final static Item AETERNIUM_SWORD_BLADE = registerEndItem(
-            "aeternium_sword_blade",
+    public final static Item AETERNIUM_SWORD_BLADE = registerEndItem(EndItems.prepareItemPath("aeternium_sword_blade"),
             new ModelProviderItem(makeEndItemSettings().fireResistant())
     );
-    public final static Item AETERNIUM_SWORD_HANDLE = registerEndItem(
-            "aeternium_sword_handle",
+    public final static Item AETERNIUM_SWORD_HANDLE = registerEndItem(EndItems.prepareItemPath("aeternium_sword_handle"),
             new ModelProviderItem(makeEndItemSettings().fireResistant())
     );
 
     // ITEM_HAMMERS //
-    public static final TieredItem IRON_HAMMER = registerEndTool(
-            "iron_hammer",
+    public static final Item IRON_HAMMER = registerEndTool(EndItems.prepareItemPath("iron_hammer"),
             new EndHammerItem(
-                    Tiers.IRON,
+                    ToolMaterial.IRON,
                     5.0F,
                     -3.2F,
                     0.2f,
                     makeEndItemSettings()
             )
     );
-    public static final TieredItem GOLDEN_HAMMER = registerEndTool(
-            "golden_hammer",
+    public static final Item GOLDEN_HAMMER = registerEndTool(EndItems.prepareItemPath("golden_hammer"),
             new EndHammerItem(
-                    Tiers.GOLD,
+                    ToolMaterial.GOLD,
                     4.5F,
                     -3.4F,
                     0.3f,
                     makeEndItemSettings()
             )
     );
-    public static final TieredItem DIAMOND_HAMMER = registerEndTool(
-            "diamond_hammer",
+    public static final Item DIAMOND_HAMMER = registerEndTool(EndItems.prepareItemPath("diamond_hammer"),
             new EndHammerItem(
-                    Tiers.DIAMOND,
+                    ToolMaterial.DIAMOND,
                     5.5F,
                     -3.1F,
                     0.2f,
                     makeEndItemSettings()
             )
     );
-    public static final TieredItem NETHERITE_HAMMER = registerEndTool(
-            "netherite_hammer",
+    public static final Item NETHERITE_HAMMER = registerEndTool(EndItems.prepareItemPath("netherite_hammer"),
             new EndHammerItem(
-                    Tiers.NETHERITE,
+                    ToolMaterial.NETHERITE,
                     5.0F,
                     -3.0F,
                     0.2f,
@@ -271,12 +259,10 @@ public class EndItems {
     public final static Item SHADOW_BERRY_COOKED = registerEndFood("shadow_berry_cooked", 6, 0.7F);
     public final static Item END_FISH_RAW = registerEndFood("end_fish_raw", Foods.SALMON);
     public final static Item END_FISH_COOKED = registerEndFood("end_fish_cooked", Foods.COOKED_SALMON);
-    public final static Item BUCKET_END_FISH = registerEndItem(
-            "bucket_end_fish",
+    public final static Item BUCKET_END_FISH = registerEndItem(EndItems.prepareItemPath("bucket_end_fish"),
             new EndBucketItem(EndEntities.END_FISH.type())
     );
-    public final static Item BUCKET_CUBOZOA = registerEndItem(
-            "bucket_cubozoa",
+    public final static Item BUCKET_CUBOZOA = registerEndItem(EndItems.prepareItemPath("bucket_cubozoa"),
             new EndBucketItem(EndEntities.CUBOZOA.type())
     );
     public final static Item SWEET_BERRY_JELLY = registerEndFood("sweet_berry_jelly", 8, 0.7F);
@@ -302,44 +288,81 @@ public class EndItems {
     }
 
     public static Item registerEndDisc(String name, ResourceKey<JukeboxSong> sound) {
-        Item item = BaseDiscItem.create(sound, BehaviourBuilders.createDisc());
-        RecordItemModelProvider.add(item);
-        getItemRegistry().register(name, item, CommonItemTags.MUSIC_DISCS);
-        return item;
+        final String path = prepareItemPath(name);
+        try {
+            Item item = BaseDiscItem.create(sound, BehaviourBuilders.createDisc());
+            RecordItemModelProvider.add(item);
+            getItemRegistry().register(path, item, CommonItemTags.MUSIC_DISCS);
+            return item;
+        } finally {
+            getItemRegistry().finishConstructionPath();
+        }
     }
 
     public static Item registerEndItem(String name) {
-        return getItemRegistry().register(name, new ModelProviderItem(makeEndItemSettings()));
+        return registerEndItem(prepareItemPath(name), new ModelProviderItem(makeEndItemSettings()));
     }
 
     public static Item registerEndItem(String name, Item item) {
-        return getItemRegistry().register(name, item);
+        try {
+            return getItemRegistry().register(name, item);
+        } finally {
+            getItemRegistry().finishConstructionPath();
+        }
     }
 
-    public static TieredItem registerEndTool(String name, TieredItem item) {
-        return getItemRegistry().registerAsTool(name, item);
+    public static <T extends Item> T registerEndTool(String name, T item) {
+        try {
+            return getItemRegistry().registerAsTool(name, item);
+        } finally {
+            getItemRegistry().finishConstructionPath();
+        }
     }
 
     public static Item registerEndEgg(String name, EntityType<? extends Mob> type, int background, int dots) {
-        return getItemRegistry().registerEgg(name, new BaseSpawnEggItem(type, background, dots, makeEndItemSettings()));
+        final String path = prepareItemPath(name);
+        try {
+            return getItemRegistry().registerEgg(path, new BaseSpawnEggItem(type, background, dots, makeEndItemSettings()));
+        } finally {
+            getItemRegistry().finishConstructionPath();
+        }
     }
 
     public static Item registerEndFood(String name, int hunger, float saturation, MobEffectInstance... effects) {
-        return getItemRegistry().registerFood(name, ModelProviderItem::new, hunger, saturation, effects);
+        final String path = prepareItemPath(name);
+        try {
+            return getItemRegistry().registerFood(path, ModelProviderItem::new, hunger, saturation, effects);
+        } finally {
+            getItemRegistry().finishConstructionPath();
+        }
     }
 
     public static Item registerEndFood(String name, FoodProperties foodComponent) {
-        return getItemRegistry().register(name, new ModelProviderItem(getItemRegistry()
-                .createDefaultItemSettings()
-                .food(foodComponent)));
+        final String path = prepareItemPath(name);
+        try {
+            return getItemRegistry().register(path, new ModelProviderItem(getItemRegistry()
+                    .createDefaultItemSettings()
+                    .food(foodComponent)));
+        } finally {
+            getItemRegistry().finishConstructionPath();
+        }
     }
 
     public static Item registerEndDrink(String name, int hunger, float saturation) {
-        return getItemRegistry().registerDrink(name, ModelProviderItem::new, hunger, saturation);
+        final String path = prepareItemPath(name);
+        try {
+            return getItemRegistry().registerDrink(path, ModelProviderItem::new, hunger, saturation);
+        } finally {
+            getItemRegistry().finishConstructionPath();
+        }
     }
 
     public static Item.Properties makeEndItemSettings() {
         return new Item.Properties();
+    }
+
+    public static String prepareItemPath(String name) {
+        return getItemRegistry().prepareConstructionPath(name);
     }
 
     @NotNull
@@ -352,7 +375,6 @@ public class EndItems {
 
     @ApiStatus.Internal
     public static void ensureStaticallyLoaded() {
-        GuideBookItem.ensureStaticallyLoaded();
         if (BCLib.isDevEnvironment()) {
             DebugHelpers.generateDebugItems();
         }

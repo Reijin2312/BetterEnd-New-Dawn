@@ -5,20 +5,20 @@ import org.betterx.betterend.registry.EndEntitiesRenders;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartNames;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.world.entity.LivingEntity;
 
 import com.google.common.collect.Lists;
 
 import java.util.Collections;
 
-public class CrystaliteChestplateModel extends HumanoidModel<LivingEntity> implements HumanoidArmorRenderer.CopyExtraState {
+public class CrystaliteChestplateModel extends HumanoidModel<HumanoidRenderState> implements HumanoidArmorRenderer.CopyExtraState {
 
     public ModelPart leftShoulder;
     public ModelPart rightShoulder;
@@ -38,13 +38,13 @@ public class CrystaliteChestplateModel extends HumanoidModel<LivingEntity> imple
 
         // Humanoid model tries to retrieve all parts in it's constructor,
         // so we need to add empty Nodes
-        modelPartData.addOrReplaceChild("head", CubeListBuilder.create(), PartPose.ZERO);
-        modelPartData.addOrReplaceChild("hat", CubeListBuilder.create(), PartPose.ZERO);
+        PartDefinition head = modelPartData.addOrReplaceChild(PartNames.HEAD, CubeListBuilder.create(), PartPose.ZERO);
+        head.addOrReplaceChild(PartNames.HAT, CubeListBuilder.create(), PartPose.ZERO);
         // modelPartData.addOrReplaceChild("body", CubeListBuilder.create(), PartPose.ZERO);
-        modelPartData.addOrReplaceChild("right_arm", CubeListBuilder.create(), PartPose.ZERO);
-        modelPartData.addOrReplaceChild("left_arm", CubeListBuilder.create(), PartPose.ZERO);
-        modelPartData.addOrReplaceChild("right_leg", CubeListBuilder.create(), PartPose.ZERO);
-        modelPartData.addOrReplaceChild("left_leg", CubeListBuilder.create(), PartPose.ZERO);
+        modelPartData.addOrReplaceChild(PartNames.RIGHT_ARM, CubeListBuilder.create(), PartPose.ZERO);
+        modelPartData.addOrReplaceChild(PartNames.LEFT_ARM, CubeListBuilder.create(), PartPose.ZERO);
+        modelPartData.addOrReplaceChild(PartNames.RIGHT_LEG, CubeListBuilder.create(), PartPose.ZERO);
+        modelPartData.addOrReplaceChild(PartNames.LEFT_LEG, CubeListBuilder.create(), PartPose.ZERO);
 
         CubeDeformation deformation = new CubeDeformation(scale + 0.25F);
         PartDefinition body = modelPartData.addOrReplaceChild(
@@ -116,7 +116,7 @@ public class CrystaliteChestplateModel extends HumanoidModel<LivingEntity> imple
     }
 
     protected CrystaliteChestplateModel(ModelPart modelPart, boolean thinArms) {
-        super(modelPart, RenderType::entityTranslucent);
+        super(modelPart, RenderTypes::entityTranslucent);
         this.thinArms = thinArms;
         localBody = modelPart.getChild(PartNames.BODY);
         this.leftShoulder = modelPart.getChild("leftShoulder");
@@ -125,22 +125,25 @@ public class CrystaliteChestplateModel extends HumanoidModel<LivingEntity> imple
 
 
     @Override
-    public void copyPropertiesFrom(HumanoidModel<LivingEntity> parentModel) {
-        this.leftShoulder.copyFrom(leftArm);
-        this.rightShoulder.copyFrom(rightArm);
+    public void copyPropertiesFrom(HumanoidModel<?> parentModel) {
+        copyPart(leftArm, this.leftShoulder);
+        copyPart(rightArm, this.rightShoulder);
     }
 
     @Override
+    public void setupAnim(HumanoidRenderState renderState) {
+        super.setupAnim(renderState);
+        copyPropertiesFrom(this);
+    }
+
     protected Iterable<ModelPart> headParts() {
         return Collections::emptyIterator;
     }
 
-    @Override
     protected Iterable<ModelPart> bodyParts() {
         return Lists.newArrayList(localBody, leftShoulder, rightShoulder);
     }
 
-    @Override
     public void translateToHand(HumanoidArm arm, PoseStack matrices) {
         ModelPart modelPart = this.getArm(arm);
         if (this.thinArms) {
@@ -151,5 +154,19 @@ public class CrystaliteChestplateModel extends HumanoidModel<LivingEntity> imple
         } else {
             modelPart.translateAndRotate(matrices);
         }
+    }
+
+    private static void copyPart(ModelPart from, ModelPart to) {
+        to.x = from.x;
+        to.y = from.y;
+        to.z = from.z;
+        to.xRot = from.xRot;
+        to.yRot = from.yRot;
+        to.zRot = from.zRot;
+        to.xScale = from.xScale;
+        to.yScale = from.yScale;
+        to.zScale = from.zScale;
+        to.visible = from.visible;
+        to.skipDraw = from.skipDraw;
     }
 }

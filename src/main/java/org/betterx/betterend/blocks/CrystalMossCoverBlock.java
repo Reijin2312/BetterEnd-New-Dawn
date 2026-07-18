@@ -14,19 +14,18 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.MapColor;
 
-public class CrystalMossCoverBlock extends MultifaceBlock implements BonemealableBlock, SimpleWaterloggedBlock, RenderLayerProvider, BehaviourShearablePlant {
+public class CrystalMossCoverBlock extends MultifaceSpreadeableBlock implements BonemealableBlock, SimpleWaterloggedBlock, RenderLayerProvider, BehaviourShearablePlant {
     public static final MapCodec<CrystalMossCoverBlock> CODEC = simpleCodec(CrystalMossCoverBlock::new);
     private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     private final MultifaceSpreader spreader = new MultifaceSpreader(this);
@@ -42,29 +41,25 @@ public class CrystalMossCoverBlock extends MultifaceBlock implements Bonemealabl
     }
 
     @Override
-    protected MapCodec<? extends MultifaceBlock> codec() {
+    public MapCodec<? extends MultifaceSpreadeableBlock> codec() {
         return CODEC;
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder);
-        builder.add(WATERLOGGED);
     }
 
     @Override
     public BlockState updateShape(
             BlockState blockState,
-            Direction direction,
-            BlockState blockState2,
-            LevelAccessor levelAccessor,
+            LevelReader levelReader,
+            ScheduledTickAccess scheduledTickAccess,
             BlockPos blockPos,
-            BlockPos blockPos2
+            Direction direction,
+            BlockPos blockPos2,
+            BlockState blockState2,
+            RandomSource randomSource
     ) {
         if (blockState.getValue(WATERLOGGED).booleanValue()) {
-            levelAccessor.scheduleTick(blockPos, Fluids.WATER, Fluids.WATER.getTickDelay(levelAccessor));
+            scheduledTickAccess.scheduleTick(blockPos, Fluids.WATER, Fluids.WATER.getTickDelay(levelReader));
         }
-        return super.updateShape(blockState, direction, blockState2, levelAccessor, blockPos, blockPos2);
+        return super.updateShape(blockState, levelReader, scheduledTickAccess, blockPos, direction, blockPos2, blockState2, randomSource);
     }
 
     @Override
@@ -113,12 +108,10 @@ public class CrystalMossCoverBlock extends MultifaceBlock implements Bonemealabl
         return super.getFluidState(blockState);
     }
 
-    @Override
     public boolean propagatesSkylightDown(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
         return blockState.getFluidState().isEmpty();
     }
 
-    @Override
     public MultifaceSpreader getSpreader() {
         return this.spreader;
     }

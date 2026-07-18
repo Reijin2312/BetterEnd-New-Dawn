@@ -4,18 +4,10 @@
   "group": "planks",
   "ingredients": [
     [
-      {
-        "item": "betterend:lacugrove_log"
-      },
-      {
-        "item": "betterend:lacugrove_bark"
-      },
-      {
-        "item": "betterend:lacugrove_stripped_log"
-      },
-      {
-        "item": "betterend:lacugrove_stripped_bark"
-      }
+      "betterend:lacugrove_log",
+      "betterend:lacugrove_bark",
+      "betterend:lacugrove_stripped_log",
+      "betterend:lacugrove_stripped_bark"
     ]
   ],
   "result": {

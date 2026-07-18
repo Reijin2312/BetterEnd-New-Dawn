@@ -8,8 +8,9 @@ import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -17,8 +18,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 public class BlueVineLanternBlock extends BaseBlock.Wood implements BlockModelProvider {
     public static final BooleanProperty NATURAL = BlockProperties.NATURAL;
@@ -41,11 +40,13 @@ public class BlueVineLanternBlock extends BaseBlock.Wood implements BlockModelPr
     @SuppressWarnings("deprecation")
     public BlockState updateShape(
             BlockState state,
-            Direction facing,
-            BlockState neighborState,
-            LevelAccessor world,
+            LevelReader world,
+            ScheduledTickAccess scheduledTickAccess,
             BlockPos pos,
-            BlockPos neighborPos
+            Direction facing,
+            BlockPos neighborPos,
+            BlockState neighborState,
+            RandomSource random
     ) {
         if (!canSurvive(state, world, pos)) {
             return Blocks.AIR.defaultBlockState();
@@ -60,8 +61,8 @@ public class BlueVineLanternBlock extends BaseBlock.Wood implements BlockModelPr
     }
 
     @Override
-    @Environment(EnvType.CLIENT)
-    public void provideBlockModels(WoverBlockModelGenerators generator) {
+    public void provideBlockModels(Object modelGenerator) {
+    WoverBlockModelGenerators generator = (WoverBlockModelGenerators) modelGenerator;
         GlowingHymenophoreBlock.provideUnshadedCubeModel(generator, this);
     }
 }

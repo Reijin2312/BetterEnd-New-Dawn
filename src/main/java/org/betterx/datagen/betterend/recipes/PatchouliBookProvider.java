@@ -1,7 +1,6 @@
 package org.betterx.datagen.betterend.recipes;
 
 import org.betterx.betterend.BetterEnd;
-import org.betterx.betterend.item.GuideBookItem;
 import org.betterx.betterend.registry.EndItems;
 import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.datagen.api.provider.WoverRecipeProvider;
@@ -18,7 +17,7 @@ public class PatchouliBookProvider extends WoverRecipeProvider {
 
     @Override
     protected void bootstrap(HolderLookup.Provider provider, RecipeOutput context) {
-        RecipeBuilder.crafting(BetterEnd.C.mk("guide_book"), GuideBookItem.GUIDE_BOOK)
+        RecipeBuilder.crafting(BetterEnd.C.mk("guide_book"), EndItems.GUIDE_BOOK)
                      .shape("D", "B", "C")
                      .addMaterial('D', EndItems.ENDER_DUST)
                      .addMaterial('B', Items.BOOK)

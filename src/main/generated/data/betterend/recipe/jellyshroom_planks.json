@@ -4,18 +4,10 @@
   "group": "planks",
   "ingredients": [
     [
-      {
-        "item": "betterend:jellyshroom_log"
-      },
-      {
-        "item": "betterend:jellyshroom_bark"
-      },
-      {
-        "item": "betterend:jellyshroom_stripped_log"
-      },
-      {
-        "item": "betterend:jellyshroom_stripped_bark"
-      }
+      "betterend:jellyshroom_log",
+      "betterend:jellyshroom_bark",
+      "betterend:jellyshroom_stripped_log",
+      "betterend:jellyshroom_stripped_bark"
     ]
   ],
   "result": {

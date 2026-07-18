@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "wall",
   "key": {
-    "*": {
-      "item": "betterend:lacugrove_planks"
-    },
-    "|": {
-      "item": "betterend:lacugrove_fence"
-    }
+    "*": "betterend:lacugrove_planks",
+    "|": "betterend:lacugrove_fence"
   },
   "pattern": [
     "* *",

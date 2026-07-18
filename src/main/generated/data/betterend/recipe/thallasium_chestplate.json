@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "end_metal_chestplates",
   "key": {
-    "#": {
-      "item": "betterend:thallasium_forged_plate"
-    }
+    "#": "betterend:thallasium_forged_plate"
   },
   "pattern": [
     "# #",

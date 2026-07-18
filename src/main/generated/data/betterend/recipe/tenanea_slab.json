@@ -3,9 +3,7 @@
   "category": "building",
   "group": "slab",
   "key": {
-    "#": {
-      "item": "betterend:tenanea_planks"
-    }
+    "#": "betterend:tenanea_planks"
   },
   "pattern": [
     "###"

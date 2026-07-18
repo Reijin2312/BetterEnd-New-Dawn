@@ -1,5 +1,6 @@
 package org.betterx.betterend.client.gui;
 
+import net.minecraft.recipebook.ServerPlaceRecipe;
 import org.betterx.bclib.recipes.AlloyingRecipe;
 import org.betterx.bclib.recipes.AlloyingRecipeInput;
 import org.betterx.betterend.blocks.entities.EndStoneSmelterBlockEntity;
@@ -7,25 +8,26 @@ import org.betterx.betterend.client.gui.slot.SmelterFuelSlot;
 import org.betterx.betterend.client.gui.slot.SmelterOutputSlot;
 import org.betterx.betterend.registry.EndMenuTypes;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.StackedContents;
+import net.minecraft.world.entity.player.StackedItemContents;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.BlastingRecipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
-import org.anti_ad.mc.ipn.api.IPNIgnore;
 
 import org.jetbrains.annotations.NotNull;
 
-@IPNIgnore
-public class EndStoneSmelterMenu extends RecipeBookMenu<AlloyingRecipeInput, AlloyingRecipe> {
+import java.util.List;
+
+public class EndStoneSmelterMenu extends RecipeBookMenu {
     public static final int INGREDIENT_SLOT_A = 0;
     public static final int INGREDIENT_SLOT_B = 1;
     public static final int FUEL_SLOT = 2;
@@ -61,15 +63,7 @@ public class EndStoneSmelterMenu extends RecipeBookMenu<AlloyingRecipeInput, All
         addSlot(new Slot(inventory, INGREDIENT_SLOT_B, 67, 17));
         addSlot(new SmelterFuelSlot(this, inventory, FUEL_SLOT, 56, 53));
         addSlot(new SmelterOutputSlot(playerInventory.player, inventory, RESULT_SLOT, 129, 35));
-
-        for (int i = 0; i < 3; ++i) {
-            for (int j = 0; j < 9; ++j) {
-                addSlot(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
-            }
-        }
-        for (int i = 0; i < 9; ++i) {
-            addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
-        }
+        addStandardInventorySlots(playerInventory, 8, 84);
     }
 
     @Override
@@ -77,45 +71,27 @@ public class EndStoneSmelterMenu extends RecipeBookMenu<AlloyingRecipeInput, All
         return EndMenuTypes.END_STONE_SMELTER;
     }
 
+    public Slot getResultSlot() {
+        return this.slots.get(RESULT_SLOT);
+    }
+
+    public Slot getInputSlotA() {
+        return this.slots.get(INGREDIENT_SLOT_A);
+    }
+
+    public Slot getInputSlotB() {
+        return this.slots.get(INGREDIENT_SLOT_B);
+    }
+
+    public Slot getFuelSlot() {
+        return this.slots.get(FUEL_SLOT);
+    }
+
     @Override
-    public void fillCraftSlotsStackedContents(StackedContents finder) {
+    public void fillCraftSlotsStackedContents(StackedItemContents finder) {
         if (inventory instanceof StackedContentsCompatible) {
             ((StackedContentsCompatible) inventory).fillStackedContents(finder);
         }
-    }
-
-    @Override
-    public void clearCraftingContent() {
-        this.getSlot(INGREDIENT_SLOT_A).set(ItemStack.EMPTY);
-        this.getSlot(INGREDIENT_SLOT_B).set(ItemStack.EMPTY);
-        this.getSlot(RESULT_SLOT).set(ItemStack.EMPTY);
-    }
-
-    @Override
-    public boolean recipeMatches(RecipeHolder<AlloyingRecipe> recipeHolder) {
-        return recipeHolder
-                .value()
-                .matches(new AlloyingRecipeInput(this.inventory.getItem(INGREDIENT_SLOT_A), this.inventory.getItem(INGREDIENT_SLOT_B)), this.world);
-    }
-
-    @Override
-    public int getResultSlotIndex() {
-        return RESULT_SLOT;
-    }
-
-    @Override
-    public int getGridWidth() {
-        return 2;
-    }
-
-    @Override
-    public int getGridHeight() {
-        return 1;
-    }
-
-    @Override
-    public int getSize() {
-        return SLOT_COUNT;
     }
 
     @Override
@@ -124,8 +100,60 @@ public class EndStoneSmelterMenu extends RecipeBookMenu<AlloyingRecipeInput, All
     }
 
     @Override
-    public boolean shouldMoveToInventory(int i) {
-        return i != FUEL_SLOT;
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public RecipeBookMenu.PostPlaceAction handlePlacement(
+            boolean placeAll,
+            boolean alreadyPopulated,
+            RecipeHolder<?> recipe,
+            ServerLevel serverLevel,
+            Inventory playerInventory
+    ) {
+        final List<Slot> inputSlots = List.of(this.getInputSlotA(), this.getInputSlotB());
+        final List<Slot> slotsToClear = List.of(this.getInputSlotA(), this.getInputSlotB(), this.getResultSlot());
+
+        return ServerPlaceRecipe.placeRecipe(
+                new ServerPlaceRecipe.CraftingMenuAccess() {
+                    @Override
+                    public void fillCraftSlotsStackedContents(StackedItemContents finder) {
+                        EndStoneSmelterMenu.this.fillCraftSlotsStackedContents(finder);
+                    }
+
+                    @Override
+                    public void clearCraftingContent() {
+                        slotsToClear.forEach(slot -> slot.set(ItemStack.EMPTY));
+                    }
+
+                    @Override
+                    public boolean recipeMatches(RecipeHolder holder) {
+                        Object value = holder.value();
+                        if (value instanceof AlloyingRecipe alloyingRecipe) {
+                            AlloyingRecipeInput input = new AlloyingRecipeInput(
+                                    EndStoneSmelterMenu.this.inventory.getItem(INGREDIENT_SLOT_A),
+                                    EndStoneSmelterMenu.this.inventory.getItem(INGREDIENT_SLOT_B)
+                            );
+                            return alloyingRecipe.matches(input, serverLevel);
+                        }
+
+                        if (value instanceof BlastingRecipe blastingRecipe) {
+                            AlloyingRecipeInput input = new AlloyingRecipeInput(
+                                    EndStoneSmelterMenu.this.inventory.getItem(INGREDIENT_SLOT_A),
+                                    EndStoneSmelterMenu.this.inventory.getItem(INGREDIENT_SLOT_B)
+                            );
+                            return blastingRecipe.matches(new SingleRecipeInput(input.any()), serverLevel);
+                        }
+
+                        return false;
+                    }
+                },
+                2,
+                1,
+                inputSlots,
+                slotsToClear,
+                playerInventory,
+                (RecipeHolder) recipe,
+                placeAll,
+                alreadyPopulated
+        );
     }
 
     @Override
@@ -134,13 +162,12 @@ public class EndStoneSmelterMenu extends RecipeBookMenu<AlloyingRecipeInput, All
     }
 
     protected boolean isSmeltable(ItemStack itemStack) {
-        return world.getRecipeManager()
-                    .getRecipeFor(AlloyingRecipe.TYPE, new AlloyingRecipeInput(itemStack), world)
-                    .isPresent();
+        if (!(world.recipeAccess() instanceof RecipeManager recipeManager)) return false;
+        return recipeManager.getRecipeFor(AlloyingRecipe.TYPE, new AlloyingRecipeInput(itemStack), world).isPresent();
     }
 
     public boolean isFuel(ItemStack itemStack) {
-        return EndStoneSmelterBlockEntity.canUseAsFuel(itemStack);
+        return EndStoneSmelterBlockEntity.canUseAsFuel(itemStack, world);
     }
 
     @Override
@@ -173,7 +200,7 @@ public class EndStoneSmelterMenu extends RecipeBookMenu<AlloyingRecipeInput, All
         }
 
         if (slotStack.isEmpty()) {
-            slot.set(ItemStack.EMPTY);
+            slot.setByPlayer(ItemStack.EMPTY);
         } else {
             slot.setChanged();
         }
@@ -187,14 +214,12 @@ public class EndStoneSmelterMenu extends RecipeBookMenu<AlloyingRecipeInput, All
         return itemStack;
     }
 
-    @Environment(EnvType.CLIENT)
     public int getSmeltProgress() {
         int time = propertyDelegate.get(2);
         int timeTotal = propertyDelegate.get(3);
         return timeTotal != 0 && time != 0 ? time * 24 / timeTotal : 0;
     }
 
-    @Environment(EnvType.CLIENT)
     public int getFuelProgress() {
         int fuelTime = propertyDelegate.get(1);
         if (fuelTime == 0) {
@@ -203,7 +228,6 @@ public class EndStoneSmelterMenu extends RecipeBookMenu<AlloyingRecipeInput, All
         return propertyDelegate.get(0) * 13 / fuelTime;
     }
 
-    @Environment(EnvType.CLIENT)
     public boolean isBurning() {
         return propertyDelegate.get(0) > 0;
     }

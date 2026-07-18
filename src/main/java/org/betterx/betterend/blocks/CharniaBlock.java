@@ -9,9 +9,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class CharniaBlock extends EndUnderwaterPlantBlock implements BehaviourWaterPlant {
     public CharniaBlock() {
@@ -20,15 +23,16 @@ public class CharniaBlock extends EndUnderwaterPlantBlock implements BehaviourWa
         );
     }
 
-    @Override
     public void appendHoverText(
             ItemStack itemStack,
             Item.TooltipContext tooltipContext,
-            List<Component> list,
+            TooltipDisplay tooltipDisplay,
+            Consumer<Component> consumer,
             TooltipFlag tooltipFlag
     ) {
-        super.appendHoverText(itemStack, tooltipContext, list, tooltipFlag);
-        SurvivesOnSpecialGround.appendHoverTextUnderwater(list);
+        List<Component> lines = new ArrayList<>();
+        SurvivesOnSpecialGround.appendHoverTextUnderwater(lines);
+        lines.forEach(consumer);
     }
 
     @Override

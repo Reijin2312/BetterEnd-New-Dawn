@@ -5,7 +5,7 @@ import org.betterx.bclib.complexmaterials.entry.SlotMap;
 import org.betterx.bclib.complexmaterials.set.stone.StoneSlots;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.betterend.registry.EndItems;
+import org.betterx.wover.item.api.ItemRegistry;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.MapColor;
@@ -22,7 +22,7 @@ public class VanillaVariantStoneMaterial extends StoneComplexMaterial {
     public VanillaVariantStoneMaterial init() {
         return (VanillaVariantStoneMaterial) super.init(
                 EndBlocks.getBlockRegistry(),
-                EndItems.getItemRegistry()
+                ItemRegistry.forMod(BetterEnd.C)
         );
     }
 

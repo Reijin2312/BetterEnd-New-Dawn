@@ -114,6 +114,7 @@ modrinth {
     debugMode = false
 }
 
+if (false) {
 curseforge {
     def projectID = findProperty('modrinth_id') ?: project.archives_base_name
     def slurper = new groovy.json.JsonSlurper()
@@ -165,6 +166,7 @@ curseforge {
         debug = false
         forgeGradleIntegration = false
     }
+}
 }
 
 

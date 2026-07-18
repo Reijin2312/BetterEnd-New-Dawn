@@ -2,71 +2,56 @@ package org.betterx.betterend.blocks;
 
 import org.betterx.bclib.behaviours.interfaces.BehaviourStone;
 import org.betterx.bclib.blocks.BaseBlockNotFull;
-import org.betterx.bclib.client.models.BasePatterns;
-import org.betterx.bclib.client.models.ModelsHelper;
-import org.betterx.bclib.client.models.ModelsHelper.MultiPartBuilder;
-import org.betterx.bclib.client.models.PatternsHelper;
 import org.betterx.bclib.client.render.BCLRenderLayer;
 import org.betterx.bclib.interfaces.PostInitable;
 import org.betterx.bclib.interfaces.RenderLayerProvider;
-import org.betterx.bclib.interfaces.RuntimeBlockModelProvider;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.JsonFactory;
 import org.betterx.betterend.BetterEnd;
-import org.betterx.betterend.blocks.basis.PottableLeavesBlock;
-import org.betterx.betterend.client.models.Patterns;
 import org.betterx.betterend.interfaces.PottablePlant;
 import org.betterx.betterend.interfaces.PottableTerrain;
 import org.betterx.betterend.registry.EndBlocks;
 
-import com.mojang.math.Transformation;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.BlockModel;
-import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.storage.loot.LootParams.Builder;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.fabricmc.loader.api.FabricLoader;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import org.joml.Vector3f;
 
 import java.io.File;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvider, PostInitable, RuntimeBlockModelProvider {
+public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvider, PostInitable {
     private static final IntegerProperty PLANT_ID = EndBlockProperties.PLANT_ID;
     private static final IntegerProperty SOIL_ID = EndBlockProperties.SOIL_ID;
     private static final IntegerProperty POT_LIGHT = EndBlockProperties.POT_LIGHT;
@@ -75,23 +60,70 @@ public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvi
     private static Block[] plants;
     private static Block[] soils;
     private static final String[] DEFAULT_PLANT_IDS = new String[]{
-            "twisted_umbrella_moss", "dragon_tree_sapling", "bolux_mushroom", "small_amaranita_mushroom",
-            "crystal_grass", "creeping_moss", "pythadendron_sapling", "salteago", "murkweed", "chorus_grass",
-            "tenanea_sapling", "lucernia_leaves", "neon_cactus", "amber_grass", "umbrella_moss", "flammalix",
-            "lucernia_sapling", "lutebus", "small_jellyshroom", "blossom_berry_seed", "jungle_grass",
-            "tenanea_leaves", "shadow_plant", "cave_grass", "aeridium", "dragon_tree_leaves", "blooming_cooksonia",
-            "helix_tree_sapling", "mossy_glowshroom_sapling", "shadow_berry", "fracturn", "inflexia",
-            "lacugrove_sapling", "vaiolush_fern", "orango", "end_lotus_flower", "chorus_mushroom_seed",
-            "needlegrass", "amber_root_seed", "clawfern", "globulagus", "pythadendron_leaves", "bushy_grass",
-            "lamellarium", "umbrella_tree_sapling", "lacugrove_leaves"
+            "twisted_umbrella_moss",
+            "dragon_tree_sapling",
+            "bolux_mushroom",
+            "small_amaranita_mushroom",
+            "crystal_grass",
+            "creeping_moss",
+            "pythadendron_sapling",
+            "salteago",
+            "murkweed",
+            "chorus_grass",
+            "tenanea_sapling",
+            "lucernia_leaves",
+            "neon_cactus",
+            "amber_grass",
+            "umbrella_moss",
+            "flammalix",
+            "lucernia_sapling",
+            "lutebus",
+            "small_jellyshroom",
+            "blossom_berry_seed",
+            "jungle_grass",
+            "tenanea_leaves",
+            "shadow_plant",
+            "cave_grass",
+            "aeridium",
+            "dragon_tree_leaves",
+            "blooming_cooksonia",
+            "helix_tree_sapling",
+            "mossy_glowshroom_sapling",
+            "shadow_berry",
+            "fracturn",
+            "inflexia",
+            "lacugrove_sapling",
+            "vaiolush_fern",
+            "orango",
+            "end_lotus_flower",
+            "chorus_mushroom_seed",
+            "needlegrass",
+            "amber_root_seed",
+            "clawfern",
+            "globulagus",
+            "pythadendron_leaves",
+            "bushy_grass",
+            "lamellarium",
+            "umbrella_tree_sapling",
+            "lacugrove_leaves"
     };
     private static final String[] DEFAULT_SOIL_IDS = new String[]{
-            "end_mycelium", "chorus_nylium", "shadow_grass", "sangnum", "pink_moss", "amber_moss",
-            "jungle_moss", "rutiscus", "pallidium_full", "crystal_moss", "cave_moss", "end_moss"
+            "end_mycelium",
+            "chorus_nylium",
+            "shadow_grass",
+            "sangnum",
+            "pink_moss",
+            "amber_moss",
+            "jungle_moss",
+            "rutiscus",
+            "pallidium_full",
+            "crystal_moss",
+            "cave_moss",
+            "end_moss"
     };
 
     public FlowerPotBlock(Block source) {
-        super(FabricBlockSettings.copyOf(source).luminance(state -> state.getValue(POT_LIGHT) * 5));
+        super(BlockBehaviour.Properties.ofLegacyCopy(source).lightLevel(state -> state.getValue(POT_LIGHT) * 5));
         this.registerDefaultState(
                 this.defaultBlockState()
                     .setValue(PLANT_ID, 0)
@@ -108,6 +140,7 @@ public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvi
 
     @Override
     public List<ItemStack> getDrops(BlockState state, Builder builder) {
+        ensureInit();
         List<ItemStack> drop = Lists.newArrayList(new ItemStack(this));
         int id = state.getValue(SOIL_ID) - 1;
         if (id >= 0 && id < soils.length && soils[id] != null) {
@@ -124,12 +157,15 @@ public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvi
     @SuppressWarnings("deprecation")
     public BlockState updateShape(
             BlockState state,
-            Direction facing,
-            BlockState neighborState,
-            LevelAccessor world,
+            LevelReader world,
+            ScheduledTickAccess scheduledTickAccess,
             BlockPos pos,
-            BlockPos neighborPos
+            Direction facing,
+            BlockPos neighborPos,
+            BlockState neighborState,
+            RandomSource random
     ) {
+        ensureInit();
         int plantID = state.getValue(PLANT_ID);
         if (plantID < 1 || plantID > plants.length || plants[plantID - 1] == null) {
             return state.getValue(POT_LIGHT) > 0 ? state.setValue(POT_LIGHT, 0) : state;
@@ -143,10 +179,22 @@ public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvi
 
     @Override
     public void postInit() {
-        if (FlowerPotBlock.plants != null) {
+        ensureInit();
+    }
+
+    private static void ensureInit() {
+        if (plants != null && soils != null) {
             return;
         }
+        synchronized (FlowerPotBlock.class) {
+            if (plants != null && soils != null) {
+                return;
+            }
+            initPottableLists();
+        }
+    }
 
+    private static void initPottableLists() {
         Block[] plants = new Block[128];
         Block[] soils = new Block[16];
 
@@ -199,39 +247,15 @@ public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvi
         }
     }
 
-    /**
-     * Returns the exact plant and soil ordering used by flower pots. Datagen
-     * needs this to create block-state variants that match runtime IDs.
-     */
     public static PottableEntries getPottableEntries() {
-        ensurePottableEntriesInitialized();
+        ensureInit();
         return new PottableEntries(plants.clone(), soils.clone());
-    }
-
-    private static void ensurePottableEntriesInitialized() {
-        if (plants != null && soils != null) {
-            return;
-        }
-
-        synchronized (FlowerPotBlock.class) {
-            if (plants != null && soils != null) {
-                return;
-            }
-
-            EndBlocks.ensureRegistered();
-            for (Block block : EndBlocks.getModBlocks()) {
-                if (block instanceof FlowerPotBlock flowerPot) {
-                    flowerPot.postInit();
-                    break;
-                }
-            }
-        }
     }
 
     public record PottableEntries(Block[] plants, Block[] soils) {
     }
 
-    private int maxNotNull(Block[] array) {
+    private static int maxNotNull(Block[] array) {
         int max = 0;
         for (int i = 0; i < array.length; i++) {
             if (array[i] != null) {
@@ -242,7 +266,7 @@ public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvi
     }
 
     private static String blockId(Block block) {
-        ResourceLocation location = BuiltInRegistries.BLOCK.getKey(block);
+        Identifier location = BuiltInRegistries.BLOCK.getKey(block);
         return location == null ? "" : location.toString();
     }
 
@@ -254,8 +278,11 @@ public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvi
         return ids;
     }
 
-    private void processBlock(Block[] target, Block block, String path, Map<String, Integer> idMap) {
-        ResourceLocation location = BuiltInRegistries.BLOCK.getKey(block);
+    private static void processBlock(Block[] target, Block block, String path, Map<String, Integer> idMap) {
+        Identifier location = BuiltInRegistries.BLOCK.getKey(block);
+        if (location == null) {
+            return;
+        }
         if (idMap.containsKey(location.getPath())) {
             target[idMap.get(location.getPath())] = block;
         } else {
@@ -271,7 +298,7 @@ public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvi
 
     @Override
     @SuppressWarnings("deprecation")
-    public ItemInteractionResult useItemOn(
+    public InteractionResult useItemOn(
             ItemStack itemStack,
             BlockState state,
             Level level,
@@ -280,13 +307,14 @@ public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvi
             InteractionHand hand,
             BlockHitResult hit
     ) {
-        if (level.isClientSide) {
-            return ItemInteractionResult.CONSUME;
+        ensureInit();
+        if (level.isClientSide()) {
+                return InteractionResult.CONSUME;
         }
         int soilID = state.getValue(SOIL_ID);
         if (soilID == 0 || soilID > soils.length || soils[soilID - 1] == null) {
             if (!(itemStack.getItem() instanceof BlockItem)) {
-                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                return InteractionResult.TRY_WITH_EMPTY_HAND;
             }
             Block block = ((BlockItem) itemStack.getItem()).getBlock();
             for (int i = 0; i < soils.length; i++) {
@@ -305,10 +333,10 @@ public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvi
                             1,
                             1
                     );
-                    return ItemInteractionResult.SUCCESS;
+                    return InteractionResult.SUCCESS;
                 }
             }
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
 
         int plantID = state.getValue(PLANT_ID);
@@ -316,22 +344,22 @@ public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvi
             if (plantID > 0 && plantID <= plants.length && plants[plantID - 1] != null) {
                 BlocksHelper.setWithUpdate(level, pos, state.setValue(PLANT_ID, 0).setValue(POT_LIGHT, 0));
                 player.addItem(new ItemStack(plants[plantID - 1]));
-                return ItemInteractionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
             if (soilID > 0 && soilID <= soils.length && soils[soilID - 1] != null) {
                 BlocksHelper.setWithUpdate(level, pos, state.setValue(SOIL_ID, 0));
                 player.addItem(new ItemStack(soils[soilID - 1]));
             }
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
         if (!(itemStack.getItem() instanceof BlockItem)) {
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
         BlockItem item = (BlockItem) itemStack.getItem();
         for (int i = 0; i < plants.length; i++) {
             if (item.getBlock() == plants[i]) {
                 if (!((PottablePlant) plants[i]).canPlantOn(soils[soilID - 1])) {
-                    return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                    return InteractionResult.TRY_WITH_EMPTY_HAND;
                 }
                 int light = plants[i].defaultBlockState().getLightEmission() / 5;
                 BlocksHelper.setWithUpdate(level, pos, state.setValue(PLANT_ID, i + 1).setValue(POT_LIGHT, light));
@@ -348,159 +376,16 @@ public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvi
                 if (!player.isCreative()) {
                     itemStack.shrink(1);
                 }
-                return ItemInteractionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-    }
-
-    @Override
-    @Environment(EnvType.CLIENT)
-    public BlockModel getItemModel(ResourceLocation blockId) {
-        Optional<String> pattern = PatternsHelper.createJson(Patterns.BLOCK_FLOWER_POT, blockId);
-        return ModelsHelper.fromPattern(pattern);
-    }
-
-    @Override
-    @Environment(EnvType.CLIENT)
-    public UnbakedModel getModelVariant(
-            ModelResourceLocation stateId,
-            BlockState blockState,
-            Map<ResourceLocation, UnbakedModel> modelCache
-    ) {
-        MultiPartBuilder model = MultiPartBuilder.create(stateDefinition);
-        model.part(new ModelResourceLocation(stateId.id(), "inventory")).add();
-        Transformation offset = new Transformation(new Vector3f(0, 7.5F / 16F, 0), null, null, null);
-
-        for (int i = 0; i < plants.length; i++) {
-            if (plants[i] == null) {
-                continue;
-            }
-
-            final int compareID = i + 1;
-            ResourceLocation modelPath = BuiltInRegistries.BLOCK.getKey(plants[i]);
-            ResourceLocation objSource = ResourceLocation.fromNamespaceAndPath(
-                    modelPath.getNamespace(),
-                    "models/block/" + modelPath.getPath() + "_potted.json"
-            );
-
-            if (Minecraft.getInstance().getResourceManager().getResource(objSource).isPresent()) {
-                objSource = ResourceLocation.fromNamespaceAndPath(modelPath.getNamespace(), "block/" + modelPath.getPath() + "_potted");
-                model.part(objSource)
-                     .setTransformation(offset)
-                     .setCondition(state -> state.getValue(PLANT_ID) == compareID)
-                     .add();
-                continue;
-            } else if (plants[i] instanceof SaplingBlock) {
-                ResourceLocation loc = BuiltInRegistries.BLOCK.getKey(plants[i]);
-                modelPath = ResourceLocation.fromNamespaceAndPath(loc.getNamespace(), "block/" + loc.getPath() + "_potted");
-                Map<String, String> textures = Maps.newHashMap();
-                textures.put("%modid%", loc.getNamespace());
-                textures.put("%texture%", loc.getPath());
-                Optional<String> pattern = Patterns.createJson(BasePatterns.BLOCK_CROSS, textures);
-                UnbakedModel unbakedModel = ModelsHelper.fromPattern(pattern);
-                modelCache.put(modelPath, unbakedModel);
-                model.part(modelPath)
-                     .setTransformation(offset)
-                     .setCondition(state -> state.getValue(PLANT_ID) == compareID)
-                     .add();
-                continue;
-            } else if (plants[i] instanceof PottableLeavesBlock) {
-                ResourceLocation loc = BuiltInRegistries.BLOCK.getKey(plants[i]);
-                modelPath = ResourceLocation.fromNamespaceAndPath(loc.getNamespace(), "block/" + loc.getPath() + "_potted");
-                Map<String, String> textures = Maps.newHashMap();
-                textures.put("%leaves%", loc.getPath().contains("lucernia") ? loc.getPath() + "_1" : loc.getPath());
-                textures.put("%stem%", loc.getPath().replace("_leaves", "_log_side"));
-                Optional<String> pattern = Patterns.createJson(Patterns.BLOCK_POTTED_LEAVES, textures);
-                UnbakedModel unbakedModel = ModelsHelper.fromPattern(pattern);
-                modelCache.put(modelPath, unbakedModel);
-                model.part(modelPath)
-                     .setTransformation(offset)
-                     .setCondition(state -> state.getValue(PLANT_ID) == compareID)
-                     .add();
-                continue;
-            }
-
-            objSource = ResourceLocation.fromNamespaceAndPath(modelPath.getNamespace(), "blockstates/" + modelPath.getPath() + ".json");
-            JsonObject obj = JsonFactory.getJsonObject(objSource);
-            if (obj != null) {
-                JsonElement variants = obj.get("variants");
-                JsonElement list = null;
-                String path = null;
-
-                if (variants == null) {
-                    continue;
-                }
-
-                if (variants.isJsonArray()) {
-                    list = variants.getAsJsonArray().get(0);
-                } else if (variants.isJsonObject()) {
-                    list = variants.getAsJsonObject().get(((PottablePlant) plants[i]).getPottedState());
-                }
-
-                if (list == null) {
-                    BetterEnd.LOGGER.warn("Incorrect json for pot plant " + objSource + ", no matching variants");
-                    continue;
-                }
-
-                if (list.isJsonArray()) {
-                    path = list.getAsJsonArray().get(0).getAsJsonObject().get("model").getAsString();
-                } else {
-                    path = list.getAsJsonObject().get("model").getAsString();
-                }
-
-                if (path == null) {
-                    BetterEnd.LOGGER.warn("Incorrect json for pot plant " + objSource + ", no matching variants");
-                    continue;
-                }
-
-                model.part(ResourceLocation.parse(path))
-                     .setTransformation(offset)
-                     .setCondition(state -> state.getValue(PLANT_ID) == compareID)
-                     .add();
-            } else {
-                ResourceLocation loc = BuiltInRegistries.BLOCK.getKey(plants[i]);
-                modelPath = ResourceLocation.fromNamespaceAndPath(loc.getNamespace(), "block/" + loc.getPath() + "_potted");
-                Map<String, String> textures = Maps.newHashMap();
-                textures.put("%modid%", loc.getNamespace());
-                textures.put("%texture%", loc.getPath());
-                Optional<String> pattern = Patterns.createJson(BasePatterns.BLOCK_CROSS, textures);
-                UnbakedModel unbakedModel = ModelsHelper.fromPattern(pattern);
-                modelCache.put(modelPath, unbakedModel);
-                model.part(modelPath)
-                     .setTransformation(offset)
-                     .setCondition(state -> state.getValue(PLANT_ID) == compareID)
-                     .add();
-            }
-        }
-
-        for (int i = 0; i < soils.length; i++) {
-            if (soils[i] == null) {
-                continue;
-            }
-
-            ResourceLocation soilLoc = BetterEnd.C.mk("flower_pot_soil_" + i);
-            if (!modelCache.containsKey(soilLoc)) {
-                String texture = BuiltInRegistries.BLOCK.getKey(soils[i]).getPath() + "_top";
-                if (texture.contains("rutiscus")) {
-                    texture += "_1";
-                }
-                Optional<String> pattern = Patterns.createJson(Patterns.BLOCK_FLOWER_POT_SOIL, texture);
-                UnbakedModel soil = ModelsHelper.fromPattern(pattern);
-                modelCache.put(soilLoc, soil);
-            }
-            final int compareID = i + 1;
-            model.part(soilLoc).setCondition(state -> state.getValue(SOIL_ID) == compareID).add();
-        }
-
-        UnbakedModel result = model.build();
-        modelCache.put(stateId.id(), result);
-        return result;
+        return InteractionResult.TRY_WITH_EMPTY_HAND;
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, BlockGetter view, BlockPos pos, CollisionContext ePos) {
+        ensureInit();
         int id = state.getValue(PLANT_ID);
         return id > 0 && id <= plants.length ? SHAPE_FULL : SHAPE_EMPTY;
     }

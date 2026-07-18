@@ -7,16 +7,14 @@ import org.betterx.bclib.client.render.BCLRenderLayer;
 import org.betterx.bclib.interfaces.RenderLayerProvider;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.blocks.basis.EndLanternBlock;
+import org.betterx.wover.block.api.model.DatagenModelDispatch;
 import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.models.blockstates.MultiVariantGenerator;
-import net.minecraft.data.models.blockstates.PropertyDispatch;
-import net.minecraft.data.models.blockstates.Variant;
-import net.minecraft.data.models.blockstates.VariantProperties;
-import net.minecraft.data.models.model.TextureMapping;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -25,8 +23,6 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 public class BulbVineLanternBlock extends EndLanternBlock implements RenderLayerProvider, BehaviourMetal {
     private static final VoxelShape SHAPE_CEIL = Block.box(4, 4, 4, 12, 16, 12);
@@ -55,7 +51,7 @@ public class BulbVineLanternBlock extends EndLanternBlock implements RenderLayer
         return BCLRenderLayer.CUTOUT;
     }
 
-    protected String getMetalTexture(ResourceLocation blockId) {
+    protected String getMetalTexture(Identifier blockId) {
         String name = blockId.getPath();
         name = name.substring(0, name.indexOf('_'));
         return name + "_bulb_vine_lantern_metal";
@@ -66,8 +62,8 @@ public class BulbVineLanternBlock extends EndLanternBlock implements RenderLayer
     }
 
     @Override
-    @Environment(EnvType.CLIENT)
-    public void provideBlockModels(WoverBlockModelGenerators generator) {
+    public void provideBlockModels(Object modelGenerator) {
+        WoverBlockModelGenerators generator = (WoverBlockModelGenerators) modelGenerator;
         //get id of this block from registry
         final var id = BuiltInRegistries.BLOCK.getKey(this);
 
@@ -78,11 +74,9 @@ public class BulbVineLanternBlock extends EndLanternBlock implements RenderLayer
         final var floorModel = BCLModels.BULB_LANTERN_FLOOR.createWithSuffix(this, "_floor", mapping, generator.modelOutput());
         final var ceilModel = BCLModels.BULB_LANTERN_CEIL.create(this, mapping, generator.modelOutput());
 
-        generator.acceptBlockState(MultiVariantGenerator
-                .multiVariant(this)
-                .with(PropertyDispatch
-                        .property(IS_FLOOR)
-                        .select(true, Variant.variant().with(VariantProperties.MODEL, floorModel))
-                        .select(false, Variant.variant().with(VariantProperties.MODEL, ceilModel))));
+        final Object properties = DatagenModelDispatch.propertyDispatchInitial(IS_FLOOR);
+        DatagenModelDispatch.propertyDispatchSelect(properties, true, BlockModelGenerators.plainVariant(floorModel));
+        DatagenModelDispatch.propertyDispatchSelect(properties, false, BlockModelGenerators.plainVariant(ceilModel));
+        generator.acceptBlockState(DatagenModelDispatch.dispatchWith(this, properties));
     }
 }

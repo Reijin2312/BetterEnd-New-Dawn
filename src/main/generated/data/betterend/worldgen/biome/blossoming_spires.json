@@ -1,29 +1,32 @@
 {
-  "carvers": {
-    "air": [],
-    "liquid": []
+  "attributes": {
+    "minecraft:audio/ambient_sounds": {
+      "loop": "betterend:betterend.ambient.blossoming_spires",
+      "mood": {
+        "block_search_extent": 8,
+        "offset": 2.0,
+        "sound": "betterend:betterend.ambient.dust_wastelands",
+        "tick_delay": 6000
+      }
+    },
+    "minecraft:audio/background_music": {
+      "default": {
+        "max_delay": 2400,
+        "min_delay": 600,
+        "replace_current_music": true,
+        "sound": "betterend:betterend.music.forest"
+      }
+    },
+    "minecraft:visual/fog_color": "#f192e5",
+    "minecraft:visual/sky_color": "#000000",
+    "minecraft:visual/water_fog_color": "#050533"
   },
+  "carvers": [],
   "downfall": 0.5,
   "effects": {
-    "ambient_sound": "betterend:betterend.ambient.blossoming_spires",
-    "fog_color": -945435,
-    "foliage_color": -8770182,
-    "grass_color": -8770182,
-    "mood_sound": {
-      "block_search_extent": 8,
-      "offset": 2.0,
-      "sound": "betterend:betterend.ambient.dust_wastelands",
-      "tick_delay": 6000
-    },
-    "music": {
-      "max_delay": 2400,
-      "min_delay": 600,
-      "replace_current_music": true,
-      "sound": "betterend:betterend.music.forest"
-    },
-    "sky_color": 0,
-    "water_color": 4159204,
-    "water_fog_color": 329011
+    "foliage_color": "#7a2d7a",
+    "grass_color": "#7a2d7a",
+    "water_color": "#3f76e4"
   },
   "features": [
     [

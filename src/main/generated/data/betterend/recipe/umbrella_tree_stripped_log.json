@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "betterend:umbrella_tree_stripped_bark"
-    }
+    "#": "betterend:umbrella_tree_stripped_bark"
   },
   "pattern": [
     "##",

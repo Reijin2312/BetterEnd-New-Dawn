@@ -7,17 +7,23 @@ import org.betterx.betterend.registry.EndEntitiesRenders;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.resources.Identifier;
 
-public class SilkMothEntityRenderer extends MobRenderer<SilkMothEntity, SilkMothEntityModel> {
-    private static final ResourceLocation TEXTURE = BetterEnd.C.mk("textures/entity/silk_moth.png");
+public class SilkMothEntityRenderer extends MobRenderer<SilkMothEntity, LivingEntityRenderState, SilkMothEntityModel> {
+    private static final Identifier TEXTURE = BetterEnd.C.mk("textures/entity/silk_moth.png");
 
     public SilkMothEntityRenderer(EntityRendererProvider.Context ctx) {
         super(ctx, new SilkMothEntityModel(ctx.bakeLayer(EndEntitiesRenders.SILK_MOTH_MODEL)), 0.5f);
     }
 
     @Override
-    public ResourceLocation getTextureLocation(SilkMothEntity entity) {
+    public Identifier getTextureLocation(LivingEntityRenderState state) {
         return TEXTURE;
+    }
+
+    @Override
+    public LivingEntityRenderState createRenderState() {
+        return new LivingEntityRenderState();
     }
 }

@@ -873,13 +873,16 @@
 
   	"tooltip.armor.crystalite_set": "Dar bonus: Regeneración I",
   	"tooltip.armor.crystalite_chest": "Efecto: Velocidad de Rapidez I",
-	"tooltip.armor.crystalite_boots": "Efecto: Velocidad I",
-	"betterend.jei.alloying.experience_time": "%s EXP | %s s",
-	"betterend.jei.container.alloying": "Aleación y fundición",
-	"betterend.jei.container.anvil": "Recetas de yunque",
-	"betterend.jei.container.infusion": "Recetas de infusión",
-	"betterend.jei.damage.amount&dmg": "Daño de herramienta: %s",
-	"betterend.jei.infusion.time&val": "%s ticks",
-	"betterend.jei.recipe_level.anvil": "Nivel: %s",
-	"config.jade.plugin_betterend.plant_growth": "Plantas de BetterEnd"
+  	"tooltip.armor.crystalite_boots": "Efecto: Velocidad I",
+  	"betterend.jei.container.anvil": "Recetas de yunque",
+  	"betterend.jei.damage.amount&dmg": "Daño de herramienta: %s",
+  	"betterend.jei.recipe_level.anvil": "Nivel: %s",
+  	"betterend.jei.infusion.time&val": "%s ticks",
+  	"betterend.jei.container.infusion": "Recetas de infusión",
+  	"betterend.jei.alloying.experience_time": "%s EXP | %s s",
+  	"betterend.jei.container.alloying": "Aleación y fundición",
+  	"jukebox_song.betterend.strange_and_alien": "§5Firel§r - §fStrange And Alien§r",
+  	"jukebox_song.betterend.grasping_at_stars": "§5Firel§r - §fGrasping At Stars§r",
+  	"jukebox_song.betterend.endseeker": "§5Firel§r - §fEndseeker§r",
+  	"jukebox_song.betterend.eo_dracona": "§5Firel§r - §fEo Dracona§r"
 }

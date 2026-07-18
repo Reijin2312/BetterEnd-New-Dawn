@@ -21,21 +21,21 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_sugar": {
+    "has_potion": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:sugar"
+            "items": "minecraft:potion"
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_tag_wover_water_bottles": {
+    "has_sugar": {
       "conditions": {
         "items": [
           {
-            "items": "#wover:water_bottles"
+            "items": "minecraft:sugar"
           }
         ]
       },
@@ -52,8 +52,8 @@
     [
       "has_the_recipe",
       "has_sugar",
+      "has_potion",
       "has_gelatine",
-      "has_tag_wover_water_bottles",
       "has_blossom_berry"
     ]
   ],

@@ -6,7 +6,6 @@ import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.blocks.AuroraCrystalBlock;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -14,9 +13,9 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.core.Vec3i;
 import net.minecraft.util.Mth;
 
@@ -30,34 +29,40 @@ public class EternalCrystalRenderer {
             int age,
             float tickDelta,
             PoseStack matrices,
-            MultiBufferSource vertexConsumerProvider,
-            int light
+            SubmitNodeCollector submitNodeCollector,
+            int light,
+            int overlay
     ) {
-        VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(RENDER_LAYER);
         int color = colors(age);
         float rotation = (age + tickDelta) / 25.0F + 6.0F;
         matrices.pushPose();
         matrices.scale(0.6F, 0.6F, 0.6F);
         matrices.mulPose(Axis.YP.rotation(rotation));
 
-        CORE.render(
+        submitNodeCollector.submitModelPart(
+                CORE,
                 matrices,
-                vertexConsumer,
+                RENDER_LAYER,
                 light,
-                OverlayTexture.NO_OVERLAY,
-                color
+                overlay,
+                null,
+                color,
+                null
         );
 
         for (int i = 0; i < 4; i++) {
             matrices.pushPose();
             float offset = Mth.sin(rotation * 2 + i) * 0.15F;
             matrices.translate(0, offset, 0);
-            SHARDS[i].render(
+            submitNodeCollector.submitModelPart(
+                    SHARDS[i],
                     matrices,
-                    vertexConsumer,
+                    RENDER_LAYER,
                     light,
-                    OverlayTexture.NO_OVERLAY,
-                    color
+                    overlay,
+                    null,
+                    color,
+                    null
             );
             matrices.popPose();
         }
@@ -119,7 +124,7 @@ public class EternalCrystalRenderer {
     }
 
     static {
-        RENDER_LAYER = RenderType.itemEntityTranslucentCull(BetterEnd.C.mk("textures/entity/eternal_crystal.png"));
+        RENDER_LAYER = RenderTypes.itemEntityTranslucentCull(BetterEnd.C.mk("textures/entity/eternal_crystal.png"));
         SHARDS = new ModelPart[4];
 
         ModelPart root = getTexturedModelData().bakeRoot();

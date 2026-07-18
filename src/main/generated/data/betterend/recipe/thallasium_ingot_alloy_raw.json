@@ -1,0 +1,12 @@
+{
+  "type": "bclib:alloying",
+  "experience": 2.1,
+  "ingredients": [
+    "betterend:thallasium_raw",
+    "betterend:thallasium_raw"
+  ],
+  "result": {
+    "count": 3,
+    "item": "betterend:thallasium_ingot"
+  }
+}

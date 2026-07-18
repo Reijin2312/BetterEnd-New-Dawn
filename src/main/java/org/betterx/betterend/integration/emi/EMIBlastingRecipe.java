@@ -4,14 +4,14 @@ import org.betterx.bclib.integration.emi.EMIAbstractAlloyingRecipe;
 import org.betterx.bclib.integration.emi.EMIPlugin;
 import org.betterx.betterend.BetterEnd;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.*;
 
 import dev.emi.emi.api.EmiRegistry;
 
 public class EMIBlastingRecipe extends EMIAbstractAlloyingRecipe<SingleRecipeInput, BlastingRecipe> {
     public EMIBlastingRecipe(RecipeHolder<BlastingRecipe> recipe) {
-        super(recipe, ResourceLocation.fromNamespaceAndPath(
+        super(recipe, Identifier.fromNamespaceAndPath(
                 "emi",
                 recipe.id().getNamespace() + "/" + recipe.id().getPath() + "/allloying"
         ), 1, false);

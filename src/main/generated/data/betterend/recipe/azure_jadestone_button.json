@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "end_stone_buttons",
   "ingredients": [
-    {
-      "item": "betterend:azure_jadestone"
-    }
+    "betterend:azure_jadestone"
   ],
   "result": {
     "count": 1,

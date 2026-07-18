@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "betterend:jellyshroom_log"
-    }
+    "#": "betterend:jellyshroom_log"
   },
   "pattern": [
     "##",

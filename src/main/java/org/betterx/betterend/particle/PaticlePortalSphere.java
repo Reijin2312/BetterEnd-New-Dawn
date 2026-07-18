@@ -9,9 +9,8 @@ import net.minecraft.client.particle.SimpleAnimatedParticle;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 public class PaticlePortalSphere extends SimpleAnimatedParticle {
     private int ticks;
@@ -61,7 +60,6 @@ public class PaticlePortalSphere extends SimpleAnimatedParticle {
         super.tick();
     }
 
-    @Environment(EnvType.CLIENT)
     public static class FactoryPortalSphere implements ParticleProvider<SimpleParticleType> {
 
         private final SpriteSet sprites;
@@ -79,7 +77,8 @@ public class PaticlePortalSphere extends SimpleAnimatedParticle {
                 double z,
                 double vX,
                 double vY,
-                double vZ
+                double vZ,
+                RandomSource random
         ) {
             return new PaticlePortalSphere(world, x, y, z, sprites);
         }

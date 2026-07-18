@@ -3,9 +3,7 @@
   "category": "building",
   "group": "slab",
   "key": {
-    "#": {
-      "item": "betterend:mossy_glowshroom_planks"
-    }
+    "#": "betterend:mossy_glowshroom_planks"
   },
   "pattern": [
     "###"

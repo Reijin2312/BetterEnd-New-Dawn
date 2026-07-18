@@ -14,14 +14,14 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.MapColor;
 
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public class UmbrellaTreeClusterEmptyBlock extends BaseBlock {
     public static final BooleanProperty NATURAL = EndBlockProperties.NATURAL;
 
     public UmbrellaTreeClusterEmptyBlock() {
-        super(FabricBlockSettings
-                .copyOf(Blocks.NETHER_WART_BLOCK)
+        super(BlockBehaviour.Properties
+                .ofLegacyCopy(Blocks.NETHER_WART_BLOCK)
                 .mapColor(MapColor.COLOR_PURPLE)
                 .randomTicks()
         );

@@ -1,14 +1,13 @@
 package org.betterx.betterend.mixin.common;
 
-import org.betterx.bclib.util.StructureHelper;
 import org.betterx.betterend.BetterEnd;
+import org.betterx.betterend.util.EndStructureHelper;
 import org.betterx.betterend.world.generator.GeneratorOptions;
 import org.betterx.wover.state.api.WorldConfig;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
@@ -53,7 +52,7 @@ public class EndPodiumFeatureMixin {
             String path = active
                     ? "portal/end_portal_active"
                     : "portal/end_portal_inactive";
-            StructureTemplate structure = StructureHelper.readStructure(BetterEnd.C.mk(path));
+            StructureTemplate structure = EndStructureHelper.readStructure(BetterEnd.C.mk(path));
             Vec3i size = structure.getSize();
             blockPos = blockPos.offset(-(size.getX() >> 1), -3, -(size.getZ() >> 1));
             structure.placeInWorld(world, blockPos, blockPos, new StructurePlaceSettings(), random, 2);
@@ -79,7 +78,7 @@ public class EndPodiumFeatureMixin {
     @Unique
     private BlockPos be_updatePortalPos(WorldGenLevel world) {
         CompoundTag compound = WorldConfig.getRootTag(BetterEnd.C);
-        be_portalPosition = NbtUtils.readBlockPos(compound, "portal").orElse(new BlockPos(0, 0, 0));
+        be_portalPosition = compound.read("portal", BlockPos.CODEC).orElse(new BlockPos(0, 0, 0));
 
         if (be_portalPosition.getY() == 0) {
             /*if (GeneratorOptions.useNewGenerator()) {
@@ -91,7 +90,7 @@ public class EndPodiumFeatureMixin {
             }*/
             int y = world.getHeight(Types.WORLD_SURFACE, 0, 0);
             be_portalPosition = new BlockPos(0, y, 0);
-            WorldConfig.getRootTag(BetterEnd.C).put("portal", NbtUtils.writeBlockPos(be_portalPosition));
+            WorldConfig.getRootTag(BetterEnd.C).store("portal", BlockPos.CODEC, be_portalPosition);
             WorldConfig.saveFile(BetterEnd.C);
         }
 

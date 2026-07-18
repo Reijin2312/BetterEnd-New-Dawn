@@ -46,34 +46,33 @@ public class StoneMaterial implements MaterialManager.Material {
     public final Block flowerPot;
 
     public static BlockBehaviour.Properties createMaterial(MapColor color) {
-        return BlockBehaviour.Properties.ofFullCopy(Blocks.END_STONE).mapColor(color);
+        return BlockBehaviour.Properties.ofLegacyCopy(Blocks.END_STONE).mapColor(color);
     }
 
     public StoneMaterial(String name, MapColor color) {
         BlockBehaviour.Properties material = createMaterial(color);
 
         this.name = name;
-        stone = EndBlocks.registerBlock(name, new BaseBlock.Stone(material));
-        polished = EndBlocks.registerBlock(name + "_polished", new BaseBlock.Stone(material));
-        tiles = EndBlocks.registerBlock(name + "_tiles", new BaseBlock.Stone(material));
-        pillar = EndBlocks.registerBlock(name + "_pillar", new BaseRotatedPillarBlock.Stone(material));
-        stairs = EndBlocks.registerBlock(name + "_stairs", new BaseStairsBlock.Stone(stone));
-        slab = EndBlocks.registerBlock(name + "_slab", new BaseSlabBlock.Stone(stone));
-        wall = EndBlocks.registerBlock(name + "_wall", new BaseWallBlock.Stone(stone));
-        button = EndBlocks.registerBlock(name + "_button", new BaseButtonBlock.Stone(stone, BlockSetType.STONE));
-        pressurePlate = EndBlocks.registerBlock(
-                name + "_plate",
+        stone = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name), new BaseBlock.Stone(material));
+        polished = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_polished"), new BaseBlock.Stone(material));
+        tiles = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_tiles"), new BaseBlock.Stone(material));
+        pillar = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_pillar"), new BaseRotatedPillarBlock.Stone(material));
+        stairs = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_stairs"), new BaseStairsBlock.Stone(stone));
+        slab = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_slab"), new BaseSlabBlock.Stone(stone));
+        wall = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_wall"), new BaseWallBlock.Stone(stone));
+        button = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_button"), new BaseButtonBlock.Stone(stone, BlockSetType.STONE));
+        pressurePlate = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_plate"),
                 new BasePressurePlateBlock.Stone(stone, BlockSetType.STONE)
         );
-        pedestal = EndBlocks.registerBlock(name + "_pedestal", new EndPedestal.Stone(stone));
-        lantern = EndBlocks.registerBlock(name + "_lantern", new StoneLanternBlock(stone));
+        pedestal = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_pedestal"), new EndPedestal.Stone(stone));
+        lantern = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_lantern"), new StoneLanternBlock(stone));
 
-        bricks = EndBlocks.registerBlock(name + "_bricks", new BaseBlock.Stone(material));
-        brickStairs = EndBlocks.registerBlock(name + "_bricks_stairs", new BaseStairsBlock.Stone(bricks));
-        brickSlab = EndBlocks.registerBlock(name + "_bricks_slab", new BaseSlabBlock.Stone(bricks));
-        brickWall = EndBlocks.registerBlock(name + "_bricks_wall", new BaseWallBlock.Stone(bricks));
-        furnace = EndBlocks.registerBlock(name + "_furnace", new BaseFurnaceBlock.Stone(bricks));
-        flowerPot = EndBlocks.registerBlock(name + "_flower_pot", new FlowerPotBlock.Stone(bricks));
+        bricks = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_bricks"), new BaseBlock.Stone(material));
+        brickStairs = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_bricks_stairs"), new BaseStairsBlock.Stone(bricks));
+        brickSlab = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_bricks_slab"), new BaseSlabBlock.Stone(bricks));
+        brickWall = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_bricks_wall"), new BaseWallBlock.Stone(bricks));
+        furnace = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_furnace"), new BaseFurnaceBlock.Stone(bricks));
+        flowerPot = EndBlocks.registerBlock(EndBlocks.prepareBlockPath(name + "_flower_pot"), new FlowerPotBlock.Stone(bricks));
 
         MaterialManager.register(this);
     }

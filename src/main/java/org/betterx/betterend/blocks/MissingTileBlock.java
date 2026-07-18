@@ -5,10 +5,10 @@ import org.betterx.bclib.blocks.BaseBlock;
 
 import net.minecraft.world.level.block.Blocks;
 
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public class MissingTileBlock extends BaseBlock implements BehaviourStone {
     public MissingTileBlock() {
-        super(FabricBlockSettings.copyOf(Blocks.END_STONE));
+        super(BlockBehaviour.Properties.ofLegacyCopy(Blocks.END_STONE));
     }
 }

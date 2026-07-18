@@ -19,11 +19,16 @@ public class BiomeToggleConfig extends ConfigFile {
 
     @SafeVarargs
     public final void registerBiomes(ResourceKey<Biome>... biomeKeys) {
-        for (ResourceKey<Biome> biomeKey : biomeKeys) registerBiome(biomeKey);
+        for (ResourceKey<Biome> biomeKey : biomeKeys) {
+            registerBiome(biomeKey);
+        }
     }
 
     public BooleanValue registerBiome(ResourceKey<Biome> biomeKey) {
-        return biomes.computeIfAbsent(biomeKey, key -> new BooleanValue("biomes", key.location().getPath(), true).setGroup(BIOMES));
+        return biomes.computeIfAbsent(
+                biomeKey,
+                key -> new BooleanValue("biomes", key.identifier().getPath(), true).setGroup(BIOMES)
+        );
     }
 
     public boolean isEnabled(ResourceKey<Biome> biomeKey) {

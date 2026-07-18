@@ -10,8 +10,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 public class GlowingMossBlock extends EndPlantBlock implements SurvivesOnMossOrMycelium, BehaviourPlant {
     public GlowingMossBlock(int light) {
@@ -23,12 +21,10 @@ public class GlowingMossBlock extends EndPlantBlock implements SurvivesOnMossOrM
     }
 
 
-    @Environment(EnvType.CLIENT)
     public boolean hasEmissiveLighting(BlockGetter world, BlockPos pos) {
         return true;
     }
 
-    @Environment(EnvType.CLIENT)
     public float getAmbientOcclusionLightLevel(BlockGetter world, BlockPos pos) {
         return 1F;
     }

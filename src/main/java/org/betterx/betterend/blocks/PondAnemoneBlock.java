@@ -20,8 +20,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 
 public class PondAnemoneBlock extends EndUnderwaterPlantBlock implements BehaviourWaterPlant, AddMineableShears, SurvivesOnEndStone, BlockModelProvider {
     private static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 14, 14);
@@ -36,7 +34,6 @@ public class PondAnemoneBlock extends EndUnderwaterPlantBlock implements Behavio
         );
     }
 
-    @Environment(EnvType.CLIENT)
     public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
         double x = pos.getX() + random.nextDouble();
         double y = pos.getY() + random.nextDouble() * 0.5F + 0.5F;
@@ -65,8 +62,8 @@ public class PondAnemoneBlock extends EndUnderwaterPlantBlock implements Behavio
     }
 
     @Override
-    @Environment(EnvType.CLIENT)
-    public void provideBlockModels(WoverBlockModelGenerators generator) {
+    public void provideBlockModels(Object modelGenerator) {
+    WoverBlockModelGenerators generator = (WoverBlockModelGenerators) modelGenerator;
         generator.createCubeModel(this);
         generator.createFlatItem(this);
     }

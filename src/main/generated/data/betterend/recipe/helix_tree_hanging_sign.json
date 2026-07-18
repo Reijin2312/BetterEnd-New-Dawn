@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "sign",
   "key": {
-    "#": {
-      "item": "betterend:helix_tree_stripped_log"
-    },
-    "I": {
-      "item": "minecraft:chain"
-    }
+    "#": "betterend:helix_tree_stripped_log",
+    "I": "minecraft:iron_chain"
   },
   "pattern": [
     "I I",

@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "sign",
   "key": {
-    "#": {
-      "item": "betterend:end_lotus_stripped_log"
-    },
-    "I": {
-      "item": "minecraft:chain"
-    }
+    "#": "betterend:end_lotus_stripped_log",
+    "I": "minecraft:iron_chain"
   },
   "pattern": [
     "I I",

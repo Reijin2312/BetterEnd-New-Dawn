@@ -914,12 +914,15 @@
   "block.betterend.pallidium_thin": "Pallidio (Cobertuna fina)",
   "block.betterend.pallidium_tiny": "Pallidio (Cobertura dispersada)",
   "block.betterend.flammalix": "Flammalixe",
+  "betterend.jei.container.anvil": "Receitas de Bigorna",
+  "betterend.jei.damage.amount&dmg": "Dano da ferramenta: %s",
+  "betterend.jei.recipe_level.anvil": "Nível: %s",
+  "betterend.jei.infusion.time&val": "%s ticks",
+  "betterend.jei.container.infusion": "Receitas de Infusão",
   "betterend.jei.alloying.experience_time": "%s XP | %s s",
   "betterend.jei.container.alloying": "Liga e Fundição",
-  "betterend.jei.container.anvil": "Receitas de Bigorna",
-  "betterend.jei.container.infusion": "Receitas de Infusão",
-  "betterend.jei.damage.amount&dmg": "Dano da ferramenta: %s",
-  "betterend.jei.infusion.time&val": "%s ticks",
-  "betterend.jei.recipe_level.anvil": "Nível: %s",
-  "config.jade.plugin_betterend.plant_growth": "Plantas do BetterEnd"
+  "jukebox_song.betterend.strange_and_alien": "§5Firel§r - §fEstranho e Alienígena§r",
+  "jukebox_song.betterend.grasping_at_stars": "§5Firel§r - §fAgarrando-se às Estrelas§r",
+  "jukebox_song.betterend.endseeker": "§5Firel§r - §fCaçador do End§r",
+  "jukebox_song.betterend.eo_dracona": "§5Firel§r - §fEo Dracona§r"
 }

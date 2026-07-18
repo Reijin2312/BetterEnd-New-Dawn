@@ -22,7 +22,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.MapColor;
 
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -30,7 +30,7 @@ public class BrimstoneBlock extends BaseBlock.Stone {
     public static final BooleanProperty ACTIVATED = BlockProperties.ACTIVE;
 
     public BrimstoneBlock() {
-        super(FabricBlockSettings.copyOf(Blocks.END_STONE).mapColor(MapColor.COLOR_BROWN).randomTicks());
+        super(BlockBehaviour.Properties.ofLegacyCopy(Blocks.END_STONE).mapColor(MapColor.COLOR_BROWN).randomTicks());
         registerDefaultState(stateDefinition.any().setValue(ACTIVATED, false));
     }
 

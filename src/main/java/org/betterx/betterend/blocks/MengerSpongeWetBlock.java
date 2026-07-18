@@ -16,7 +16,6 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -25,19 +24,17 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 @SuppressWarnings("deprecation")
 public class MengerSpongeWetBlock extends BaseBlockNotFull implements RenderLayerProvider {
     public MengerSpongeWetBlock() {
-        super(FabricBlockSettings.copyOf(Blocks.WET_SPONGE).noOcclusion());
+        super(BlockBehaviour.Properties.ofLegacyCopy(Blocks.WET_SPONGE).noOcclusion());
     }
 
     @Override
     public void onPlace(BlockState state, Level world, BlockPos pos, BlockState oldState, boolean notify) {
-        if (world.dimensionType().ultraWarm()) {
+        if (world.dimension() == Level.NETHER) {
             world.setBlock(pos, EndBlocks.MENGER_SPONGE.defaultBlockState(), 3);
             world.levelEvent(2009, pos, 0);
             world.playSound(
@@ -52,7 +49,6 @@ public class MengerSpongeWetBlock extends BaseBlockNotFull implements RenderLaye
     }
 
     @Override
-    @Environment(EnvType.CLIENT)
     public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
         Direction direction = Direction.getRandom(random);
         if (direction != Direction.UP) {
@@ -96,7 +92,7 @@ public class MengerSpongeWetBlock extends BaseBlockNotFull implements RenderLaye
         if (!world.isClientSide()) {
             world.levelEvent(2001, pos, getId(state));
         }
-        if (world.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS) && (player == null || !player.isCreative())) {
+        if ((player == null || !player.isCreative())) {
             ItemEntity drop = new ItemEntity(
                     world,
                     pos.getX() + 0.5,

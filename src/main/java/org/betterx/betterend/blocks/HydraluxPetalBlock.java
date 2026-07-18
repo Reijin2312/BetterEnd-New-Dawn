@@ -32,7 +32,7 @@ public class HydraluxPetalBlock extends BaseBlock.Wood {
             @NotNull BlockState blockState,
             @NotNull BlockPos blockPos,
             @NotNull Entity entity,
-            float f
+            double f
     ) {
     }
 }

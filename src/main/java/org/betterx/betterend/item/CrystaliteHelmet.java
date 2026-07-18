@@ -6,27 +6,38 @@ import org.betterx.wover.complex.api.equipment.ArmorSlot;
 
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.equipment.ArmorType;
 
 public class CrystaliteHelmet extends CrystaliteArmor {
-    private static Properties defaultSettings() {
-        return EndArmorItem.createDefaultEndArmorSettings(
-                ArmorSlot.HELMET_SLOT, EndArmorTier.CRYSTALITE,
-                EndArmorItem.startAttributeBuilder(
-                        ArmorSlot.HELMET_SLOT,
-                        EndArmorTier.CRYSTALITE
-                ).add(
-                        EndAttributes.BLINDNESS_RESISTANCE,
-                        new AttributeModifier(
-                                EndArmorItem.BASE_BLINDNESS_RESISTANCE,
-                                1.0,
-                                AttributeModifier.Operation.ADD_VALUE
-                        ),
-                        EquipmentSlotGroup.HEAD
-                ).build()
-        );
+    private static ItemAttributeModifiers defaultAttributes() {
+        return EndArmorItem.startAttributeBuilder(
+                ArmorSlot.HELMET_SLOT,
+                EndArmorTier.CRYSTALITE
+        ).add(
+                EndAttributes.BLINDNESS_RESISTANCE,
+                new AttributeModifier(
+                        EndArmorItem.BASE_BLINDNESS_RESISTANCE,
+                        1.0,
+                        AttributeModifier.Operation.ADD_VALUE
+                ),
+                EquipmentSlotGroup.HEAD
+        ).build();
     }
 
     public CrystaliteHelmet() {
-        super(Type.HELMET, defaultSettings());
+        this(defaultAttributes());
+    }
+
+    private CrystaliteHelmet(ItemAttributeModifiers attributes) {
+        super(
+                ArmorType.HELMET,
+                EndArmorItem.createDefaultEndArmorSettings(
+                        ArmorSlot.HELMET_SLOT,
+                        EndArmorTier.CRYSTALITE,
+                        attributes
+                ),
+                attributes
+        );
     }
 }

@@ -95,7 +95,7 @@ public abstract class EndCaveFeatures extends DefaultFeature {
                     errCounter++;
                     BetterEnd.LOGGER.error(biome.biome
                             .unwrapKey()
-                            .map(ResourceKey::location)
+                            .map(ResourceKey::identifier)
                             .orElse(null) + " is not an EndCaveBiome.");
                 }
             }

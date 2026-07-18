@@ -4,18 +4,10 @@
   "group": "planks",
   "ingredients": [
     [
-      {
-        "item": "betterend:lucernia_log"
-      },
-      {
-        "item": "betterend:lucernia_bark"
-      },
-      {
-        "item": "betterend:lucernia_stripped_log"
-      },
-      {
-        "item": "betterend:lucernia_stripped_bark"
-      }
+      "betterend:lucernia_log",
+      "betterend:lucernia_bark",
+      "betterend:lucernia_stripped_log",
+      "betterend:lucernia_stripped_bark"
     ]
   ],
   "result": {

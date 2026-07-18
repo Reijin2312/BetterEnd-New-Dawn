@@ -36,12 +36,13 @@ public class ItemTagProvider extends WoverTagProvider.ForItems {
                 ComposterAPI.allowCompost(compost, item);
             }
 
-            if (item instanceof EndHammerItem) {
+            if (EndHammerItem.class.isInstance(item)) {
                 context.add(CommonItemTags.HAMMERS, item);
             }
         });
 
         context.add(ItemTags.BEACON_PAYMENT_ITEMS, EndItems.AETERNIUM_INGOT);
+        context.add(CommonItemTags.FURNACES, Items.FURNACE, Items.BLAST_FURNACE, Items.SMOKER);
 
         context.add(EndTags.ALLOYING_IRON, Items.IRON_ORE, Items.DEEPSLATE_IRON_ORE, Items.RAW_IRON);
         context.add(EndTags.ALLOYING_GOLD, Items.GOLD_ORE, Items.DEEPSLATE_GOLD_ORE, Items.RAW_GOLD);
@@ -50,7 +51,6 @@ public class ItemTagProvider extends WoverTagProvider.ForItems {
         context.add(ItemTags.FISHES, EndItems.END_FISH_RAW, EndItems.END_FISH_COOKED);
 
 /*
-THALLASIUM = IRON
 TERMINITE = DIAMOND
 AETERNIUM > NETHERITE
  */

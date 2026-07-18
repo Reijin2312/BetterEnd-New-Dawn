@@ -15,11 +15,14 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
+import java.util.ArrayList;
+import java.util.function.Consumer;
 
 public class HydraluxSaplingBlock extends UnderwaterPlantWithAgeBlock implements BehaviourWaterPlantSapling, SurvivesOnSulphuricRock {
 
@@ -83,14 +86,15 @@ public class HydraluxSaplingBlock extends UnderwaterPlantWithAgeBlock implements
     }
 
 
-    @Override
     public void appendHoverText(
             ItemStack itemStack,
             Item.TooltipContext tooltipContext,
-            List<Component> list,
+            TooltipDisplay tooltipDisplay,
+            Consumer<Component> consumer,
             TooltipFlag tooltipFlag
     ) {
-        super.appendHoverText(itemStack, tooltipContext, list, tooltipFlag);
-        SurvivesOnSpecialGround.appendHoverTextUnderwaterInDepth(list, 5);
+        List<Component> lines = new ArrayList<>();
+        SurvivesOnSpecialGround.appendHoverTextUnderwaterInDepth(lines, 5);
+        lines.forEach(consumer);
     }
 }

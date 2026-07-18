@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "color=0": {
+      "model": "betterend:block/jellyshroom_cap_purple"
+    },
+    "color=1": {
+      "model": "betterend:block/jellyshroom_cap_purple"
+    },
+    "color=2": {
+      "model": "betterend:block/jellyshroom_cap_purple"
+    },
+    "color=3": {
+      "model": "betterend:block/jellyshroom_cap_purple"
+    },
+    "color=4": {
+      "model": "betterend:block/jellyshroom_cap_purple"
+    },
+    "color=5": {
+      "model": "betterend:block/jellyshroom_cap_purple"
+    },
+    "color=6": {
+      "model": "betterend:block/jellyshroom_cap_purple"
+    },
+    "color=7": {
+      "model": "betterend:block/jellyshroom_cap_purple"
+    }
+  }
+}

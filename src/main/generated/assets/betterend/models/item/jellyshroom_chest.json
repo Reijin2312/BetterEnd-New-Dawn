@@ -1,6 +1,7 @@
 {
   "parent": "bclib:block/chest_item",
   "textures": {
-    "texture": "betterend:entity/chest/jellyshroom_chest"
+    "particle": "betterend:block/chest/jellyshroom_chest",
+    "texture": "betterend:block/chest/jellyshroom_chest"
   }
 }

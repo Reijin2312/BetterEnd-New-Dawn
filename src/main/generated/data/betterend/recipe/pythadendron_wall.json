@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "wall",
   "key": {
-    "*": {
-      "item": "betterend:pythadendron_planks"
-    },
-    "|": {
-      "item": "betterend:pythadendron_fence"
-    }
+    "*": "betterend:pythadendron_planks",
+    "|": "betterend:pythadendron_fence"
   },
   "pattern": [
     "* *",

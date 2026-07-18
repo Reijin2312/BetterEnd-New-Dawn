@@ -7,7 +7,6 @@ import org.betterx.betterend.commands.CommandRegistry;
 import org.betterx.betterend.config.Configs;
 import org.betterx.betterend.effects.EndPotions;
 import org.betterx.betterend.integration.Integrations;
-import org.betterx.betterend.integration.trinkets.Elytra;
 import org.betterx.betterend.network.RitualUpdate;
 import org.betterx.betterend.recipe.builders.InfusionRecipe;
 import org.betterx.betterend.registry.*;
@@ -21,7 +20,7 @@ import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.generator.api.biomesource.end.BiomeDecider;
 import org.betterx.wover.state.api.WorldConfig;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
@@ -35,12 +34,14 @@ public class BetterEnd implements ModInitializer {
     public static final ModCore BYG = ModCore.create("byg");
     public static final ModCore NOURISH = ModCore.create("nourish");
     public static final ModCore FLAMBOYANT = ModCore.create("flamboyant");
-    public static final ModCore PATCHOULI = ModCore.create("patchouli");
     public static final ModCore HYDROGEN = ModCore.create("hydrogen");
-    public static final ResourceLocation BYG_ADDITIONS_PACK = C.addDatapack(BYG);
-    public static final ResourceLocation NOURISH_ADDITIONS_PACK = C.addDatapack(NOURISH);
-    public static final ResourceLocation FLAMBOYANT_ADDITIONS_PACK = C.addDatapack(FLAMBOYANT);
-    public static final ResourceLocation PATCHOULI_ADDITIONS_PACK = C.addDatapack(PATCHOULI);
+    public static final ModCore DYE_DEPOT = ModCore.create("dye_depot");
+    public static final ModCore PATCHOULI = ModCore.create("patchouli");
+    public static final boolean ENABLE_GUIDEBOOK = false;
+    public static final Identifier BYG_ADDITIONS_PACK = C.addDatapack(BYG);
+    public static final Identifier NOURISH_ADDITIONS_PACK = C.addDatapack(NOURISH);
+    public static final Identifier FLAMBOYANT_ADDITIONS_PACK = C.addDatapack(FLAMBOYANT);
+    public static final Identifier PATCHOULI_ADDITIONS_PACK = ENABLE_GUIDEBOOK ? C.addDatapack(PATCHOULI) : null;
 
     @Override
     public void onInitialize() {
@@ -49,15 +50,18 @@ public class BetterEnd implements ModInitializer {
         EndNumericProviders.register();
         EndPortals.loadPortals();
         EndSounds.register();
+        EndEntities.register();
+        // 1.21.11 requires block ids during construction. Blocks are now
+        // initialized lazily, so dependent registries (block entities and POIs)
+        // must not read their fields before this point.
+        EndBlocks.ensureStaticallyLoaded();
+        EndItems.ensureStaticallyLoaded();
         EndMenuTypes.ensureStaticallyLoaded();
         EndBlockEntities.register();
         EndPoiTypes.register();
         EndFeatures.register();
-        EndEntities.register();
         EndBiomes.register();
         EndTags.register();
-        EndBlocks.ensureStaticallyLoaded();
-        EndItems.ensureStaticallyLoaded();
         EndTemplates.ensureStaticallyLoaded();
         EndEnchantments.ensureStaticallyLoaded();
         EndPotions.register();
@@ -82,8 +86,5 @@ public class BetterEnd implements ModInitializer {
 
         ClientBoundPacketHandler.register(RitualUpdate.CHANNEL, RitualUpdate.Payload::new);
 
-        if (TRINKETS_CORE.isLoaded()) {
-            Elytra.register();
-        }
     }
 }

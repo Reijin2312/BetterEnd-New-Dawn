@@ -8,7 +8,7 @@ import org.betterx.betterend.blocks.basis.EndAnvilBlock;
 import org.betterx.betterend.recipe.builders.InfusionRecipe;
 import org.betterx.betterend.registry.EndBlocks;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.BlastingRecipe;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 
 //https://github.com/shedaniel/RoughlyEnoughItems/blob/6.x-1.17/default-plugin/src/main/java/me/shedaniel/rei/plugin/client/DefaultClientPlugin.java
 public class REIPlugin implements REIClientPlugin {
-    public final static ResourceLocation PLUGIN_ID = BetterEnd.C.mk("rei_plugin");
+    public final static Identifier PLUGIN_ID = BetterEnd.C.mk("rei_plugin");
     public final static CategoryIdentifier<REIAlloyingFuelDisplay> ALLOYING_FUEL = CategoryIdentifier.of(
             BetterEnd.MOD_ID,
             "alloying_fuel"

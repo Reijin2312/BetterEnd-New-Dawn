@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "betterend:virid_jadestone_pillar"
-    },
-    "S": {
-      "item": "betterend:virid_jadestone_slab"
-    }
+    "#": "betterend:virid_jadestone_pillar",
+    "S": "betterend:virid_jadestone_slab"
   },
   "pattern": [
     "S",

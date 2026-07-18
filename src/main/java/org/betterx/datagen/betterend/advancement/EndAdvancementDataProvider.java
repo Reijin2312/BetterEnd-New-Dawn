@@ -13,20 +13,19 @@ import org.betterx.betterend.registry.EndTemplates;
 
 import net.minecraft.advancements.AdvancementRequirements.Strategy;
 import net.minecraft.advancements.AdvancementType;
-import net.minecraft.advancements.critereon.ChangeDimensionTrigger;
-import net.minecraft.advancements.critereon.LocationPredicate;
-import net.minecraft.advancements.critereon.PlayerTrigger;
+import net.minecraft.advancements.criterion.ChangeDimensionTrigger;
+import net.minecraft.advancements.criterion.LocationPredicate;
+import net.minecraft.advancements.criterion.PlayerTrigger;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
+import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.Structure;
-
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 
 import java.util.Comparator;
 import java.util.List;
@@ -34,7 +33,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class EndAdvancementDataProvider extends AdvancementDataProvider {
     public EndAdvancementDataProvider(
-            FabricDataOutput output,
+            PackOutput output,
             CompletableFuture<HolderLookup.Provider> registryLookup
     ) {
         super(List.of(BetterEnd.MOD_ID), output, registryLookup);
@@ -45,12 +44,12 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
     protected void bootstrap(HolderLookup.Provider lookup) {
         final HolderLookup.RegistryLookup<Structure> structures = lookup.lookupOrThrow(Registries.STRUCTURE);
         final HolderLookup.RegistryLookup<Biome> biomeLookup = lookup.lookupOrThrow(Registries.BIOME);
-        ResourceLocation root = AdvancementManager.Builder
+        Identifier root = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("root"))
                 .startDisplay(EndBlocks.END_MYCELIUM)
                 .frame(AdvancementType.TASK)
                 .hideFromChat()
-                .background(ResourceLocation.withDefaultNamespace("textures/gui/advancements/backgrounds/end.png"))
+                .background(Identifier.withDefaultNamespace("textures/gui/advancements/backgrounds/end.png"))
                 .endDisplay()
                 .addCriterion(
                         "welcome",
@@ -59,7 +58,7 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
                 .requirements(Strategy.OR)
                 .build();
 
-        ResourceLocation enterEnd = AdvancementManager.Builder
+        Identifier enterEnd = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("enter_end"))
                 .startDisplay(EndBlocks.CAVE_MOSS)
                 .endDisplay()
@@ -73,17 +72,18 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
                 .requirements(Strategy.OR)
                 .build();
 
-        ResourceLocation portal = AdvancementManager.Builder
+        Holder<Structure> portalHolder = structures.getOrThrow(EndStructures.ETERNAL_PORTAL.key());
+        Identifier portal = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("portal"))
                 .parent(enterEnd)
                 .startDisplay(EndBlocks.ETERNAL_PEDESTAL)
                 .frame(AdvancementType.GOAL)
                 .endDisplay()
-                .addAtStructureCriterion("eternal_portal", EndStructures.ETERNAL_PORTAL.getHolder(structures))
+                .addAtStructureCriterion("eternal_portal", portalHolder)
                 .requirements(Strategy.OR)
                 .build();
 
-        ResourceLocation portalOn = AdvancementManager.Builder
+        Identifier portalOn = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("portal_on"))
                 .parent(portal)
                 .startDisplay(EndItems.ETERNAL_CRYSTAL)
@@ -92,7 +92,7 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
                 .requirements(Strategy.OR)
                 .build();
 
-        ResourceLocation portalTravel = AdvancementManager.Builder
+        Identifier portalTravel = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("portal_travel"))
                 .parent(portalOn)
                 .startDisplay(Items.GRASS_BLOCK)
@@ -104,11 +104,11 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
 
         final var biomes = biomeLookup
                 .listElementIds()
-                .filter(id -> id.location().getNamespace().equals(BetterEnd.C.modId))
+                .filter(id -> id.identifier().getNamespace().equals(BetterEnd.C.modId))
                 .toList();
 
         if (!biomes.isEmpty()) {
-            ResourceLocation allTheBiomes = AdvancementManager.Builder
+            Identifier allTheBiomes = AdvancementManager.Builder
                     .create(BetterEnd.C.mk("all_the_biomes"))
                     .parent(enterEnd)
                     .startDisplay(EndItems.AETERNIUM_BOOTS)
@@ -116,7 +116,7 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
                     .endDisplay()
                     .addVisitBiomesCriterion(biomes
                             .stream()
-                            .sorted(Comparator.comparing(ResourceKey::location))
+                            .sorted(Comparator.comparing(ResourceKey::identifier))
                             .map(key -> (Holder<Biome>) biomeLookup.get(key).orElseThrow())
                             .toList())
                     .requirements(Strategy.AND)
@@ -124,18 +124,19 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
                     .build();
 
 
-            ResourceLocation village = AdvancementManager.Builder
+            Holder<Structure> villageHolder = structures.getOrThrow(EndStructures.END_VILLAGE.key());
+            Identifier village = AdvancementManager.Builder
                     .create(BetterEnd.C.mk("village"))
                     .parent(allTheBiomes)
                     .startDisplay(EndBlocks.TENANEA.getBlock(WoodSlots.DOOR))
                     .frame(AdvancementType.GOAL)
                     .endDisplay()
-                    .addAtStructureCriterion("end_village", EndStructures.END_VILLAGE.getHolder(structures))
+                    .addAtStructureCriterion("end_village", villageHolder)
                     .requirements(Strategy.OR)
                     .build();
         }
 
-        ResourceLocation allElytras = AdvancementManager.Builder
+        Identifier allElytras = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("all_elytras"))
                 .parent(enterEnd)
                 .startDisplay(EndItems.CRYSTALITE_ELYTRA)
@@ -147,7 +148,7 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
                 .requirements(Strategy.AND)
                 .build();
 
-        ResourceLocation infusion = AdvancementManager.Builder
+        Identifier infusion = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("infusion"))
                 .parent(enterEnd)
                 .startDisplay(EndBlocks.INFUSION_PEDESTAL)
@@ -156,7 +157,7 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
                 .requirements(Strategy.OR)
                 .build();
 
-        ResourceLocation infusionFinished = AdvancementManager.Builder
+        Identifier infusionFinished = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("infusion_finished"))
                 .parent(infusion)
                 .startDisplay(Items.ENDER_EYE)
@@ -167,7 +168,7 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
                 .build();
 
 
-        ResourceLocation allTheTemplates = AdvancementManager.Builder
+        Identifier allTheTemplates = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("all_the_templates"))
                 .parent(enterEnd)
                 .startDisplay(EndTemplates.TOOL_ASSEMBLY)
@@ -185,7 +186,7 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
                 .rewardXP(1500)
                 .build();
 
-        ResourceLocation hammer = AdvancementManager.Builder
+        Identifier hammer = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("hammer"))
                 .parent(enterEnd)
                 .startDisplay(EndItems.DIAMOND_HAMMER)
@@ -196,7 +197,7 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
                 .requirements(Strategy.OR)
                 .build();
 
-        ResourceLocation thallasiumAnvil = AdvancementManager.Builder
+        Identifier thallasiumAnvil = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("thallasium_anvil"))
                 .parent(hammer)
                 .startDisplay(EndBlocks.THALLASIUM.anvilBlock)
@@ -205,7 +206,7 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
                 .requirements(Strategy.OR)
                 .build();
 
-        ResourceLocation thallasiumPlate = AdvancementManager.Builder
+        Identifier thallasiumPlate = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("thallasium_plate"))
                 .parent(thallasiumAnvil)
                 .startDisplay(EndBlocks.THALLASIUM.forgedPlate)
@@ -214,7 +215,7 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
                 .requirements(Strategy.OR)
                 .build();
 
-        ResourceLocation terminiteAnvil = AdvancementManager.Builder
+        Identifier terminiteAnvil = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("terminite_anvil"))
                 .parent(thallasiumAnvil)
                 .startDisplay(EndBlocks.TERMINITE.anvilBlock)
@@ -223,7 +224,7 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
                 .requirements(Strategy.OR)
                 .build();
 
-        ResourceLocation terminitePlate = AdvancementManager.Builder
+        Identifier terminitePlate = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("terminite_plate"))
                 .parent(terminiteAnvil)
                 .startDisplay(EndBlocks.TERMINITE.forgedPlate)
@@ -232,7 +233,7 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
                 .requirements(Strategy.OR)
                 .build();
 
-        ResourceLocation aeterniumAnvil = AdvancementManager.Builder
+        Identifier aeterniumAnvil = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("aeternium_anvil"))
                 .parent(terminiteAnvil)
                 .startDisplay(EndBlocks.AETERNIUM_ANVIL)
@@ -243,7 +244,7 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
                 .rewardXP(500)
                 .build();
 
-        ResourceLocation aeterniumHammerHead = AdvancementManager.Builder
+        Identifier aeterniumHammerHead = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("aeternium_hammer_head"))
                 .parent(aeterniumAnvil)
                 .startDisplay(EndItems.AETERNIUM_HAMMER_HEAD)
@@ -252,7 +253,7 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
                 .requirements(Strategy.OR)
                 .build();
 
-        ResourceLocation aeterniumHammer = AdvancementManager.Builder
+        Identifier aeterniumHammer = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("aeternium_hammer"))
                 .parent(aeterniumHammerHead)
                 .startDisplay(EndItems.AETERNIUM_HAMMER)
@@ -261,7 +262,7 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
                 .requirements(Strategy.OR)
                 .build();
 
-        ResourceLocation aeterniumPlate = AdvancementManager.Builder
+        Identifier aeterniumPlate = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("aeternium_plate"))
                 .parent(aeterniumHammer)
                 .startDisplay(EndItems.AETERNIUM_FORGED_PLATE)
@@ -272,38 +273,38 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
                 .rewardXP(200)
                 .build();
 
-        ResourceLocation thallasiumArmor = addArmor(EndBlocks.THALLASIUM)
+        Identifier thallasiumArmor = addArmor(EndBlocks.THALLASIUM)
                 .parent(thallasiumPlate)
                 .requirements(Strategy.OR)
                 .build();
 
-        ResourceLocation thallasiumHead = addToolHeads(EndBlocks.THALLASIUM)
+        Identifier thallasiumHead = addToolHeads(EndBlocks.THALLASIUM)
                 .parent(thallasiumAnvil)
                 .requirements(Strategy.OR)
                 .build();
 
-        ResourceLocation thallasium = addTools(EndBlocks.THALLASIUM)
+        Identifier thallasium = addTools(EndBlocks.THALLASIUM)
                 .parent(thallasiumHead)
                 .requirements(Strategy.OR)
                 .build();
 
-        ResourceLocation terminiteHead = addToolHeads(EndBlocks.TERMINITE)
+        Identifier terminiteHead = addToolHeads(EndBlocks.TERMINITE)
                 .parent(terminiteAnvil)
                 .requirements(Strategy.OR)
                 .build();
 
-        ResourceLocation terminite = addTools(EndBlocks.TERMINITE)
+        Identifier terminite = addTools(EndBlocks.TERMINITE)
                 .parent(terminiteHead)
                 .requirements(Strategy.OR)
                 .build();
 
-        ResourceLocation terminiteArmor = addArmor(EndBlocks.TERMINITE)
+        Identifier terminiteArmor = addArmor(EndBlocks.TERMINITE)
                 .parent(terminitePlate)
                 .requirements(Strategy.OR)
                 .build();
 
 
-        ResourceLocation aeterniumHead = AdvancementManager.Builder
+        Identifier aeterniumHead = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("aeternium_tool_head"))
                 .startDisplay(EndItems.AETERNIUM_PICKAXE_HEAD)
                 .frame(AdvancementType.GOAL)
@@ -322,7 +323,7 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
                 .rewardXP(200)
                 .build();
 
-        ResourceLocation aeternium = AdvancementManager.Builder
+        Identifier aeternium = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("aeternium_tool"))
                 .startDisplay(EndItems.AETERNIUM_PICKAXE)
                 .frame(AdvancementType.CHALLENGE)
@@ -337,7 +338,7 @@ public class EndAdvancementDataProvider extends AdvancementDataProvider {
                 .rewardXP(2000)
                 .build();
 
-        ResourceLocation aeterniumArmor = AdvancementManager.Builder
+        Identifier aeterniumArmor = AdvancementManager.Builder
                 .create(BetterEnd.C.mk("aeternium_armor"))
                 .startDisplay(EndItems.AETERNIUM_CHESTPLATE)
                 .frame(AdvancementType.CHALLENGE)

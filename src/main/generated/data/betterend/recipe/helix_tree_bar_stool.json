@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "bar_stool",
   "key": {
-    "#": {
-      "item": "betterend:helix_tree_slab"
-    },
-    "I": {
-      "item": "minecraft:stick"
-    }
+    "#": "betterend:helix_tree_slab",
+    "I": "minecraft:stick"
   },
   "pattern": [
     "##",

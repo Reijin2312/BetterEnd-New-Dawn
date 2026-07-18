@@ -1,9 +1,7 @@
 {
   "type": "minecraft:stonecutting",
   "group": "flavolite_stonecutting",
-  "ingredient": {
-    "item": "betterend:flavolite"
-  },
+  "ingredient": "betterend:flavolite",
   "result": {
     "count": 1,
     "id": "betterend:flavolite_stairs"

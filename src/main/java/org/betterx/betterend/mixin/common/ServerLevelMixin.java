@@ -9,13 +9,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.progress.ChunkProgressListener;
-import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.RandomSequences;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.CustomSpawner;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
@@ -33,7 +32,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 import java.util.concurrent.Executor;
-import java.util.function.Supplier;
 
 @Mixin(ServerLevel.class)
 public abstract class ServerLevelMixin extends Level {
@@ -49,13 +47,12 @@ public abstract class ServerLevelMixin extends Level {
             ResourceKey<Level> resourceKey,
             RegistryAccess registryAccess,
             Holder<DimensionType> holder,
-            Supplier<ProfilerFiller> supplier,
             boolean bl,
             boolean bl2,
             long l,
             int i
     ) {
-        super(writableLevelData, resourceKey, registryAccess, holder, supplier, bl, bl2, l, i);
+        super(writableLevelData, resourceKey, registryAccess, holder, bl, bl2, l, i);
     }
 
     @ModifyArg(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/Holder;is(Lnet/minecraft/resources/ResourceKey;)Z"))
@@ -67,7 +64,11 @@ public abstract class ServerLevelMixin extends Level {
         return resourceKey;
     }
 
-    @Inject(method = "<init>*", at = @At("TAIL"))
+    @Inject(
+            method = "<init>(Lnet/minecraft/server/MinecraftServer;Ljava/util/concurrent/Executor;Lnet/minecraft/world/level/storage/LevelStorageSource$LevelStorageAccess;Lnet/minecraft/world/level/storage/ServerLevelData;Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/world/level/dimension/LevelStem;ZJLjava/util/List;ZLnet/minecraft/world/RandomSequences;)V",
+            at = @At("TAIL"),
+            require = 0
+    )
     private void be_onServerWorldInit(
             MinecraftServer minecraftServer,
             Executor executor,
@@ -75,10 +76,9 @@ public abstract class ServerLevelMixin extends Level {
             ServerLevelData serverLevelData,
             ResourceKey resourceKey,
             LevelStem levelStem,
-            ChunkProgressListener chunkProgressListener,
             boolean bl,
             long seed,
-            List list,
+            List<CustomSpawner> list,
             boolean bl2,
             RandomSequences randomSequences,
             CallbackInfo ci
@@ -89,7 +89,7 @@ public abstract class ServerLevelMixin extends Level {
     @ModifyArg(method = "tickPrecipitation", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;setBlockAndUpdate(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)Z"))
     private BlockState be_modifyTickState(BlockPos pos, BlockState state) {
         if (state.is(Blocks.ICE)) {
-            ResourceLocation biome = getBiome(pos).unwrapKey().orElseThrow().location();
+            Identifier biome = getBiome(pos).unwrapKey().orElseThrow().identifier();
             if (biome.getNamespace().equals(BetterEnd.MOD_ID)) {
                 state = EndBlocks.EMERALD_ICE.defaultBlockState();
             }

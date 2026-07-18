@@ -3,9 +3,7 @@
   "category": "building",
   "group": "slab",
   "key": {
-    "#": {
-      "item": "betterend:jellyshroom_planks"
-    }
+    "#": "betterend:jellyshroom_planks"
   },
   "pattern": [
     "###"

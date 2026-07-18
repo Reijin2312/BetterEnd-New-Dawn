@@ -125,5 +125,6 @@
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "betterend:chests/end_village_loot"
 }

@@ -79,7 +79,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "betterend:flavolite_runed_eternal",
+          "name": "betterend:flavolite_runed",
           "weight": 4
         },
         {
@@ -158,5 +158,6 @@
         "min": 1.0
       }
     }
-  ]
+  ],
+  "random_sequence": "betterend:chests/end_village_bonus_loot"
 }

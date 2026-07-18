@@ -3,7 +3,7 @@ package org.betterx.betterend.integration.rei;
 import org.betterx.betterend.recipe.builders.InfusionRecipe;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
@@ -36,7 +36,7 @@ public class REIInfusionDisplay extends BasicDisplay implements SimpleGridMenuDi
     }
 
     @Override
-    public @NotNull Optional<ResourceLocation> getDisplayLocation() {
+    public @NotNull Optional<Identifier> getDisplayLocation() {
         return Optional.ofNullable(recipe).map(RecipeHolder::id);
     }
 

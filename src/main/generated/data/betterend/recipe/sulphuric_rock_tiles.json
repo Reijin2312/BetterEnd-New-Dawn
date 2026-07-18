@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "end_small_tile",
   "key": {
-    "#": {
-      "item": "betterend:sulphuric_rock_polished"
-    }
+    "#": "betterend:sulphuric_rock_polished"
   },
   "pattern": [
     "##",

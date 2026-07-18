@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "end_stone_buttons",
   "ingredients": [
-    {
-      "item": "betterend:flavolite"
-    }
+    "betterend:flavolite"
   ],
   "result": {
     "count": 1,

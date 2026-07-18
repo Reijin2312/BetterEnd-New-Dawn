@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "end_small_tile",
   "key": {
-    "#": {
-      "item": "betterend:flavolite_polished"
-    }
+    "#": "betterend:flavolite_polished"
   },
   "pattern": [
     "##",

@@ -17,8 +17,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -51,11 +51,13 @@ public class EndLilyBlock extends EndUnderwaterPlantBlock implements BehaviourWa
     @Override
     public BlockState updateShape(
             BlockState state,
-            Direction facing,
-            BlockState neighborState,
-            LevelAccessor world,
+            LevelReader world,
+            ScheduledTickAccess scheduledTickAccess,
             BlockPos pos,
-            BlockPos neighborPos
+            Direction facing,
+            BlockPos neighborPos,
+            BlockState neighborState,
+            RandomSource random
     ) {
         if (!canSurvive(state, world, pos)) {
             return state.getValue(SHAPE) == TripleShape.TOP
@@ -68,7 +70,7 @@ public class EndLilyBlock extends EndUnderwaterPlantBlock implements BehaviourWa
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter view, BlockPos pos, CollisionContext ePos) {
-        Vec3 vec3d = state.getOffset(view, pos);
+        Vec3 vec3d = state.getOffset(pos);
         VoxelShape shape = state.getValue(SHAPE) == TripleShape.TOP ? SHAPE_TOP : SHAPE_BOTTOM;
         return shape.move(vec3d.x, vec3d.y, vec3d.z);
     }
@@ -109,7 +111,7 @@ public class EndLilyBlock extends EndUnderwaterPlantBlock implements BehaviourWa
     }
 
     @Override
-    public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
+    public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState, boolean includeData) {
         return new ItemStack(EndBlocks.END_LILY_SEED);
     }
 

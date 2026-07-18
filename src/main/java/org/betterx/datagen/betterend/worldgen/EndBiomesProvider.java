@@ -2,6 +2,7 @@ package org.betterx.datagen.betterend.worldgen;
 
 import org.betterx.bclib.BCLib;
 import org.betterx.bclib.util.JsonFactory;
+import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndBiomes;
 import org.betterx.betterend.registry.EndFeatures;
 import org.betterx.betterend.registry.EndTags;
@@ -25,9 +26,9 @@ import org.betterx.wover.feature.api.placed.PlacedFeatureManager;
 import org.betterx.wover.state.api.WorldState;
 import org.betterx.wover.tag.api.predefined.CommonBiomeTags;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.GenerationStep;
@@ -54,9 +55,16 @@ public class EndBiomesProvider extends WoverBiomeProvider {
 
     public EndBiomesProvider(@NotNull ModCore modCore) {
         super(modCore);
+        if (BIOMES.isEmpty()) {
+            loadAllBiomeConfigs();
+        }
     }
 
     public static void loadAllBiomeConfigs() {
+        if (!BIOMES.isEmpty()) {
+            return;
+        }
+
         putBiome(EndBiomes.FOGGY_MUSHROOMLAND, new FoggyMushroomlandBiome(), CommonBiomeTags.IS_END_LAND);
         putBiome(EndBiomes.CHORUS_FOREST, new ChorusForestBiome(), CommonBiomeTags.IS_END_HIGHLAND);
         putBiome(EndBiomes.DUST_WASTELANDS, new DustWastelandsBiome(), CommonBiomeTags.IS_END_MIDLAND);
@@ -87,15 +95,15 @@ public class EndBiomesProvider extends WoverBiomeProvider {
     }
 
     private static void putBiome(EndBiomeKey<?, ?> key, EndBiome.Config config, TagKey<Biome> tag) {
-        final List<BuildingListFeature.StructureInfo> structures = getBiomeStructures(key.key.location());
+        final List<BuildingListFeature.StructureInfo> structures = getBiomeStructures(key.key.identifier());
         PlacedConfiguredFeatureKey placed = null;
         ConfiguredFeatureKey<WithConfiguration<BuildingListFeature, BuildingListFeatureConfig>> configuredFeatureKey = null;
         if (structures != null) {
             configuredFeatureKey
                     = ConfiguredFeatureManager.configuration(
-                    ResourceLocation.fromNamespaceAndPath(
-                            key.key.location().getNamespace(),
-                            key.key.location().getPath() + "_structures"
+                    Identifier.fromNamespaceAndPath(
+                            key.key.identifier().getNamespace(),
+                            key.key.identifier().getPath() + "_structures"
                     ),
                     EndFeatures.BUILDING_LIST_FEATURE
             );
@@ -110,7 +118,9 @@ public class EndBiomesProvider extends WoverBiomeProvider {
 
     @Override
     protected void bootstrap(BiomeBootstrapContext context) {
+        BetterEnd.C.log.info("Datagen biome bootstrap entries: " + BIOMES.size());
         for (Map.Entry<EndBiomeKey<?, ?>, BiomeInfo> e : BIOMES.entrySet()) {
+            BetterEnd.C.log.info("Datagen biome bootstrap -> " + e.getKey().key.identifier());
             final EndBiomeBuilder builder = e.getKey().bootstrap(context, e.getValue().config, e.getValue().tag);
             if (e.getValue().placed != null)
                 builder.feature(e.getValue().placed);
@@ -119,7 +129,7 @@ public class EndBiomesProvider extends WoverBiomeProvider {
     }
 
     private static List<BuildingListFeature.StructureInfo> getBiomeStructures(
-            ResourceLocation loc
+            Identifier loc
     ) {
         String ns = loc.getNamespace();
         String nm = loc.getPath();
@@ -130,12 +140,12 @@ public class EndBiomesProvider extends WoverBiomeProvider {
             String ns,
             String nm
     ) {
-        ResourceLocation id = ResourceLocation.fromNamespaceAndPath(ns, nm + "_structures");
+        Identifier id = Identifier.fromNamespaceAndPath(ns, nm + "_structures");
 
         if (WorldState.allStageRegistryAccess() != null) {
-            Registry<PlacedFeature> features = WorldState.allStageRegistryAccess()
-                                                         .registryOrThrow(Registries.PLACED_FEATURE);
-            if (features.containsKey(id)) {
+            HolderLookup.RegistryLookup<PlacedFeature> features = WorldState.allStageRegistryAccess()
+                    .lookupOrThrow(Registries.PLACED_FEATURE);
+            if (features.get(net.minecraft.resources.ResourceKey.create(Registries.PLACED_FEATURE, id)).isPresent()) {
                 BCLib.LOGGER.info("Feature for " + id + " was already build");
             }
         }

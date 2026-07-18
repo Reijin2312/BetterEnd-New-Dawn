@@ -1,21 +1,32 @@
 package org.betterx.datagen.betterend.recipes;
 
-import org.betterx.bclib.api.v3.datagen.BlockLootTableProvider;
-import org.betterx.betterend.BetterEnd;
+import org.betterx.betterend.registry.EndBlocks;
+import org.betterx.wover.core.api.ModCore;
+import org.betterx.wover.datagen.api.provider.WoverLootTableProvider;
 
 import net.minecraft.core.HolderLookup;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import java.util.function.BiConsumer;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
+public class EndBlockLootTableProvider extends WoverLootTableProvider {
+    public EndBlockLootTableProvider(ModCore modCore) {
+        super(modCore, "BetterEnd Block Loot", LootContextParamSets.BLOCK);
+    }
 
-public class EndBlockLootTableProvider extends BlockLootTableProvider {
-
-    public EndBlockLootTableProvider(
-            FabricDataOutput output,
-            CompletableFuture<HolderLookup.Provider> registryLookup
+    @Override
+    protected void boostrap(
+            @NotNull HolderLookup.Provider lookup,
+            @NotNull BiConsumer<ResourceKey<LootTable>, LootTable.Builder> biConsumer
     ) {
-        super(output, registryLookup, List.of(BetterEnd.MOD_ID));
+        // Ensure blocks are loaded before generating loot tables
+        EndBlocks.ensureStaticallyLoaded();
+
+        // Use BlockRegistry.bootstrapBlockLoot() which automatically handles
+        // all blocks implementing BlockLootProvider (including BaseOreBlock)
+        EndBlocks.getBlockRegistry().bootstrapBlockLoot(lookup, biConsumer);
     }
 }
