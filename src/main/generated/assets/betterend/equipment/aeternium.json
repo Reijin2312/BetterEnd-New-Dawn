@@ -5,6 +5,11 @@
         "texture": "betterend:aeternium"
       }
     ],
+    "humanoid_baby": [
+      {
+        "texture": "betterend:aeternium"
+      }
+    ],
     "humanoid_leggings": [
       {
         "texture": "betterend:aeternium"

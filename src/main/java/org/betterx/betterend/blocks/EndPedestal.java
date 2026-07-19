@@ -9,6 +9,7 @@ import org.betterx.betterend.client.models.EndModels;
 
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.world.level.block.Block;
 
 
@@ -21,13 +22,13 @@ public abstract class EndPedestal extends PedestalBlock {
 
     @Override
     protected TextureMapping createTextureMapping() {
-        final var parentTexture = BetterEnd.C.convertNamespace(TextureMapping.getBlockTexture(parent));
-        final var polishedTexture = BetterEnd.C.convertNamespace(TextureMapping.getBlockTexture(parent, "_polished"));
+        final var parentTexture = BetterEnd.C.convertNamespace(TextureMapping.getBlockTexture(parent).sprite());
+        final var polishedTexture = new Material(BetterEnd.C.convertNamespace(TextureMapping.getBlockTexture(parent, "_polished").sprite()));
         return new TextureMapping()
                 .put(TextureSlot.TOP, polishedTexture)
                 .put(TextureSlot.BOTTOM, polishedTexture)
                 .put(EndModels.BASE, polishedTexture)
-                .put(EndModels.PILLAR, parentTexture.withSuffix("_pillar_side"));
+                .put(EndModels.PILLAR, new Material(parentTexture.withSuffix("_pillar_side")));
     }
 
     public static class Stone extends EndPedestal implements BehaviourStone {

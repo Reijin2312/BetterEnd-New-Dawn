@@ -1,7 +1,7 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/iron_bulb_lantern_cyan",
+    "model": "betterend:block/iron_bulb_lantern_cyan",
     "tints": [
       {
         "type": "minecraft:constant",

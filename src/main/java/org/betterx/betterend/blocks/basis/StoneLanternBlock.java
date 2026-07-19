@@ -12,8 +12,6 @@ import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.client.data.models.BlockModelGenerators;
-import net.minecraft.client.data.models.model.ItemModelUtils;
-import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.world.level.BlockGetter;
@@ -71,10 +69,5 @@ public class StoneLanternBlock extends EndLanternBlock implements CustomColorPro
         DatagenModelDispatch.propertyDispatchSelect(properties, false, BlockModelGenerators.plainVariant(ceilModel));
         generator.acceptBlockState(DatagenModelDispatch.dispatchWith(this, properties));
 
-        generator.vanillaGenerator.registerSimpleTintedItemModel(
-                this,
-                ModelLocationUtils.getModelLocation(asItem()),
-                ItemModelUtils.constantTint(getItemProvider().getColor(asItem().getDefaultInstance(), 0))
-        );
     }
 }

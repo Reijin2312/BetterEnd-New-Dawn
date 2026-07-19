@@ -63,7 +63,7 @@ public class AlloyingDisplay {
             if (sampleInput.isEmpty()) {
                 return ItemStack.EMPTY;
             }
-            return blastingRecipe.assemble(new SingleRecipeInput(sampleInput), provider);
+            return blastingRecipe.assemble(new SingleRecipeInput(sampleInput));
         }
         return ItemStack.EMPTY;
     }

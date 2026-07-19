@@ -14,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class InfusionParticleType extends ParticleType<InfusionParticleType> implements ParticleOptions {
-    public static final MapCodec<InfusionParticleType> CODEC = ItemStack.SINGLE_ITEM_CODEC
+    public static final MapCodec<InfusionParticleType> CODEC = ItemStack.CODEC
             .xmap((itemStack) -> new InfusionParticleType(EndParticles.INFUSION, itemStack), (itemParticleOption) -> itemParticleOption.itemStack)
             .fieldOf("item");
 

@@ -5,11 +5,18 @@
   "ingredients": [
     "betterend:shadow_berry_cooked",
     "minecraft:sugar",
-    "minecraft:potion",
+    {
+      "fabric:type": "fabric:components",
+      "base": "minecraft:potion",
+      "components": {
+        "minecraft:potion_contents": {
+          "potion": "minecraft:water"
+        }
+      }
+    },
     "betterend:gelatine"
   ],
   "result": {
-    "count": 1,
     "id": "betterend:shadow_berry_jelly"
   }
 }

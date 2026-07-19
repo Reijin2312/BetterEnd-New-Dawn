@@ -58,7 +58,7 @@ public class ParticleTenaneaPetal extends SingleQuadParticle {
     }
 
     @Override
-    public int getLightColor(float tint) {
+    protected int getLightCoords(float tint) {
         return 15728880;
     }
 

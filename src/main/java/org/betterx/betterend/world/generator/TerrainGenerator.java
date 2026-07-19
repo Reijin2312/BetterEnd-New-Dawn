@@ -301,21 +301,21 @@ public class TerrainGenerator {
             List<NoiseChunk.NoiseInterpolator> interpolators,
             int cellCountXZ,
             int firstCellZ,
-            int cellWidth,
-            int cellHeight,
-            int noiseHeight
+            NoiseSettings noiseSettings
     ) {
+        final int sizeY = noiseSettings.getCellHeight();
+        final int sizeXZ = noiseSettings.getCellWidth();
         final int cellSizeXZ = cellCountXZ + 1;
 
-        x *= cellWidth;
+        x *= sizeXZ;
         for (int cellXZ = 0; cellXZ < cellSizeXZ; ++cellXZ) {
-            int z = (firstCellZ + cellXZ) * cellWidth;
+            int z = (firstCellZ + cellXZ) * sizeXZ;
             for (NoiseChunk.NoiseInterpolator noiseInterpolator : interpolators) {
                 if (noiseInterpolator instanceof NoiseInterpolatorAccessor interpolator) {
                     final double[] ds = (primarySlice
                             ? interpolator.be_getSlice0()
                             : interpolator.be_getSlice1())[cellXZ];
-                    fillTerrainDensity(ds, x, z, cellWidth, cellHeight, noiseHeight);
+                    fillTerrainDensity(ds, x, z, sizeXZ, sizeY, noiseSettings.height());
                 }
             }
         }

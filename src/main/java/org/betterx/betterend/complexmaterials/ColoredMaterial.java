@@ -13,7 +13,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
@@ -136,7 +135,10 @@ public class ColoredMaterial implements MaterialManager.Material {
     }
 
     private static ItemLike resolveDyeItem(DyeColor color) {
-        Item dye = DyeItem.byColor(color);
+        Item dye = BuiltInRegistries.ITEM
+                .get(Identifier.withDefaultNamespace(color.getName() + "_dye"))
+                .map(Holder.Reference::value)
+                .orElse(Items.AIR);
         if (dye != null && dye != Items.AIR) {
             return dye;
         }

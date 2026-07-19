@@ -1,6 +1,5 @@
 {
   "type": "minecraft:stonecutting",
-  "group": "virid_jadestone_stonecutting",
   "ingredient": "betterend:virid_jadestone",
   "result": {
     "count": 2,

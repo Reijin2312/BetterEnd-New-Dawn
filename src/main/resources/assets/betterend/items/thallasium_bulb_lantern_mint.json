@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "betterend:block/thallasium_bulb_lantern_mint",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -14876740
+      }
+    ]
+  }
+}

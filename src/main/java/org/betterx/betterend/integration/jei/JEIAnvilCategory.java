@@ -5,7 +5,7 @@ import org.betterx.betterend.blocks.basis.EndAnvilBlock;
 import org.betterx.betterend.registry.EndBlocks;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
@@ -115,15 +115,15 @@ public class JEIAnvilCategory implements IRecipeCategory<AnvilRecipe> {
     public void draw(
             AnvilRecipe recipe,
             IRecipeSlotsView recipeSlotsView,
-            GuiGraphics guiGraphics,
+            GuiGraphicsExtractor guiGraphics,
             double mouseX,
             double mouseY
     ) {
         Component damageText = Component.translatable("betterend.jei.damage.amount&dmg", recipe.getDamage());
-        guiGraphics.drawString(Minecraft.getInstance().font, damageText, 45, 28, 0xFF404040, false);
+        guiGraphics.text(Minecraft.getInstance().font, damageText, 45, 28, 0xFF404040, false);
 
         Component levelText = Component.translatable("betterend.jei.recipe_level.anvil", recipe.getAnvilLevel());
-        guiGraphics.drawString(Minecraft.getInstance().font, levelText, 45, 18, 0xFF404040, false);
+        guiGraphics.text(Minecraft.getInstance().font, levelText, 45, 18, 0xFF404040, false);
     }
 
     private static List<ItemStack> toCountedStacks(Ingredient ingredient, int count) {

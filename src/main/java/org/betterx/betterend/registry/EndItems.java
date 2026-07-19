@@ -33,12 +33,16 @@ import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.equipment.ArmorType;
 
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 public class EndItems {
     private static ItemRegistry ITEMS_REGISTRY;
+    private static final Map<Item, FoodProperties> COMPOSTABLE_FOODS = new LinkedHashMap<>();
 
     // Materials //
     public final static Item ENDER_DUST = registerEndItem("ender_dust");
@@ -287,6 +291,10 @@ public class EndItems {
         return getItemRegistry().allItems().toList();
     }
 
+    public static Map<Item, FoodProperties> getCompostableFoods() {
+        return Collections.unmodifiableMap(COMPOSTABLE_FOODS);
+    }
+
     public static Item registerEndDisc(String name, ResourceKey<JukeboxSong> sound) {
         final String path = prepareItemPath(name);
         try {
@@ -331,7 +339,9 @@ public class EndItems {
     public static Item registerEndFood(String name, int hunger, float saturation, MobEffectInstance... effects) {
         final String path = prepareItemPath(name);
         try {
-            return getItemRegistry().registerFood(path, ModelProviderItem::new, hunger, saturation, effects);
+            Item item = getItemRegistry().registerFood(path, ModelProviderItem::new, hunger, saturation, effects);
+            COMPOSTABLE_FOODS.put(item, foodProperties(hunger, saturation));
+            return item;
         } finally {
             getItemRegistry().finishConstructionPath();
         }
@@ -340,9 +350,11 @@ public class EndItems {
     public static Item registerEndFood(String name, FoodProperties foodComponent) {
         final String path = prepareItemPath(name);
         try {
-            return getItemRegistry().register(path, new ModelProviderItem(getItemRegistry()
+            Item item = getItemRegistry().register(path, new ModelProviderItem(getItemRegistry()
                     .createDefaultItemSettings()
                     .food(foodComponent)));
+            COMPOSTABLE_FOODS.put(item, foodComponent);
+            return item;
         } finally {
             getItemRegistry().finishConstructionPath();
         }
@@ -351,10 +363,16 @@ public class EndItems {
     public static Item registerEndDrink(String name, int hunger, float saturation) {
         final String path = prepareItemPath(name);
         try {
-            return getItemRegistry().registerDrink(path, ModelProviderItem::new, hunger, saturation);
+            Item item = getItemRegistry().registerDrink(path, ModelProviderItem::new, hunger, saturation);
+            COMPOSTABLE_FOODS.put(item, foodProperties(hunger, saturation));
+            return item;
         } finally {
             getItemRegistry().finishConstructionPath();
         }
+    }
+
+    private static FoodProperties foodProperties(int hunger, float saturation) {
+        return new FoodProperties.Builder().nutrition(hunger).saturationModifier(saturation).build();
     }
 
     public static Item.Properties makeEndItemSettings() {

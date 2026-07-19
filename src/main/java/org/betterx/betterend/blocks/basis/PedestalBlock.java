@@ -23,6 +23,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
@@ -374,6 +375,7 @@ public class PedestalBlock extends BaseBlockNotFull implements EntityBlock, Bloc
     public int getAnalogOutputSignal(BlockState state, @NotNull Level world, @NotNull BlockPos pos, Direction direction) {
         return state.getValue(HAS_ITEM) ? 15 : 0;
     }
+
     private static Map<PedestalState, ModelTemplate> pedestalModels() {
         return Map.of(
                 PedestalState.DEFAULT, EndModels.PEDESTAL_DEFAULT,
@@ -405,7 +407,7 @@ public class PedestalBlock extends BaseBlockNotFull implements EntityBlock, Bloc
             Block pedestalBlock,
             Map<PedestalState, ModelTemplate> pdestalModels
     ) {
-        final Identifier id = TextureMapping.getBlockTexture(pedestalBlock);
+        final Identifier id = TextureMapping.getBlockTexture(pedestalBlock).sprite();
         final Object properties = DatagenModelDispatch.propertyDispatchInitial(STATE);
 
         for (var entry : pdestalModels.entrySet()) {
@@ -423,10 +425,14 @@ public class PedestalBlock extends BaseBlockNotFull implements EntityBlock, Bloc
     protected TextureMapping createTextureMapping() {
         final var parentTexture = TextureMapping.getBlockTexture(parent);
         return new TextureMapping()
-                .put(TextureSlot.TOP, parentTexture.withSuffix("_top"))
-                .put(TextureSlot.BOTTOM, parentTexture.withSuffix("_bottom"))
-                .put(EndModels.BASE, parentTexture.withSuffix("_base"))
-                .put(EndModels.PILLAR, parentTexture.withSuffix("_pillar"));
+                .put(TextureSlot.TOP, withSuffix(parentTexture, "_top"))
+                .put(TextureSlot.BOTTOM, withSuffix(parentTexture, "_bottom"))
+                .put(EndModels.BASE, withSuffix(parentTexture, "_base"))
+                .put(EndModels.PILLAR, withSuffix(parentTexture, "_pillar"));
+    }
+
+    protected static Material withSuffix(Material material, String suffix) {
+        return new Material(material.sprite().withSuffix(suffix));
     }
 
     static {

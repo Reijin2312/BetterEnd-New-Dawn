@@ -11,7 +11,7 @@ import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 
 public class BeamRenderer {
-    private static final Identifier BEAM_TEXTURE = Identifier.withDefaultNamespace("textures/entity/end_gateway_beam.png");
+    private static final Identifier BEAM_TEXTURE = Identifier.withDefaultNamespace("textures/entity/end_portal/end_gateway_beam.png");
 
     public static void renderLightBeam(
             PoseStack matrices,

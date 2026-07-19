@@ -194,6 +194,12 @@ public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvi
         }
     }
 
+    public static void refreshPottableLists() {
+        synchronized (FlowerPotBlock.class) {
+            initPottableLists();
+        }
+    }
+
     private static void initPottableLists() {
         Block[] plants = new Block[128];
         Block[] soils = new Block[16];

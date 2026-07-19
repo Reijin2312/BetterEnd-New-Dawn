@@ -1,6 +1,5 @@
 {
   "type": "minecraft:stonecutting",
-  "group": "sandy_jadestone_stonecutting",
   "ingredient": "betterend:sandy_jadestone_bricks",
   "result": {
     "count": 2,

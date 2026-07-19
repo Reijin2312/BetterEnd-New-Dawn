@@ -1,6 +1,5 @@
 {
   "type": "minecraft:stonecutting",
-  "group": "violecite_stonecutting",
   "ingredient": "betterend:violecite_bricks",
   "result": {
     "count": 2,

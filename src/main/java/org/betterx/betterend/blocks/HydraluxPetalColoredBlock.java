@@ -12,6 +12,7 @@ import org.betterx.wover.block.api.model.WoverBlockModelGeneratorsAccess;
 
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
@@ -42,9 +43,9 @@ public class HydraluxPetalColoredBlock extends HydraluxPetalBlock implements Cus
 
     @Override
     public void provideBlockModels(Object modelGenerator) {
-    WoverBlockModelGenerators generator = (WoverBlockModelGenerators) modelGenerator;
+        WoverBlockModelGenerators generator = (WoverBlockModelGenerators) modelGenerator;
         final var modelLocation = BetterEnd.C.mk("block/hydralux_petal_block_colored");
-        final var mapping = new TextureMapping().put(TextureSlot.TEXTURE, BetterEnd.C.mk("block/hydralux_petal_block_colored"));
+        final var mapping = new TextureMapping().put(TextureSlot.TEXTURE, new Material(BetterEnd.C.mk("block/hydralux_petal_block_colored")));
         if (PETAL_MODEL == null)
             PETAL_MODEL = EndModels.PETAL_COLORED.create(modelLocation, mapping, generator.modelOutput());
         generator.acceptBlockState(WoverBlockModelGeneratorsAccess.createSimpleBlock(this, PETAL_MODEL));

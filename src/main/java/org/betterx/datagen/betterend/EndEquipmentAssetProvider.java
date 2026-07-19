@@ -8,9 +8,8 @@ import net.minecraft.client.resources.model.EquipmentClientInfo;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
-import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -22,12 +21,12 @@ public class EndEquipmentAssetProvider implements WoverDataProvider<DataProvider
 
     @Override
     public DataProvider getProvider(
-            FabricDataOutput output,
+            FabricPackOutput output,
             CompletableFuture<HolderLookup.Provider> registriesFuture
     ) {
         return new DataProvider() {
-            private final PackOutput.PathProvider equipmentPathProvider =
-                    output.createPathProvider(PackOutput.Target.RESOURCE_PACK, "equipment");
+            private final FabricPackOutput.PathProvider equipmentPathProvider =
+                    output.createPathProvider(FabricPackOutput.Target.RESOURCE_PACK, "equipment");
 
             @Override
             public CompletableFuture<?> run(CachedOutput cache) {

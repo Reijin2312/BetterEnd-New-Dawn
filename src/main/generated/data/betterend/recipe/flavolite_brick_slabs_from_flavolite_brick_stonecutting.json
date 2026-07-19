@@ -1,6 +1,5 @@
 {
   "type": "minecraft:stonecutting",
-  "group": "flavolite_stonecutting",
   "ingredient": "betterend:flavolite_bricks",
   "result": {
     "count": 2,

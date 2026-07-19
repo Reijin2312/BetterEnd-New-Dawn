@@ -100,6 +100,374 @@
       "when": {
         "soil_id": "12"
       }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/twisted_umbrella_moss_small"
+      },
+      "when": {
+        "plant_id": "1"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/dragon_tree_sapling_potted"
+      },
+      "when": {
+        "plant_id": "2"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/bolux_mushroom_potted"
+      },
+      "when": {
+        "plant_id": "3"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/small_amaranita_mushroom"
+      },
+      "when": {
+        "plant_id": "4"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/crystal_grass_potted"
+      },
+      "when": {
+        "plant_id": "5"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/creeping_moss"
+      },
+      "when": {
+        "plant_id": "6"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/pythadendron_sapling_potted"
+      },
+      "when": {
+        "plant_id": "7"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/salteago_potted"
+      },
+      "when": {
+        "plant_id": "8"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/murkweed_potted"
+      },
+      "when": {
+        "plant_id": "9"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/chorus_grass_potted"
+      },
+      "when": {
+        "plant_id": "10"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/tenanea_sapling_potted"
+      },
+      "when": {
+        "plant_id": "11"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/lucernia_leaves_potted"
+      },
+      "when": {
+        "plant_id": "12"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/neon_cactus_potted"
+      },
+      "when": {
+        "plant_id": "13"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/amber_grass_potted"
+      },
+      "when": {
+        "plant_id": "14"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/umbrella_moss_small"
+      },
+      "when": {
+        "plant_id": "15"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/flammalix_potted"
+      },
+      "when": {
+        "plant_id": "16"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/lucernia_sapling_potted"
+      },
+      "when": {
+        "plant_id": "17"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/lutebus_potted"
+      },
+      "when": {
+        "plant_id": "18"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/small_jellyshroom_floor"
+      },
+      "when": {
+        "plant_id": "19"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/blossom_berry"
+      },
+      "when": {
+        "plant_id": "20"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/jungle_grass_potted"
+      },
+      "when": {
+        "plant_id": "21"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/tenanea_leaves_potted"
+      },
+      "when": {
+        "plant_id": "22"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/shadow_plant_potted"
+      },
+      "when": {
+        "plant_id": "23"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/cave_grass_potted"
+      },
+      "when": {
+        "plant_id": "24"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/aeridium_potted"
+      },
+      "when": {
+        "plant_id": "25"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/dragon_tree_leaves_potted"
+      },
+      "when": {
+        "plant_id": "26"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/blooming_cooksonia_potted"
+      },
+      "when": {
+        "plant_id": "27"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/helix_tree_sapling_potted"
+      },
+      "when": {
+        "plant_id": "28"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/mossy_glowshroom_sapling_potted"
+      },
+      "when": {
+        "plant_id": "29"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/shadow_berry_04"
+      },
+      "when": {
+        "plant_id": "30"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/fracturn_potted"
+      },
+      "when": {
+        "plant_id": "31"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/inflexia_potted"
+      },
+      "when": {
+        "plant_id": "32"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/lacugrove_sapling_potted"
+      },
+      "when": {
+        "plant_id": "33"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/vaiolush_fern_potted"
+      },
+      "when": {
+        "plant_id": "34"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/orango_potted"
+      },
+      "when": {
+        "plant_id": "35"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/end_lotus_flower"
+      },
+      "when": {
+        "plant_id": "36"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/chorus_mushroom_seed_potted"
+      },
+      "when": {
+        "plant_id": "37"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/needlegrass_potted"
+      },
+      "when": {
+        "plant_id": "38"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/amber_root_seed_potted"
+      },
+      "when": {
+        "plant_id": "39"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/clawfern_potted"
+      },
+      "when": {
+        "plant_id": "40"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/globulagus_potted"
+      },
+      "when": {
+        "plant_id": "41"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/pythadendron_leaves_potted"
+      },
+      "when": {
+        "plant_id": "42"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/bushy_grass_potted"
+      },
+      "when": {
+        "plant_id": "43"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/lamellarium_potted"
+      },
+      "when": {
+        "plant_id": "44"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/umbrella_tree_sapling_potted"
+      },
+      "when": {
+        "plant_id": "45"
+      }
+    },
+    {
+      "apply": {
+        "model": "betterend:block/lacugrove_leaves_potted"
+      },
+      "when": {
+        "plant_id": "46"
+      }
     }
   ]
 }

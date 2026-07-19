@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "org.betterx.betterend.mixin.common",
-  "compatibilityLevel": "JAVA_12",
+  "compatibilityLevel": "JAVA_25",
   "mixins": [
     "ChorusFlowerBlockMixin",
     "ChorusPlantBlockMixin",

@@ -323,7 +323,11 @@ public class EndStoneSmelterBlockEntity extends BaseContainerBlockEntity impleme
                             Item item = fuel.getItem();
                             fuel.shrink(1);
                             if (fuel.isEmpty()) {
-                                blockEntity.inventory.set(EndStoneSmelterMenu.FUEL_SLOT, item.getCraftingRemainder());
+                                var remainder = item.getCraftingRemainder();
+                                blockEntity.inventory.set(
+                                        EndStoneSmelterMenu.FUEL_SLOT,
+                                        remainder == null ? ItemStack.EMPTY : remainder.create()
+                                );
                             }
                         }
                         blockEntity.setChanged();
@@ -424,7 +428,7 @@ public class EndStoneSmelterBlockEntity extends BaseContainerBlockEntity impleme
     }
 
     private ItemStack assembleRecipeResult(RecipeHolder<?> recipe, RegistryAccess acc) {
-        return ((Recipe<RecipeInput>) recipe.value()).assemble(currentRecipeInputFor(recipe), acc);
+        return ((Recipe<RecipeInput>) recipe.value()).assemble(currentRecipeInputFor(recipe));
     }
 
     @Override

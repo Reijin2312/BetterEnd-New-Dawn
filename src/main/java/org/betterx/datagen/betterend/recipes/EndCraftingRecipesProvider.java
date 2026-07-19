@@ -9,19 +9,17 @@ import org.betterx.wover.datagen.api.provider.WoverRecipeProvider;
 import org.betterx.wover.recipe.api.CraftingRecipeBuilder;
 import org.betterx.wover.recipe.api.RecipeBuilder;
 
-import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
-import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.fabricmc.fabric.api.recipe.v1.ingredient.DefaultCustomIngredients;
 
 public class EndCraftingRecipesProvider extends WoverRecipeProvider {
     public EndCraftingRecipesProvider(ModCore modCore) {
@@ -490,14 +488,10 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
                              .build(context);
     }
 
-    private ItemStack waterPotion() {
-        return stackFor(Items.POTION, Potions.WATER);
-    }
-
-
-    private static ItemStack stackFor(ItemLike content, Holder<Potion> potion) {
-        final var stack = new ItemStack(content);
-        stack.set(DataComponents.POTION_CONTENTS, new PotionContents(potion));
-        return stack;
+    private Ingredient waterPotion() {
+        return DefaultCustomIngredients.components(
+                Ingredient.of(Items.POTION),
+                components -> components.set(DataComponents.POTION_CONTENTS, new PotionContents(Potions.WATER))
+        );
     }
 }

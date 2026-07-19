@@ -37,7 +37,7 @@ public class UmbrellaMossBlock extends EndPlantBlock implements BehaviourPlant, 
 
     @Override
     public void performBonemeal(ServerLevel world, RandomSource random, BlockPos pos, BlockState state) {
-        int rot = world.random.nextInt(4);
+        int rot = random.nextInt(4);
         BlockState bs = EndBlocks.UMBRELLA_MOSS_TALL.defaultBlockState().setValue(BaseDoublePlantBlock.ROTATION, rot);
         BlocksHelper.setWithoutUpdate(world, pos, bs);
         BlocksHelper.setWithoutUpdate(world, pos.above(), bs.setValue(BaseDoublePlantBlock.TOP, true));

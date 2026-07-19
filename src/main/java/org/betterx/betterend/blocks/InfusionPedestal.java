@@ -95,6 +95,7 @@ public class InfusionPedestal extends PedestalBlock implements BehaviourStone, B
     ) {
         return InfusionPedestalEntity::tickEntity;
     }
+
     private static Map<EndBlockProperties.PedestalState, ModelTemplate> pedestalModels() {
         return Map.of(
                 EndBlockProperties.PedestalState.DEFAULT, EndModels.INFUSION_PEDESTAL_DEFAULT,
@@ -109,10 +110,10 @@ public class InfusionPedestal extends PedestalBlock implements BehaviourStone, B
     protected TextureMapping createTextureMapping() {
         final var parentTexture = TextureMapping.getBlockTexture(this);
         return new TextureMapping()
-                .put(TextureSlot.TOP, parentTexture.withSuffix("_top"))
-                .put(TextureSlot.BOTTOM, parentTexture.withSuffix("_base"))
-                .put(EndModels.BASE, parentTexture.withSuffix("_base"))
-                .put(EndModels.PILLAR, parentTexture.withSuffix("_pillar"));
+                .put(TextureSlot.TOP, withSuffix(parentTexture, "_top"))
+                .put(TextureSlot.BOTTOM, withSuffix(parentTexture, "_base"))
+                .put(EndModels.BASE, withSuffix(parentTexture, "_base"))
+                .put(EndModels.PILLAR, withSuffix(parentTexture, "_pillar"));
     }
 
     @Override

@@ -60,7 +60,7 @@ public class MossyDragonBoneBlock extends BaseRotatedPillarBlock implements Beha
                     state,
                     blockState,
                     Direction.UP,
-                    blockState.getLightBlock()
+                    blockState.getLightDampening()
             );
             return i < 5;
         }

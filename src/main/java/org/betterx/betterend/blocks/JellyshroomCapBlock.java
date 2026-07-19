@@ -12,7 +12,6 @@ import org.betterx.betterend.client.models.Patterns;
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.ui.ColorUtil;
 
-import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.core.Vec3i;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
@@ -73,12 +72,12 @@ public class JellyshroomCapBlock extends SlimeBlock implements RenderLayerProvid
     }
 
     @Override
-    public BlockModel getItemModel(Identifier resourceLocation) {
+    public Object getItemModel(Identifier resourceLocation) {
         return getBlockModel(resourceLocation, defaultBlockState());
     }
 
     @Override
-    public @Nullable BlockModel getBlockModel(Identifier resourceLocation, BlockState blockState) {
+    public @Nullable Object getBlockModel(Identifier resourceLocation, BlockState blockState) {
         Optional<String> pattern = Patterns.createJson(Patterns.BLOCK_COLORED, "jellyshroom_cap");
         return ModelsHelper.fromPattern(pattern);
     }

@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "betterend:block/iron_bulb_lantern_rose",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -27207
+      }
+    ]
+  }
+}

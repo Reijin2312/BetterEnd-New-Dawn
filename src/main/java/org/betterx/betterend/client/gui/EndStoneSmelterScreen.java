@@ -2,7 +2,7 @@ package org.betterx.betterend.client.gui;
 
 import org.betterx.betterend.BetterEnd;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.navigation.ScreenPosition;
 import net.minecraft.client.gui.screens.inventory.AbstractRecipeBookScreen;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
@@ -42,7 +42,12 @@ public class EndStoneSmelterScreen extends AbstractRecipeBookScreen<EndStoneSmel
     }
 
     @Override
-    protected void renderBg(GuiGraphics guiGraphics, float delta, int mouseX, int mouseY) {
+    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float delta) {
+        extractBackgroundTexture(guiGraphics);
+        super.extractRenderState(guiGraphics, mouseX, mouseY, delta);
+    }
+
+    private void extractBackgroundTexture(GuiGraphicsExtractor guiGraphics) {
         int x = this.leftPos;
         int y = this.topPos;
         guiGraphics.blit(

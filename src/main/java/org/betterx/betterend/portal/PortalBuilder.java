@@ -187,7 +187,7 @@ public class PortalBuilder {
         );
 
         return oPos.map(poiPos -> {
-            this.targetLevel.getChunkSource().addTicketWithRadius(TicketType.PORTAL, new ChunkPos(poiPos), 3);
+            this.targetLevel.getChunkSource().addTicketWithRadius(TicketType.PORTAL, ChunkPos.containing(poiPos), 3);
             BlockState blockState = this.targetLevel.getBlockState(poiPos);
             return new FoundPortalRect(BlockUtil.getLargestRectangleAround(
                     poiPos,

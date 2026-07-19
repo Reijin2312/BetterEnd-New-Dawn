@@ -10,6 +10,7 @@ import net.minecraft.world.level.levelgen.blending.Blender;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -18,7 +19,11 @@ import java.util.List;
 
 @Mixin(NoiseChunk.class)
 public class NoiseChunkMixin implements BETargetChecker {
+    @Unique
     private boolean be_isEndGenerator;
+
+    @Unique
+    private NoiseSettings be_noiseSettings;
 
     @Inject(method = "<init>*", at = @At("TAIL"))
     private void be_onNoiseChunkInit(
@@ -33,6 +38,7 @@ public class NoiseChunkMixin implements BETargetChecker {
             Blender blender,
             CallbackInfo ci
     ) {
+        this.be_noiseSettings = noiseSettings;
         var o = BETargetChecker.class.cast(noiseGeneratorSettings);
         if (o != null) be_isEndGenerator = o.be_isTarget();
         else BCLib.LOGGER.warn(noiseGeneratorSettings + " has unknown implementation.");
@@ -52,28 +58,24 @@ public class NoiseChunkMixin implements BETargetChecker {
     @Final
     private List<NoiseChunk.NoiseInterpolator> interpolators;
 
-    @Shadow @Final private int cellCountXZ;
-    @Shadow @Final private int cellCountY;
-    @Shadow @Final private int firstCellZ;
-    @Shadow @Final private int cellWidth;
-    @Shadow @Final private int cellHeight;
+    @Shadow
+    @Final
+    private int cellCountXZ;
+
+    @Shadow
+    @Final
+    private int firstCellZ;
 
     @Inject(method = "fillSlice", at = @At("HEAD"), cancellable = true)
     private void be_fillSlice(boolean primarySlice, int x, CallbackInfo info) {
         if (!be_isTarget()) return;
 
         info.cancel();
+        if (be_noiseSettings == null) {
+            return;
+        }
 
-        TerrainGenerator.fillSlice(
-                primarySlice,
-                x,
-                interpolators,
-                cellCountXZ,
-                firstCellZ,
-                cellWidth,
-                cellHeight,
-                cellCountY * cellHeight
-        );
+        TerrainGenerator.fillSlice(primarySlice, x, interpolators, cellCountXZ, firstCellZ, be_noiseSettings);
     }
 
 }

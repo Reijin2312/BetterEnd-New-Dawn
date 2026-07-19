@@ -13,7 +13,9 @@ import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -68,8 +70,8 @@ public class BulbVineLanternBlock extends EndLanternBlock implements RenderLayer
         final var id = BuiltInRegistries.BLOCK.getKey(this);
 
         final var mapping = new TextureMapping()
-                .put(BCLModels.GLOW, BetterEnd.C.mk("bulb_vine_lantern_bulb").withPrefix("block/"))
-                .put(BCLModels.METAL, BetterEnd.C.mk(getMetalTexture(id)).withPrefix("block/"));
+                .put(BCLModels.GLOW, new Material(BetterEnd.C.mk(getGlowTexture()).withPrefix("block/")))
+                .put(BCLModels.METAL, new Material(BetterEnd.C.mk(getMetalTexture(id)).withPrefix("block/")));
 
         final var floorModel = BCLModels.BULB_LANTERN_FLOOR.createWithSuffix(this, "_floor", mapping, generator.modelOutput());
         final var ceilModel = BCLModels.BULB_LANTERN_CEIL.create(this, mapping, generator.modelOutput());
@@ -78,5 +80,10 @@ public class BulbVineLanternBlock extends EndLanternBlock implements RenderLayer
         DatagenModelDispatch.propertyDispatchSelect(properties, true, BlockModelGenerators.plainVariant(floorModel));
         DatagenModelDispatch.propertyDispatchSelect(properties, false, BlockModelGenerators.plainVariant(ceilModel));
         generator.acceptBlockState(DatagenModelDispatch.dispatchWith(this, properties));
+        if (this instanceof BulbVineLanternColoredBlock coloredBlock) {
+            generator.delegateTintedItemModel(this, ceilModel, ItemModelUtils.constantTint(coloredBlock.getColor()));
+        } else {
+            generator.delegateItemModel(this, ceilModel);
+        }
     }
 }

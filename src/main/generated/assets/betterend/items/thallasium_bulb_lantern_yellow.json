@@ -1,7 +1,7 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/thallasium_bulb_lantern_yellow",
+    "model": "betterend:block/thallasium_bulb_lantern_yellow",
     "tints": [
       {
         "type": "minecraft:constant",

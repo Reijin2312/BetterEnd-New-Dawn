@@ -58,7 +58,7 @@ public class MossyObsidian extends BaseBlock implements BehaviourObsidian, Block
                     state,
                     blockState,
                     Direction.UP,
-                    blockState.getLightBlock()
+                    blockState.getLightDampening()
             );
             return i < 5;
         }

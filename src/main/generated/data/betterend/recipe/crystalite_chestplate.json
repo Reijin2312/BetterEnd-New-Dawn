@@ -12,25 +12,7 @@
   },
   "input": "betterend:terminite_chestplate",
   "result": {
-    "item": "betterend:crystalite_chestplate",
-    "nbt": {
-      "minecraft:attribute_modifiers": [
-        {
-          "type": "minecraft:armor",
-          "amount": 6.400000095367432,
-          "id": "betterend:armor_boost_chestplate",
-          "operation": "add_value",
-          "slot": "chest"
-        },
-        {
-          "type": "minecraft:armor_toughness",
-          "amount": 0.9600000381469727,
-          "id": "betterend:toughness_boost_chestplate",
-          "operation": "add_value",
-          "slot": "chest"
-        }
-      ]
-    }
+    "item": "betterend:crystalite_chestplate"
   },
   "time": 300
 }

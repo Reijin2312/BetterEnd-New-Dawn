@@ -14,6 +14,7 @@ import org.betterx.betterend.tab.CreativeTabs;
 import org.betterx.betterend.util.BonemealPlants;
 import org.betterx.betterend.util.LootTableUtil;
 import org.betterx.betterend.world.generator.EndLandBiomeDecider;
+import org.betterx.betterend.blocks.FlowerPotBlock;
 import org.betterx.betterend.world.generator.GeneratorOptions;
 import org.betterx.wover.core.api.Logger;
 import org.betterx.wover.core.api.ModCore;
@@ -56,6 +57,10 @@ public class BetterEnd implements ModInitializer {
         // must not read their fields before this point.
         EndBlocks.ensureStaticallyLoaded();
         EndItems.ensureStaticallyLoaded();
+        // Fabric initializes some client/post-init hooks while the lazy registries are
+        // still being populated. Rebuild the pot lookup only after both blocks and
+        // their BlockItems are complete, otherwise the first partial snapshot is cached.
+        FlowerPotBlock.refreshPottableLists();
         EndMenuTypes.ensureStaticallyLoaded();
         EndBlockEntities.register();
         EndPoiTypes.register();

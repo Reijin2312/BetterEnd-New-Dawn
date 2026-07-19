@@ -8,6 +8,7 @@ import org.betterx.betterend.client.models.EndModels;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 
@@ -29,9 +30,9 @@ public class PedestalVanilla extends PedestalBlock implements BehaviourStone {
                 .withSuffix("_pillar"));
 
         return new TextureMapping()
-                .put(TextureSlot.TOP, polishedTexture)
-                .put(TextureSlot.BOTTOM, polishedTexture)
-                .put(EndModels.BASE, polishedTexture)
-                .put(EndModels.PILLAR, pillarTexture);
+                .put(TextureSlot.TOP, new Material(polishedTexture))
+                .put(TextureSlot.BOTTOM, new Material(polishedTexture))
+                .put(EndModels.BASE, new Material(polishedTexture))
+                .put(EndModels.PILLAR, new Material(pillarTexture));
     }
 }

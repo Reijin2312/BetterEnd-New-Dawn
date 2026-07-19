@@ -7,7 +7,7 @@ import org.betterx.betterend.particle.*;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 
-import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
 
 public class EndParticles {
     public static final SimpleParticleType GLOWING_SPHERE = register("glowing_sphere");
@@ -25,18 +25,18 @@ public class EndParticles {
     public static final SimpleParticleType SMARAGDANT = register("smaragdant_particle");
 
     public static void register() {
-        ParticleFactoryRegistry.getInstance().register(GLOWING_SPHERE, ParticleGlowingSphere.FactoryGlowingSphere::new);
-        ParticleFactoryRegistry.getInstance().register(PORTAL_SPHERE, PaticlePortalSphere.FactoryPortalSphere::new);
-        ParticleFactoryRegistry.getInstance().register(INFUSION, InfusionParticle.InfusionFactory::new);
-        ParticleFactoryRegistry.getInstance().register(SULPHUR_PARTICLE, ParticleSulphur.FactorySulphur::new);
-        ParticleFactoryRegistry.getInstance().register(GEYSER_PARTICLE, ParticleGeyser.FactoryGeyser::new);
-        ParticleFactoryRegistry.getInstance().register(SNOWFLAKE, ParticleSnowflake.FactorySnowflake::new);
-        ParticleFactoryRegistry.getInstance().register(AMBER_SPHERE, ParticleGlowingSphere.FactoryGlowingSphere::new);
-        ParticleFactoryRegistry.getInstance().register(BLACK_SPORE, ParticleBlackSpore.FactoryBlackSpore::new);
-        ParticleFactoryRegistry.getInstance().register(TENANEA_PETAL, ParticleTenaneaPetal.FactoryTenaneaPetal::new);
-        ParticleFactoryRegistry.getInstance().register(JUNGLE_SPORE, ParticleJungleSpore.FactoryJungleSpore::new);
-        ParticleFactoryRegistry.getInstance().register(FIREFLY, FireflyParticle.FireflyParticleFactory::new);
-        ParticleFactoryRegistry.getInstance().register(SMARAGDANT, SmaragdantParticle.SmaragdantParticleFactory::new);
+        ParticleProviderRegistry.getInstance().register(GLOWING_SPHERE, ParticleGlowingSphere.FactoryGlowingSphere::new);
+        ParticleProviderRegistry.getInstance().register(PORTAL_SPHERE, PaticlePortalSphere.FactoryPortalSphere::new);
+        ParticleProviderRegistry.getInstance().register(INFUSION, InfusionParticle.InfusionFactory::new);
+        ParticleProviderRegistry.getInstance().register(SULPHUR_PARTICLE, ParticleSulphur.FactorySulphur::new);
+        ParticleProviderRegistry.getInstance().register(GEYSER_PARTICLE, ParticleGeyser.FactoryGeyser::new);
+        ParticleProviderRegistry.getInstance().register(SNOWFLAKE, ParticleSnowflake.FactorySnowflake::new);
+        ParticleProviderRegistry.getInstance().register(AMBER_SPHERE, ParticleGlowingSphere.FactoryGlowingSphere::new);
+        ParticleProviderRegistry.getInstance().register(BLACK_SPORE, ParticleBlackSpore.FactoryBlackSpore::new);
+        ParticleProviderRegistry.getInstance().register(TENANEA_PETAL, ParticleTenaneaPetal.FactoryTenaneaPetal::new);
+        ParticleProviderRegistry.getInstance().register(JUNGLE_SPORE, ParticleJungleSpore.FactoryJungleSpore::new);
+        ParticleProviderRegistry.getInstance().register(FIREFLY, FireflyParticle.FireflyParticleFactory::new);
+        ParticleProviderRegistry.getInstance().register(SMARAGDANT, SmaragdantParticle.SmaragdantParticleFactory::new);
     }
 
     private static SimpleParticleType register(String name) {

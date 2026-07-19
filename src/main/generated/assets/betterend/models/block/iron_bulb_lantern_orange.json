@@ -1,7 +1,7 @@
 {
   "parent": "bclib:block/bulb_lantern_ceil",
   "textures": {
-    "glow": "betterend:block/bulb_vine_lantern_bulb",
+    "glow": "betterend:block/bulb_vine_lantern_overlay",
     "metal": "betterend:block/iron_bulb_vine_lantern_metal"
   }
 }

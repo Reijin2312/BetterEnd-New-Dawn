@@ -4,7 +4,7 @@ import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndBlocks;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
@@ -106,7 +106,7 @@ public class JEIAlloyingCategory implements IRecipeCategory<AlloyingDisplay> {
     public void draw(
             AlloyingDisplay display,
             IRecipeSlotsView recipeSlotsView,
-            GuiGraphics guiGraphics,
+            GuiGraphicsExtractor guiGraphics,
             double mouseX,
             double mouseY
     ) {
@@ -119,6 +119,6 @@ public class JEIAlloyingCategory implements IRecipeCategory<AlloyingDisplay> {
                 DF.format(display.getExperience()),
                 DF.format(display.getTime() / 20.0D)
         );
-        guiGraphics.drawString(Minecraft.getInstance().font, text, 55, 49, 0xFF404040, false);
+        guiGraphics.text(Minecraft.getInstance().font, text, 55, 49, 0xFF404040, false);
     }
 }

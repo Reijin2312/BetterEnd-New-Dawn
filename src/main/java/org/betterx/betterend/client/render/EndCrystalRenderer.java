@@ -81,8 +81,8 @@ public class EndCrystalRenderer {
     }
 
     static {
-        END_CRYSTAL = RenderTypes.entityCutoutNoCull(CRYSTAL_TEXTURE);
-        RenderTypes.entitySmoothCutout(CRYSTAL_BEAM_TEXTURE);
+        END_CRYSTAL = RenderTypes.entityCutout(CRYSTAL_TEXTURE);
+        RenderTypes.endCrystalBeam(CRYSTAL_BEAM_TEXTURE);
         SINE_45_DEGREES = (float) Math.sin(0.7853981633974483D);
 
         ModelPart root = getTexturedModelData().bakeRoot();

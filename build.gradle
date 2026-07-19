@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version "${loom_version}"
+    id 'net.fabricmc.fabric-loom' version "${loom_version}"
     id 'maven-publish'
     id "com.diffplug.spotless" version "6.25.0"
     id "com.modrinth.minotaur" version "2.+"
@@ -21,8 +21,8 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
 }
 
 base { archivesName = project.archives_base_name }
@@ -43,6 +43,7 @@ loom {
             vmArg "-Dfabric-api.datagen.output-dir=${file("src/main/generated")}"
             vmArg "-Dfabric-api.datagen.strict-validation"
             vmArg "-Dfabric-api.datagen.modid=${project.modrinth_id}"
+            vmArg "-Dbetterend.static-resources-dir=${file("src/main/resources")}"
 
             runDir "build/datagen"
         }
@@ -70,33 +71,6 @@ sourceSets {
     }
 }
 
-tasks.register("generateBetterEndResources") {
-    group = "fabric"
-    description = "Runs BetterEnd datagen before packaging the mod."
-    dependsOn(tasks.named("runDatagenClient"))
-}
-
-def generatedResourcesDir = file("src/main/generated")
-tasks.register("syncGeneratedResources", Copy) {
-    group = "fabric"
-    description = "Syncs generated datagen resources into build outputs."
-    from(generatedResourcesDir)
-    into(layout.buildDirectory.dir("resources/main"))
-    mustRunAfter(tasks.named("processResources"))
-    mustRunAfter(tasks.named("runDatagenClient"))
-}
-
-tasks.named("jar") {
-    dependsOn(tasks.named("generateBetterEndResources"))
-    dependsOn(tasks.named("syncGeneratedResources"))
-    from(generatedResourcesDir)
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
-
-tasks.named("runDatagenClient") {
-    finalizedBy(tasks.named("syncGeneratedResources"))
-}
-
 subprojects { subproject ->
     subproject.tasks.withType(Javadoc) { javadocTask ->
         javadocTask.failOnError false
@@ -113,35 +87,33 @@ subprojects { subproject ->
 dependencies {
     //to change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings loom.officialMojangMappings()
-
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     // Fabric API. This is technically optional, but you probably want it anyway.
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
     // https://mvnrepository.com/artifact/javax.annotation/jsr305
     compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
 
     // run against the full jar
-    modRuntimeOnly "mcp.mobius.waila:wthit:fabric-${project.wthit_version}"
+    compileOnly "maven.modrinth:wthit:fabric-${project.wthit_version}"
 
     //1.19.3 modApi "vazkii.patchouli:Patchouli:${project.patchouli_version}"
     println "Using local BCLib: ${local_bclib}"
     if (local_bclib) {
         implementation project(path: ":BCLib", configuration: 'dev')
     } else {
-        modImplementation "org.betterx:bclib:${project.bclib_version}"
+        implementation "org.betterx:bclib:${project.bclib_version}"
     }
-    modCompileOnly "mezz.jei:jei-1.21.11-fabric-api:${project.jei_version}"
-    modCompileOnly "maven.modrinth:jade:${project.jade_version}"
+    compileOnly "mezz.jei:jei-26.1-fabric-api:${project.jei_version}"
+    compileOnly "maven.modrinth:jade:${project.jade_version}"
 
 
     println "Using local WunderLib: ${local_wunderlib}"
     if (local_wunderlib) {
         implementation project(path: ":wunderlib", configuration: 'dev')
     } else {
-        modImplementation "de.ambertation:wunderlib:${project.wunderlib_version}"
+        implementation "de.ambertation:wunderlib:${project.wunderlib_version}"
     }
 
     println "Using local WorldWeaver: ${local_wover}"
@@ -152,7 +124,7 @@ dependencies {
             implementation project(path: ":WorldWeaver:$it", configuration: 'localDev')
         }
     } else {
-        modImplementation "org.betterx:worldweaver:${project.wover_version}"
+        implementation "org.betterx:worldweaver:${project.wover_version}"
     }
 }
 
@@ -185,7 +157,7 @@ processResources {
 // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
-    it.options.release = 21
+    it.options.release = 25
 }
 
 // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
@@ -226,7 +198,7 @@ artifacts {
     dev jar
 }
 
-def modrinthModsDir = file(findProperty("modrinth_mods_dir") ?: "C:/Users/Redmi/AppData/Roaming/ModrinthApp/profiles/Fabric 1.21.11/mods")
+def modrinthModsDir = file(findProperty("modrinth_mods_dir") ?: "C:/Users/Redmi/AppData/Roaming/ModrinthApp/profiles/Fabric 26.1/mods")
 def fabricRuntimeProjects = [project]
 if (local_bclib) fabricRuntimeProjects.add(project(":BCLib"))
 if (local_wover) fabricRuntimeProjects.add(project(":WorldWeaver"))
@@ -234,10 +206,10 @@ if (local_wunderlib) fabricRuntimeProjects.add(project(":wunderlib"))
 
 tasks.register("copyModrinthJars", Copy) {
     dependsOn {
-        fabricRuntimeProjects.collect { it.tasks.findByName("remapJar") }.findAll { it != null }
+        fabricRuntimeProjects.collect { it.tasks.findByName("jar") }.findAll { it != null }
     }
     from {
-        fabricRuntimeProjects.collect { it.tasks.findByName("remapJar")?.outputs?.files }.findAll { it != null }
+        fabricRuntimeProjects.collect { it.tasks.findByName("jar")?.outputs?.files }.findAll { it != null }
     }
     rename { fileName -> fileName.endsWith(".jar") ? "${fileName[0..-5]}-fabric.jar" : fileName }
     into(modrinthModsDir)

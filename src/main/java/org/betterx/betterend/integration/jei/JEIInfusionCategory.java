@@ -3,7 +3,7 @@ package org.betterx.betterend.integration.jei;
 import org.betterx.betterend.BetterEnd;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
@@ -95,13 +95,13 @@ public class JEIInfusionCategory implements IRecipeCategory<InfusionDisplay> {
     public void draw(
             InfusionDisplay display,
             IRecipeSlotsView recipeSlotsView,
-            GuiGraphics guiGraphics,
+            GuiGraphicsExtractor guiGraphics,
             double mouseX,
             double mouseY
     ) {
         background.draw(guiGraphics, 0, 0);
         Component timeText = Component.translatable("betterend.jei.infusion.time&val", display.time);
-        guiGraphics.drawString(Minecraft.getInstance().font, timeText, 100, 92, 0xFF404040, false);
+        guiGraphics.text(Minecraft.getInstance().font, timeText, 100, 92, 0xFF404040, false);
     }
 
     private static void addInputSlot(IRecipeLayoutBuilder builder, int x, int y, Ingredient ingredient) {

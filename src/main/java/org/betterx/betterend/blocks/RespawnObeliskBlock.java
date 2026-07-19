@@ -186,7 +186,7 @@ public class RespawnObeliskBlock extends BaseBlock.Stone implements CustomColorP
         if (hand != InteractionHand.MAIN_HAND || !canActivate) {
             if (!world.isClientSide() && !(itemStack.getItem() instanceof BlockItem) && !player.isCreative()) {
                 ServerPlayer serverPlayerEntity = (ServerPlayer) player;
-                serverPlayerEntity.displayClientMessage(
+                serverPlayerEntity.sendSystemMessage(
                         Component.translatable("message.betterend.fail_spawn"),
                         true
                 );
@@ -201,7 +201,7 @@ public class RespawnObeliskBlock extends BaseBlock.Stone implements CustomColorP
                     ),
                     false
             );
-            serverPlayerEntity.displayClientMessage(Component.translatable("message.betterend.set_spawn"), true);
+            serverPlayerEntity.sendSystemMessage(Component.translatable("message.betterend.set_spawn"), true);
             double px = pos.getX() + 0.5;
             double py = pos.getY() + 0.5;
             double pz = pos.getZ() + 0.5;

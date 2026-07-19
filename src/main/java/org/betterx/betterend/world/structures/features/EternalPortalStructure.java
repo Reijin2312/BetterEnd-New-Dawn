@@ -42,8 +42,8 @@ public class EternalPortalStructure extends TemplateStructure {
         final ChunkGenerator chunkGenerator = context.chunkGenerator();
         final LevelHeightAccessor levelHeightAccessor = context.heightAccessor();
 
-        long x = (long) chunkPos.x * (long) chunkPos.x;
-        long z = (long) chunkPos.z * (long) chunkPos.z;
+        long x = (long) chunkPos.x() * (long) chunkPos.x();
+        long z = (long) chunkPos.z() * (long) chunkPos.z();
         if (x + z < 1024L) {
             return Optional.empty();
         }

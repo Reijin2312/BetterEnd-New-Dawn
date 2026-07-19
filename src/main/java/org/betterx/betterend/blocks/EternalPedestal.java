@@ -23,7 +23,8 @@ import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.SingleQuadParticle;
-import net.minecraft.client.renderer.block.model.Variant;
+import net.minecraft.client.renderer.block.dispatch.Variant;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.Direction;
@@ -280,7 +281,7 @@ public class EternalPedestal extends PedestalBlock implements BehaviourStone, Bl
 
         for (int i = 0; i < count; i++) {
             Identifier topTexture = textureLocation.withSuffix("_" + (i + 1));
-            mapping.put(TextureSlot.TOP, topTexture);
+            mapping.put(TextureSlot.TOP, new Material(topTexture));
 
             variants.add(BlockModelGenerators.plainModel(
                     template.create(modelLocation.withSuffix("_" + (i + 1)), mapping, generator.modelOutput())
@@ -292,9 +293,9 @@ public class EternalPedestal extends PedestalBlock implements BehaviourStone, Bl
     @Override
     public void provideBlockModels(Object modelGenerator) {
         WoverBlockModelGenerators generator = (WoverBlockModelGenerators) modelGenerator;
-        final Identifier id = TextureMapping.getBlockTexture(this);
-        final Identifier baseTexture = BetterEnd.C.mk("block/flavolite_polished");
-        final Identifier pillarTexture = BetterEnd.C.mk("block/flavolite_pillar_side");
+        final Identifier id = TextureMapping.getBlockTexture(this).sprite();
+        final Material baseTexture = new Material(BetterEnd.C.mk("block/flavolite_polished"));
+        final Material pillarTexture = new Material(BetterEnd.C.mk("block/flavolite_pillar_side"));
         final TextureMapping mapping = new TextureMapping()
                 .put(EndModels.BASE, baseTexture)
                 .put(TextureSlot.BOTTOM, baseTexture)

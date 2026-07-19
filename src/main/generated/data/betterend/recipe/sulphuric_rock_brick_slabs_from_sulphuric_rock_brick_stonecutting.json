@@ -1,6 +1,5 @@
 {
   "type": "minecraft:stonecutting",
-  "group": "sulphuric_rock_stonecutting",
   "ingredient": "betterend:sulphuric_rock_bricks",
   "result": {
     "count": 2,

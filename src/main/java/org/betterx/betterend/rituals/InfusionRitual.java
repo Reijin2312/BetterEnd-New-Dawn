@@ -136,7 +136,7 @@ public class InfusionRitual implements Container {
         progress++;
         if (progress == time) {
             clearContent();
-            input.setItem(0, activeRecipe.value().assemble(new InfusionInput(), world.registryAccess()));
+            input.setItem(0, activeRecipe.value().assemble(new InfusionInput()));
             if (world instanceof ServerLevel sl) {
                 sl.getPlayers(p -> p.position()
                                     .subtract(new Vec3(worldPos.getX(), worldPos.getY(), worldPos.getZ()))

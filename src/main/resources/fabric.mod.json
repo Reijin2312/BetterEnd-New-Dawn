@@ -43,19 +43,19 @@
     ],
     "depends": {
         "fabricloader": ">=0.18.1",
-        "fabric-api": ">=0.139.0",
-        "java": ">=21",
+        "fabric-api": ">=0.155.2",
+        "java": ">=25",
         "minecraft": [
-            "1.21.11"
+            ">=26.1 <26.1.3"
         ],
-        "bclib": "21.11.x",
-        "wover": "21.11.x",
-        "wunderlib": "21.11.x"
+        "bclib": "26.1.x",
+        "wover": "26.1.x",
+        "wunderlib": "26.1.x"
     },
     "breaks": {
-        "bclib": "<21.11.0",
-        "wover": "<21.11.0",
-        "wunderlib": "<21.11.0"
+        "bclib": "<26.1.0",
+        "wover": "<26.1.0",
+        "wunderlib": "<26.1.0"
     },
     "suggests": {
         "byg": ">=2.0.0",

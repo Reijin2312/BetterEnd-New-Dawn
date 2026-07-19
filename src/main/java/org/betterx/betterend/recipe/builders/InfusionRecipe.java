@@ -15,8 +15,10 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -26,6 +28,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.PlacementInfo;
@@ -35,6 +38,7 @@ import net.minecraft.world.item.crafting.RecipeBookCategory;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 
@@ -46,15 +50,15 @@ import org.jetbrains.annotations.Nullable;
 public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, UnknownReceipBookCategory {
     public final static String GROUP = "infusion";
     public final static RecipeType<InfusionRecipe> TYPE = BCLRecipeManager.registerType(BetterEnd.MOD_ID, GROUP);
-    public final static Serializer SERIALIZER = BCLRecipeManager.registerSerializer(
+    public final static RecipeSerializer<InfusionRecipe> SERIALIZER = BCLRecipeManager.registerSerializer(
             BetterEnd.MOD_ID,
             GROUP,
-            new Serializer()
+            new RecipeSerializer<>(Serializer.CODEC, Serializer.STREAM_CODEC)
     );
 
     private final Ingredient[] catalysts;
     final private Ingredient input;
-    final private ItemStack output;
+    final private ItemStackTemplate output;
     final private int time;
     final private String group;
     private PlacementInfo placementInfo;
@@ -62,11 +66,23 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
     private static final Ingredient EMPTY_INGREDIENT = Ingredient.of(Items.BARRIER);
 
     private InfusionRecipe(Ingredient input, ItemStack output, Ingredient[] catalysts, int time, String group) {
+        this(input, ItemStackTemplate.fromNonEmptyStack(output), catalysts, time, group);
+    }
+
+    private InfusionRecipe(Ingredient input, ItemStackTemplate output, Ingredient[] catalysts, int time, String group) {
         this.input = input;
-        this.output = ItemStackHelper.callItemStackSetupIfPossible(output);
+        this.output = output;
         this.catalysts = catalysts;
         this.time = time;
         this.group = group;
+    }
+
+    private ItemStack createOutputStack() {
+        return ItemStackHelper.callItemStackSetupIfPossible(this.output.create());
+    }
+
+    private ItemStack createOutputStack(HolderLookup.Provider provider) {
+        return ItemStackHelper.callItemStackSetupIfPossible(this.output.create(), provider);
     }
 
     public static Builder create(String id, ItemLike output) {
@@ -85,6 +101,10 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
         return new BuilderImpl(id, output);
     }
 
+    private static Builder create(Identifier id, ItemStackTemplate output) {
+        return new BuilderImpl(id, output);
+    }
+
     public static Builder create(
             String id,
             ResourceKey<Enchantment> enchantment,
@@ -100,7 +120,7 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
             int level,
             HolderLookup.RegistryLookup<Enchantment> lookup
     ) {
-        return new BuilderImpl(id, createEnchantedBook(enchantment, level, lookup));
+        return create(id, createEnchantedBookTemplate(enchantment, level, lookup));
     }
 
     public static ItemStack createEnchantedBook(
@@ -108,12 +128,26 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
             int level,
             HolderLookup.RegistryLookup<Enchantment> lookup
     ) {
+        return createEnchantedBookTemplate(enchantment, level, lookup).create();
+    }
+
+    private static ItemStackTemplate createEnchantedBookTemplate(
+            ResourceKey<Enchantment> enchantment,
+            int level,
+            HolderLookup.RegistryLookup<Enchantment> lookup
+    ) {
         final Holder<Enchantment> holder = EnchantmentUtils.getEnchantment(lookup, enchantment);
-        final ItemStack stack = new ItemStack(Items.ENCHANTED_BOOK);
         if (holder != null) {
-            stack.enchant(holder, level);
+            final ItemEnchantments.Mutable enchantments = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
+            enchantments.set(holder, level);
+            return new ItemStackTemplate(
+                    Items.ENCHANTED_BOOK,
+                    DataComponentPatch.builder()
+                                      .set(DataComponents.STORED_ENCHANTMENTS, enchantments.toImmutable())
+                                      .build()
+            );
         }
-        return stack;
+        return new ItemStackTemplate(Items.ENCHANTED_BOOK);
     }
 
     public int getInfusionTime() {
@@ -138,8 +172,8 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
     }
 
     @Override
-    public @NotNull ItemStack assemble(InfusionRitual.InfusionInput recipeInput, HolderLookup.Provider provider) {
-        return output.copy();
+    public @NotNull ItemStack assemble(InfusionRitual.InfusionInput recipeInput) {
+        return createOutputStack();
     }
 
     public boolean canCraftInDimensions(int width, int height) {
@@ -154,7 +188,7 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
     }
 
     public @NotNull ItemStack getResultItem(HolderLookup.Provider acc) {
-        return this.output;
+        return this.createOutputStack(acc);
     }
 
     @Override
@@ -185,6 +219,11 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
         return RecipeBookCategories.CRAFTING_MISC;
     }
 
+    @Override
+    public boolean showNotification() {
+        return true;
+    }
+
     public interface Builder extends BaseRecipeBuilder<Builder>, BaseUnlockableRecipeBuilder<Builder> {
         Builder group(@Nullable String group);
 
@@ -204,16 +243,28 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
         private int time;
 
         protected BuilderImpl(Identifier id, ItemLike output) {
-            this(id, new ItemStack(output, 1));
+            super(id, output, false);
+            this.catalysts = emptyCatalysts();
+            this.time = 1;
         }
 
         protected BuilderImpl(Identifier id, ItemStack output) {
             super(id, output, false);
-            this.catalysts = new Ingredient[]{
+            this.catalysts = emptyCatalysts();
+            this.time = 1;
+        }
+
+        protected BuilderImpl(Identifier id, ItemStackTemplate output) {
+            super(id, output, false);
+            this.catalysts = emptyCatalysts();
+            this.time = 1;
+        }
+
+        private static Ingredient[] emptyCatalysts() {
+            return new Ingredient[]{
                     EMPTY_INGREDIENT, EMPTY_INGREDIENT, EMPTY_INGREDIENT, EMPTY_INGREDIENT,
                     EMPTY_INGREDIENT, EMPTY_INGREDIENT, EMPTY_INGREDIENT, EMPTY_INGREDIENT
             };
-            this.time = 1;
         }
 
 
@@ -251,7 +302,7 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
         protected InfusionRecipe createRecipe(Identifier id) {
             return new InfusionRecipe(
                     this.primaryInput,
-                    this.output,
+                    this.outputTemplate(),
                     this.catalysts,
                     this.time,
                     this.group
@@ -286,10 +337,10 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
         }
     }
 
-    public static class Serializer implements RecipeSerializer<InfusionRecipe> {
+    public static class Serializer {
         public static @NotNull InfusionRecipe fromNetwork(RegistryFriendlyByteBuf packetBuffer) {
             final Ingredient input = Ingredient.CONTENTS_STREAM_CODEC.decode(packetBuffer);
-            final ItemStack output = ItemStack.STREAM_CODEC.decode(packetBuffer);
+            final ItemStackTemplate output = ItemStackTemplate.STREAM_CODEC.decode(packetBuffer);
             final String group = packetBuffer.readUtf();
             final int time = packetBuffer.readVarInt();
             final Ingredient[] catalysts = new Ingredient[8];
@@ -301,7 +352,7 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
 
         public static void toNetwork(RegistryFriendlyByteBuf packetBuffer, InfusionRecipe recipe) {
             Ingredient.CONTENTS_STREAM_CODEC.encode(packetBuffer, recipe.input);
-            ItemStack.STREAM_CODEC.encode(packetBuffer, recipe.output);
+            ItemStackTemplate.STREAM_CODEC.encode(packetBuffer, recipe.output);
             packetBuffer.writeUtf(recipe.group);
             packetBuffer.writeVarInt(recipe.time);
             for (int i = 0; i < 8; i++) {
@@ -340,7 +391,7 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
 
         public static final MapCodec<InfusionRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 ItemUtil.CODEC_INGREDIENT_WITH_NBT.fieldOf("input").forGetter(recipe -> recipe.input),
-                ItemUtil.CODEC_ITEM_STACK_WITH_NBT.fieldOf("result").forGetter(recipe -> recipe.output),
+                ItemUtil.CODEC_ITEM_STACK_TEMPLATE_WITH_NBT.fieldOf("result").forGetter(recipe -> recipe.output),
                 CODEC_CATALYSTS.fieldOf("catalysts").forGetter(recipe -> recipe.catalysts),
                 Codec.INT.optionalFieldOf("time", 1).forGetter(recipe -> recipe.time),
                 Codec.STRING.optionalFieldOf("group", "").forGetter(recipe -> recipe.group)
@@ -348,16 +399,6 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
 
         public static final StreamCodec<RegistryFriendlyByteBuf, InfusionRecipe> STREAM_CODEC = StreamCodec.of(InfusionRecipe.Serializer::toNetwork, InfusionRecipe.Serializer::fromNetwork);
 
-
-        @Override
-        public @NotNull MapCodec<InfusionRecipe> codec() {
-            return CODEC;
-        }
-
-        @Override
-        public @NotNull StreamCodec<RegistryFriendlyByteBuf, InfusionRecipe> streamCodec() {
-            return STREAM_CODEC;
-        }
     }
 
     public static void register() {

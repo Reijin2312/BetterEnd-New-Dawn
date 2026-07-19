@@ -11,7 +11,8 @@ import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
 import com.mojang.math.Quadrant;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.model.TextureMapping;
-import net.minecraft.client.renderer.block.model.VariantMutator;
+import net.minecraft.client.renderer.block.dispatch.VariantMutator;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
@@ -54,9 +55,9 @@ public class ChandelierBlock extends BaseAttachedBlock.Metal implements RenderLa
         WoverBlockModelGenerators generator = (WoverBlockModelGenerators) modelGenerator;
         final var baseTexture = TextureMapping.getBlockTexture(this);
         final var mapping = new TextureMapping()
-                .put(EndModels.WALL, baseTexture.withSuffix("_wall"))
-                .put(EndModels.FLOOR, baseTexture.withSuffix("_floor"))
-                .put(EndModels.CEIL, baseTexture.withSuffix("_ceil"));
+                .put(EndModels.WALL, withSuffix(baseTexture, "_wall"))
+                .put(EndModels.FLOOR, withSuffix(baseTexture, "_floor"))
+                .put(EndModels.CEIL, withSuffix(baseTexture, "_ceil"));
 
         final var modelCeil = EndModels.CHANDELIER_CEIL.createWithSuffix(this, "_ceil", mapping, generator.modelOutput());
         final var modelWall = EndModels.CHANDELIER_WALL.createWithSuffix(this, "_wall", mapping, generator.modelOutput());
@@ -78,6 +79,10 @@ public class ChandelierBlock extends BaseAttachedBlock.Metal implements RenderLa
 
         generator.acceptBlockState(DatagenModelDispatch.dispatchWith(this, prop));
         generator.delegateItemModel(this, modelCeil);
+    }
+
+    private static Material withSuffix(Material material, String suffix) {
+        return new Material(material.sprite().withSuffix(suffix));
     }
 
     static {

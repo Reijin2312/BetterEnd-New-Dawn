@@ -8,7 +8,7 @@ import org.betterx.ui.ColorUtil;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
-import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.world.level.chunk.MissingPaletteEntryException;
 
 import org.spongepowered.asm.mixin.Mixin;

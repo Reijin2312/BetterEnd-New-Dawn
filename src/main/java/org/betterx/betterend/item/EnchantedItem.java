@@ -4,7 +4,6 @@ import org.betterx.bclib.client.models.ModelsHelper;
 import org.betterx.bclib.items.ModelProviderItem;
 import org.betterx.betterend.registry.EndItems;
 
-import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
@@ -27,7 +26,7 @@ public class EnchantedItem extends ModelProviderItem {
     }
 
     @Override
-    public BlockModel getItemModel(Identifier resourceLocation) {
+    public Object getItemModel(Identifier resourceLocation) {
         Identifier sourceId = BuiltInRegistries.ITEM.getKey(source);
         return ModelsHelper.createItemModel(sourceId);
     }
