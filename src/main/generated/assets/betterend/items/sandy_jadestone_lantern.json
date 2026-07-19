@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/sandy_jadestone_lantern"
+    "model": "betterend:item/sandy_jadestone_lantern",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -836865
+      }
+    ]
   }
 }

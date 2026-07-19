@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "betterend:item/umbralith_lantern"
+    "model": "betterend:item/umbralith_lantern",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -836865
+      }
+    ]
   }
 }
