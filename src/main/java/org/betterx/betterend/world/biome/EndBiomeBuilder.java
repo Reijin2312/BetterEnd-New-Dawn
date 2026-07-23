@@ -13,6 +13,7 @@ import org.betterx.wover.generator.api.biomesource.WoverBiomeBuilder;
 
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.placement.EndPlacements;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
@@ -50,7 +51,7 @@ public class EndBiomeBuilder extends WoverBiomeBuilder.AbstractWoverBiomeBuilder
 
     EndBiomeBuilder configure(EndBiome.Config biomeConfig) {
         this.startSurface()
-            .rule(biomeConfig.surfaceMaterial().surface().build())
+            .rule(biomeConfig.surfaceMaterial().surface().build(bootstrapContext.lookup(Registries.BIOME)))
             .finishSurface();
 
         this.surface = biomeConfig.surfaceMaterial();

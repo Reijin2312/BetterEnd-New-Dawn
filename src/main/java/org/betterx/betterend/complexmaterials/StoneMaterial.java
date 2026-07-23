@@ -308,7 +308,7 @@ public class StoneMaterial implements MaterialManager.Material {
 
     @Override
     public void registerItemTags(ItemTagBootstrapContext context) {
-        context.add(ItemTags.SLABS, slab.asItem(), brickSlab.asItem());
+        context.add(net.minecraft.tags.BlockItemTags.SLABS.item(), slab.asItem(), brickSlab.asItem());
         context.add(ItemTags.STONE_BRICKS, bricks.asItem());
         context.add(ItemTags.STONE_CRAFTING_MATERIALS, stone.asItem());
         context.add(ItemTags.STONE_TOOL_MATERIALS, stone.asItem());

@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.state.pattern.BlockPattern;
 import net.minecraft.world.level.dimension.end.DragonRespawnStage;
 import net.minecraft.world.level.dimension.end.EnderDragonFight;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
@@ -73,8 +74,8 @@ public class EndDragonFightMixin {
                 List<EndCrystal> crystalList = level.getEntitiesOfClass(
                         EndCrystal.class,
                         new AABB(
-                                central.below(255).south().west().getCenter(),
-                                central.above(255).north().east().getCenter()
+                                Vec3.atCenterOf(central.below(255).south().west()),
+                                Vec3.atCenterOf(central.above(255).north().east())
                         )
                 );
 

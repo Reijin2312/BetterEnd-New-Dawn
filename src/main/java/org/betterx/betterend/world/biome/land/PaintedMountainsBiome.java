@@ -11,7 +11,7 @@ import org.betterx.wover.surface.api.SurfaceRuleBuilder;
 import org.betterx.wover.surface.impl.rules.SwitchRuleSource;
 
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.SurfaceRules;
@@ -33,7 +33,7 @@ public class PaintedMountainsBiome extends EndBiome.Config {
                 .music(EndSounds.MUSIC_OPENSPACE)
                 .loop(EndSounds.AMBIENT_DUST_WASTELANDS)
                 .particles(ParticleTypes.WHITE_ASH, 0.01F)
-                .spawn(EntityType.ENDERMAN, 50, 1, 2);
+                .spawn(EntityTypes.ENDERMAN, 50, 1, 2);
     }
 
     @Override

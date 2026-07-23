@@ -17,7 +17,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier.Builder;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -136,9 +135,9 @@ public class EndEntities {
     ) {
         Identifier id = BetterEnd.C.mk(name);
         ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, id);
-        EntityType<T> type = FabricEntityTypeBuilder
-                .create(group, entity)
-                .dimensions(EntityDimensions.fixed(width, height))
+        EntityType<T> type = EntityType.Builder
+                .of(entity, group)
+                .sized(width, height)
                 .build(key);
 
         return Registry.register(BuiltInRegistries.ENTITY_TYPE, id, type);
@@ -157,11 +156,9 @@ public class EndEntities {
     ) {
         Identifier id = BetterEnd.C.mk(name);
         ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, id);
-        EntityType<T> type = FabricEntityTypeBuilder
-                .create(group, entity)
-                .dimensions(fixedSize
-                        ? EntityDimensions.fixed(width, height)
-                        : EntityDimensions.scalable(width, height))
+        EntityType<T> type = EntityType.Builder
+                .of(entity, group)
+                .sized(width, height)
                 .build(key);
         FabricDefaultAttributeRegistry.register(type, attributes);
         SPAWN_EGGS.add(new SpawnEgg("spawn_egg_" + name, type, eggColor, dotsColor));

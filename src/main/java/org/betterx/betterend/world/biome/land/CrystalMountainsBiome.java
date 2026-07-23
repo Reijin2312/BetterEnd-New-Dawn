@@ -11,7 +11,7 @@ import org.betterx.betterend.world.surface.SplitNoiseCondition;
 import org.betterx.wover.surface.api.SurfaceRuleBuilder;
 import org.betterx.wover.surface.impl.rules.SwitchRuleSource;
 
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.SurfaceRules;
@@ -31,7 +31,7 @@ public class CrystalMountainsBiome extends EndBiome.Config {
                 .music(EndSounds.MUSIC_OPENSPACE)
                 .feature(EndVegetationFeatures.CRYSTAL_GRASS)
                 .feature(EndVegetationFeatures.CRYSTAL_MOSS_COVER)
-                .spawn(EntityType.ENDERMAN, 50, 1, 2);
+                .spawn(EntityTypes.ENDERMAN, 50, 1, 2);
     }
 
     @Override

@@ -11,7 +11,7 @@ import org.betterx.betterend.world.surface.SulphuricSurfaceNoiseCondition;
 import org.betterx.wover.surface.api.SurfaceRuleBuilder;
 import org.betterx.wover.surface.impl.rules.SwitchRuleSource;
 
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.SurfaceRules;
@@ -53,7 +53,7 @@ public class SulphurSpringsBiome extends EndBiome.Config {
                 .structure(EndStructures.ETERNAL_PORTAL)
                 .spawn(EndEntities.END_FISH.type(), 50, 3, 8)
                 .spawn(EndEntities.CUBOZOA.type(), 50, 3, 8)
-                .spawn(EntityType.ENDERMAN, 50, 1, 4);
+                .spawn(EntityTypes.ENDERMAN, 50, 1, 4);
     }
 
     @Override

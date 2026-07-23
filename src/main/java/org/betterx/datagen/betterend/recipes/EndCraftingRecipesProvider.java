@@ -89,24 +89,24 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
                                .shapeless()
                                .build(context);
 
-        RecipeBuilder.crafting(BetterEnd.C.mk("blue_vine_seed_dye"), Items.BLUE_DYE)
+        RecipeBuilder.crafting(BetterEnd.C.mk("blue_vine_seed_dye"), Items.DYE.blue())
                      .shapeless()
                      .addMaterial('#', EndBlocks.BLUE_VINE_SEED)
                      .build(context);
-        RecipeBuilder.crafting(BetterEnd.C.mk("creeping_moss_dye"), Items.CYAN_DYE)
+        RecipeBuilder.crafting(BetterEnd.C.mk("creeping_moss_dye"), Items.DYE.cyan())
                      .shapeless()
                      .addMaterial('#', EndBlocks.CREEPING_MOSS)
                      .build(context);
-        RecipeBuilder.crafting(BetterEnd.C.mk("umbrella_moss_dye"), Items.YELLOW_DYE)
+        RecipeBuilder.crafting(BetterEnd.C.mk("umbrella_moss_dye"), Items.DYE.yellow())
                      .shapeless()
                      .addMaterial('#', EndBlocks.UMBRELLA_MOSS)
                      .build(context);
-        CraftingRecipeBuilder craftingRecipeBuilder25 = RecipeBuilder.crafting(BetterEnd.C.mk("umbrella_moss_tall_dye"), Items.YELLOW_DYE);
+        CraftingRecipeBuilder craftingRecipeBuilder25 = RecipeBuilder.crafting(BetterEnd.C.mk("umbrella_moss_tall_dye"), Items.DYE.yellow());
         craftingRecipeBuilder25.outputCount(2)
                                .shapeless()
                                .addMaterial('#', EndBlocks.UMBRELLA_MOSS_TALL)
                                .build(context);
-        RecipeBuilder.crafting(BetterEnd.C.mk("shadow_plant_dye"), Items.BLACK_DYE)
+        RecipeBuilder.crafting(BetterEnd.C.mk("shadow_plant_dye"), Items.DYE.black())
                      .shapeless()
                      .addMaterial('#', EndBlocks.SHADOW_PLANT)
                      .build(context);
@@ -137,7 +137,7 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
         craftingRecipeBuilder22.outputCount(4)
                                .addMaterial('#', EndItems.SHADOW_BERRY_RAW)
                                .build(context);
-        RecipeBuilder.crafting(BetterEnd.C.mk("purple_polypore_dye"), Items.PURPLE_DYE)
+        RecipeBuilder.crafting(BetterEnd.C.mk("purple_polypore_dye"), Items.DYE.purple())
                      .shapeless()
                      .addMaterial('#', EndBlocks.PURPLE_POLYPORE)
                      .build(context);
@@ -169,15 +169,15 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
                                .addMaterial('I', Items.IRON_INGOT)
                                .addMaterial('#', EndItems.GLOWING_BULB)
                                .build(context);
-        RecipeBuilder.crafting(BetterEnd.C.mk("twisted_moss_dye"), Items.PINK_DYE)
+        RecipeBuilder.crafting(BetterEnd.C.mk("twisted_moss_dye"), Items.DYE.pink())
                      .shapeless()
                      .addMaterial('#', EndBlocks.TWISTED_MOSS)
                      .build(context);
-        RecipeBuilder.crafting(BetterEnd.C.mk("byshy_grass_dye"), Items.MAGENTA_DYE)
+        RecipeBuilder.crafting(BetterEnd.C.mk("byshy_grass_dye"), Items.DYE.magenta())
                      .shapeless()
                      .addMaterial('#', EndBlocks.BUSHY_GRASS)
                      .build(context);
-        RecipeBuilder.crafting(BetterEnd.C.mk("tail_moss_dye"), Items.GRAY_DYE)
+        RecipeBuilder.crafting(BetterEnd.C.mk("tail_moss_dye"), Items.DYE.gray())
                      .shapeless()
                      .addMaterial('#', EndBlocks.TAIL_MOSS)
                      .build(context);
@@ -185,7 +185,7 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
         craftingRecipeBuilder52.shape("##", "##")
                                .addMaterial('#', EndItems.HYDRALUX_PETAL)
                                .build(context);
-        RecipeBuilder.crafting(BetterEnd.C.mk("petal_white_dye"), Items.WHITE_DYE)
+        RecipeBuilder.crafting(BetterEnd.C.mk("petal_white_dye"), Items.DYE.white())
                      .shapeless()
                      .addMaterial('#', EndItems.HYDRALUX_PETAL)
                      .build(context);
@@ -266,27 +266,27 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
                                .addMaterial('#', EndBlocks.DENSE_EMERALD_ICE)
                                .build(context);
 
-        RecipeBuilder.crafting(BetterEnd.C.mk("charnia_cyan_dye"), Items.CYAN_DYE)
+        RecipeBuilder.crafting(BetterEnd.C.mk("charnia_cyan_dye"), Items.DYE.cyan())
                      .shapeless()
                      .addMaterial('#', EndBlocks.CHARNIA_CYAN)
                      .build(context);
-        RecipeBuilder.crafting(BetterEnd.C.mk("charnia_green_dye"), Items.GREEN_DYE)
+        RecipeBuilder.crafting(BetterEnd.C.mk("charnia_green_dye"), Items.DYE.green())
                      .shapeless()
                      .addMaterial('#', EndBlocks.CHARNIA_GREEN)
                      .build(context);
-        RecipeBuilder.crafting(BetterEnd.C.mk("charnia_light_blue_dye"), Items.LIGHT_BLUE_DYE)
+        RecipeBuilder.crafting(BetterEnd.C.mk("charnia_light_blue_dye"), Items.DYE.lightBlue())
                      .shapeless()
                      .addMaterial('#', EndBlocks.CHARNIA_LIGHT_BLUE)
                      .build(context);
-        RecipeBuilder.crafting(BetterEnd.C.mk("charnia_orange_dye"), Items.ORANGE_DYE)
+        RecipeBuilder.crafting(BetterEnd.C.mk("charnia_orange_dye"), Items.DYE.orange())
                      .shapeless()
                      .addMaterial('#', EndBlocks.CHARNIA_ORANGE)
                      .build(context);
-        RecipeBuilder.crafting(BetterEnd.C.mk("charnia_purple_dye"), Items.PURPLE_DYE)
+        RecipeBuilder.crafting(BetterEnd.C.mk("charnia_purple_dye"), Items.DYE.purple())
                      .shapeless()
                      .addMaterial('#', EndBlocks.CHARNIA_PURPLE)
                      .build(context);
-        RecipeBuilder.crafting(BetterEnd.C.mk("charnia_red_dye"), Items.RED_DYE)
+        RecipeBuilder.crafting(BetterEnd.C.mk("charnia_red_dye"), Items.DYE.red())
                      .shapeless()
                      .addMaterial('#', EndBlocks.CHARNIA_RED)
                      .build(context);
@@ -298,11 +298,11 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
                                .addMaterial('A', EndBlocks.AMBER_BLOCK)
                                .build(context);
 
-        RecipeBuilder.crafting(BetterEnd.C.mk("twisted_umbrella_moss_dye"), Items.PURPLE_DYE)
+        RecipeBuilder.crafting(BetterEnd.C.mk("twisted_umbrella_moss_dye"), Items.DYE.purple())
                      .shapeless()
                      .addMaterial('#', EndBlocks.TWISTED_UMBRELLA_MOSS)
                      .build(context);
-        CraftingRecipeBuilder craftingRecipeBuilder20 = RecipeBuilder.crafting(BetterEnd.C.mk("twisted_umbrella_moss_dye_tall"), Items.PURPLE_DYE);
+        CraftingRecipeBuilder craftingRecipeBuilder20 = RecipeBuilder.crafting(BetterEnd.C.mk("twisted_umbrella_moss_dye_tall"), Items.DYE.purple());
         craftingRecipeBuilder20.outputCount(2)
                                .shapeless()
                                .addMaterial('#', EndBlocks.TWISTED_UMBRELLA_MOSS_TALL)

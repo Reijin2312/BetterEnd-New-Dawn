@@ -12,7 +12,7 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.boss.enderdragon.EndCrystal;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -146,7 +146,7 @@ public class SpikeFeatureMixin {
             mut.setY(maxY);
             BlocksHelper.setWithoutUpdate(world, mut, Blocks.BEDROCK);
 
-            EndCrystal crystal = EntityType.END_CRYSTAL.create(world.getLevel(), EntitySpawnReason.TRIGGERED);
+            EndCrystal crystal = EntityTypes.END_CRYSTAL.create(world.getLevel(), EntitySpawnReason.TRIGGERED);
             crystal.setBeamTarget(config.getCrystalBeamTarget());
             crystal.setInvulnerable(config.isCrystalInvulnerable());
             if (crystal != null) {

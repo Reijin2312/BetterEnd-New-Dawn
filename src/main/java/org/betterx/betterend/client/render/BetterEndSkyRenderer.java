@@ -6,6 +6,7 @@ import org.betterx.betterend.BetterEnd;
 
 import com.mojang.blaze3d.buffers.GpuBuffer;
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
+import com.mojang.blaze3d.PrimitiveTopology;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.systems.RenderPass;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -24,7 +25,7 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import java.util.OptionalDouble;
-import java.util.OptionalInt;
+import java.util.Optional;
 
 public class BetterEndSkyRenderer {
     private static final int VERTEX_BUFFER_USAGE = 32;
@@ -35,9 +36,9 @@ public class BetterEndSkyRenderer {
         final GpuBuffer buffer;
         final int vertexCount;
         final int indexCount;
-        final VertexFormat.Mode mode;
+        final PrimitiveTopology mode;
 
-        private MeshBuffer(GpuBuffer buffer, int vertexCount, int indexCount, VertexFormat.Mode mode) {
+        private MeshBuffer(GpuBuffer buffer, int vertexCount, int indexCount, PrimitiveTopology mode) {
             this.buffer = buffer;
             this.vertexCount = vertexCount;
             this.indexCount = indexCount;
@@ -52,7 +53,7 @@ public class BetterEndSkyRenderer {
 
     @FunctionalInterface
     interface BufferFunction {
-        BufferBuilder make(Tesselator tesselator, float minSize, float maxSize, int count, long seed);
+        BufferBuilder make(ByteBufferBuilder buffer, float minSize, float maxSize, int count, long seed);
     }
 
     private static final Identifier NEBULA_1 = BetterEnd.C.mk("textures/sky/nebula_2.png");
@@ -266,8 +267,7 @@ public class BetterEndSkyRenderer {
             return;
         }
 
-        // TEMP: disable sky fog uniform setup to isolate fog-color bleeding into sky layers.
-        // setupFog.run();
+        setupFog.run();
 
         Matrix4fStack matrix4fStack = RenderSystem.getModelViewStack();
         matrix4fStack.pushMatrix();
@@ -283,8 +283,8 @@ public class BetterEndSkyRenderer {
         matrix4fStack.popMatrix();
 
         Minecraft minecraft = Minecraft.getInstance();
-        GpuTextureView colorTexture = minecraft.getMainRenderTarget().getColorTextureView();
-        GpuTextureView depthTexture = minecraft.getMainRenderTarget().getDepthTextureView();
+        GpuTextureView colorTexture = minecraft.gameRenderer.mainRenderTarget().getColorTextureView();
+        GpuTextureView depthTexture = minecraft.gameRenderer.mainRenderTarget().getDepthTextureView();
         RenderPipeline pipeline = textured ? BetterEndRenderPipelines.SKY_TEXTURED : BetterEndRenderPipelines.SKY_STARS;
         AbstractTexture abstractTexture = null;
 
@@ -298,45 +298,45 @@ public class BetterEndSkyRenderer {
                                                  .createRenderPass(
                                                          () -> "BetterEnd sky",
                                                          colorTexture,
-                                                         OptionalInt.empty(),
+                                                         Optional.empty(),
                                                          depthTexture,
                                                          OptionalDouble.empty()
                                                  )) {
             renderPass.setPipeline(pipeline);
             RenderSystem.bindDefaultUniforms(renderPass);
             renderPass.setUniform("DynamicTransforms", transforms);
-            renderPass.setVertexBuffer(0, buffer.buffer);
+            renderPass.setVertexBuffer(0, buffer.buffer.slice());
 
             if (abstractTexture != null) {
                 renderPass.bindTexture("Sampler0", abstractTexture.getTextureView(), abstractTexture.getSampler());
             }
 
-            if (buffer.mode == VertexFormat.Mode.QUADS) {
-                RenderSystem.AutoStorageIndexBuffer quadIndices = RenderSystem.getSequentialBuffer(VertexFormat.Mode.QUADS);
+            if (buffer.mode == PrimitiveTopology.QUADS) {
+                RenderSystem.AutoStorageIndexBuffer quadIndices = RenderSystem.getSequentialBuffer(PrimitiveTopology.QUADS);
                 GpuBuffer indexBuffer = quadIndices.getBuffer(buffer.indexCount);
                 renderPass.setIndexBuffer(indexBuffer, quadIndices.type());
-                renderPass.drawIndexed(0, 0, buffer.indexCount, 1);
+                renderPass.drawIndexed(buffer.indexCount, 1, 0, 0, 0);
             } else {
-                renderPass.draw(0, buffer.vertexCount);
+                renderPass.draw(buffer.vertexCount, 1, 0, 0);
             }
         }
     }
 
     private void initStars() {
-        Tesselator tesselator = Tesselator.getInstance();
-
-        stars1 = buildBuffer(tesselator, stars1, 0.1f, 0.30f, 3500, 41315, this::makeStars);
-        stars2 = buildBuffer(tesselator, stars2, 0.1f, 0.35f, 2000, 35151, this::makeStars);
-        stars3 = buildBuffer(tesselator, stars3, 0.4f, 1.2f, 1000, 61354, this::makeUVStars);
-        stars4 = buildBuffer(tesselator, stars4, 0.4f, 1.2f, 1000, 61355, this::makeUVStars);
-        nebula1 = buildBuffer(tesselator, nebula1, 40, 60, 30, 11515, this::makeFarFog);
-        nebula2 = buildBuffer(tesselator, nebula2, 40, 60, 10, 14151, this::makeFarFog);
-        horizon = buildBufferHorizon(tesselator, horizon);
-        fog = buildBufferFog(tesselator, fog);
+        try (ByteBufferBuilder buffer = new ByteBufferBuilder(1 << 20)) {
+            stars1 = buildBuffer(buffer, stars1, 0.1f, 0.30f, 3500, 41315, this::makeStars);
+            stars2 = buildBuffer(buffer, stars2, 0.1f, 0.35f, 2000, 35151, this::makeStars);
+            stars3 = buildBuffer(buffer, stars3, 0.4f, 1.2f, 1000, 61354, this::makeUVStars);
+            stars4 = buildBuffer(buffer, stars4, 0.4f, 1.2f, 1000, 61355, this::makeUVStars);
+            nebula1 = buildBuffer(buffer, nebula1, 40, 60, 30, 11515, this::makeFarFog);
+            nebula2 = buildBuffer(buffer, nebula2, 40, 60, 10, 14151, this::makeFarFog);
+            horizon = buildBufferHorizon(buffer, horizon);
+            fog = buildBufferFog(buffer, fog);
+        }
     }
 
     private MeshBuffer buildBuffer(
-            Tesselator tesselator,
+            ByteBufferBuilder tesselator,
             MeshBuffer vertexBuffer,
             float minSize,
             float maxSize,
@@ -358,12 +358,12 @@ public class BetterEndSkyRenderer {
             GpuBuffer gpuBuffer = RenderSystem.getDevice()
                                               .createBuffer(() -> "BetterEnd sky buffer", VERTEX_BUFFER_USAGE, meshData.vertexBuffer());
             MeshData.DrawState drawState = meshData.drawState();
-            return new MeshBuffer(gpuBuffer, drawState.vertexCount(), drawState.indexCount(), drawState.mode());
+            return new MeshBuffer(gpuBuffer, drawState.vertexCount(), drawState.indexCount(), drawState.primitiveTopology());
         }
     }
 
 
-    private MeshBuffer buildBufferHorizon(Tesselator tesselator, MeshBuffer buffer) {
+    private MeshBuffer buildBufferHorizon(ByteBufferBuilder tesselator, MeshBuffer buffer) {
         return buildBuffer(
                 tesselator, buffer, 0, 0, 0, 0,
                 (_builder, _minSize, _maxSize, _count, _seed) -> makeCylinder(_builder, 16, 50, 100)
@@ -371,16 +371,16 @@ public class BetterEndSkyRenderer {
 
     }
 
-    private MeshBuffer buildBufferFog(Tesselator tesselator, MeshBuffer buffer) {
+    private MeshBuffer buildBufferFog(ByteBufferBuilder tesselator, MeshBuffer buffer) {
         return buildBuffer(
                 tesselator, buffer, 0, 0, 0, 0,
                 (_builder, _minSize, _maxSize, _count, _seed) -> makeCylinder(_builder, 16, 50, 70)
         );
     }
 
-    private BufferBuilder makeStars(Tesselator tesselator, float minSize, float maxSize, int count, long seed) {
+    private BufferBuilder makeStars(ByteBufferBuilder tesselator, float minSize, float maxSize, int count, long seed) {
         RandomSource random = new LegacyRandomSource(seed);
-        final BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
+        final BufferBuilder buffer = new BufferBuilder(tesselator, PrimitiveTopology.QUADS, DefaultVertexFormat.POSITION);
 
         for (int i = 0; i < count; ++i) {
             float posX = random.nextFloat() * 2.0f - 1.0f;
@@ -426,9 +426,9 @@ public class BetterEndSkyRenderer {
         return buffer;
     }
 
-    private BufferBuilder makeUVStars(Tesselator tesselator, float minSize, float maxSize, int count, long seed) {
+    private BufferBuilder makeUVStars(ByteBufferBuilder tesselator, float minSize, float maxSize, int count, long seed) {
         RandomSource random = new LegacyRandomSource(seed);
-        final BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        final BufferBuilder buffer = new BufferBuilder(tesselator, PrimitiveTopology.QUADS, DefaultVertexFormat.POSITION_TEX);
 
         for (int i = 0; i < count; ++i) {
             float posX = random.nextFloat() * 2.0f - 1.0f;
@@ -476,9 +476,9 @@ public class BetterEndSkyRenderer {
         return buffer;
     }
 
-    private BufferBuilder makeFarFog(Tesselator tesselator, float minSize, float maxSize, int count, long seed) {
+    private BufferBuilder makeFarFog(ByteBufferBuilder tesselator, float minSize, float maxSize, int count, long seed) {
         RandomSource random = new LegacyRandomSource(seed);
-        final BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        final BufferBuilder buffer = new BufferBuilder(tesselator, PrimitiveTopology.QUADS, DefaultVertexFormat.POSITION_TEX);
 
         for (int i = 0; i < count; ++i) {
             float posX = random.nextFloat() * 2.0f - 1.0f;
@@ -527,8 +527,8 @@ public class BetterEndSkyRenderer {
         return buffer;
     }
 
-    private BufferBuilder makeCylinder(Tesselator tesselator, int segments, float height, float radius) {
-        final BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+    private BufferBuilder makeCylinder(ByteBufferBuilder tesselator, int segments, float height, float radius) {
+        final BufferBuilder buffer = new BufferBuilder(tesselator, PrimitiveTopology.QUADS, DefaultVertexFormat.POSITION_TEX);
         for (int i = 0; i < segments; i++) {
             float a1 = (float) i * (float) Math.PI * 2.0f / (float) segments;
             float a2 = (float) (i + 1) * (float) Math.PI * 2.0f / (float) segments;

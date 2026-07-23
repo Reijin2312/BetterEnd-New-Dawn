@@ -54,7 +54,7 @@ public class MossyObsidian extends BaseBlock implements BehaviourObsidian, Block
         } else if (blockState.getFluidState().getAmount() == 8) {
             return false;
         } else {
-            int i = LightEngine.getLightBlockInto(
+            int i = LightEngine.getLightDampeningInto(
                     state,
                     blockState,
                     Direction.UP,

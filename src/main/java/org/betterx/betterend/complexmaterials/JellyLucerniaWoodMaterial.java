@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class JellyLucerniaWoodMaterial extends EndWoodenComplexMaterial {
     public JellyLucerniaWoodMaterial() {
-        super("lucernia_jellyshroom", MapColor.COLOR_PURPLE, MapColor.COLOR_ORANGE, Blocks.BROWN_WOOL);
+        super("lucernia_jellyshroom", MapColor.COLOR_PURPLE, MapColor.COLOR_ORANGE, Blocks.WOOL.brown());
     }
 
     @Override

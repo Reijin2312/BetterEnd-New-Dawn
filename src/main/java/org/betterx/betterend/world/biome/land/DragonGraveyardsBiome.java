@@ -11,7 +11,7 @@ import org.betterx.betterend.registry.features.EndVegetationFeatures;
 import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
 
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class DragonGraveyardsBiome extends EndBiome.Config {
@@ -40,7 +40,7 @@ public class DragonGraveyardsBiome extends EndBiome.Config {
                 .feature(EndVegetationFeatures.GLOBULAGUS)
                 .feature(EndVegetationFeatures.CLAWFERN)
                 .structure(EndStructures.ETERNAL_PORTAL)
-                .spawn(EntityType.ENDERMAN, 50, 1, 2);
+                .spawn(EntityTypes.ENDERMAN, 50, 1, 2);
     }
 
     @Override

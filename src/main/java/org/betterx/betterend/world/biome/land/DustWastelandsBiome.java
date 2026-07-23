@@ -10,7 +10,7 @@ import org.betterx.betterend.world.biome.EndBiomeBuilder;
 import org.betterx.wover.surface.api.SurfaceRuleBuilder;
 
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.SurfaceRules;
@@ -34,7 +34,7 @@ public class DustWastelandsBiome extends EndBiome.Config {
                 .structure(EndStructures.END_VILLAGE)
                 .structure(EndStructures.ETERNAL_PORTAL)
                 .feature(EndOreFeatures.FLAVOLITE_LAYER)
-                .spawn(EntityType.ENDERMAN, 50, 1, 2);
+                .spawn(EntityTypes.ENDERMAN, 50, 1, 2);
     }
 
     @Override

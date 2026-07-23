@@ -7,9 +7,9 @@ def allowLocalLibUse = true
 def allowLocalLibInConsoleMode = true
 
 //The path were to look for the local libraries
-def BCLibPath = '../BCLib-Fabric-26.1'
-def WoverPath = '../WorldWeaver-Fabric-26.1'
-def WunderLibPath = '../WunderLib-Fabric-26.1'
+def BCLibPath = '../BCLib-Fabric-26.2'
+def WoverPath = '../WorldWeaver-Fabric-26.2'
+def WunderLibPath = '../WunderLib-Fabric-26.2'
 
 
 // #### Logic ####

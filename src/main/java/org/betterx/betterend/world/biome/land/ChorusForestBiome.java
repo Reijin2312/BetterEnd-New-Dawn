@@ -14,7 +14,7 @@ import org.betterx.betterend.world.biome.EndBiomeBuilder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.data.worldgen.placement.EndPlacements;
 import net.minecraft.tags.BiomeTags;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 
@@ -48,7 +48,7 @@ public class ChorusForestBiome extends EndBiome.Config {
                 .structure(BiomeTags.HAS_END_CITY)
                 .structure(EndStructures.ETERNAL_PORTAL)
                 .spawn(EndEntities.END_SLIME.type(), 5, 1, 2)
-                .spawn(EntityType.ENDERMAN, 50, 1, 4);
+                .spawn(EntityTypes.ENDERMAN, 50, 1, 4);
     }
 
     @Override
