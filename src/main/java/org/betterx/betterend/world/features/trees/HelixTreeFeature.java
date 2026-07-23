@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 import org.joml.Vector3f;
 
@@ -75,8 +76,8 @@ public class HelixTreeFeature extends DefaultFeature {
                    world,
                    pos,
                    new AABB(
-                           pos.offset((int) -dx, (int) dy1, (int) -dx).getCenter(),
-                           pos.offset((int) dx, (int) dy2, (int) dx).getCenter()
+                           Vec3.atCenterOf(pos.offset((int) -dx, (int) dy1, (int) -dx)),
+                           Vec3.atCenterOf(pos.offset((int) dx, (int) dy2, (int) dx))
                    )
            );
         SplineHelper.scale(spline, scale);

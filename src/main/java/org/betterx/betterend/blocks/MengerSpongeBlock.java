@@ -11,7 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.Tuple;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -68,14 +68,14 @@ public class MengerSpongeBlock extends BaseBlockNotFull implements RenderLayerPr
     }
 
     private boolean absorbWater(LevelAccessor world, BlockPos pos) {
-        Queue<Tuple<BlockPos, Integer>> queue = Lists.newLinkedList();
-        queue.add(new Tuple<>(pos, 0));
+        Queue<Pair<BlockPos, Integer>> queue = Lists.newLinkedList();
+        queue.add(Pair.of(pos, 0));
         int i = 0;
 
         while (!queue.isEmpty()) {
-            Tuple<BlockPos, Integer> pair = queue.poll();
-            BlockPos blockPos = pair.getA();
-            int j = pair.getB();
+            Pair<BlockPos, Integer> pair = queue.poll();
+            BlockPos blockPos = pair.getFirst();
+            int j = pair.getSecond();
 
             for (Direction direction : Direction.values()) {
                 BlockPos blockPos2 = blockPos.relative(direction);
@@ -89,13 +89,13 @@ public class MengerSpongeBlock extends BaseBlockNotFull implements RenderLayerPr
                     ) {
                         ++i;
                         if (j < 6) {
-                            queue.add(new Tuple<>(blockPos2, j + 1));
+                            queue.add(Pair.of(blockPos2, j + 1));
                         }
                     } else if (blockState.getBlock() instanceof LiquidBlock) {
                         world.setBlock(blockPos2, Blocks.AIR.defaultBlockState(), 3);
                         ++i;
                         if (j < 6) {
-                            queue.add(new Tuple<>(blockPos2, j + 1));
+                            queue.add(Pair.of(blockPos2, j + 1));
                         }
                     } else if (blockState.is(CommonBlockTags.WATER_PLANT)) {
                         BlockEntity blockEntity = blockState.hasBlockEntity() ? world.getBlockEntity(blockPos2) : null;
@@ -103,7 +103,7 @@ public class MengerSpongeBlock extends BaseBlockNotFull implements RenderLayerPr
                         world.setBlock(blockPos2, Blocks.AIR.defaultBlockState(), 3);
                         ++i;
                         if (j < 6) {
-                            queue.add(new Tuple<>(blockPos2, j + 1));
+                            queue.add(Pair.of(blockPos2, j + 1));
                         }
                     }
                 }

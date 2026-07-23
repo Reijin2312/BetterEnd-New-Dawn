@@ -17,7 +17,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -37,9 +36,6 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Shadow
     public abstract AttributeMap getAttributes();
-
-    @Unique
-    private Entity be_lastAttacker;
 
     @Inject(method = "createLivingAttributes", at = @At("RETURN"), cancellable = true)
     private static void be_addLivingAttributes(CallbackInfoReturnable<AttributeSupplier.Builder> info) {
@@ -72,20 +68,19 @@ public abstract class LivingEntityMixin extends Entity {
         }
     }
 
-    @Inject(method = "hurtServer", at = @At("HEAD"), remap = false)
-    public void be_hurt(ServerLevel serverLevel, DamageSource source, float amount, CallbackInfoReturnable<Boolean> info) {
-        this.be_lastAttacker = source.getEntity();
-    }
-
     @ModifyArg(
-            method = "hurtServer",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;knockback(DDD)V"),
+            method = "dealDefaultKnockback",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/world/entity/LivingEntity;knockback(DDDLnet/minecraft/world/damagesource/DamageSource;F)V"
+            ),
             index = 0,
             remap = false
     )
-    private double be_increaseKnockback(double value, double x, double z) {
-        if (be_lastAttacker != null && be_lastAttacker instanceof LivingEntity) {
-            LivingEntity attacker = (LivingEntity) be_lastAttacker;
+    private double be_increaseKnockback(double value, double x, double z, DamageSource source, float damage) {
+        Entity sourceEntity = source.getEntity();
+        if (sourceEntity instanceof LivingEntity) {
+            LivingEntity attacker = (LivingEntity) sourceEntity;
             value += this.be_getKnockback(attacker.getMainHandItem());
         }
         return value;

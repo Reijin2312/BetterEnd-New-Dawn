@@ -12,7 +12,7 @@ import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
 
 import net.minecraft.tags.BiomeTags;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class AmberLandBiome extends EndBiome.Config {
@@ -42,7 +42,7 @@ public class AmberLandBiome extends EndBiome.Config {
                 .feature(EndVegetationFeatures.CHARNIA_ORANGE)
                 .feature(EndVegetationFeatures.CHARNIA_RED)
                 .structure(BiomeTags.HAS_END_CITY)
-                .spawn(EntityType.ENDERMAN, 50, 1, 4)
+                .spawn(EntityTypes.ENDERMAN, 50, 1, 4)
                 .spawn(EndEntities.END_SLIME.type(), 30, 1, 2);
     }
 

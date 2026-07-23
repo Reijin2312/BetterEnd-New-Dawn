@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "#": "betterend:sulphuric_rock_pillar",
     "S": "betterend:sulphuric_rock_slab"

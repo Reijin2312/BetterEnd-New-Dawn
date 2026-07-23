@@ -8,6 +8,7 @@ import org.betterx.betterend.util.EndStructureHelper;
 import org.betterx.betterend.util.BlockFixer;
 import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
@@ -138,7 +139,7 @@ public class CrashedShipFeature extends NBTFeature<NBTFeatureConfig> {
                     LevelReader worldView,
                     BlockPos pos,
                     BlockPos blockPos,
-                    StructureBlockInfo structureBlockInfo,
+                    BlockPos templateRelativePos,
                     StructureBlockInfo structureBlockInfo2,
                     StructurePlaceSettings structurePlacementData
             ) {
@@ -150,8 +151,8 @@ public class CrashedShipFeature extends NBTFeature<NBTFeatureConfig> {
             }
 
             @Override
-            protected StructureProcessorType<?> getType() {
-                return StructureProcessorType.NOP;
+            public MapCodec<? extends StructureProcessor> codec() {
+                return MapCodec.unit(this);
             }
         };
     }

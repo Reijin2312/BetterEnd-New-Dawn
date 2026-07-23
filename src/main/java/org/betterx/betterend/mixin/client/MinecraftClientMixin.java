@@ -5,7 +5,6 @@ import org.betterx.bclib.util.MHelper;
 import net.minecraft.client.main.GameConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.WinScreen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
@@ -31,9 +30,6 @@ public class MinecraftClientMixin {
 
     @Shadow
     public LocalPlayer player;
-
-    @Shadow
-    public Screen screen;
 
     @Final
     @Shadow
@@ -67,15 +63,15 @@ public class MinecraftClientMixin {
 
     @Inject(method = "getSituationalMusic", at = @At("HEAD"), cancellable = true)
     private void be_getEndMusic(CallbackInfoReturnable<Music> info) {
-        if (!(this.screen instanceof WinScreen) && this.player != null) {
+        if (!(this.gui.screen() instanceof WinScreen) && this.player != null) {
             if (this.player.level().dimension() == Level.END) {
-                if (this.gui.getBossOverlay().shouldPlayMusic() && MHelper.lengthSqr(
+                if (this.gui.hud.getBossOverlay().shouldPlayMusic() && MHelper.lengthSqr(
                         this.player.getX(),
                         this.player.getZ()
                 ) < 250000) {
                     info.setReturnValue(Musics.END_BOSS);
                 } else {
-                    var camera = this.gameRenderer.getMainCamera();
+                    var camera = this.gameRenderer.mainCamera();
                     if (camera == null) {
                         info.setReturnValue(be_getOrCacheEndMusic());
                     } else {

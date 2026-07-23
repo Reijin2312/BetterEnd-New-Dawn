@@ -55,7 +55,7 @@ public class SilkMothNestBlock extends BaseBlock implements RenderLayerProvider,
     private static final VoxelShape BOTTOM = box(0, 0, 0, 16, 16, 16);
 
     public SilkMothNestBlock() {
-        super(BlockBehaviour.Properties.ofLegacyCopy(Blocks.WHITE_WOOL)
+        super(BlockBehaviour.Properties.ofLegacyCopy(Blocks.WOOL.white())
                                  .strength(0.5F, 0.1F)
                                  .sound(SoundType.WOOL)
                                  .noOcclusion()

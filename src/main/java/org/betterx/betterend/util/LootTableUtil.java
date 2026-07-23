@@ -6,7 +6,7 @@ import org.betterx.betterend.registry.EndItems;
 import org.betterx.betterend.registry.EndTemplates;
 import org.betterx.wover.loot.api.LootTableManager;
 
-import net.minecraft.advancements.criterion.LocationPredicate;
+import net.minecraft.advancements.predicates.LocationPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;

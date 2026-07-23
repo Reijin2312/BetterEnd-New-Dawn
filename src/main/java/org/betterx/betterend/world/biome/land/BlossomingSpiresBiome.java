@@ -9,7 +9,7 @@ import org.betterx.betterend.registry.features.EndVegetationFeatures;
 import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
 
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BlossomingSpiresBiome extends EndBiome.Config {
@@ -46,7 +46,7 @@ public class BlossomingSpiresBiome extends EndBiome.Config {
                 .feature(EndVegetationFeatures.TWISTED_MOSS)
                 .feature(EndVegetationFeatures.TWISTED_MOSS_WOOD)
                 .feature(EndTerrainFeatures.SILK_MOTH_NEST)
-                .spawn(EntityType.ENDERMAN, 50, 1, 4)
+                .spawn(EntityTypes.ENDERMAN, 50, 1, 4)
                 .spawn(EndEntities.SILK_MOTH.type(), 5, 1, 2);
     }
 
