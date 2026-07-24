@@ -1,8 +1,9 @@
 package org.betterx.betterend.blocks;
 
-import org.betterx.bclib.behaviours.BehaviourBuilders;
+import org.betterx.bclib.behaviours.interfaces.BehaviourCompostable;
 import org.betterx.bclib.blocks.BaseBlock;
 import org.betterx.bclib.interfaces.tools.AddMineableShears;
+import org.betterx.bclib.interfaces.tools.AddMineableHoe;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.wover.block.api.model.BlockModelProvider;
 import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
@@ -22,16 +23,20 @@ import net.minecraft.world.level.material.MapColor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-public class GlowingPillarLuminophorBlock extends BaseBlock implements AddMineableShears, BlockModelProvider {
+public class GlowingPillarLuminophorBlock extends BaseBlock implements AddMineableHoe, AddMineableShears, BehaviourCompostable, BlockModelProvider {
     public static final BooleanProperty NATURAL = EndBlockProperties.NATURAL;
 
     public GlowingPillarLuminophorBlock() {
-        super(BehaviourBuilders
-                .createMetal(MapColor.COLOR_ORANGE)
-                .strength(0.2F)
+        super(Properties.of().mapColor(MapColor.COLOR_ORANGE)
+                .strength(1.0F)
                 .lightLevel((bs) -> 15)
-                .sound(SoundType.GRASS));
+                .sound(SoundType.SHROOMLIGHT));
         this.registerDefaultState(this.stateDefinition.any().setValue(NATURAL, false));
+    }
+
+    @Override
+    public float compostingChance() {
+        return 0.65F;
     }
 
     @Override
