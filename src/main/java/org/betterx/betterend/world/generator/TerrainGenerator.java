@@ -146,6 +146,29 @@ public class TerrainGenerator {
         }
     }
 
+    public static int getSurfaceHeight(
+            int blockX,
+            int blockZ,
+            int scaleXZ,
+            int scaleY,
+            int maxHeight,
+            int noiseMinY
+    ) {
+        if (largeIslands == null || mediumIslands == null || smallIslands == null) {
+            return noiseMinY;
+        }
+        final int alignedX = Math.floorDiv(blockX, scaleXZ) * scaleXZ;
+        final int alignedZ = Math.floorDiv(blockZ, scaleXZ) * scaleXZ;
+        final double[] buffer = new double[Math.max(1, maxHeight / scaleY + 1)];
+        fillTerrainDensity(buffer, alignedX, alignedZ, scaleXZ, scaleY, maxHeight);
+        for (int y = buffer.length - 1; y >= 0; y--) {
+            if (buffer[y] > 0) {
+                return noiseMinY + y * scaleY;
+            }
+        }
+        return noiseMinY;
+    }
+
     private static float getAverageDepth(int x, int z) {
         if (biomeSource == null) {
             return 0;
