@@ -133,6 +133,7 @@ public class BetterEnd {
             } catch (ClassNotFoundException ignored) {
             }
             EndItems.ensureStaticallyLoaded();
+            EndItems.registerCompostableFoods();
         }
     }
 
