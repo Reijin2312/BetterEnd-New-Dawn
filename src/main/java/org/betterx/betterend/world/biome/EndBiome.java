@@ -9,6 +9,7 @@ import org.betterx.wover.biome.api.data.BiomeGenerationDataContainer;
 import org.betterx.wover.generator.api.biomesource.WoverBiomeData;
 import org.betterx.wover.generator.api.biomesource.WoverBiomePicker;
 import org.betterx.wover.surface.api.SurfaceRuleBuilder;
+import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -277,6 +278,14 @@ public class EndBiome extends WoverBiomeData implements SurfaceMaterialProvider 
                 .findSurfaceMaterialProvider(WoverBiomePicker.getBiomeAt(world, pos))
                 .map(SurfaceMaterialProvider::getTopMaterial)
                 .orElse(EndBiome.Config.DEFAULT_MATERIAL.getTopMaterial());
+    }
+
+    public static BlockState sampleTopMaterial(WorldGenLevel world, BlockPos topSolidPos) {
+        final BlockState top = world.getBlockState(topSolidPos);
+        if (top.is(CommonBlockTags.TERRAIN) && !top.is(Blocks.END_STONE)) {
+            return top;
+        }
+        return findTopMaterial(world, topSolidPos);
     }
 
     public static BlockState findUnderMaterial(Holder<Biome> biome) {
