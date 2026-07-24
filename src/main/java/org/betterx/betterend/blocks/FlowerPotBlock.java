@@ -5,17 +5,21 @@ import org.betterx.bclib.blocks.BaseBlockNotFull;
 import org.betterx.bclib.client.render.BCLRenderLayer;
 import org.betterx.bclib.interfaces.PostInitable;
 import org.betterx.bclib.interfaces.RenderLayerProvider;
-import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.JsonFactory;
 import org.betterx.betterend.BetterEnd;
+import org.betterx.betterend.blocks.entities.FlowerPotBlockEntity;
 import org.betterx.betterend.interfaces.PottablePlant;
 import org.betterx.betterend.interfaces.PottableTerrain;
 import org.betterx.betterend.registry.EndBlocks;
+import org.betterx.wover.pottable.api.PottablePlantRegistry;
+import org.betterx.wover.pottable.api.PottableSoil;
+import org.betterx.wover.pottable.api.PottableSoilRegistry;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -25,14 +29,14 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.storage.loot.LootParams.Builder;
-import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -50,11 +54,12 @@ import java.io.File;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import org.jetbrains.annotations.NotNull;
 
-public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvider, PostInitable {
-    private static final IntegerProperty PLANT_ID = EndBlockProperties.PLANT_ID;
-    private static final IntegerProperty SOIL_ID = EndBlockProperties.SOIL_ID;
-    private static final IntegerProperty POT_LIGHT = EndBlockProperties.POT_LIGHT;
+public class FlowerPotBlock extends BaseBlockNotFull implements EntityBlock, RenderLayerProvider, PostInitable {
+    public static final IntegerProperty POT_LIGHT = EndBlockProperties.POT_LIGHT;
     private static final VoxelShape SHAPE_EMPTY;
     private static final VoxelShape SHAPE_FULL;
     private static Block[] plants;
@@ -124,57 +129,29 @@ public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvi
 
     public FlowerPotBlock(Block source) {
         super(BlockBehaviour.Properties.ofLegacyCopy(source).lightLevel(state -> state.getValue(POT_LIGHT) * 5));
-        this.registerDefaultState(
-                this.defaultBlockState()
-                    .setValue(PLANT_ID, 0)
-                    .setValue(SOIL_ID, 0)
-                    .setValue(POT_LIGHT, 0)
-        );
+        this.registerDefaultState(this.defaultBlockState().setValue(POT_LIGHT, 0));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(PLANT_ID, SOIL_ID, POT_LIGHT);
+        builder.add(POT_LIGHT);
+    }
+
+    @Override
+    public BlockEntity newBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState) {
+        return new FlowerPotBlockEntity(blockPos, blockState);
     }
 
     @Override
     public List<ItemStack> getDrops(BlockState state, Builder builder) {
-        ensureInit();
         List<ItemStack> drop = Lists.newArrayList(new ItemStack(this));
-        int id = state.getValue(SOIL_ID) - 1;
-        if (id >= 0 && id < soils.length && soils[id] != null) {
-            drop.add(new ItemStack(soils[id]));
-        }
-        id = state.getValue(PLANT_ID) - 1;
-        if (id >= 0 && id < plants.length && plants[id] != null) {
-            drop.add(new ItemStack(plants[id]));
+        BlockEntity blockEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+        if (blockEntity instanceof FlowerPotBlockEntity flowerPot) {
+            flowerPot.getSoilBlock().ifPresent(block -> drop.add(new ItemStack(block)));
+            flowerPot.getPlantBlock().ifPresent(block -> drop.add(new ItemStack(block)));
         }
         return drop;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public BlockState updateShape(
-            BlockState state,
-            LevelReader world,
-            ScheduledTickAccess scheduledTickAccess,
-            BlockPos pos,
-            Direction facing,
-            BlockPos neighborPos,
-            BlockState neighborState,
-            RandomSource random
-    ) {
-        ensureInit();
-        int plantID = state.getValue(PLANT_ID);
-        if (plantID < 1 || plantID > plants.length || plants[plantID - 1] == null) {
-            return state.getValue(POT_LIGHT) > 0 ? state.setValue(POT_LIGHT, 0) : state;
-        }
-        int light = plants[plantID - 1].defaultBlockState().getLightEmission() / 5;
-        if (state.getValue(POT_LIGHT) != light) {
-            state = state.setValue(POT_LIGHT, light);
-        }
-        return state;
     }
 
     @Override
@@ -245,12 +222,6 @@ public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvi
         FlowerPotBlock.soils = new Block[maxNotNull(soils) + 1];
         System.arraycopy(soils, 0, FlowerPotBlock.soils, 0, FlowerPotBlock.soils.length);
 
-        if (PLANT_ID.getValue(Integer.toString(FlowerPotBlock.plants.length)).isEmpty()) {
-            throw new RuntimeException("There are too much plant ID values!");
-        }
-        if (SOIL_ID.getValue(Integer.toString(FlowerPotBlock.soils.length)).isEmpty()) {
-            throw new RuntimeException("There are too much soil ID values!");
-        }
     }
 
     public static PottableEntries getPottableEntries() {
@@ -313,97 +284,118 @@ public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvi
             InteractionHand hand,
             BlockHitResult hit
     ) {
-        ensureInit();
         if (level.isClientSide()) {
-                return InteractionResult.CONSUME;
+            return InteractionResult.CONSUME;
         }
-        int soilID = state.getValue(SOIL_ID);
-        if (soilID == 0 || soilID > soils.length || soils[soilID - 1] == null) {
-            if (!(itemStack.getItem() instanceof BlockItem)) {
-                return InteractionResult.TRY_WITH_EMPTY_HAND;
+        if (!(level.getBlockEntity(pos) instanceof FlowerPotBlockEntity flowerPot)) {
+            return InteractionResult.PASS;
+        }
+
+        if (flowerPot.getSoil().isEmpty()) {
+            if (!(itemStack.getItem() instanceof BlockItem item)) {
+                return InteractionResult.PASS;
             }
-            Block block = ((BlockItem) itemStack.getItem()).getBlock();
-            for (int i = 0; i < soils.length; i++) {
-                if (block == soils[i]) {
-                    BlocksHelper.setWithUpdate(level, pos, state.setValue(SOIL_ID, i + 1));
-                    if (!player.isCreative()) {
-                        itemStack.shrink(1);
-                    }
-                    level.playSound(
-                            player,
-                            pos.getX() + 0.5,
-                            pos.getY() + 0.5,
-                            pos.getZ() + 0.5,
-                            SoundEvents.SOUL_SOIL_PLACE,
-                            SoundSource.BLOCKS,
-                            1,
-                            1
-                    );
-                    return InteractionResult.SUCCESS;
-                }
+            Registry<PottableSoil> soils = level.registryAccess()
+                                                .lookupOrThrow(PottableSoilRegistry.POTTABLE_SOIL_REGISTRY);
+            Block block = item.getBlock();
+            ResourceKey<Block> blockKey = block.builtInRegistryHolder().key();
+            if (findByBlock(soils, blockKey, soil -> soil.block) == null) {
+                level.playSound(
+                        player,
+                        pos.getX() + 0.5,
+                        pos.getY() + 0.5,
+                        pos.getZ() + 0.5,
+                        SoundEvents.DISPENSER_FAIL,
+                        SoundSource.BLOCKS,
+                        0.6F,
+                        1
+                );
+                return InteractionResult.FAIL;
+            }
+            flowerPot.setSoil(Optional.of(blockKey));
+            if (!player.isCreative()) {
+                itemStack.shrink(1);
             }
             level.playSound(
                     player,
                     pos.getX() + 0.5,
                     pos.getY() + 0.5,
                     pos.getZ() + 0.5,
-                    SoundEvents.DISPENSER_FAIL,
+                    SoundEvents.SOUL_SOIL_PLACE,
                     SoundSource.BLOCKS,
-                    0.6F,
+                    1,
                     1
             );
-            return InteractionResult.FAIL;
+            return InteractionResult.SUCCESS;
         }
 
-        int plantID = state.getValue(PLANT_ID);
         if (itemStack.isEmpty()) {
-            if (plantID > 0 && plantID <= plants.length && plants[plantID - 1] != null) {
-                BlocksHelper.setWithUpdate(level, pos, state.setValue(PLANT_ID, 0).setValue(POT_LIGHT, 0));
-                player.addItem(new ItemStack(plants[plantID - 1]));
+            if (flowerPot.getPlant().isPresent()) {
+                Optional<Block> plantBlock = flowerPot.getPlantBlock();
+                flowerPot.setPlant(Optional.empty());
+                plantBlock.ifPresent(block -> player.addItem(new ItemStack(block)));
                 return InteractionResult.SUCCESS;
             }
-            if (soilID > 0 && soilID <= soils.length && soils[soilID - 1] != null) {
-                BlocksHelper.setWithUpdate(level, pos, state.setValue(SOIL_ID, 0));
-                player.addItem(new ItemStack(soils[soilID - 1]));
+            Optional<Block> soilBlock = flowerPot.getSoilBlock();
+            if (soilBlock.isPresent()) {
+                flowerPot.setSoil(Optional.empty());
+                player.addItem(new ItemStack(soilBlock.get()));
             }
             return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
-        if (!(itemStack.getItem() instanceof BlockItem)) {
+        if (!(itemStack.getItem() instanceof BlockItem item)) {
             return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
-        BlockItem item = (BlockItem) itemStack.getItem();
-        for (int i = 0; i < plants.length; i++) {
-            if (item.getBlock() == plants[i]) {
-                if (!((PottablePlant) plants[i]).canPlantOn(soils[soilID - 1])) {
-                    return InteractionResult.TRY_WITH_EMPTY_HAND;
-                }
-                int light = plants[i].defaultBlockState().getLightEmission() / 5;
-                BlocksHelper.setWithUpdate(level, pos, state.setValue(PLANT_ID, i + 1).setValue(POT_LIGHT, light));
-                level.playSound(
-                        player,
-                        pos.getX() + 0.5,
-                        pos.getY() + 0.5,
-                        pos.getZ() + 0.5,
-                        SoundEvents.HOE_TILL,
-                        SoundSource.BLOCKS,
-                        1,
-                        1
-                );
-                if (!player.isCreative()) {
-                    itemStack.shrink(1);
-                }
-                return InteractionResult.SUCCESS;
+        Registry<org.betterx.wover.pottable.api.PottablePlant> plants = level.registryAccess()
+                .lookupOrThrow(PottablePlantRegistry.POTTABLE_PLANT_REGISTRY);
+        Block block = item.getBlock();
+        ResourceKey<Block> blockKey = block.builtInRegistryHolder().key();
+        org.betterx.wover.pottable.api.PottablePlant plant =
+                findByBlock(plants, blockKey, p -> p.block);
+        if (plant == null) {
+            return InteractionResult.TRY_WITH_EMPTY_HAND;
+        }
+        Block soilBlock = flowerPot.getSoilBlock().orElse(null);
+        if (soilBlock == null || !plant.isValidSoil(soilBlock)) {
+            return InteractionResult.TRY_WITH_EMPTY_HAND;
+        }
+        flowerPot.setPlant(Optional.of(blockKey));
+        level.playSound(
+                player,
+                pos.getX() + 0.5,
+                pos.getY() + 0.5,
+                pos.getZ() + 0.5,
+                SoundEvents.HOE_TILL,
+                SoundSource.BLOCKS,
+                1,
+                1
+        );
+        if (!player.isCreative()) {
+            itemStack.shrink(1);
+        }
+        return InteractionResult.SUCCESS;
+    }
+
+    private static <T> T findByBlock(
+            Registry<T> registry,
+            ResourceKey<Block> blockKey,
+            Function<T, ResourceKey<Block>> accessor
+    ) {
+        for (T entry : registry) {
+            if (accessor.apply(entry).equals(blockKey)) {
+                return entry;
             }
         }
-        return InteractionResult.TRY_WITH_EMPTY_HAND;
+        return null;
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, BlockGetter view, BlockPos pos, CollisionContext ePos) {
-        ensureInit();
-        int id = state.getValue(PLANT_ID);
-        return id > 0 && id <= plants.length ? SHAPE_FULL : SHAPE_EMPTY;
+        if (view.getBlockEntity(pos) instanceof FlowerPotBlockEntity flowerPot && flowerPot.getPlant().isPresent()) {
+            return SHAPE_FULL;
+        }
+        return SHAPE_EMPTY;
     }
 
     @Override
