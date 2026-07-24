@@ -12,7 +12,6 @@ import org.betterx.wover.surface.impl.rules.SwitchRuleSource;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.SurfaceRules;
 
@@ -48,9 +47,11 @@ public class PaintedMountainsBiome extends EndBiome.Config {
                 SurfaceRules.RuleSource surfaceBlockRule = new SwitchRuleSource(
                         VerticalBandNoiseCondition.DEFAULT,
                         List.of(
-                                SurfaceRules.state(Blocks.END_STONE.defaultBlockState()),
                                 SurfaceRules.state(EndBlocks.FLAVOLITE.stone.defaultBlockState()),
-                                SurfaceRules.state(EndBlocks.VIOLECITE.stone.defaultBlockState())
+                                SurfaceRules.state(EndBlocks.VIOLECITE.stone.defaultBlockState()),
+                                SurfaceRules.state(EndBlocks.VIRID_JADESTONE.stone.defaultBlockState()),
+                                SurfaceRules.state(EndBlocks.AZURE_JADESTONE.stone.defaultBlockState()),
+                                SurfaceRules.state(EndBlocks.SANDY_JADESTONE.stone.defaultBlockState())
                         )
                 );
                 return SurfaceRuleBuilder.start().rule(surfaceBlockRule, 9);

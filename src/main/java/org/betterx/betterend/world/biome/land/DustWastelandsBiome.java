@@ -8,6 +8,7 @@ import org.betterx.betterend.registry.features.EndOreFeatures;
 import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
 import org.betterx.wover.surface.api.SurfaceRuleBuilder;
+import org.betterx.wover.surface.impl.BaseSurfaceRuleBuilder;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.EntityType;
@@ -51,9 +52,9 @@ public class DustWastelandsBiome extends EndBiome.Config {
                         .surface()
                         .ceil(Blocks.END_STONE.defaultBlockState())
                         .rule(SurfaceRules.ifTrue(
-                                SurfaceRules.stoneDepthCheck(5, false, CaveSurface.FLOOR),
+                                SurfaceRules.stoneDepthCheck(2, true, CaveSurface.FLOOR),
                                 SurfaceRules.state(EndBlocks.ENDSTONE_DUST.defaultBlockState())
-                        ), 4);
+                        ), BaseSurfaceRuleBuilder.SUB_SURFACE_PRIORITY);
             }
         };
     }
