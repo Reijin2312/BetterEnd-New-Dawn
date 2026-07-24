@@ -2,7 +2,6 @@
   "values": [
     "betterend:amaranita_cap",
     "betterend:amaranita_hymenophore",
-    "betterend:amaranita_lantern",
     "betterend:dragon_bone_block",
     "betterend:dragon_bone_slab",
     "betterend:dragon_bone_stairs",
@@ -204,7 +203,6 @@
     "betterend:mossy_glowshroom_fence",
     "betterend:mossy_glowshroom_gate",
     "betterend:mossy_glowshroom_hanging_sign",
-    "betterend:mossy_glowshroom_hymenophore",
     "betterend:mossy_glowshroom_ladder",
     "betterend:mossy_glowshroom_log",
     "betterend:mossy_glowshroom_planks",
