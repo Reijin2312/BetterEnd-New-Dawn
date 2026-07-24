@@ -375,7 +375,6 @@ tasks.register("generateMixinMappings") {
 
 tasks.register("fixMixinRefmap") {
     def refmapFile = layout.buildDirectory.file("resources/main/${refmapName}")
-    inputs.file(refmapFile).optional(true)
     outputs.file(refmapFile)
     dependsOn(tasks.named("processResources"))
     dependsOn(tasks.named("compileJava"))
