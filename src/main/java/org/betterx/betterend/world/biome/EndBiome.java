@@ -237,7 +237,7 @@ public class EndBiome extends WoverBiomeData implements SurfaceMaterialProvider 
 
     public static BlockState findUnderMaterial(WorldGenLevel world, BlockPos pos) {
         return SurfaceMaterialProvider
-                .findSurfaceMaterialProvider(world, pos)
+                .findSurfaceMaterialProvider(WoverBiomePicker.getBiomeAt(world, pos))
                 .map(SurfaceMaterialProvider::getUnderMaterial)
                 .orElse(EndBiome.Config.DEFAULT_MATERIAL.getUnderMaterial());
     }
