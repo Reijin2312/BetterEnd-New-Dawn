@@ -58,6 +58,7 @@ public class BetterEnd implements ModInitializer {
         EndTags.register();
         EndBlocks.ensureStaticallyLoaded();
         EndItems.ensureStaticallyLoaded();
+        EndItems.registerCompostableFoods();
         EndTemplates.ensureStaticallyLoaded();
         EndEnchantments.ensureStaticallyLoaded();
         EndPotions.register();
