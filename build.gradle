@@ -131,9 +131,9 @@ dependencies {
         println "WTHIT runtime disabled (set -Penable_wthit_runtime=true to re-enable)"
     }
 
-    compileOnly "dev.emi:emi-neoforge:${emi_version}:api"
     if (enableEmiRuntime) {
-        runtimeOnly "dev.emi:emi-neoforge:${emi_version}"
+        compileOnly "maven.modrinth:emi:${emi_version}+neoforge"
+        runtimeOnly "maven.modrinth:emi:${emi_version}+neoforge"
     } else {
         println "EMI runtime disabled (set -Penable_emi_runtime=true to re-enable)"
     }
