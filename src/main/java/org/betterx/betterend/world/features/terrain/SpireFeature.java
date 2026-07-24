@@ -68,13 +68,14 @@ public class SpireFeature extends DefaultFeature {
             )) * 1.3F);
         }).setSource(sdf);
         final BlockPos center = pos;
+        final BlockState spireTop = EndBiome.sampleTopMaterial(world, center.below());
         List<BlockPos> support = Lists.newArrayList();
         sdf.setReplaceFunction(REPLACE).addPostProcess((info) -> {
             if (info.getStateUp().isAir()) {
                 if (random.nextInt(16) == 0) {
                     support.add(info.getPos().above());
                 }
-                return EndBiome.findTopMaterial(world, info.getPos());
+                return spireTop;
                 //return world.getBiome(info.getPos()).getGenerationSettings().getSurfaceBuilderConfig().getTopMaterial();
             } else if (info.getState(Direction.UP, 3).isAir()) {
                 return EndBiome.findUnderMaterial(world, info.getPos());
