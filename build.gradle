@@ -41,7 +41,7 @@ loom {
             vmArg "-Dfabric-api.datagen"
             vmArg "-Dfabric-api.datagen.output-dir=${file("src/main/generated")}"
             vmArg "-Dfabric-api.datagen.strict-validation"
-            vmArg "-Dfabric-api.datagen.modid=${project.modrinth_id}"
+            vmArg "-Dfabric-api.datagen.modid=betterend"
 
             runDir "build/datagen"
         }
