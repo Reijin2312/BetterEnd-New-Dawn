@@ -19,13 +19,16 @@
             {
               "type": "minecraft:block",
               "result_state": {
-                "Name": "minecraft:end_stone"
+                "Name": "betterend:sulphuric_rock"
               }
             },
             {
               "type": "minecraft:block",
               "result_state": {
-                "Name": "betterend:flavolite"
+                "Name": "betterend:brimstone",
+                "Properties": {
+                  "active": "false"
+                }
               }
             },
             {
@@ -65,13 +68,16 @@
             {
               "type": "minecraft:block",
               "result_state": {
-                "Name": "minecraft:end_stone"
+                "Name": "betterend:sulphuric_rock"
               }
             },
             {
               "type": "minecraft:block",
               "result_state": {
-                "Name": "betterend:flavolite"
+                "Name": "betterend:brimstone",
+                "Properties": {
+                  "active": "false"
+                }
               }
             },
             {
