@@ -82,9 +82,9 @@ public class NeonOasisBiome extends EndBiome.Config {
                 return super
                         .surface()
                         .ceil(Blocks.END_STONE.defaultBlockState())
-                        .rule(SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, surfaceBlockRule), SurfaceRuleBuilder.FLOOR_PRIORITY)
+                        .rule(SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, surfaceBlockRule), SurfaceRuleBuilder.TOP_SURFACE_PRIORITY)
                         .rule(SurfaceRules.ifTrue(
-                                SurfaceRules.stoneDepthCheck(5, false, CaveSurface.FLOOR),
+                                SurfaceRules.stoneDepthCheck(2, true, CaveSurface.FLOOR),
                                 SurfaceRules.state(EndBlocks.ENDSTONE_DUST.defaultBlockState())
                         ), SurfaceRuleBuilder.BELOW_FLOOR_PRIORITY);
             }
