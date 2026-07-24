@@ -1,6 +1,7 @@
 package org.betterx.betterend.registry;
 
 import org.betterx.bclib.BCLib;
+import org.betterx.bclib.api.v2.ComposterAPI;
 import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.bclib.items.BaseArmorItem;
 import org.betterx.bclib.items.BaseDiscItem;
@@ -293,6 +294,12 @@ public class EndItems {
 
     public static Map<Item, FoodProperties> getCompostableFoods() {
         return Collections.unmodifiableMap(COMPOSTABLE_FOODS);
+    }
+
+    public static void registerCompostableFoods() {
+        getCompostableFoods().forEach((item, food) ->
+                ComposterAPI.allowCompost(food.nutrition() * food.saturation() * 0.18F, item)
+        );
     }
 
     public static Item registerEndDisc(String name, ResourceKey<JukeboxSong> sound) {
