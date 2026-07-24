@@ -60,12 +60,12 @@ public class SulphurSpringsBiome extends EndBiome.Config {
         return new EndBiome.DefaultSurfaceMaterialProvider() {
             @Override
             public BlockState getTopMaterial() {
-                return EndBlocks.FLAVOLITE.stone.defaultBlockState();
+                return EndBlocks.BRIMSTONE.defaultBlockState();
             }
 
             @Override
             public BlockState getAltTopMaterial() {
-                return EndBlocks.BRIMSTONE.defaultBlockState();
+                return EndBlocks.SULPHURIC_ROCK.stone.defaultBlockState();
             }
 
             @Override
@@ -86,13 +86,13 @@ public class SulphurSpringsBiome extends EndBiome.Config {
                 );
                 return super
                         .surface()
-                        .rule(SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, surfaceBlockRule), 2)
+                        .rule(SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, surfaceBlockRule), SurfaceRuleBuilder.TOP_SURFACE_PRIORITY)
                         .rule(
                                 SurfaceRules.ifTrue(
                                         SurfaceRules.stoneDepthCheck(5, false, CaveSurface.FLOOR),
                                         surfaceBlockRule
                                 ),
-                                2
+                                SurfaceRuleBuilder.SUB_SURFACE_PRIORITY
                         );
             }
         };
