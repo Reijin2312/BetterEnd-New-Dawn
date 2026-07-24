@@ -485,7 +485,10 @@ public class EndBlocks {
         AMARANITA_STEM = registerBlock("amaranita_stem", new AmaranitaStemBlock());
         AMARANITA_HYPHAE = registerBlock("amaranita_hyphae", new AmaranitaStemBlock());
         AMARANITA_HYMENOPHORE = registerBlock( "amaranita_hymenophore", new AmaranitaHymenophoreBlock() );
-        AMARANITA_LANTERN = registerBlock("amaranita_lantern", new GlowingHymenophoreBlock());
+        AMARANITA_LANTERN = registerBlock(
+                "amaranita_lantern",
+                new GlowingHymenophoreBlock(MapColor.WOOD)
+        );
         AMARANITA_FUR = registerBlock( "amaranita_fur", new FurBlock(MapColor.COLOR_CYAN, SMALL_AMARANITA_MUSHROOM, 15, 4, true) );
         AMARANITA_CAP = registerBlock("amaranita_cap", new AmaranitaCapBlock());
         NEON_CACTUS = registerBlock("neon_cactus", new NeonCactusPlantBlock());
