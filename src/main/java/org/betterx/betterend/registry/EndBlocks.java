@@ -447,7 +447,7 @@ public class EndBlocks {
     );
     public static final Block JUNGLE_GRASS = registerBlock(
             "jungle_grass",
-            new TerrainPlantBlock(JUNGLE_MOSS)
+            new TerrainPlantBlock(CommonBlockTags.SOIL)
     );
     public static final Block BLOOMING_COOKSONIA = registerBlock(
             "blooming_cooksonia",
