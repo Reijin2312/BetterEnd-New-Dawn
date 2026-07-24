@@ -451,7 +451,7 @@ public class EndBlocks {
         AMBER_GRASS = registerBlock(EndBlocks.prepareBlockPath("amber_grass"), new TerrainPlantBlock(AMBER_MOSS) );
         TWISTED_UMBRELLA_MOSS = registerBlock(EndBlocks.prepareBlockPath("twisted_umbrella_moss"), new TwistedUmbrellaMossBlock() );
         TWISTED_UMBRELLA_MOSS_TALL = registerBlock(EndBlocks.prepareBlockPath("twisted_umbrella_moss_tall"), new TwistedUmbrellaMossTallBlock() );
-        JUNGLE_GRASS = registerBlock(EndBlocks.prepareBlockPath("jungle_grass"), new TerrainPlantBlock(JUNGLE_MOSS) );
+        JUNGLE_GRASS = registerBlock(EndBlocks.prepareBlockPath("jungle_grass"), new TerrainPlantBlock(CommonBlockTags.SOIL) );
         BLOOMING_COOKSONIA = registerBlock(EndBlocks.prepareBlockPath("blooming_cooksonia"), new TerrainPlantBlock(END_MOSS) );
         SALTEAGO = registerBlock(EndBlocks.prepareBlockPath("salteago"), new TerrainPlantBlock(END_MOSS));
         VAIOLUSH_FERN = registerBlock(EndBlocks.prepareBlockPath("vaiolush_fern"), new TerrainPlantBlock(END_MOSS));

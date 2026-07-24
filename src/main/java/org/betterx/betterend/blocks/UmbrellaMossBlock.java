@@ -5,8 +5,8 @@ import org.betterx.bclib.behaviours.interfaces.BehaviourPlant;
 import org.betterx.bclib.blocks.BaseDoublePlantBlock;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.blocks.basis.EndPlantBlock;
-import org.betterx.betterend.interfaces.survives.SurvivesOnJungleMossOrMycelium;
 import org.betterx.betterend.registry.EndBlocks;
+import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 
 
-public class UmbrellaMossBlock extends EndPlantBlock implements BehaviourPlant, SurvivesOnJungleMossOrMycelium {
+public class UmbrellaMossBlock extends EndPlantBlock implements BehaviourPlant {
     public UmbrellaMossBlock() {
         super(BehaviourBuilders.createGrass(MapColor.COLOR_ORANGE).ignitedByLava().lightLevel((state) -> 11));
     }
@@ -45,6 +45,6 @@ public class UmbrellaMossBlock extends EndPlantBlock implements BehaviourPlant, 
 
     @Override
     public boolean isTerrain(BlockState state) {
-        return SurvivesOnJungleMossOrMycelium.super.isTerrain(state);
+        return state.is(CommonBlockTags.SOIL);
     }
 }
