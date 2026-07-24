@@ -1,6 +1,7 @@
 package org.betterx.betterend.registry;
 
 import org.betterx.bclib.BCLib;
+import org.betterx.bclib.api.v2.ComposterAPI;
 import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.bclib.items.BaseArmorItem;
 import org.betterx.bclib.items.BaseDiscItem;
@@ -24,6 +25,7 @@ import org.betterx.wover.item.api.ItemRegistry;
 import org.betterx.wover.tag.api.predefined.CommonItemTags;
 
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
@@ -285,6 +287,15 @@ public class EndItems {
 
     public static List<Item> getModItems() {
         return getItemRegistry().allItems().toList();
+    }
+
+    public static void registerCompostableFoods() {
+        getModItems().forEach(item -> {
+            FoodProperties food = item.components().get(DataComponents.FOOD);
+            if (food != null) {
+                ComposterAPI.allowCompost(food.nutrition() * food.saturation() * 0.18F, item);
+            }
+        });
     }
 
     public static Item registerEndDisc(String name, ResourceKey<JukeboxSong> sound) {

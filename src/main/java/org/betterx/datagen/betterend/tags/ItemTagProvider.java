@@ -1,6 +1,5 @@
 package org.betterx.datagen.betterend.tags;
 
-import org.betterx.bclib.api.v2.ComposterAPI;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.complexmaterials.MaterialManager;
 import org.betterx.betterend.item.tool.EndHammerItem;
@@ -13,10 +12,8 @@ import org.betterx.wover.tag.api.TagManager;
 import org.betterx.wover.tag.api.event.context.ItemTagBootstrapContext;
 import org.betterx.wover.tag.api.predefined.CommonItemTags;
 
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 
@@ -30,12 +27,6 @@ public class ItemTagProvider extends WoverTagProvider.ForItems {
     @Override
     public void prepareTags(ItemTagBootstrapContext context) {
         EndItems.getModItems().forEach(item -> {
-            FoodProperties food = item.components().get(DataComponents.FOOD);
-            if (food != null) {
-                float compost = food.nutrition() * food.saturation() * 0.18F;
-                ComposterAPI.allowCompost(compost, item);
-            }
-
             if (EndHammerItem.class.isInstance(item)) {
                 context.add(CommonItemTags.HAMMERS, item);
             }
