@@ -72,7 +72,7 @@ public class CrystalMountainPiece extends MountainPiece {
             int y = map.getFirstAvailable(x, z);
             if (y > 60) {
                 pos.set(x, y, z);
-                if (chunk.getBlockState(pos.below()).is(Blocks.END_STONE)) {
+                if (isCrystalBase(chunk.getBlockState(pos.below()))) {
                     int height = MHelper.floor(radius * MHelper.randRange(1.5F, 3F, random) + (y - 80) * 0.3F);
                     crystal(chunk, pos, radius, height, fill, random);
                 }
@@ -90,7 +90,7 @@ public class CrystalMountainPiece extends MountainPiece {
             int y = map.getFirstAvailable(x, z);
             if (y > 20) {
                 pos.set(x, y, z);
-                if (chunk.getBlockState(pos.below()).getBlock() == Blocks.END_STONE) {
+                if (isCrystalBase(chunk.getBlockState(pos.below()))) {
                     int height = MHelper.floor(radius * MHelper.randRange(1.5F, 3F, random) + (y - 80) * 0.3F);
                     crystal(chunk, pos, radius, height, fill, random);
                 }
@@ -98,6 +98,10 @@ public class CrystalMountainPiece extends MountainPiece {
         }
 
 
+    }
+
+    private static boolean isCrystalBase(BlockState state) {
+        return state.is(Blocks.END_STONE) || state.is(EndBlocks.CRYSTAL_MOSS);
     }
 
     private void placeMountain(
