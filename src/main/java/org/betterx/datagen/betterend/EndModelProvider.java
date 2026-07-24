@@ -28,6 +28,7 @@ import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplates;
+import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.renderer.block.dispatch.Variant;
@@ -81,6 +82,13 @@ public class EndModelProvider extends WoverModelProvider {
                              .override(EndBlocks.TWISTED_VINE, createTwistedVineModel(generator))
                              .override(EndBlocks.AMBER_MOSS, createAmberMossModel(generator))
                              .override(EndBlocks.AMBER_MOSS_PATH, createAmberMossPathModel(generator, EndBlocks.AMBER_MOSS))
+                             .override(EndBlocks.AURORA_CRYSTAL, block -> generator.delegateTintedItemModel(
+                                     block,
+                                     BetterEnd.C.mk("item/aurora_crystal"),
+                                     ItemModelUtils.constantTint(((org.betterx.bclib.interfaces.CustomColorProvider) block)
+                                             .getProvider()
+                                             .getColor(block.defaultBlockState(), null, null, 0))
+                             ))
                              .override(EndBlocks.QUARTZ_PEDESTAL, block -> PedestalBlock.provideBlockModel(generator, new TextureMapping()
                                      .put(TextureSlot.TOP, material(IntegrationCore.MINECRAFT.mk("block/quartz_pillar_top")))
                                      .put(TextureSlot.BOTTOM, material(IntegrationCore.MINECRAFT.mk("block/quartz_block_bottom")))
