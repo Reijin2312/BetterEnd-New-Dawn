@@ -1,6 +1,8 @@
 package org.betterx.betterend.blocks;
 
 import org.betterx.bclib.blocks.BaseBlock;
+import org.betterx.bclib.behaviours.interfaces.BehaviourCompostable;
+import org.betterx.bclib.interfaces.tools.AddMineableHoe;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.wover.block.api.BlockProperties;
 import org.betterx.wover.block.api.model.BlockModelProvider;
@@ -16,19 +18,25 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.MapColor;
 
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
-public class BlueVineLanternBlock extends BaseBlock.Wood implements BlockModelProvider {
+public class BlueVineLanternBlock extends BaseBlock implements AddMineableHoe, BehaviourCompostable, BlockModelProvider {
     public static final BooleanProperty NATURAL = BlockProperties.NATURAL;
 
     public BlueVineLanternBlock() {
-        super(Properties.of()
+        super(Properties.of().mapColor(MapColor.WOOD).strength(1.0F)
                         .lightLevel((bs) -> 15)
-                        .sound(SoundType.WART_BLOCK)
+                        .sound(SoundType.SHROOMLIGHT)
         );
         this.registerDefaultState(this.stateDefinition.any().setValue(NATURAL, false));
+    }
+
+    @Override
+    public float compostingChance() {
+        return 0.65F;
     }
 
     @Override
