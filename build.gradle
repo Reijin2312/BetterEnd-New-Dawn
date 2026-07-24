@@ -80,7 +80,6 @@ tasks.register("syncGeneratedResources", Copy) {
 }
 
 tasks.named("jar") {
-    dependsOn(tasks.named("generateBetterEndResources"))
     dependsOn(tasks.named("syncGeneratedResources"))
     from(generatedResourcesDir)
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
