@@ -161,10 +161,10 @@ public class VegetationFeaturesProvider extends WoverFeatureProvider {
 
         EndVegetationFeatures.CRYSTAL_MOSS_COVER.inlineConfiguration(context)
                                                 .withFeature(Feature.MULTIFACE_GROWTH)
-                                                .configuration(new MultifaceGrowthConfiguration(EndBlocks.CRYSTAL_MOSS_COVER, 20, true, true, true, 1.0f, HolderSet.direct(Block::builtInRegistryHolder, EndBlocks.CRYSTAL_MOSS, Blocks.END_STONE)))
+                                                .configuration(new MultifaceGrowthConfiguration(EndBlocks.CRYSTAL_MOSS_COVER, 6, true, true, true, 0.6f, HolderSet.direct(Block::builtInRegistryHolder, EndBlocks.CRYSTAL_MOSS, Blocks.END_STONE)))
                                                 .inlinePlace()
-                                                .countRange(16, 256)
-                                                .onEveryLayer(2)
+                                                .countRange(2, 6)
+                                                .onEveryLayer(1)
                                                 .onlyInBiome()
                                                 .register();
     }
