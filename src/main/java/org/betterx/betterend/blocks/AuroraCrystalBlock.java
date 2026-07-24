@@ -38,6 +38,7 @@ public class AuroraCrystalBlock extends TransparentBlock implements BlockLootPro
         super(BehaviourBuilders
                 .createGlass()
                 .strength(1F)
+                .noOcclusion()
                 .lightLevel((bs) -> 15)
         );
     }
