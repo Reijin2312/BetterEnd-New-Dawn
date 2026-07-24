@@ -57,6 +57,7 @@ public class BetterEnd implements ModInitializer {
         // must not read their fields before this point.
         EndBlocks.ensureStaticallyLoaded();
         EndItems.ensureStaticallyLoaded();
+        EndItems.registerCompostableFoods();
         // Fabric initializes some client/post-init hooks while the lazy registries are
         // still being populated. Rebuild the pot lookup only after both blocks and
         // their BlockItems are complete, otherwise the first partial snapshot is cached.
