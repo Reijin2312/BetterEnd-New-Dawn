@@ -538,7 +538,10 @@ public class EndBlocks {
             "amaranita_hymenophore",
             new AmaranitaHymenophoreBlock()
     );
-    public static final Block AMARANITA_LANTERN = registerBlock("amaranita_lantern", new GlowingHymenophoreBlock());
+    public static final Block AMARANITA_LANTERN = registerBlock(
+            "amaranita_lantern",
+            new GlowingHymenophoreBlock(MapColor.WOOD)
+    );
     public static final Block AMARANITA_FUR = registerBlock(
             "amaranita_fur",
             new FurBlock(MapColor.COLOR_CYAN, SMALL_AMARANITA_MUSHROOM, 15, 4, true)
