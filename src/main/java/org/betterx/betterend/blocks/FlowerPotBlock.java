@@ -308,7 +308,17 @@ public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvi
                     return ItemInteractionResult.SUCCESS;
                 }
             }
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            level.playSound(
+                    player,
+                    pos.getX() + 0.5,
+                    pos.getY() + 0.5,
+                    pos.getZ() + 0.5,
+                    SoundEvents.DISPENSER_FAIL,
+                    SoundSource.BLOCKS,
+                    0.6F,
+                    1
+            );
+            return ItemInteractionResult.FAIL;
         }
 
         int plantID = state.getValue(PLANT_ID);
