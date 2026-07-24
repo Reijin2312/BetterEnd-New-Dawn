@@ -108,8 +108,8 @@ dependencies {
     // run against the full jar
     runtimeOnly "mcp.mobius.waila:wthit:neo-${project.wthit_version}"
 
-    compileOnly "dev.emi:emi-neoforge:${emi_version}:api"
-    runtimeOnly "dev.emi:emi-neoforge:${emi_version}"
+    compileOnly "maven.modrinth:emi:${emi_version}+neoforge"
+    runtimeOnly "maven.modrinth:emi:${emi_version}+neoforge"
 
     compileOnly "mezz.jei:jei-1.21.1-neoforge-api:${project.jei_version}"
     if (enableJeiRuntime) {
