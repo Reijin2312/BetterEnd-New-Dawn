@@ -26,7 +26,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 
 public class CrystalMountainPiece extends MountainPiece {
-    private static final float CRYSTAL_MOSS_CRYSTAL_CHANCE = 0.4F;
+    private static final float CRYSTAL_MOSS_CRYSTAL_CHANCE = 0.15F;
 
     private BlockState top;
 
