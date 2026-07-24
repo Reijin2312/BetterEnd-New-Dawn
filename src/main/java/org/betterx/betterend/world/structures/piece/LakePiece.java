@@ -48,6 +48,7 @@ public class LakePiece extends BasePiece {
     private int seed;
 
     private ResourceKey<Biome> biomeID;
+    private BlockState lastSurfaceMaterial;
 
     public LakePiece(BlockPos center, float radius, float depth, RandomSource random, Holder<Biome> biome) {
         super(EndStructures.LAKE_PIECE, random.nextInt(), null);
@@ -84,6 +85,22 @@ public class LakePiece extends BasePiece {
         noise = new OpenSimplexNoise(seed);
         aspect = radius / depth;
         biomeID = ResourceKey.create(Registries.BIOME, Identifier.parse(tag.getStringOr("biome", "minecraft:the_end")));
+    }
+
+    private BlockState surfaceMaterial(WorldGenLevel world) {
+        if (lastSurfaceMaterial != null) {
+            return lastSurfaceMaterial;
+        }
+        if (biomeID != null) {
+            Holder<Biome> biome = world.registryAccess()
+                                        .lookupOrThrow(Registries.BIOME)
+                                        .get(biomeID)
+                                        .orElse(null);
+            if (biome != null) {
+                return EndBiome.findTopMaterial(biome);
+            }
+        }
+        return ENDSTONE;
     }
 
     @Override
@@ -132,6 +149,8 @@ public class LakePiece extends BasePiece {
                         if (state.is(CommonBlockTags.END_STONES) || state.isAir()) {
                             state = mut.getY() < center.getY() ? WATER : CAVE_AIR;
                             chunk.setBlockState(mut, state, 0);
+                        } else if (state.is(CommonBlockTags.TERRAIN)) {
+                            lastSurfaceMaterial = state;
                         }
                     } else if (dist <= r3 && mut.getY() < center.getY()) {
                         BlockState state = chunk.getBlockState(mut);
@@ -140,18 +159,22 @@ public class LakePiece extends BasePiece {
                                 world,
                                 worldPos
                         )) {
-                            state = chunk.getBlockState(mut.above(3));
+                            BlockState above3 = chunk.getBlockState(mut.above(3));
                             final BlockState stateAbove = chunk.getBlockState(mut.above());
-                            if (stateAbove.isAir() && state.isAir()) {
-                                state = random.nextInt(10) == 0 ? ENDSTONE : EndBiome.findTopMaterial(world, worldPos);
+                            if (stateAbove.isAir() && above3.isAir()) {
+                                state = random.nextInt(10) == 0 ? ENDSTONE : surfaceMaterial(world);
                             } else if (stateAbove.isAir()) {
-                                state = random.nextBoolean() ? ENDSTONE : EndBiome.findTopMaterial(world, worldPos);
+                                state = random.nextBoolean() ? ENDSTONE : surfaceMaterial(world);
                             } else {
-                                state = state.getFluidState().isEmpty()
+                                state = above3.getFluidState().isEmpty()
                                         ? ENDSTONE
                                         : EndBlocks.ENDSTONE_DUST.defaultBlockState();
                             }
-                            chunk.setBlockState(mut, state, 0);
+                            double edgeT = (dist - r2) / (r3 - r2);
+                            double placeChance = edgeT > 0.85 ? 0.2 : edgeT > 0.6 ? 0.5 : 1.0;
+                            if (placeChance >= 1.0 || random.nextDouble() < placeChance) {
+                                chunk.setBlockState(mut, state, 0);
+                            }
                         }
                     }
                 }
@@ -186,7 +209,7 @@ public class LakePiece extends BasePiece {
                             if (bState.isAir()) {
                                 bState = random.nextBoolean()
                                         ? ENDSTONE
-                                        : EndBiome.findTopMaterial(world, mut.offset(sx, 0, sz));
+                                        : surfaceMaterial(world);
                             } else {
                                 bState = bState.getFluidState().isEmpty()
                                         ? ENDSTONE
@@ -206,7 +229,7 @@ public class LakePiece extends BasePiece {
                                     if (bState.isAir()) {
                                         bState = random.nextBoolean()
                                                 ? ENDSTONE
-                                                : EndBiome.findTopMaterial(world, mut.offset(sx, 0, sz));
+                                                : surfaceMaterial(world);
                                     } else {
                                         bState = bState.getFluidState().isEmpty()
                                                 ? ENDSTONE
