@@ -40,6 +40,19 @@ import java.util.Map;
 public class LakePiece extends BasePiece {
     private static final BlockState ENDSTONE = Blocks.END_STONE.defaultBlockState();
     private static final BlockState WATER = Blocks.WATER.defaultBlockState();
+    private static BlockState[] rimPlants;
+
+    private static BlockState[] rimPlants() {
+        if (rimPlants == null) {
+            rimPlants = new BlockState[]{
+                    EndBlocks.JUNGLE_GRASS.defaultBlockState(),
+                    EndBlocks.UMBRELLA_MOSS.defaultBlockState(),
+                    EndBlocks.BLUE_VINE_FUR.defaultBlockState(),
+                    EndBlocks.FILALUX_WINGS.defaultBlockState(),
+            };
+        }
+        return rimPlants;
+    }
     private final Map<Integer, Byte> heightmap = Maps.newConcurrentMap();
     private OpenSimplexNoise noise;
     private BlockPos center;
@@ -147,11 +160,12 @@ public class LakePiece extends BasePiece {
                     double dist = x3 + y2 + z3;
                     if (dist < r2) {
                         BlockState state = chunk.getBlockState(mut);
+                        if (state.is(CommonBlockTags.TERRAIN) && !state.is(Blocks.END_STONE)) {
+                            lastSurfaceMaterial = state;
+                        }
                         if (state.is(CommonBlockTags.END_STONES) || state.isAir()) {
                             state = mut.getY() < center.getY() ? WATER : CAVE_AIR;
                             chunk.setBlockState(mut, state, false);
-                        } else if (state.is(CommonBlockTags.TERRAIN)) {
-                            lastSurfaceMaterial = state;
                         }
                     } else if (dist <= r3 && mut.getY() < center.getY()) {
                         BlockState state = chunk.getBlockState(mut);
@@ -175,6 +189,9 @@ public class LakePiece extends BasePiece {
                             double placeChance = edgeT > 0.85 ? 0.2 : edgeT > 0.6 ? 0.5 : 1.0;
                             if (placeChance >= 1.0 || random.nextDouble() < placeChance) {
                                 chunk.setBlockState(mut, state, false);
+                                if (stateAbove.isAir() && random.nextDouble() < 1.0 - 0.75 * edgeT) {
+                                    placeRimPlant(world, chunk, mut, worldPos, random);
+                                }
                             }
                         }
                     }
@@ -182,6 +199,26 @@ public class LakePiece extends BasePiece {
             }
         }
         fixWater(world, chunk, mut, random, sx, sz);
+    }
+
+    private void placeRimPlant(
+            WorldGenLevel world,
+            ChunkAccess chunk,
+            MutableBlockPos surface,
+            BlockPos surfaceWorld,
+            RandomSource random
+    ) {
+        final BlockState[] plants = rimPlants();
+        final BlockPos plantLocal = surface.above();
+        final BlockPos plantWorld = surfaceWorld.above();
+        final int start = random.nextInt(plants.length);
+        for (int i = 0; i < plants.length; i++) {
+            final BlockState plant = plants[(start + i) % plants.length];
+            if (plant.canSurvive(world, plantWorld)) {
+                chunk.setBlockState(plantLocal, plant, false);
+                return;
+            }
+        }
     }
 
     private void fixWater(
