@@ -260,7 +260,6 @@ processResources {
 }
 
 tasks.named("jar") {
-    dependsOn(tasks.named("generateBetterXResources"))
     dependsOn(tasks.named("syncGeneratedResources"))
     from("src/main/generated")
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
