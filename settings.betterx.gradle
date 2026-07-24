@@ -10,9 +10,9 @@ def allowLocalLibInConsoleMode = true
 def preferExistingPath = { List<String> candidates ->
     candidates.find { new File(it).exists() } ?: candidates[0]
 }
-def BCLibPath = preferExistingPath(['../BCLib-1.21.11', '../BCLib'])
-def WoverPath = preferExistingPath(['../WorldWeaver-1.21.11', '../WorldWeaver'])
-def WunderLibPath = preferExistingPath(['../WunderLib-1.21.11', '../WunderLib'])
+def BCLibPath = preferExistingPath(['../BCLib-1.21.11-Neoforge', '../BCLib'])
+def WoverPath = preferExistingPath(['../WorldWeaver-1.21.11-Neoforge', '../WorldWeaver'])
+def WunderLibPath = preferExistingPath(['../WunderLib-1.21.11-Neoforge', '../WunderLib'])
 
 
 // #### Logic ####
