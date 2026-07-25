@@ -9,6 +9,11 @@
       {
         "texture": "betterend:aeternium"
       }
+    ],
+    "wings": [
+      {
+        "texture": "betterend:elytra_armored"
+      }
     ]
   }
 }
