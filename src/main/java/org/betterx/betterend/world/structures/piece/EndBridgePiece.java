@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
@@ -70,16 +71,16 @@ public class EndBridgePiece extends BasePiece {
 
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
-        tag.store("start", BlockPos.CODEC, start);
-        tag.store("end", BlockPos.CODEC, end);
+        tag.put("start", NbtUtils.writeBlockPos(start));
+        tag.put("end", NbtUtils.writeBlockPos(end));
         tag.putLong("seed", seed);
     }
 
     @Override
     protected void fromNbt(CompoundTag tag) {
-        start = tag.read("start", BlockPos.CODEC).orElse(BlockPos.ZERO);
-        end = tag.read("end", BlockPos.CODEC).orElse(BlockPos.ZERO);
-        seed = tag.getLongOr("seed", 0L);
+        start = NbtUtils.readBlockPos(tag, "start").orElse(BlockPos.ZERO);
+        end = NbtUtils.readBlockPos(tag, "end").orElse(BlockPos.ZERO);
+        seed = tag.getLong("seed");
     }
 
     private void makeBoundingBox() {
@@ -122,7 +123,7 @@ public class EndBridgePiece extends BasePiece {
         final ChunkAccess chunk = world.getChunk(chunkPos.x, chunkPos.z);
         final int sx = SectionPos.sectionToBlockCoord(chunkPos.x);
         final int sz = SectionPos.sectionToBlockCoord(chunkPos.z);
-        final int chunkMinY = chunk.getMinY();
+        final int chunkMinY = chunk.getMinBuildHeight();
 
         final int x0 = Math.max(boundingBox.minX(), sx);
         final int x1 = Math.min(boundingBox.maxX(), sx + 15);
@@ -180,20 +181,20 @@ public class EndBridgePiece extends BasePiece {
                 // ---- Deck ------------------------------------------------------------------------
                 POS.set(x, deckY, z);
                 if (landing || isReplaceable(chunk.getBlockState(POS))) {
-                    chunk.setBlockState(POS, deckMaterial(colRandom), 3);
+                    chunk.setBlockState(POS, deckMaterial(colRandom), false);
                 }
 
                 // ---- Underside (1 block thick) ---------------------------------------------------
                 POS.setY(deckY - 1);
                 if (isReplaceable(chunk.getBlockState(POS))) {
-                    chunk.setBlockState(POS, deckMaterial(colRandom), 3);
+                    chunk.setBlockState(POS, deckMaterial(colRandom), false);
                 }
 
                 // ---- Landing seating (fill one more block down onto terrain) ---------------------
                 if (landing) {
                     POS.setY(deckY - 2);
                     if (isReplaceable(chunk.getBlockState(POS))) {
-                        chunk.setBlockState(POS, deckMaterial(colRandom), 3);
+                        chunk.setBlockState(POS, deckMaterial(colRandom), false);
                     }
                 }
 
@@ -202,7 +203,7 @@ public class EndBridgePiece extends BasePiece {
                 if (edge && !landing) {
                     POS.setY(deckY + 1);
                     if (colRandom.nextFloat() >= RAILING_GAP_CHANCE && isReplaceable(chunk.getBlockState(POS))) {
-                        chunk.setBlockState(POS, RAILING, 3);
+                        chunk.setBlockState(POS, RAILING, false);
                     }
                 }
 
@@ -222,7 +223,7 @@ public class EndBridgePiece extends BasePiece {
                         for (int y = deckY - 2; y > terrainTop; y--) {
                             POS.setY(y);
                             if (isReplaceable(chunk.getBlockState(POS))) {
-                                chunk.setBlockState(POS, deckMaterial(colRandom), 3);
+                                chunk.setBlockState(POS, deckMaterial(colRandom), false);
                             }
                         }
                     }
