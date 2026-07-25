@@ -36,13 +36,14 @@ public class BushFeature extends Feature<BushFeatureConfig> {
         final RandomSource random = featureConfig.random();
         final BlockPos pos = featureConfig.origin();
         final WorldGenLevel world = featureConfig.level();
+        if (!world.getFluidState(pos).isEmpty()) return false;
         if (!world.getBlockState(pos.below()).is(CommonBlockTags.END_STONES) && !world.getBlockState(pos.above())
                                                                                       .is(CommonBlockTags.END_STONES))
             return false;
 
         BushFeatureConfig cfg = featureConfig.config();
-        Block leaves = cfg.leaves.getState(world, random, pos).getBlock();
-        BlockState stem = cfg.stem.getState(world, random, pos);
+        Block leaves = cfg.leaves.getState(random, pos).getBlock();
+        BlockState stem = cfg.stem.getState(random, pos);
         float radius = MHelper.randRange(1.8F, 3.5F, random);
         OpenSimplexNoise noise = new OpenSimplexNoise(random.nextInt());
         SDF sphere = new SDFSphere().setRadius(radius).setBlock(leaves);
