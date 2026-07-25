@@ -1,4 +1,4 @@
-﻿package org.betterx.betterend.world.carvers;
+package org.betterx.betterend.world.carvers;
 
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.noise.OpenSimplexNoise;

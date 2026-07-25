@@ -1,4 +1,4 @@
-﻿package org.betterx.betterend.world.generator;
+package org.betterx.betterend.world.generator;
 
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.betterend.registry.EndBiomes;

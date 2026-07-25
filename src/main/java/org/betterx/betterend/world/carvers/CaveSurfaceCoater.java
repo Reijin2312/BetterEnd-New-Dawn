@@ -1,4 +1,4 @@
-﻿package org.betterx.betterend.world.carvers;
+package org.betterx.betterend.world.carvers;
 
 import org.betterx.betterend.world.biome.cave.EndCaveBiome;
 import org.betterx.wover.biome.api.BiomeManager;
