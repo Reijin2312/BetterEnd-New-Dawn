@@ -1,0 +1,21 @@
+﻿{
+  "type": "betterend:lush_smaragdant_cave_biome",
+  "biome": "betterend:lush_smaragdant_cave",
+  "fogDensity": 2.0,
+  "generation_data": {
+    "intended_placement": "betterend:is_end_cave"
+  },
+  "has_caves": false,
+  "surface": {
+    "alt": {
+      "Name": "betterend:cave_moss"
+    },
+    "floor_rule": true,
+    "top": {
+      "Name": "betterend:cave_moss"
+    },
+    "under": {
+      "Name": "minecraft:end_stone"
+    }
+  }
+}
