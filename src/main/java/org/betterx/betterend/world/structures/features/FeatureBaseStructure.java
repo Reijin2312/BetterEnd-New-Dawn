@@ -40,6 +40,17 @@ public abstract class FeatureBaseStructure extends Structure {
         return Optional.empty();
     }
 
+    protected Optional<GenerationStub> findVoidGenerationPoint(GenerationContext context, int stubY) {
+        BlockPos pos = new BlockPos(
+                context.chunkPos().getBlockX(8),
+                stubY,
+                context.chunkPos().getBlockZ(8)
+        );
+        return Optional.of(new Structure.GenerationStub(pos, structurePiecesBuilder -> {
+            generatePieces(structurePiecesBuilder, context);
+        }));
+    }
+
     protected Holder<Biome> getNoiseBiome(ChunkGenerator cg, RandomState rState, int i, int j, int k) {
         return cg.getBiomeSource().getNoiseBiome(i, j, k, rState.sampler());
     }
