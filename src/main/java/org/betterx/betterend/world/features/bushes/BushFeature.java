@@ -36,6 +36,7 @@ public class BushFeature extends Feature<BushFeatureConfig> {
         final RandomSource random = featureConfig.random();
         final BlockPos pos = featureConfig.origin();
         final WorldGenLevel world = featureConfig.level();
+        if (!world.getFluidState(pos).isEmpty()) return false;
         if (!world.getBlockState(pos.below()).is(CommonBlockTags.END_STONES) && !world.getBlockState(pos.above())
                                                                                       .is(CommonBlockTags.END_STONES))
             return false;
