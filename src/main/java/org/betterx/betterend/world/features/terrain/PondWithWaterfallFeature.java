@@ -82,7 +82,7 @@ public class PondWithWaterfallFeature extends DefaultFeature {
 
         // Island top at the placement column (WORLD_SURFACE_WG heightmap, pre-vegetation).
         final int topY = world.getHeight(Heightmap.Types.WORLD_SURFACE_WG, centerX, centerZ) - 1;
-        if (topY <= world.getMinY() + MIN_TERRAIN_ABOVE_FLOOR) {
+        if (topY <= world.getMinBuildHeight() + MIN_TERRAIN_ABOVE_FLOOR) {
             return false;
         }
 
@@ -219,7 +219,7 @@ public class PondWithWaterfallFeature extends DefaultFeature {
         int count = 0;
         for (int k = 0; k < MAX_THICKNESS_PROBE; k++) {
             final int y = topY - k;
-            if (y <= world.getMinY()) break;
+            if (y <= world.getMinBuildHeight()) break;
             p.set(x, y, z);
             final BlockState s = world.getBlockState(p);
             if (s.isAir() || !s.getFluidState().isEmpty()) break;

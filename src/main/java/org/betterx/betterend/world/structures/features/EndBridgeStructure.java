@@ -95,7 +95,7 @@ public class EndBridgeStructure extends FeatureBaseStructure {
         final ChunkGenerator chunkGenerator = context.chunkGenerator();
         final RandomState rState = context.randomState();
         final LevelHeightAccessor level = context.heightAccessor();
-        final int minY = level.getMinY();
+        final int minY = level.getMinBuildHeight();
 
         final int ox = chunkPos.getBlockX(8);
         final int oz = chunkPos.getBlockZ(8);
