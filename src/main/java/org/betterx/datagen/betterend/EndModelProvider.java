@@ -64,9 +64,14 @@ public class EndModelProvider extends WoverModelProvider {
         for (Item item : BuiltInRegistries.ITEM) {
             Identifier id = BuiltInRegistries.ITEM.getKey(item);
             if (id == null || !id.getNamespace().equals(BetterEnd.MOD_ID) || !id.getPath().startsWith("debug/")) {
-                continue;
+                if (id != null
+                        && id.getNamespace().equals(BetterEnd.MOD_ID)
+                        && (id.getPath().endsWith("_boat") || id.getPath().endsWith("_raft"))) {
+                    itemModelGenerator.generateFlatItem(item, ModelTemplates.FLAT_ITEM);
+                }
+            } else {
+                itemModelGenerator.generateFlatItem(item, Items.BARRIER, ModelTemplates.FLAT_ITEM);
             }
-            itemModelGenerator.generateFlatItem(item, Items.BARRIER, ModelTemplates.FLAT_ITEM);
         }
     }
 
