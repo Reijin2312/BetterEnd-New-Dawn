@@ -499,81 +499,20 @@ public class EndModelProvider extends WoverModelProvider {
 
     private void generateFlowerPotModels(WoverBlockModelGenerators generator) {
         EndBlocks.ensureRegistered();
-        FlowerPotBlock.PottableEntries pottables = FlowerPotBlock.getPottableEntries();
-        Block[] plants = pottables.plants();
-        Block[] soils = pottables.soils();
-
-        ResourceLocation[] soilModels = new ResourceLocation[soils.length];
-        for (int i = 0; i < soils.length; i++) {
-            Block soil = soils[i];
-            if (soil == null) {
-                continue;
-            }
-            ResourceLocation modelId = BetterEnd.C.mk("block/flower_pot_soil_" + i);
-            soilModels[i] = modelId;
-            if (modelExists(modelId)) {
-                continue;
-            }
-            ResourceLocation soilId = BuiltInRegistries.BLOCK.getKey(soil);
-            if (soilId == null) {
-                continue;
-            }
-            String texture = soilId.getPath() + "_top";
-            if (texture.contains("rutiscus")) {
-                texture += "_1";
-            }
-            JsonObject modelJson = createPatternModel(
-                    BetterEnd.C.mk("patterns/block/flower_pot_soil.json"),
-                    Map.of("%texture%", texture)
-            );
-            if (modelJson == null) {
-                BetterEnd.LOGGER.warn("Missing flower pot soil pattern for {}", soilId);
-                continue;
-            }
-            generator.acceptModelOutput(modelId, () -> modelJson);
-            markGenerated(modelId);
-        }
-
-        Map<Block, ResourceLocation> plantModels = new HashMap<>();
         for (Block block : EndBlocks.getModBlocks()) {
             if (!(block instanceof FlowerPotBlock)) {
                 continue;
             }
             ResourceLocation baseModel = ModelLocationUtils.getModelLocation(block);
-            MultiPartGenerator multipart = MultiPartGenerator
-                    .multiPart(block)
-                    .with(Variant.variant().with(VariantProperties.MODEL, baseModel));
-
-            for (int i = 0; i < soilModels.length; i++) {
-                ResourceLocation soilModel = soilModels[i];
-                if (soilModel == null) {
-                    continue;
-                }
-                multipart.with(
-                        Condition.condition().term(EndBlockProperties.SOIL_ID, i + 1),
-                        Variant.variant().with(VariantProperties.MODEL, soilModel)
-                );
-            }
-
-            for (int i = 0; i < plants.length; i++) {
-                Block plant = plants[i];
-                if (plant == null) {
-                    continue;
-                }
-                ResourceLocation plantModel = plantModels.computeIfAbsent(
-                        plant,
-                        p -> resolvePlantModel(generator, p)
-                );
-                if (plantModel == null) {
-                    continue;
-                }
-                multipart.with(
-                        Condition.condition().term(EndBlockProperties.PLANT_ID, i + 1),
-                        Variant.variant().with(VariantProperties.MODEL, plantModel)
-                );
-            }
-
-            generator.acceptBlockState(multipart);
+            Variant variant = Variant.variant().with(VariantProperties.MODEL, baseModel);
+            generator.acceptBlockState(
+                    MultiVariantGenerator.multiVariant(block)
+                                         .with(PropertyDispatch.property(FlowerPotBlock.POT_LIGHT)
+                                                               .select(0, variant)
+                                                               .select(1, variant)
+                                                               .select(2, variant)
+                                                               .select(3, variant))
+            );
         }
     }
 
