@@ -1,9 +1,9 @@
-package org.betterx.betterend.world.carvers;
+﻿package org.betterx.betterend.world.carvers;
 
 import org.betterx.betterend.world.biome.cave.EndCaveBiome;
-import de.ambertation.wover.biome.api.BiomeManager;
-import de.ambertation.wover.biome.api.data.BiomeData;
-import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
+import org.betterx.wover.biome.api.BiomeManager;
+import org.betterx.wover.biome.api.data.BiomeData;
+import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
 import com.google.common.collect.Lists;
 import net.minecraft.core.BlockPos;
@@ -292,3 +292,4 @@ final class CaveSurfaceCoater {
         SPHERE = prePos.toArray(new Vec3i[]{});
     }
 }
+

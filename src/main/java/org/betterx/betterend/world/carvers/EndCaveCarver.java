@@ -1,11 +1,11 @@
-package org.betterx.betterend.world.carvers;
+﻿package org.betterx.betterend.world.carvers;
 
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.betterend.world.generator.TerrainGenerator;
-import de.ambertation.wover.generator.api.biomesource.end.WoverEndConfig;
-import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
+import org.betterx.wover.generator.api.biomesource.end.WoverEndConfig;
+import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
@@ -229,3 +229,4 @@ public class EndCaveCarver extends WorldCarver<EndCaveCarverConfiguration> {
         return false;
     }
 }
+
