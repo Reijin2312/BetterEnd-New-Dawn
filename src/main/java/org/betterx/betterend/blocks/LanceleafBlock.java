@@ -32,7 +32,9 @@ public class LanceleafBlock extends EndPlantBlock implements SurvivesOnAmberMoss
     public static final IntegerProperty ROTATION = BlockProperties.ROTATION;
 
     public LanceleafBlock() {
-        super(BehaviourBuilders.createPlant(MapColor.TERRACOTTA_BROWN).ignitedByLava().offsetType(OffsetType.XZ));
+        super(BehaviourBuilders.createWalkablePlant(MapColor.TERRACOTTA_BROWN)
+                               .ignitedByLava()
+                               .offsetType(OffsetType.XZ));
     }
 
     @Override

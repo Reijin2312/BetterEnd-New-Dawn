@@ -1,6 +1,7 @@
 package org.betterx.betterend.blocks;
 
 import org.betterx.bclib.blocks.UpDownPlantBlock;
+import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.wover.block.api.BlockProperties;
 import org.betterx.wover.block.api.BlockProperties.TripleShape;
@@ -18,6 +19,10 @@ import net.fabricmc.api.Environment;
 
 public class GlowingPillarRootsBlock extends UpDownPlantBlock {
     public static final EnumProperty<TripleShape> SHAPE = BlockProperties.TRIPLE_SHAPE;
+
+    public GlowingPillarRootsBlock() {
+        super(BehaviourBuilders.createWalkablePlant());
+    }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> stateManager) {
