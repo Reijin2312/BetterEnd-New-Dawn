@@ -2,8 +2,8 @@ package org.betterx.betterend.blocks;
 
 import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.bclib.behaviours.interfaces.BehaviourPlant;
+import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.blocks.basis.EndPlantWithAgeBlock;
-import org.betterx.betterend.interfaces.survives.SurvivesOnEndStone;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.wover.block.api.BlockProperties;
 
@@ -21,7 +21,7 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class CavePumpkinVineBlock extends EndPlantWithAgeBlock implements SurvivesOnEndStone, BehaviourPlant {
+public class CavePumpkinVineBlock extends EndPlantWithAgeBlock implements BehaviourPlant {
     public CavePumpkinVineBlock() {
         super(BehaviourBuilders.createPlant(MapColor.TERRACOTTA_ORANGE));
     }
@@ -30,7 +30,8 @@ public class CavePumpkinVineBlock extends EndPlantWithAgeBlock implements Surviv
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
-        return canSurviveOnBottom(world, pos);
+        BlockPos above = pos.above();
+        return BlocksHelper.isDecorationSupport(world, above, world.getBlockState(above), Direction.DOWN);
     }
 
     @Override
@@ -82,6 +83,6 @@ public class CavePumpkinVineBlock extends EndPlantWithAgeBlock implements Surviv
 
     @Override
     public boolean isTerrain(BlockState state) {
-        return SurvivesOnEndStone.super.isTerrain(state);
+        return true;
     }
 }
