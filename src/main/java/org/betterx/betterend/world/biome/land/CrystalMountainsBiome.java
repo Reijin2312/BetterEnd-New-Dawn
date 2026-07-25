@@ -31,7 +31,7 @@ public class CrystalMountainsBiome extends EndBiome.Config {
                 .music(EndSounds.MUSIC_OPENSPACE)
                 .feature(EndVegetationFeatures.CRYSTAL_GRASS)
                 .feature(EndVegetationFeatures.CRYSTAL_MOSS_COVER)
-                .spawn(EntityType.ENDERMAN, 50, 1, 2);
+                .spawn(EntityType.ENDERMAN, 3, 1, 2);
     }
 
     @Override
