@@ -48,6 +48,7 @@ public class WaterfallPondsBiome extends EndBiome.Config {
                 .structure(EndStructures.SMALL_ISLAND)
                 // Rim ponds with spill-over waterfalls (RAW/LAKES terrain feature)
                 .feature(EndTerrainFeatures.POND_WITH_WATERFALL)
+                .feature(EndVegetationFeatures.DRAGON_HELIX_TREE)
                 // Lush shore vegetation (NO trees, NO large mushrooms)
                 .feature(EndVegetationFeatures.BLOOMING_COOKSONIA)
                 .feature(EndVegetationFeatures.SALTEAGO)

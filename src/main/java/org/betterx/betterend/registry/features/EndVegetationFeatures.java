@@ -17,6 +17,7 @@ public class EndVegetationFeatures {
     public static final PlacedConfiguredFeatureKey DRAGON_TREE = PlacedFeatureManager.createKey(EndConfiguredVegetation.DRAGON_TREE);
     public static final PlacedConfiguredFeatureKey TENANEA = PlacedFeatureManager.createKey(EndConfiguredVegetation.TENANEA);
     public static final PlacedConfiguredFeatureKey HELIX_TREE = PlacedFeatureManager.createKey(EndConfiguredVegetation.HELIX_TREE);
+    public static final PlacedConfiguredFeatureKey DRAGON_HELIX_TREE = PlacedFeatureManager.createKey(EndConfiguredVegetation.DRAGON_HELIX_TREE);
     public static final PlacedConfiguredFeatureKey UMBRELLA_TREE = PlacedFeatureManager.createKey(EndConfiguredVegetation.UMBRELLA_TREE);
     public static final PlacedConfiguredFeatureKey JELLYSHROOM = PlacedFeatureManager.createKey(EndConfiguredVegetation.JELLYSHROOM);
     public static final PlacedConfiguredFeatureKey GIGANTIC_AMARANITA = PlacedFeatureManager.createKey(EndConfiguredVegetation.GIGANTIC_AMARANITA);
@@ -110,6 +111,7 @@ public class EndVegetationFeatures {
     public static final PlacedFeatureKey LUTEBUS = createVegetationKey("lutebus");
     public static final PlacedFeatureKey LAMELLARIUM = createVegetationKey("lamellarium");
     public static final PlacedFeatureKey SMALL_AMARANITA = createVegetationKey("small_amaranita");
+    public static final PlacedFeatureKey AMARANITA_PATCH = createVegetationKey("amaranita_patch");
     public static final PlacedFeatureKey GLOBULAGUS = createVegetationKey("globulagus");
     public static final PlacedFeatureKey CLAWFERN = createVegetationKey("clawfern");
     public static final PlacedFeatureKey BOLUX_MUSHROOM = createVegetationKey("bolux_mushroom");
