@@ -68,6 +68,10 @@ public class EndTerrainFeatures {
             .createKey(BetterEnd.C.mk("ice_star_small"))
             .setDecoration(GenerationStep.Decoration.RAW_GENERATION);
 
+    public static final PlacedFeatureKey POND_WITH_WATERFALL = PlacedFeatureManager
+            .createKey(BetterEnd.C.mk("pond_with_waterfall"))
+            .setDecoration(GenerationStep.Decoration.LAKES);
+
     public static final PlacedFeatureKey BIOME_ISLAND = PlacedFeatureManager
             .createKey(BetterEnd.C.mk("overworld_island"))
             .setDecoration(GenerationStep.Decoration.RAW_GENERATION);
