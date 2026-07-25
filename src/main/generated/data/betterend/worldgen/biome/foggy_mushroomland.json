@@ -92,7 +92,7 @@
         "type": "betterend:end_slime",
         "maxCount": 2,
         "minCount": 1,
-        "weight": 10
+        "weight": 3
       },
       {
         "type": "minecraft:enderman",
