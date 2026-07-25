@@ -1,90 +1,93 @@
-package org.betterx.betterend.blocks.basis;
+﻿package org.betterx.betterend.blocks.basis;
 
-import org.betterx.bclib.behaviours.BehaviourBuilders;
-import org.betterx.bclib.behaviours.interfaces.BehaviourShearablePlant;
 import org.betterx.bclib.blocks.BaseAttachedBlock;
-import org.betterx.bclib.client.render.BCLRenderLayer;
-import org.betterx.bclib.interfaces.RenderLayerProvider;
-import org.betterx.wover.block.api.BlockTagProvider;
-import org.betterx.wover.block.api.model.BlockModelProvider;
-import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
-import org.betterx.wover.loot.api.BlockLootProvider;
-import org.betterx.wover.loot.api.LootLookupProvider;
-import org.betterx.wover.tag.api.event.context.TagBootstrapContext;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.Identifier;
-import net.minecraft.tags.BlockTags;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
 
 import com.google.common.collect.Maps;
 
 import java.util.EnumMap;
 import org.jetbrains.annotations.NotNull;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
-public class FurBlock extends BaseAttachedBlock implements RenderLayerProvider, BehaviourShearablePlant, BlockTagProvider, BlockLootProvider, BlockModelProvider {
+@SuppressWarnings("deprecation")
+public class FurBlock extends BaseAttachedBlock implements SimpleWaterloggedBlock {
     private static final EnumMap<Direction, VoxelShape> BOUNDING_SHAPES = Maps.newEnumMap(Direction.class);
-    private final Block drop;
-    private final int dropChance;
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    public FurBlock(MapColor color, Block drop, int light, int dropChance, boolean wet) {
-        super(BehaviourBuilders
-                .createPlant(color)
-                .replaceable()
-                .lightLevel(bs -> light)
-                .ignitedByLava()
-                .sound(wet ? SoundType.WET_GRASS : SoundType.GRASS)
-        );
-
-        this.drop = drop;
-        this.dropChance = dropChance;
+    public FurBlock(BlockBehaviour.Properties properties) {
+        super(properties);
+        registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
     }
 
-    public FurBlock(MapColor color, Block drop, int dropChance) {
-        this(color, drop, 0, dropChance, false);
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> stateManager) {
+        // Keep FACING (added by BaseAttachedBlock) and add WATERLOGGED so submerged fur/outer-leaves can be flooded.
+        super.createBlockStateDefinition(stateManager);
+        stateManager.add(WATERLOGGED);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+        // Reuse BaseAttachedBlock's FACING/attachment selection, then waterlog if placed into water.
+        BlockState state = super.getStateForPlacement(ctx);
+        if (state != null) {
+            boolean water = ctx.getLevel().getFluidState(ctx.getClickedPos()).getType() == Fluids.WATER;
+            return state.setValue(WATERLOGGED, water);
+        }
+        return null;
+    }
+
+    @Override
+    public @NotNull FluidState getFluidState(BlockState state) {
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+    }
+
+    @Override
+    protected @NotNull BlockState updateShape(
+            BlockState state,
+            LevelReader level,
+            ScheduledTickAccess scheduledTickAccess,
+            BlockPos pos,
+            Direction neighborDirection,
+            BlockPos neighborPos,
+            BlockState neighborState,
+            RandomSource randomSource
+    ) {
+        boolean water = state.getValue(WATERLOGGED);
+        if (water) {
+            scheduledTickAccess.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+        }
+        // Preserve BaseAttachedBlock's attachment/survival behavior; when it can no longer survive, leave the
+        // water behind if this block was waterlogged instead of stranding a dry air pocket.
+        if (!canSurvive(state, level, pos)) {
+            return water ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState();
+        }
+        return state;
     }
 
     @Override
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter view, BlockPos pos, CollisionContext ePos) {
         return BOUNDING_SHAPES.get(state.getValue(FACING));
-    }
-
-    @Override
-    public LootTable.Builder registerBlockLoot(
-            @NotNull Identifier location,
-            @NotNull LootLookupProvider provider,
-            @NotNull ResourceKey<LootTable> tableKey
-    ) {
-        final float dropRate = dropChance < 1 ? 1.0F : 1.0F / dropChance;
-        final float[] LEAVES_SAPLING_CHANCES = new float[]{
-                dropRate,
-                cappedChance(1.25F * dropRate),
-                cappedChance(1.6666667F * dropRate),
-                cappedChance(2.0F * dropRate)
-        };
-        return provider.dropLeaves(this, drop, LEAVES_SAPLING_CHANCES);
-    }
-
-    private static float cappedChance(float chance) {
-        return Math.min(1.0F, chance);
-    }
-
-    @Override
-    public BCLRenderLayer getRenderLayer() {
-        return BCLRenderLayer.CUTOUT;
     }
 
     static {
@@ -96,16 +99,4 @@ public class FurBlock extends BaseAttachedBlock implements RenderLayerProvider, 
         BOUNDING_SHAPES.put(Direction.EAST, Shapes.box(0.0, 0.0, 0.0, 0.5, 1.0, 1.0));
     }
 
-    @Override
-    public void registerBlockTags(Identifier location, TagBootstrapContext<Block> context) {
-        context.add(this, BlockTags.LEAVES);
-    }
-
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public void provideBlockModels(Object modelGenerator) {
-    WoverBlockModelGenerators generator = (WoverBlockModelGenerators) modelGenerator;
-        generator.createCubeModel(this);
-        generator.createFlatItem(this);
-    }
 }
