@@ -44,6 +44,7 @@ public class BushWithOuterFeature extends Feature<BushWithOuterFeatureConfig> {
         BlockState stem = cfg.stem.getState(random, pos);
 
         final WorldGenLevel world = featureConfig.level();
+        if (!world.getFluidState(pos).isEmpty()) return false;
         if (!world.getBlockState(pos.below()).is(CommonBlockTags.END_STONES) && !world.getBlockState(pos.above())
                                                                                       .is(CommonBlockTags.END_STONES))
             return false;
