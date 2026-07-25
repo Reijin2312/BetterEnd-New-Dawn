@@ -1,4 +1,4 @@
-﻿package org.betterx.betterend.world.structures.piece;
+package org.betterx.betterend.world.structures.piece;
 
 
 import org.betterx.betterend.registry.EndBlocks;
