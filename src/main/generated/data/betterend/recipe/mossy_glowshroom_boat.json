@@ -3,7 +3,9 @@
   "category": "misc",
   "group": "boat",
   "key": {
-    "#": "betterend:mossy_glowshroom_planks"
+    "#": {
+      "item": "betterend:mossy_glowshroom_planks"
+    }
   },
   "pattern": [
     "# #",

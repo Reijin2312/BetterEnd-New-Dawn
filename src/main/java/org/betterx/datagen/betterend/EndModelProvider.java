@@ -85,7 +85,7 @@ public class EndModelProvider extends WoverModelProvider {
             if (id != null
                     && id.getNamespace().equals(BetterEnd.MOD_ID)
                     && (id.getPath().endsWith("_boat") || id.getPath().endsWith("_raft"))) {
-                itemModelGenerator.generateFlatItem(item, ModelTemplates.FLAT_ITEM);
+                itemModelGenerator.generateFlatItem(item, "", ModelTemplates.FLAT_ITEM);
             }
         }
     }
