@@ -34,6 +34,7 @@ public class VegetationFeaturesProvider extends WoverFeatureProvider {
         EndConfiguredVegetation.DRAGON_TREE.bootstrap(context).register();
         EndConfiguredVegetation.GIGANTIC_AMARANITA.bootstrap(context).register();
         EndConfiguredVegetation.HELIX_TREE.bootstrap(context).register();
+        EndConfiguredVegetation.DRAGON_HELIX_TREE.bootstrap(context).register();
         EndConfiguredVegetation.JELLYSHROOM.bootstrap(context).register();
         EndConfiguredVegetation.LACUGROVE.bootstrap(context).register();
         EndConfiguredVegetation.LUCERNIA.bootstrap(context).register();
@@ -56,6 +57,7 @@ public class VegetationFeaturesProvider extends WoverFeatureProvider {
         registerVegetation(context, EndVegetationFeatures.DRAGON_TREE, 2);
         registerVegetation(context, EndVegetationFeatures.TENANEA, 3);
         registerVegetation(context, EndVegetationFeatures.HELIX_TREE, 1);
+        registerVegetation(context, EndVegetationFeatures.DRAGON_HELIX_TREE, 1);
         registerVegetation(context, EndVegetationFeatures.UMBRELLA_TREE, 2);
         registerVegetation(context, EndVegetationFeatures.JELLYSHROOM, 2);
         registerVegetation(context, EndVegetationFeatures.GIGANTIC_AMARANITA, 1);
@@ -65,6 +67,7 @@ public class VegetationFeaturesProvider extends WoverFeatureProvider {
         registerVegetation(context, EndVegetationFeatures.TENANEA_BUSH, 12);
         registerVegetation(context, EndVegetationFeatures.LUMECORN, 5);
         registerVegetation(context, EndVegetationFeatures.LARGE_AMARANITA, 5);
+        registerVegetation(context, EndVegetationFeatures.AMARANITA_PATCH, EndFeatures.AMARANITA_PATCH_FEATURE, 1);
         registerVegetation(context, EndVegetationFeatures.NEON_CACTUS, EndFeatures.NEON_CACTUS_FEATURE, 2);
         registerVegetation(context, EndVegetationFeatures.PYTHADENDRON_BUSH, EndFeatures.BUSH_FEATURE, new BushFeatureConfig(EndBlocks.PYTHADENDRON_LEAVES, EndBlocks.PYTHADENDRON.getBark()), 3);
         registerVegetation(context, EndVegetationFeatures.DRAGON_TREE_BUSH, EndFeatures.BUSH_FEATURE, new BushFeatureConfig(EndBlocks.DRAGON_TREE_LEAVES, EndBlocks.DRAGON_TREE.getBark()), 5);
