@@ -96,6 +96,7 @@ public class BetterEnd {
         EndPotions.register();
         InfusionRecipe.register();
         EndStructures.register();
+        EndCarvers.ensureStaticallyLoaded();
         GeneratorOptions.init();
         LootTableUtil.init();
         CommandRegistry.register();
