@@ -35,6 +35,7 @@ import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -79,7 +80,14 @@ public class EndModelProvider extends WoverModelProvider {
 
     @Override
     protected void bootstrapItemModels(ItemModelGenerators itemModelGenerator) {
-
+        for (Item item : BuiltInRegistries.ITEM) {
+            ResourceLocation id = BuiltInRegistries.ITEM.getKey(item);
+            if (id != null
+                    && id.getNamespace().equals(BetterEnd.MOD_ID)
+                    && (id.getPath().endsWith("_boat") || id.getPath().endsWith("_raft"))) {
+                itemModelGenerator.generateFlatItem(item, ModelTemplates.FLAT_ITEM);
+            }
+        }
     }
 
     @Override

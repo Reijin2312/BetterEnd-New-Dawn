@@ -414,7 +414,7 @@ public class EndBlocks {
         END_LOTUS_STEM = registerBlock("end_lotus_stem", new EndLotusStemBlock());
         END_LOTUS_LEAF = registerEndBlockOnly("end_lotus_leaf", new EndLotusLeafBlock());
         END_LOTUS_FLOWER = registerEndBlockOnly("end_lotus_flower", new EndLotusFlowerBlock());
-        END_LOTUS = new EndWoodenComplexMaterial( "end_lotus", MapColor.COLOR_LIGHT_BLUE, MapColor.COLOR_CYAN, Blocks.LIGHT_BLUE_WOOL ).init();
+        END_LOTUS = new EndWoodenComplexMaterial( "end_lotus", MapColor.COLOR_LIGHT_BLUE, MapColor.COLOR_CYAN, Blocks.LIGHT_BLUE_WOOL ).useRaft().init();
         LACUGROVE_SAPLING = registerBlock("lacugrove_sapling", new LacugroveSaplingBlock());
         LACUGROVE_LEAVES = registerBlock( "lacugrove_leaves", new PottableLeavesBlock( LACUGROVE_SAPLING, MapColor.COLOR_CYAN ) );
         LACUGROVE = new EndWoodenComplexMaterial( "lacugrove", MapColor.COLOR_BROWN, MapColor.COLOR_YELLOW, Blocks.CYAN_WOOL ).init();
