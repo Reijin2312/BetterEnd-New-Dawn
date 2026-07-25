@@ -62,6 +62,7 @@ public class FlowerPotBlockEntity extends BlockEntity {
                         .orElse(0);
                 state = state.setValue(FlowerPotBlock.POT_LIGHT, light);
                 level.setBlockAndUpdate(worldPosition, state);
+                level.sendBlockUpdated(worldPosition, state, state, Block.UPDATE_CLIENTS);
             }
             level.blockEntityChanged(worldPosition);
         }

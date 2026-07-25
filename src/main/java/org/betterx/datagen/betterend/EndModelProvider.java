@@ -3,7 +3,6 @@ package org.betterx.datagen.betterend;
 import org.betterx.bclib.blocks.BaseVineBlock;
 import org.betterx.bclib.complexmaterials.set.wood.WoodSlots;
 import org.betterx.betterend.BetterEnd;
-import org.betterx.betterend.blocks.EndBlockProperties;
 import org.betterx.betterend.blocks.FlowerPotBlock;
 import org.betterx.betterend.blocks.basis.PedestalBlock;
 import org.betterx.betterend.blocks.basis.PottableLeavesBlock;
@@ -18,8 +17,6 @@ import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.datagen.api.provider.WoverModelProvider;
 
 import net.minecraft.data.models.ItemModelGenerators;
-import net.minecraft.data.models.blockstates.Condition;
-import net.minecraft.data.models.blockstates.MultiPartGenerator;
 import net.minecraft.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.data.models.blockstates.PropertyDispatch;
 import net.minecraft.data.models.blockstates.Variant;
@@ -422,71 +419,19 @@ public class EndModelProvider extends WoverModelProvider {
 
     private void generateFlowerPotModels(WoverBlockModelGenerators generator) {
         EndBlocks.ensureRegistered();
-        FlowerPotBlock.PottableEntries pottables = FlowerPotBlock.getPottableEntries();
-        Block[] plants = pottables.plants();
-        Block[] soils = pottables.soils();
-
-        ResourceLocation[] soilModels = new ResourceLocation[soils.length];
-        for (int i = 0; i < soils.length; i++) {
-            Block soil = soils[i];
-            if (soil == null) continue;
-
-            ResourceLocation modelId = BetterEnd.C.mk("block/flower_pot_soil_" + i);
-            soilModels[i] = modelId;
-            if (modelExists(modelId)) continue;
-
-            ResourceLocation soilId = BuiltInRegistries.BLOCK.getKey(soil);
-            if (soilId == null) continue;
-
-            String texture = soilId.getPath() + "_top";
-            if (texture.contains("rutiscus")) texture += "_1";
-            JsonObject model = createPatternModel(
-                    BetterEnd.C.mk("patterns/block/flower_pot_soil.json"),
-                    Map.of("%texture%", texture)
-            );
-            if (model == null) {
-                BetterEnd.LOGGER.warn("Missing flower pot soil pattern for {}", soilId);
-                continue;
-            }
-            generator.acceptModelOutput(modelId, () -> model);
-            generatedModels.add(modelId);
-        }
-
-        Map<Block, ResourceLocation> plantModels = new HashMap<>();
         for (Block block : EndBlocks.getModBlocks()) {
             if (!(block instanceof FlowerPotBlock)) continue;
 
-            MultiPartGenerator multipart = MultiPartGenerator
-                    .multiPart(block)
-                    .with(Variant.variant().with(VariantProperties.MODEL, ModelLocationUtils.getModelLocation(block)));
-
-            for (int i = 0; i < soilModels.length; i++) {
-                ResourceLocation soilModel = soilModels[i];
-                if (soilModel != null) {
-                    multipart.with(
-                            Condition.condition().term(EndBlockProperties.SOIL_ID, i + 1),
-                            Variant.variant().with(VariantProperties.MODEL, soilModel)
-                    );
-                }
-            }
-
-            for (int i = 0; i < plants.length; i++) {
-                Block plant = plants[i];
-                if (plant == null) continue;
-
-                ResourceLocation plantModel = plantModels.computeIfAbsent(
-                        plant,
-                        candidate -> resolvePottedPlantModel(generator, candidate)
-                );
-                if (plantModel != null) {
-                    multipart.with(
-                            Condition.condition().term(EndBlockProperties.PLANT_ID, i + 1),
-                            Variant.variant().with(VariantProperties.MODEL, plantModel)
-                    );
-                }
-            }
-
-            generator.acceptBlockState(multipart);
+            Variant variant = Variant.variant()
+                                     .with(VariantProperties.MODEL, ModelLocationUtils.getModelLocation(block));
+            generator.acceptBlockState(
+                    MultiVariantGenerator.multiVariant(block)
+                                         .with(PropertyDispatch.property(FlowerPotBlock.POT_LIGHT)
+                                                               .select(0, variant)
+                                                               .select(1, variant)
+                                                               .select(2, variant)
+                                                               .select(3, variant))
+            );
         }
     }
 
