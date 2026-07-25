@@ -1,4 +1,4 @@
-﻿package org.betterx.betterend.registry;
+package org.betterx.betterend.registry;
 
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.world.carvers.EndCaveCarver;
