@@ -4,6 +4,7 @@ import org.betterx.bclib.complexmaterials.set.stone.StoneSlots;
 import org.betterx.bclib.complexmaterials.set.wood.WoodSlots;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndBlocks;
+import org.betterx.betterend.registry.EndBiomes;
 import org.betterx.betterend.registry.EndProcessors;
 import org.betterx.betterend.registry.EndStructures;
 import org.betterx.betterend.world.structures.village.VillagePools;
@@ -42,6 +43,7 @@ public class StructureDataProvider extends WoverStructureProvider {
         EndStructures.PAINTED_MOUNTAIN.bootstrap(context).register();
         EndStructures.ETERNAL_PORTAL.bootstrap(context).register();
         EndStructures.GIANT_ICE_STAR.bootstrap(context).register();
+        EndStructures.SMALL_ISLAND.bootstrap(context).register();
         EndStructures.END_VILLAGE
                 .bootstrap(context)
                 .startPool(VillagePools.START)
@@ -79,6 +81,11 @@ public class StructureDataProvider extends WoverStructureProvider {
         StructureSetManager
                 .bootstrap(EndStructures.GIANT_ICE_STAR, context)
                 .randomPlacement(16, 8)
+                .register();
+
+        StructureSetManager
+                .bootstrap(EndStructures.SMALL_ISLAND, context)
+                .randomPlacement(5, 2)
                 .register();
 
         StructureSetManager
@@ -373,6 +380,11 @@ public class StructureDataProvider extends WoverStructureProvider {
     @Override
     protected void prepareBiomeTags(TagBootstrapContext<Biome> context) {
         context.add(EndStructures.END_BRIDGE.biomeTag(), Biomes.SMALL_END_ISLANDS);
+        context.add(
+                EndStructures.SMALL_ISLAND.biomeTag(),
+                EndBiomes.FLOWER_ISLETS.key,
+                EndBiomes.WATERFALL_PONDS.key
+        );
     }
 
 }
