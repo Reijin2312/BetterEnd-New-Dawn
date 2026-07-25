@@ -289,7 +289,7 @@ public class EndBlocks {
             MapColor.COLOR_LIGHT_BLUE,
             MapColor.COLOR_CYAN,
             Blocks.LIGHT_BLUE_WOOL
-    ).init();
+    ).useRaft().init();
 
     public static final Block LACUGROVE_SAPLING = registerBlock("lacugrove_sapling", new LacugroveSaplingBlock());
     public static final Block LACUGROVE_LEAVES = registerBlock(
