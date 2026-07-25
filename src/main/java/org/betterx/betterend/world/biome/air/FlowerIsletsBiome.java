@@ -52,6 +52,7 @@ public class FlowerIsletsBiome extends EndBiome.Config {
                 // Glowing plants for night ambience
                 .feature(EndVegetationFeatures.FRACTURN)
                 .feature(EndVegetationFeatures.GLOW_PILLAR)
+                .feature(EndVegetationFeatures.AMARANITA_PATCH)
                 // Dense moss / grass ground cover
                 .feature(EndVegetationFeatures.UMBRELLA_MOSS)
                 .feature(EndVegetationFeatures.CREEPING_MOSS_RARE)

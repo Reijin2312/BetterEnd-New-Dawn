@@ -48,6 +48,7 @@ public class EndFeatures {
     public static final DragonTreeFeature DRAGON_TREE_FEATURE = new DragonTreeFeature();
     public static final TenaneaFeature TENANEA_FEATURE = new TenaneaFeature();
     public static final HelixTreeFeature HELIX_TREE_FEATURE = new HelixTreeFeature();
+    public static final DragonHelixTreeFeature DRAGON_HELIX_TREE_FEATURE = new DragonHelixTreeFeature();
     public static final UmbrellaTreeFeature UMBRELLA_TREE_FEATURE = new UmbrellaTreeFeature();
     public static final JellyshroomFeature JELLYSHROOM_FEATURE = new JellyshroomFeature();
     public static final GiganticAmaranitaFeature GIGANTIC_AMARANITA_FEATURE = new GiganticAmaranitaFeature();
@@ -55,6 +56,7 @@ public class EndFeatures {
     public static final TenaneaBushFeature TENANEA_BUSH_FEATURE = new TenaneaBushFeature();
     public static final Lumecorn LUMECORN_FEATURE = new Lumecorn();
     public static final LargeAmaranitaFeature LARGE_AMARANITA_FEATURE = new LargeAmaranitaFeature();
+    public static final AmaranitaPatchFeature AMARANITA_PATCH_FEATURE = new AmaranitaPatchFeature();
     public static final NeonCactusFeature NEON_CACTUS_FEATURE = new NeonCactusFeature();
 
     //Ores
@@ -165,6 +167,7 @@ public class EndFeatures {
         helper.register(BetterEnd.C.mk("dragon_tree"), DRAGON_TREE_FEATURE);
         helper.register(BetterEnd.C.mk("tenanea"), TENANEA_FEATURE);
         helper.register(BetterEnd.C.mk("helix_tree"), HELIX_TREE_FEATURE);
+        helper.register(BetterEnd.C.mk("dragon_helix_tree"), DRAGON_HELIX_TREE_FEATURE);
         helper.register(BetterEnd.C.mk("umbrella_tree"), UMBRELLA_TREE_FEATURE);
         helper.register(BetterEnd.C.mk("jellyshroom"), JELLYSHROOM_FEATURE);
         helper.register(BetterEnd.C.mk("gigantic_amaranita"), GIGANTIC_AMARANITA_FEATURE);
@@ -172,6 +175,7 @@ public class EndFeatures {
         helper.register(BetterEnd.C.mk("tenanea_bush"), TENANEA_BUSH_FEATURE);
         helper.register(BetterEnd.C.mk("lumecorn"), LUMECORN_FEATURE);
         helper.register(BetterEnd.C.mk("large_amaranita"), LARGE_AMARANITA_FEATURE);
+        helper.register(BetterEnd.C.mk("amaranita_patch"), AMARANITA_PATCH_FEATURE);
         helper.register(BetterEnd.C.mk("neon_cactus"), NEON_CACTUS_FEATURE);
         helper.register(BetterEnd.C.mk("ore_layer"), LAYERED_ORE_FEATURE);
         helper.register(BetterEnd.C.mk("end_lake"), END_LAKE_FEATURE);
@@ -203,3 +207,4 @@ public class EndFeatures {
         event.register(Registries.FEATURE, EndFeatures::register);
     }
 }
+
