@@ -4,26 +4,27 @@ import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.bclib.behaviours.interfaces.BehaviourSeed;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.blocks.basis.EndPlantWithAgeBlock;
-import org.betterx.betterend.interfaces.survives.SurvivesOnEndStoneOrTrees;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.wover.block.api.BlockProperties;
 import org.betterx.wover.block.api.BlockProperties.TripleShape;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 
-public class BulbVineSeedBlock extends EndPlantWithAgeBlock implements BehaviourSeed, SurvivesOnEndStoneOrTrees {
+public class BulbVineSeedBlock extends EndPlantWithAgeBlock implements BehaviourSeed {
     public BulbVineSeedBlock() {
         super(BehaviourBuilders.createSeed(MapColor.COLOR_PURPLE));
     }
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
-        return canSurviveOnBottom(world, pos);
+        BlockPos above = pos.above();
+        return BlocksHelper.isDecorationSupport(world, above, world.getBlockState(above), Direction.DOWN);
     }
 
     @Override
@@ -53,6 +54,6 @@ public class BulbVineSeedBlock extends EndPlantWithAgeBlock implements Behaviour
 
     @Override
     public boolean isTerrain(BlockState state) {
-        return SurvivesOnEndStoneOrTrees.super.isTerrain(state);
+        return true;
     }
 }
