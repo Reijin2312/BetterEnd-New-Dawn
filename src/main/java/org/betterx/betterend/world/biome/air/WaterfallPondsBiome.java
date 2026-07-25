@@ -45,6 +45,7 @@ public class WaterfallPondsBiome extends EndBiome.Config {
                 .plantsColor(110, 195, 150)
                 .genChance(0.4F)
                 .structure(EndStructures.END_BRIDGE)
+                .structure(EndStructures.SMALL_ISLAND)
                 // Rim ponds with spill-over waterfalls (RAW/LAKES terrain feature)
                 .feature(EndTerrainFeatures.POND_WITH_WATERFALL)
                 // Lush shore vegetation (NO trees, NO large mushrooms)

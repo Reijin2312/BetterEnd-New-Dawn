@@ -41,6 +41,7 @@ public class FlowerIsletsBiome extends EndBiome.Config {
                 .plantsColor(140, 200, 120)
                 .genChance(0.4F)
                 .structure(EndStructures.END_BRIDGE)
+                .structure(EndStructures.SMALL_ISLAND)
                 // Colourful floor flowers / small plants (NO trees, NO large mushrooms)
                 .feature(EndVegetationFeatures.BLOOMING_COOKSONIA)
                 .feature(EndVegetationFeatures.SALTEAGO)
