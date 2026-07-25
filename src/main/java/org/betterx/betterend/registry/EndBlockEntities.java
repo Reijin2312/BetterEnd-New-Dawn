@@ -18,6 +18,7 @@ public class EndBlockEntities {
     public static BlockEntityType<EternalPedestalEntity> ETERNAL_PEDESTAL;
     public static BlockEntityType<InfusionPedestalEntity> INFUSION_PEDESTAL;
     public static BlockEntityType<BlockEntityHydrothermalVent> HYDROTHERMAL_VENT;
+    public static BlockEntityType<FlowerPotBlockEntity> FLOWER_POT;
 
     public static void register() {
         // no-op; registration happens via RegisterEvent
@@ -55,6 +56,12 @@ public class EndBlockEntities {
                     EndBlocks.HYDROTHERMAL_VENT
             ).build(null);
             helper.register(BetterEnd.C.mk("hydrother_malvent"), HYDROTHERMAL_VENT);
+
+            FLOWER_POT = BlockEntityType.Builder.of(
+                    FlowerPotBlockEntity::new,
+                    getFlowerPots()
+            ).build(null);
+            helper.register(BetterEnd.C.mk("flower_pot"), FLOWER_POT);
         });
     }
 
@@ -62,6 +69,13 @@ public class EndBlockEntities {
         return EndBlocks.getModBlocks()
                         .stream()
                         .filter(block -> block instanceof PedestalBlock && !((PedestalBlock) block).hasUniqueEntity())
+                        .toArray(Block[]::new);
+    }
+
+    static Block[] getFlowerPots() {
+        return EndBlocks.getModBlocks()
+                        .stream()
+                        .filter(block -> block instanceof org.betterx.betterend.blocks.FlowerPotBlock)
                         .toArray(Block[]::new);
     }
 }
