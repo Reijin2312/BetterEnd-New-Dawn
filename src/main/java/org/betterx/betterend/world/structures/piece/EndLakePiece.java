@@ -1,7 +1,7 @@
-package org.betterx.betterend.world.structures.piece;
+﻿package org.betterx.betterend.world.structures.piece;
 
 
-import org.betterx.betterend.registry.block.EndTerrainBlocks;
+import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.noise.OpenSimplexNoise;
@@ -9,7 +9,7 @@ import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndStructures;
 import org.betterx.betterend.util.BlockFixer;
 import org.betterx.betterend.world.biome.EndBiome;
-import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
+import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
@@ -168,7 +168,7 @@ public class EndLakePiece extends BasePiece {
         // to dust and turn the whole shore to dust. Exclude both so the real surface always wins.
         if (state.is(CommonBlockTags.TERRAIN)
                 && !state.is(Blocks.END_STONE)
-                && !state.is(EndTerrainBlocks.ENDSTONE_DUST)) {
+                && !state.is(EndBlocks.ENDSTONE_DUST)) {
             sampledSurfaceMaterial = state;
         }
     }
@@ -179,13 +179,13 @@ public class EndLakePiece extends BasePiece {
      */
     private BlockState shoreMaterial(RandomSource random, BlockState border) {
         return random.nextFloat() < SHORE_DUST_CHANCE
-                ? EndTerrainBlocks.ENDSTONE_DUST.defaultBlockState()
+                ? EndBlocks.ENDSTONE_DUST.defaultBlockState()
                 : border;
     }
 
     private boolean canReplace(BlockState state) {
         return state.is(CommonBlockTags.END_STONES)
-                || state.is(EndTerrainBlocks.ENDSTONE_DUST)
+                || state.is(EndBlocks.ENDSTONE_DUST)
                 || BlocksHelper.replaceableOrPlant(state)
                 || state.is(CommonBlockTags.WATER_PLANT);
     }
@@ -464,7 +464,7 @@ public class EndLakePiece extends BasePiece {
                         }
                         BlockPos below = POS.below();
                         if (chunk.getBlockState(below).is(CommonBlockTags.END_STONES)) {
-                            chunk.setBlockState(below, EndTerrainBlocks.ENDSTONE_DUST.defaultBlockState(), 3);
+                            chunk.setBlockState(below, EndBlocks.ENDSTONE_DUST.defaultBlockState(), 3);
                         }
                         MutableBlockPos up = POS.above().mutable();
                         while (true) {
@@ -538,3 +538,4 @@ public class EndLakePiece extends BasePiece {
         BlockFixer.fixBlocks(world, new BlockPos(x0, fixMinY, z0), new BlockPos(x1, fixMaxY, z1), blockBox);
     }
 }
+

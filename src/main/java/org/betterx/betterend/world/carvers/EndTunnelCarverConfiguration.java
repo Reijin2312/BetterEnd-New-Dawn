@@ -1,4 +1,4 @@
-package org.betterx.betterend.world.carvers;
+﻿package org.betterx.betterend.world.carvers;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -42,3 +42,4 @@ public class EndTunnelCarverConfiguration extends CarverConfiguration {
         this.threshold = threshold;
     }
 }
+
