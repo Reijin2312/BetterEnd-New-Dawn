@@ -14,6 +14,7 @@ public class BulbVineLanternColoredBlock extends BulbVineLanternBlock implements
     }
 
     @Override
+    @net.neoforged.api.distmarker.OnlyIn(net.neoforged.api.distmarker.Dist.CLIENT)
     public BlockColorProvider getProvider() {
         return (state, world, pos, tintIndex) -> getColor();
     }
