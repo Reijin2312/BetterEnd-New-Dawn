@@ -25,6 +25,7 @@ public class TenaneaFlowersBlock extends BaseVineBlock implements CustomColorPro
     }
 
     @Override
+    @net.fabricmc.api.Environment(net.fabricmc.api.EnvType.CLIENT)
     public BlockColorProvider getProvider() {
         return (state, world, pos, tintIndex) -> {
             if (pos == null) {
