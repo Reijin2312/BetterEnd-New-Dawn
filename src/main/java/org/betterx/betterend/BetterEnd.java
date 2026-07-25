@@ -73,6 +73,8 @@ public class BetterEnd implements ModInitializer {
         EndPotions.register();
         InfusionRecipe.register();
         EndStructures.register();
+        EndCarvers.ensureStaticallyLoaded();
+        BiomeDecider.registerDecider(C.mk("cave_biome_decider"), new org.betterx.betterend.world.generator.EndCaveBiomeDecider());
         BonemealPlants.init();
         GeneratorOptions.init();
         LootTableUtil.init();
