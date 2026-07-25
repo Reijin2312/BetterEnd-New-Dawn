@@ -6,6 +6,8 @@ import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
 import org.betterx.betterend.world.biome.EndBiomeKey;
 import org.betterx.betterend.world.biome.air.BiomeIceStarfield;
+import org.betterx.betterend.world.biome.air.FlowerIsletsBiome;
+import org.betterx.betterend.world.biome.air.WaterfallPondsBiome;
 import org.betterx.betterend.world.biome.cave.*;
 import org.betterx.betterend.world.biome.land.*;
 import org.betterx.betterend.world.generator.GeneratorOptions;
@@ -45,6 +47,8 @@ public class EndBiomes {
     public static final EndBiomeKey<FoggyMushroomlandBiome, ?> FOGGY_MUSHROOMLAND = EndBiomeBuilder.createKey("foggy_mushroomland");
     public static final EndBiomeKey<GlowingGrasslandsBiome, ?> GLOWING_GRASSLANDS = EndBiomeBuilder.createKey("glowing_grasslands");
     public static final EndBiomeKey<BiomeIceStarfield, ?> ICE_STARFIELD = EndBiomeBuilder.createKey("ice_starfield");
+    public static final EndBiomeKey<FlowerIsletsBiome, ?> FLOWER_ISLETS = EndBiomeBuilder.createKey("flower_islets");
+    public static final EndBiomeKey<WaterfallPondsBiome, ?> WATERFALL_PONDS = EndBiomeBuilder.createKey("waterfall_ponds");
     public static final EndBiomeKey<LanternWoodsBiome, ?> LANTERN_WOODS = EndBiomeBuilder.createKey("lantern_woods");
     public static final EndBiomeKey<MegalakeBiome, ?> MEGALAKE = EndBiomeBuilder.createKey("megalake");
     public static final EndBiomeKey<ShadowForestBiome, ?> SHADOW_FOREST = EndBiomeBuilder.createKey("shadow_forest");

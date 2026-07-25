@@ -83,6 +83,7 @@ public class EndFeatures {
     public static final SpireFeature SPIRE_FEATURE = inlineBuild("spire", new SpireFeature());
     public static final FloatingSpireFeature FLOATING_SPIRE_FEATURE = inlineBuild("floating_spire", new FloatingSpireFeature());
     public static final GeyserFeature GEYSER_FEATURE = inlineBuild("geyser", new GeyserFeature());
+    public static final PondWithWaterfallFeature POND_WITH_WATERFALL_FEATURE = inlineBuild("pond_with_waterfall", new PondWithWaterfallFeature());
     public static final BiomeIslandFeature OVERWORLD_ISLAND = inlineBuild("overworld_island", new BiomeIslandFeature());
 
     // Caves
