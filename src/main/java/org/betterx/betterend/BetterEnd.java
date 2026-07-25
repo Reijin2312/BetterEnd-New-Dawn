@@ -97,6 +97,7 @@ public class BetterEnd {
         InfusionRecipe.register();
         EndStructures.register();
         EndCarvers.ensureStaticallyLoaded();
+        BiomeDecider.registerDecider(C.mk("cave_biome_decider"), new org.betterx.betterend.world.generator.EndCaveBiomeDecider());
         GeneratorOptions.init();
         LootTableUtil.init();
         CommandRegistry.register();
