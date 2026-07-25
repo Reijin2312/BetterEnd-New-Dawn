@@ -1,4 +1,4 @@
-﻿package org.betterx.betterend.blocks.basis;
+package org.betterx.betterend.blocks.basis;
 
 import org.betterx.bclib.blocks.BaseAttachedBlock;
 
@@ -28,6 +28,7 @@ import com.google.common.collect.Maps;
 
 import java.util.EnumMap;
 import org.jetbrains.annotations.NotNull;
+import net.minecraft.world.level.material.MapColor;
 
 @SuppressWarnings("deprecation")
 public class FurBlock extends BaseAttachedBlock implements SimpleWaterloggedBlock {
@@ -37,6 +38,15 @@ public class FurBlock extends BaseAttachedBlock implements SimpleWaterloggedBloc
     public FurBlock(BlockBehaviour.Properties properties) {
         super(properties);
         registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
+    }
+
+    /** Compatibility constructors retained for the older BetterEnd block registry. */
+    public FurBlock(MapColor color, Block sapling, int light) {
+        this(BlockBehaviour.Properties.of().mapColor(color).lightLevel(state -> light));
+    }
+
+    public FurBlock(MapColor color, Block sapling, int light, int spread, boolean solid) {
+        this(BlockBehaviour.Properties.of().mapColor(color).lightLevel(state -> light));
     }
 
     @Override
@@ -63,7 +73,7 @@ public class FurBlock extends BaseAttachedBlock implements SimpleWaterloggedBloc
     }
 
     @Override
-    protected @NotNull BlockState updateShape(
+    public @NotNull BlockState updateShape(
             BlockState state,
             LevelReader level,
             ScheduledTickAccess scheduledTickAccess,
