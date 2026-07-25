@@ -304,10 +304,11 @@ public class FlowerPotBlock extends BaseBlockNotFull implements EntityBlock, Ren
                 return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
             }
             Registry<PottableSoil> soils = level.registryAccess()
-                                                .registryOrThrow(PottableSoilRegistry.POTTABLE_SOIL_REGISTRY);
+                                                .registry(PottableSoilRegistry.POTTABLE_SOIL_REGISTRY)
+                                                .orElse(null);
             Block block = item.getBlock();
             ResourceKey<Block> blockKey = block.builtInRegistryHolder().key();
-            if (findByBlock(soils, blockKey, soil -> soil.block) == null) {
+            if (soils == null || findByBlock(soils, blockKey, soil -> soil.block) == null) {
                 level.playSound(
                         player,
                         pos.getX() + 0.5,
@@ -355,11 +356,12 @@ public class FlowerPotBlock extends BaseBlockNotFull implements EntityBlock, Ren
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
         Registry<org.betterx.wover.pottable.api.PottablePlant> plants = level.registryAccess()
-                .registryOrThrow(PottablePlantRegistry.POTTABLE_PLANT_REGISTRY);
+                .registry(PottablePlantRegistry.POTTABLE_PLANT_REGISTRY)
+                .orElse(null);
         Block block = item.getBlock();
         ResourceKey<Block> blockKey = block.builtInRegistryHolder().key();
         org.betterx.wover.pottable.api.PottablePlant plant =
-                findByBlock(plants, blockKey, p -> p.block);
+                plants == null ? null : findByBlock(plants, blockKey, p -> p.block);
         if (plant == null) {
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
