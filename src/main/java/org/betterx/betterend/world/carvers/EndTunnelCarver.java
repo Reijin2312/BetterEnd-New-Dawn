@@ -1,9 +1,9 @@
-package org.betterx.betterend.world.carvers;
+﻿package org.betterx.betterend.world.carvers;
 
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.betterend.registry.EndTags;
-import de.ambertation.wover.tag.api.predefined.CommonBlockTags;
+import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
@@ -200,3 +200,4 @@ public class EndTunnelCarver extends WorldCarver<EndTunnelCarverConfiguration> {
         return built;
     }
 }
+
