@@ -9,34 +9,22 @@ import net.minecraft.resources.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(BlockStateModelLoader.class)
 public abstract class BlockStateModelLoaderMixin {
-    @ModifyArg(
-            method = "loadBlockStates",
+    @Redirect(
+            method = "lambda$loadBlockStates$2",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/resources/FileToIdConverter;fileToId(Lnet/minecraft/resources/Identifier;)Lnet/minecraft/resources/Identifier;"
-            ),
-            require = 0,
-            remap = false
+            )
     )
-    private static Identifier be_switchModelOnLoadLegacy(Identifier loc) {
-        return be_replaceChorusModelId(loc);
-    }
-
-    @ModifyArg(
-            method = "lambda$loadBlockStates$1(Ljava/util/Map$Entry;Ljava/util/function/Function;)Lnet/minecraft/client/resources/model/BlockStateModelLoader$LoadedModels;",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/resources/FileToIdConverter;fileToId(Lnet/minecraft/resources/Identifier;)Lnet/minecraft/resources/Identifier;"
-            ),
-            require = 0,
-            remap = false
-    )
-    private static Identifier be_switchModelOnLoad21111(Identifier loc) {
-        return be_replaceChorusModelId(loc);
+    private static Identifier be_switchModelOnLoad(
+            net.minecraft.resources.FileToIdConverter converter,
+            Identifier loc
+    ) {
+        return be_replaceChorusModelId(converter.fileToId(loc));
     }
 
     @Unique
