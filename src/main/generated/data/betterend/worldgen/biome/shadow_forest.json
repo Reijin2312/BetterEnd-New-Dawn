@@ -38,10 +38,7 @@
     "water_color": "#2a2d50"
   },
   "features": [
-    [
-      "betterend:round_cave",
-      "betterend:tunel_cave"
-    ],
+    [],
     [
       "betterend:end_lake_rare"
     ],
