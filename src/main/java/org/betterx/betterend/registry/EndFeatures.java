@@ -8,6 +8,7 @@ import org.betterx.betterend.world.features.*;
 import org.betterx.betterend.world.features.bushes.*;
 import org.betterx.betterend.world.features.terrain.*;
 import org.betterx.betterend.world.features.terrain.caves.CaveChunkPopulatorFeature;
+import org.betterx.betterend.world.features.terrain.caves.StalactiteClusterFeature;
 import org.betterx.betterend.world.features.terrain.caves.RoundCaveFeature;
 import org.betterx.betterend.world.features.terrain.caves.TunelCaveFeature;
 import org.betterx.betterend.world.features.trees.*;
@@ -157,3 +158,5 @@ public class EndFeatures {
     public static void register() {
     }
 }
+
+
