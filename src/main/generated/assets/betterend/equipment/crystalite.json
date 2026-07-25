@@ -5,6 +5,11 @@
         "texture": "betterend:crystalite"
       }
     ],
+    "humanoid_baby": [
+      {
+        "texture": "betterend:crystalite"
+      }
+    ],
     "humanoid_leggings": [
       {
         "texture": "betterend:crystalite"
