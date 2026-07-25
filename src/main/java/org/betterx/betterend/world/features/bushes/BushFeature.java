@@ -10,6 +10,7 @@ import org.betterx.bclib.sdf.primitive.SDFSphere;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.noise.OpenSimplexNoise;
+import org.betterx.betterend.world.features.trees.EndTreeHelper;
 import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
@@ -36,10 +37,12 @@ public class BushFeature extends Feature<BushFeatureConfig> {
         final RandomSource random = featureConfig.random();
         final BlockPos pos = featureConfig.origin();
         final WorldGenLevel world = featureConfig.level();
-        if (!world.getFluidState(pos).isEmpty()) return false;
         if (!world.getBlockState(pos.below()).is(CommonBlockTags.END_STONES) && !world.getBlockState(pos.above())
                                                                                       .is(CommonBlockTags.END_STONES))
             return false;
+        // Don't grow a bush whose base sits in water (e.g. on the lake floor); a shore bush that only
+        // overhangs the water still generates and gets its submerged leaves waterlogged.
+        if (!world.getFluidState(pos).isEmpty()) return false;
 
         BushFeatureConfig cfg = featureConfig.config();
         Block leaves = cfg.leaves.getState(random, pos).getBlock();
@@ -85,6 +88,8 @@ public class BushFeature extends Feature<BushFeatureConfig> {
             }
         }
 
+        // Waterlog leaves/outer-leaves the bush placed into a lake (bushes decorate after the lake carves).
+        EndTreeHelper.waterlogSubmerged(world, pos, 6);
         return true;
     }
 

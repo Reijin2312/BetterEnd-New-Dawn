@@ -8,6 +8,7 @@ import org.betterx.betterend.world.features.*;
 import org.betterx.betterend.world.features.bushes.*;
 import org.betterx.betterend.world.features.terrain.*;
 import org.betterx.betterend.world.features.terrain.caves.CaveChunkPopulatorFeature;
+import org.betterx.betterend.world.features.terrain.caves.StalactiteClusterFeature;
 import org.betterx.betterend.world.features.terrain.caves.RoundCaveFeature;
 import org.betterx.betterend.world.features.terrain.caves.TunelCaveFeature;
 import org.betterx.betterend.world.features.trees.*;
@@ -18,6 +19,7 @@ import net.neoforged.neoforge.registries.RegisterEvent;
 
 public class EndFeatures {
     public static final StalactiteFeature STALACTITE_FEATURE = new StalactiteFeature();
+    public static final StalactiteClusterFeature STALACTITE_CLUSTER = new StalactiteClusterFeature();
     public static final BuildingListFeature BUILDING_LIST_FEATURE = new BuildingListFeature();
     public static final VineFeature VINE_FEATURE = new VineFeature();
     public static final WallPlantFeature WALL_PLANT_FEATURE = new WallPlantFeature();
@@ -137,6 +139,7 @@ public class EndFeatures {
         registered = true;
 
         helper.register(BetterEnd.C.mk("stalactite_feature"), STALACTITE_FEATURE);
+        helper.register(BetterEnd.C.mk("stalactite_cluster"), STALACTITE_CLUSTER);
         helper.register(BetterEnd.C.mk("building_list_feature"), BUILDING_LIST_FEATURE);
         helper.register(BetterEnd.C.mk("vine_feature"), VINE_FEATURE);
         helper.register(BetterEnd.C.mk("wall_plant_feature"), WALL_PLANT_FEATURE);
@@ -207,4 +210,6 @@ public class EndFeatures {
         event.register(Registries.FEATURE, EndFeatures::register);
     }
 }
+
+
 
