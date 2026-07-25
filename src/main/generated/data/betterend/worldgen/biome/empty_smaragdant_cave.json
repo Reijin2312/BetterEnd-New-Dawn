@@ -30,7 +30,10 @@
     "minecraft:visual/water_fog_color": "#1fa7d4",
     "neoforge:custom_skybox": "betterend:end_skybox"
   },
-  "carvers": [`r`n    "betterend:round_cave",`r`n    "betterend:tunnel_cave"`r`n  ],
+  "carvers": [
+    "betterend:round_cave",
+    "betterend:tunnel_cave"
+  ],
   "downfall": 0.5,
   "effects": {
     "foliage_color": "#008391",
