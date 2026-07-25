@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 import com.google.common.collect.Sets;
 
@@ -30,6 +31,10 @@ public class BlockFixer {
     private static final BlockState WATER = Blocks.WATER.defaultBlockState();
 
     public static void fixBlocks(LevelAccessor level, BlockPos start, BlockPos end) {
+        fixBlocks(level, start, end, null);
+    }
+
+    public static void fixBlocks(LevelAccessor level, BlockPos start, BlockPos end, BoundingBox writeBounds) {
         final Registry<DimensionType> registry = level.registryAccess().lookupOrThrow(Registries.DIMENSION_TYPE);
         final Identifier dimKey = registry.getKey(level.dimensionType());
         if (dimKey != null && "world_blender".equals(dimKey.getNamespace())) {
@@ -123,9 +128,15 @@ public class BlockFixer {
 
                         for (int i = 0; i < 64 && !ends.isEmpty(); i++) {
                             ends.forEach((pos) -> {
+                                if (writeBounds != null && !writeBounds.isInside(pos)) {
+                                    return;
+                                }
                                 setWithoutUpdate(level, pos, AIR);
                                 for (Direction dir : BlocksHelper.HORIZONTAL) {
                                     BlockPos p = pos.relative(dir);
+                                    if (writeBounds != null && !writeBounds.isInside(p)) {
+                                        continue;
+                                    }
                                     BlockState st = level.getBlockState(p);
                                     if ((st.is(Blocks.CHORUS_PLANT) || st.is(Blocks.CHORUS_FLOWER)) && !st.canSurvive(
                                             level,
@@ -135,6 +146,9 @@ public class BlockFixer {
                                     }
                                 }
                                 BlockPos p = pos.above();
+                                if (writeBounds != null && !writeBounds.isInside(p)) {
+                                    return;
+                                }
                                 BlockState st = level.getBlockState(p);
                                 if ((st.is(Blocks.CHORUS_PLANT) || st.is(Blocks.CHORUS_FLOWER)) && !st.canSurvive(
                                         level,
