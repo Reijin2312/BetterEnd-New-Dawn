@@ -43,6 +43,7 @@ public class TenaneaBushFeature extends DefaultFeature {
         final RandomSource random = featureConfig.random();
         final BlockPos pos = featureConfig.origin();
         final WorldGenLevel world = featureConfig.level();
+        if (!world.getFluidState(pos).isEmpty()) return false;
         if (!world.getBlockState(pos.below()).is(CommonBlockTags.END_STONES)) return false;
 
         float radius = MHelper.randRange(1.8F, 3.5F, random);
