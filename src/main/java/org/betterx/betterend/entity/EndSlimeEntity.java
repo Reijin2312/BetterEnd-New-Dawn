@@ -249,6 +249,9 @@ public class EndSlimeEntity extends Slime {
             if (biome.equals(EndBiomes.MEGALAKE_GROVE) && random.nextBoolean()) {
                 return true;
             }
+            if (biome.is(EndBiomes.FOGGY_MUSHROOMLAND.key) || biome.is(EndBiomes.AMBER_LAND.key)) {
+                return random.nextInt(8) == 0;
+            }
         }
         return random.nextInt(4) == 0 && isWaterNear(world, pos);
     }
