@@ -78,6 +78,7 @@ public class EndFeatures {
     public static final SpireFeature SPIRE_FEATURE = new SpireFeature();
     public static final FloatingSpireFeature FLOATING_SPIRE_FEATURE = new FloatingSpireFeature();
     public static final GeyserFeature GEYSER_FEATURE = new GeyserFeature();
+    public static final PondWithWaterfallFeature POND_WITH_WATERFALL_FEATURE = new PondWithWaterfallFeature();
     public static final BiomeIslandFeature OVERWORLD_ISLAND = new BiomeIslandFeature();
 
     // Caves
@@ -188,6 +189,7 @@ public class EndFeatures {
         helper.register(BetterEnd.C.mk("spire"), SPIRE_FEATURE);
         helper.register(BetterEnd.C.mk("floating_spire"), FLOATING_SPIRE_FEATURE);
         helper.register(BetterEnd.C.mk("geyser"), GEYSER_FEATURE);
+        helper.register(BetterEnd.C.mk("pond_with_waterfall"), POND_WITH_WATERFALL_FEATURE);
         helper.register(BetterEnd.C.mk("overworld_island"), OVERWORLD_ISLAND);
         helper.register(BetterEnd.C.mk("sulphuric_cave"), SULPHURIC_CAVE_FEATURE);
         helper.register(BetterEnd.C.mk("tunel_cave"), TUNEL_CAVE_FEATURE);
