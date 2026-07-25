@@ -1,7 +1,6 @@
 package org.betterx.betterend.world.structures.piece;
 
 
-import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.noise.OpenSimplexNoise;
@@ -18,7 +17,7 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
@@ -97,7 +96,7 @@ public class EndLakePiece extends BasePiece {
         tag.putInt("water_level", waterLevel);
         tag.putFloat("radius", radius);
         tag.putFloat("depth", depth);
-        tag.putString("biome", biomeID == null ? "" : biomeID.location().toString());
+        tag.putString("biome", biomeID == null ? "" : biomeID.identifier().toString());
     }
 
     @Override
@@ -106,7 +105,7 @@ public class EndLakePiece extends BasePiece {
         waterLevel = tag.getIntOr("water_level", center.getY());
         radius = tag.getFloatOr("radius", 0);
         depth = tag.getFloatOr("depth", 0);
-        biomeID = ResourceKey.create(Registries.BIOME, ResourceLocation.parse(tag.getStringOr("biome", "")));
+        biomeID = ResourceKey.create(Registries.BIOME, Identifier.parse(tag.getStringOr("biome", "")));
     }
 
     private void makeBoundingBox() {
@@ -535,7 +534,6 @@ public class EndLakePiece extends BasePiece {
 
         final int fixMinY = waterLevel - bott - 2;
         final int fixMaxY = cy + 20;
-        BlockFixer.fixBlocks(world, new BlockPos(x0, fixMinY, z0), new BlockPos(x1, fixMaxY, z1), blockBox);
+        BlockFixer.fixBlocks(world, new BlockPos(x0, fixMinY, z0), new BlockPos(x1, fixMaxY, z1));
     }
 }
-
