@@ -1,4 +1,4 @@
-﻿package org.betterx.betterend.world.carvers;
+package org.betterx.betterend.world.carvers;
 
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
