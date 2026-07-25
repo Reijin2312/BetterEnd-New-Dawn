@@ -1,15 +1,15 @@
-package org.betterx.betterend.world.generator;
+﻿package org.betterx.betterend.world.generator;
 
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.betterend.registry.EndBiomes;
 import org.betterx.betterend.registry.EndTags;
 import org.betterx.betterend.world.biome.EndBiome;
-import de.ambertation.wover.generator.api.biomesource.WoverBiomePicker;
-import de.ambertation.wover.generator.api.biomesource.WoverBiomeSource;
-import de.ambertation.wover.generator.api.biomesource.end.BiomeDecider;
-import de.ambertation.wover.generator.api.biomesource.end.WoverEndConfig;
-import de.ambertation.wover.generator.impl.biomesource.end.WoverEndBiomeSource;
-import de.ambertation.wover.tag.api.predefined.CommonBiomeTags;
+import org.betterx.wover.generator.api.biomesource.WoverBiomePicker;
+import org.betterx.wover.generator.api.biomesource.WoverBiomeSource;
+import org.betterx.wover.generator.api.biomesource.end.BiomeDecider;
+import org.betterx.wover.generator.api.biomesource.end.WoverEndConfig;
+import org.betterx.wover.generator.impl.biomesource.end.WoverEndBiomeSource;
+import org.betterx.wover.tag.api.predefined.CommonBiomeTags;
 
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
@@ -219,3 +219,4 @@ public class EndCaveBiomeDecider extends BiomeDecider {
         return map.getBiome(posX, posY, posZ);
     }
 }
+
