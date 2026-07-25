@@ -10,6 +10,8 @@ import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
 import org.betterx.betterend.world.biome.EndBiomeKey;
 import org.betterx.betterend.world.biome.air.BiomeIceStarfield;
+import org.betterx.betterend.world.biome.air.FlowerIsletsBiome;
+import org.betterx.betterend.world.biome.air.WaterfallPondsBiome;
 import org.betterx.betterend.world.biome.cave.*;
 import org.betterx.betterend.world.biome.land.*;
 import org.betterx.betterend.world.features.BuildingListFeature;
@@ -85,6 +87,9 @@ public class EndBiomesProvider extends WoverBiomeProvider {
         putBiome(EndBiomes.UMBRA_VALLEY, new UmbraValleyBiome(), CommonBiomeTags.IS_END_LAND);
 
         putBiome(EndBiomes.ICE_STARFIELD, new BiomeIceStarfield(), CommonBiomeTags.IS_SMALL_END_ISLAND);
+
+        putBiome(EndBiomes.FLOWER_ISLETS, new FlowerIsletsBiome(), CommonBiomeTags.IS_SMALL_END_ISLAND);
+        putBiome(EndBiomes.WATERFALL_PONDS, new WaterfallPondsBiome(), CommonBiomeTags.IS_SMALL_END_ISLAND);
 
         putBiome(EndBiomes.EMPTY_END_CAVE, new EmptyEndCaveBiome(EndBiomes.EMPTY_END_CAVE), EndTags.IS_END_CAVE);
         putBiome(EndBiomes.EMPTY_SMARAGDANT_CAVE, new EmptySmaragdantCaveBiome(EndBiomes.EMPTY_SMARAGDANT_CAVE), EndTags.IS_END_CAVE);
