@@ -3,7 +3,9 @@
   "category": "misc",
   "group": "boat",
   "key": {
-    "#": "betterend:end_lotus_planks"
+    "#": {
+      "item": "betterend:end_lotus_planks"
+    }
   },
   "pattern": [
     "# #",
