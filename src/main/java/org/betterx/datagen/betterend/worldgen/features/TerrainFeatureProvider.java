@@ -74,7 +74,6 @@ public class TerrainFeatureProvider extends WoverFeatureProvider {
                 .configuration(FeatureConfiguration.NONE)
                 .inlinePlace()
                 .count(1)
-                .onceEvery(2)
                 .onlyInBiome()
                 .register();
 
