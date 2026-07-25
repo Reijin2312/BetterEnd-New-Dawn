@@ -21,7 +21,7 @@
     "minecraft:visual/sky_color": "#000000",
     "minecraft:visual/water_fog_color": "#050533"
   },
-  "carvers": [],
+  "carvers": [`r`n    "betterend:round_cave",`r`n    "betterend:tunnel_cave"`r`n  ],
   "downfall": 0.5,
   "effects": {
     "water_color": "#3f76e4"
