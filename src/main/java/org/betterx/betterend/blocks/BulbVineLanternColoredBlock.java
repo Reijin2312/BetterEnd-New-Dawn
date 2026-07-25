@@ -14,6 +14,7 @@ public class BulbVineLanternColoredBlock extends BulbVineLanternBlock implements
     }
 
     @Override
+    @net.fabricmc.api.Environment(net.fabricmc.api.EnvType.CLIENT)
     public BlockColor getProvider() {
         return (state, world, pos, tintIndex) -> getColor();
     }

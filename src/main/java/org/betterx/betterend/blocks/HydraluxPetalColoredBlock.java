@@ -24,6 +24,7 @@ public class HydraluxPetalColoredBlock extends HydraluxPetalBlock implements Cus
     }
 
     @Override
+    @net.fabricmc.api.Environment(net.fabricmc.api.EnvType.CLIENT)
     public BlockColor getProvider() {
         return (state, world, pos, tintIndex) -> BlocksHelper.getBlockColor(this);
     }
