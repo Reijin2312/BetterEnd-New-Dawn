@@ -49,6 +49,10 @@ public class EndStructures {
             .structure(BetterEnd.C.mk("giant_ice_star"), GiantIceStarStructure::new)
             .step(Decoration.SURFACE_STRUCTURES);
 
+    public static final StructureKey.Simple<SmallIslandStructure> SMALL_ISLAND = StructureManager
+            .structure(BetterEnd.C.mk("small_island"), SmallIslandStructure::new)
+            .step(Decoration.RAW_GENERATION);
+
     public static final StructureKey.Jigsaw END_VILLAGE = StructureManager
             .jigsaw(BetterEnd.C.mk("end_village"))
             .step(Decoration.SURFACE_STRUCTURES);
@@ -63,6 +67,7 @@ public class EndStructures {
                 PAINTED_MOUNTAIN,
                 ETERNAL_PORTAL,
                 GIANT_ICE_STAR,
+                SMALL_ISLAND,
                 END_VILLAGE
         );
     }
