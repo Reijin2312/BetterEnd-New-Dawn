@@ -17,6 +17,7 @@ public class EndStructures {
     public static final StructurePieceType LAKE_PIECE = StructureManager.registerPiece(BetterEnd.C.mk("lake_piece"), LakePiece::new);
     public static final StructurePieceType PAINTED_MOUNTAIN_PIECE = StructureManager.registerPiece(BetterEnd.C.mk("painted_mountain_piece"), PaintedMountainPiece::new);
     public static final StructurePieceType NBT_PIECE = StructureManager.registerPiece(BetterEnd.C.mk("nbt_piece"), NBTPiece::new);
+    public static final StructurePieceType END_BRIDGE_PIECE = StructureManager.registerPiece(BetterEnd.C.mk("end_bridge_piece"), EndBridgePiece::new);
 
 
     public static final StructureKey.Simple<GiantMossyGlowshroomStructure> GIANT_MOSSY_GLOWSHROOM = StructureManager
@@ -30,6 +31,10 @@ public class EndStructures {
     public static final StructureKey.Simple<MegaLakeSmallStructure> MEGALAKE_SMALL = StructureManager
             .structure(BetterEnd.C.mk("megalake_small"), MegaLakeSmallStructure::new)
             .step(Decoration.LAKES);
+
+    public static final StructureKey.Simple<EndBridgeStructure> END_BRIDGE = StructureManager
+            .structure(BetterEnd.C.mk("end_bridge"), EndBridgeStructure::new)
+            .step(Decoration.SURFACE_STRUCTURES);
 
     public static final StructureKey.Simple<MountainStructure> MOUNTAIN = StructureManager
             .structure(BetterEnd.C.mk("mountain"), MountainStructure::new)
@@ -50,8 +55,15 @@ public class EndStructures {
 
     public static void register() {
         Configs.STRUCTURES_TOGGLE.registerStructures(
-                GIANT_MOSSY_GLOWSHROOM, MEGALAKE, MEGALAKE_SMALL, MOUNTAIN,
-                PAINTED_MOUNTAIN, ETERNAL_PORTAL, GIANT_ICE_STAR, END_VILLAGE
+                GIANT_MOSSY_GLOWSHROOM,
+                MEGALAKE,
+                MEGALAKE_SMALL,
+                END_BRIDGE,
+                MOUNTAIN,
+                PAINTED_MOUNTAIN,
+                ETERNAL_PORTAL,
+                GIANT_ICE_STAR,
+                END_VILLAGE
         );
     }
 
