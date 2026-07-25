@@ -534,6 +534,6 @@ public class EndLakePiece extends BasePiece {
 
         final int fixMinY = waterLevel - bott - 2;
         final int fixMaxY = cy + 20;
-        BlockFixer.fixBlocks(world, new BlockPos(x0, fixMinY, z0), new BlockPos(x1, fixMaxY, z1));
+        BlockFixer.fixBlocks(world, new BlockPos(x0, fixMinY, z0), new BlockPos(x1, fixMaxY, z1), blockBox);
     }
 }
