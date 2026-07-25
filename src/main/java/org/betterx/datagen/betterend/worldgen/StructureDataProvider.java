@@ -14,6 +14,7 @@ import org.betterx.wover.tag.api.event.context.TagBootstrapContext;
 
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
@@ -36,6 +37,7 @@ public class StructureDataProvider extends WoverStructureProvider {
         EndStructures.GIANT_MOSSY_GLOWSHROOM.bootstrap(context).register();
         EndStructures.MEGALAKE.bootstrap(context).register();
         EndStructures.MEGALAKE_SMALL.bootstrap(context).register();
+        EndStructures.END_BRIDGE.bootstrap(context).register();
         EndStructures.MOUNTAIN.bootstrap(context).register();
         EndStructures.PAINTED_MOUNTAIN.bootstrap(context).register();
         EndStructures.ETERNAL_PORTAL.bootstrap(context).register();
@@ -60,6 +62,10 @@ public class StructureDataProvider extends WoverStructureProvider {
                 .bootstrap(EndStructures.MEGALAKE, context)
                 .addStructure(EndStructures.MEGALAKE_SMALL)
                 .randomPlacement(4, 1)
+                .register();
+        StructureSetManager
+                .bootstrap(EndStructures.END_BRIDGE, context)
+                .randomPlacement(6, 2)
                 .register();
         StructureSetManager
                 .bootstrap(EndStructures.MOUNTAIN, context)
@@ -366,7 +372,7 @@ public class StructureDataProvider extends WoverStructureProvider {
 
     @Override
     protected void prepareBiomeTags(TagBootstrapContext<Biome> context) {
-
+        context.add(EndStructures.END_BRIDGE.biomeTag(), Biomes.SMALL_END_ISLANDS);
     }
 
 }
