@@ -2,7 +2,6 @@ package org.betterx.datagen.betterend;
 
 import org.betterx.bclib.blocks.BaseVineBlock;
 import org.betterx.betterend.BetterEnd;
-import org.betterx.betterend.blocks.EndBlockProperties;
 import org.betterx.betterend.blocks.FlowerPotBlock;
 import org.betterx.betterend.blocks.basis.PedestalBlock;
 import org.betterx.betterend.blocks.basis.PottableLeavesBlock;
@@ -20,7 +19,6 @@ import com.mojang.math.Quadrant;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
-import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
@@ -36,7 +34,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SaplingBlock;
-
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -390,81 +387,20 @@ public class EndModelProvider extends WoverModelProvider {
 
     private void generateFlowerPotModels(WoverBlockModelGenerators generator) {
         EndBlocks.ensureRegistered();
-        FlowerPotBlock.PottableEntries pottables = FlowerPotBlock.getPottableEntries();
-        Block[] plants = pottables.plants();
-        Block[] soils = pottables.soils();
-
-        Identifier[] soilModels = new Identifier[soils.length];
-        for (int i = 0; i < soils.length; i++) {
-            Block soil = soils[i];
-            if (soil == null) {
-                continue;
-            }
-            Identifier modelId = BetterEnd.C.mk("block/flower_pot_soil_" + i);
-            soilModels[i] = modelId;
-            if (modelExists(modelId)) {
-                continue;
-            }
-            Identifier soilId = BuiltInRegistries.BLOCK.getKey(soil);
-            if (soilId == null) {
-                continue;
-            }
-            String texture = soilId.getPath() + "_top";
-            if (texture.contains("rutiscus")) {
-                texture += "_1";
-            }
-            JsonObject modelJson = createPatternModel(
-                    BetterEnd.C.mk("patterns/block/flower_pot_soil.json"),
-                    Map.of("%texture%", texture)
-            );
-            if (modelJson == null) {
-                BetterEnd.LOGGER.warn("Missing flower pot soil pattern for {}", soilId);
-                continue;
-            }
-            generator.acceptModelOutput(modelId, () -> modelJson);
-            markGenerated(modelId);
-        }
-
-        Map<Block, Identifier> plantModels = new HashMap<>();
         for (Block block : EndBlocks.getModBlocks()) {
             if (!(block instanceof FlowerPotBlock)) {
                 continue;
             }
             Identifier baseModel = ModelLocationUtils.getModelLocation(block);
-            MultiPartGenerator multipart = MultiPartGenerator
-                    .multiPart(block)
-                    .with(BlockModelGenerators.plainVariant(baseModel));
-
-            for (int i = 0; i < soilModels.length; i++) {
-                Identifier soilModel = soilModels[i];
-                if (soilModel == null) {
-                    continue;
-                }
-                multipart.with(
-                        BlockModelGenerators.condition().term(EndBlockProperties.SOIL_ID, i + 1),
-                        BlockModelGenerators.plainVariant(soilModel)
-                );
-            }
-
-            for (int i = 0; i < plants.length; i++) {
-                Block plant = plants[i];
-                if (plant == null) {
-                    continue;
-                }
-                Identifier plantModel = plantModels.computeIfAbsent(
-                        plant,
-                        p -> resolvePlantModel(generator, p)
-                );
-                if (plantModel == null) {
-                    continue;
-                }
-                multipart.with(
-                        BlockModelGenerators.condition().term(EndBlockProperties.PLANT_ID, i + 1),
-                        BlockModelGenerators.plainVariant(plantModel)
-                );
-            }
-
-            generator.acceptBlockState(multipart);
+            MultiVariant variant = BlockModelGenerators.plainVariant(baseModel);
+            generator.acceptBlockState(
+                    MultiVariantGenerator.dispatch(block)
+                                         .with(PropertyDispatch.initial(FlowerPotBlock.POT_LIGHT)
+                                                               .select(0, variant)
+                                                               .select(1, variant)
+                                                               .select(2, variant)
+                                                               .select(3, variant))
+            );
         }
     }
 
