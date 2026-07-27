@@ -231,4 +231,3 @@ public class EndBridgePiece extends BasePiece {
         }
     }
 }
-

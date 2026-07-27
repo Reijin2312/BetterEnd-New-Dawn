@@ -1,4 +1,4 @@
-﻿package org.betterx.betterend.world.features.trees;
+package org.betterx.betterend.world.features.trees;
 
 import org.betterx.bclib.util.BlocksHelper;
 

@@ -3,27 +3,27 @@ package org.betterx.betterend.entity.render;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.entity.ShadowWalkerEntity;
 
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.model.player.PlayerModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
-import net.minecraft.client.renderer.entity.state.AvatarRenderState;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.resources.Identifier;
 
-public class RendererEntityShadowWalker extends HumanoidMobRenderer<ShadowWalkerEntity, AvatarRenderState, PlayerModel> {
+public class RendererEntityShadowWalker extends HumanoidMobRenderer<ShadowWalkerEntity, HumanoidRenderState, HumanoidModel<HumanoidRenderState>> {
     private static final Identifier TEXTURE = BetterEnd.C.mk("textures/entity/shadow_walker.png");
 
     public RendererEntityShadowWalker(EntityRendererProvider.Context ctx) {
-        super(ctx, new PlayerModel(ctx.bakeLayer(ModelLayers.PLAYER), false), 0.5F);
+        super(ctx, new HumanoidModel<>(ctx.bakeLayer(ModelLayers.PLAYER)), 0.5F);
     }
 
     @Override
-    public Identifier getTextureLocation(AvatarRenderState state) {
+    public Identifier getTextureLocation(HumanoidRenderState state) {
         return TEXTURE;
     }
 
     @Override
-    public AvatarRenderState createRenderState() {
-        return new AvatarRenderState();
+    public HumanoidRenderState createRenderState() {
+        return new HumanoidRenderState();
     }
 }

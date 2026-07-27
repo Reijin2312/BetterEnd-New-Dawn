@@ -35,6 +35,7 @@ public class LanceleafBlock extends EndPlantBlock implements SurvivesOnAmberMoss
     public LanceleafBlock() {
         super(BehaviourBuilders.createWalkablePlant(MapColor.TERRACOTTA_BROWN)
                                .ignitedByLava()
+                               .dynamicShape()
                                .offsetType(OffsetType.XZ));
     }
 

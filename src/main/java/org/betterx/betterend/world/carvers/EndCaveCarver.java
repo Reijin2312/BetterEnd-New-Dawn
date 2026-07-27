@@ -229,4 +229,3 @@ public class EndCaveCarver extends WorldCarver<EndCaveCarverConfiguration> {
         return false;
     }
 }
-

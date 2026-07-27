@@ -59,4 +59,3 @@ public class EndCaveCarverConfiguration extends CarverConfiguration {
         this.verticalSquash = verticalSquash;
     }
 }
-

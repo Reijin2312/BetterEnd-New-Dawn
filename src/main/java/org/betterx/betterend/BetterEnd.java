@@ -58,6 +58,7 @@ public class BetterEnd {
         modBus.addListener(RegisterEvent.class, EndParticles::onRegister);
         modBus.addListener(RegisterEvent.class, EndPoiTypes::onRegister);
         modBus.addListener(RegisterEvent.class, this::registerFeatures);
+        modBus.addListener(RegisterEvent.class, EndCarvers::onRegister);
         modBus.addListener(RegisterEvent.class, EndMenuTypes::onRegister);
         modBus.addListener(RegisterEvent.class, EndBlockEntities::register);
         modBus.addListener(RegisterEvent.class, this::ensureBlocksLoaded);
@@ -97,7 +98,8 @@ public class BetterEnd {
         InfusionRecipe.register();
         EndStructures.register();
         EndCarvers.ensureStaticallyLoaded();
-        BiomeDecider.registerDecider(C.mk("cave_biome_decider"), new org.betterx.betterend.world.generator.EndCaveBiomeDecider());
+        // TEMP: keep the new vertical cave pipeline dormant until upstream stabilizes it.
+        // BiomeDecider.registerDecider(C.mk("cave_biome_decider"), new org.betterx.betterend.world.generator.EndCaveBiomeDecider());
         GeneratorOptions.init();
         LootTableUtil.init();
         CommandRegistry.register();

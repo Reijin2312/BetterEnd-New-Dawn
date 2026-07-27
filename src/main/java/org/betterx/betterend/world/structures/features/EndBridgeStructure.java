@@ -180,4 +180,3 @@ public class EndBridgeStructure extends FeatureBaseStructure {
         return diff;
     }
 }
-

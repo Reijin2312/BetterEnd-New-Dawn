@@ -11,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
@@ -26,8 +27,6 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 
 public class CrystalMountainPiece extends MountainPiece {
-    private static final float CRYSTAL_MOSS_CRYSTAL_CHANCE = 0.15F;
-
     private BlockState top;
 
     public CrystalMountainPiece(BlockPos center, float radius, float height, RandomSource random, Holder<Biome> biome) {
@@ -62,31 +61,45 @@ public class CrystalMountainPiece extends MountainPiece {
 
         placeMountain(world, chunkPos, chunk, pos);
 
-        for (int x = 0; x < 16; x++) {
-            for (int z = 0; z < 16; z++) {
-                int y = map.getFirstAvailable(x, z);
-                if (y <= 20) {
-                    continue;
-                }
+        // Big crystals
+        int count = (map.getFirstAvailable(8, 8) - (center.getY() + 24)) / 7;
+        count = Mth.clamp(count, 0, 8);
+        for (int i = 0; i < count; i++) {
+            int radius = MHelper.randRange(2, 3, random);
+            float fill = MHelper.randRange(0F, 1F, random);
+            int x = MHelper.randRange(radius, 15 - radius, random);
+            int z = MHelper.randRange(radius, 15 - radius, random);
+            int y = map.getFirstAvailable(x, z);
+            if (y > 60) {
                 pos.set(x, y, z);
-                BlockState below = chunk.getBlockState(pos.below());
-                boolean endStone = below.is(Blocks.END_STONE);
-                boolean moss = below.is(EndBlocks.CRYSTAL_MOSS);
-                if (!endStone && !moss) {
-                    continue;
+                if (isCrystalBase(chunk.getBlockState(pos.below()))) {
+                    int height = MHelper.floor(radius * MHelper.randRange(1.5F, 3F, random) + (y - 80) * 0.3F);
+                    crystal(chunk, pos, radius, height, fill, random);
                 }
-                if (moss && random.nextFloat() >= CRYSTAL_MOSS_CRYSTAL_CHANCE) {
-                    continue;
-                }
-                boolean big = y > 60 && random.nextInt(4) == 0;
-                int radius = big ? MHelper.randRange(2, 3, random) : 1;
-                float fill = big ? MHelper.randRange(0F, 1F, random) : (random.nextBoolean() ? 0 : 1);
-                int height = MHelper.floor(radius * MHelper.randRange(1.5F, 3F, random) + (y - 80) * 0.3F);
-                crystal(chunk, pos, radius, height, fill, random);
             }
         }
 
+        // Small crystals
+        count = (map.getFirstAvailable(8, 8) - (center.getY() + 24)) / 2;
+        count = Mth.clamp(count, 4, 8);
+        for (int i = 0; i < count; i++) {
+            int radius = MHelper.randRange(1, 2, random);
+            float fill = random.nextBoolean() ? 0 : 1;
+            int x = MHelper.randRange(radius, 15 - radius, random);
+            int z = MHelper.randRange(radius, 15 - radius, random);
+            int y = map.getFirstAvailable(x, z);
+            if (y > 20) {
+                pos.set(x, y, z);
+                if (isCrystalBase(chunk.getBlockState(pos.below()))) {
+                    int height = MHelper.floor(radius * MHelper.randRange(1.5F, 3F, random) + (y - 80) * 0.3F);
+                    crystal(chunk, pos, radius, height, fill, random);
+                }
+            }
+        }
+    }
 
+    private static boolean isCrystalBase(BlockState state) {
+        return state.is(Blocks.END_STONE) || state.is(EndBlocks.CRYSTAL_MOSS);
     }
 
     private void placeMountain(
