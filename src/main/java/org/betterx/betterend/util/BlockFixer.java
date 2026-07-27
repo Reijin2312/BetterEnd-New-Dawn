@@ -11,9 +11,8 @@ import org.betterx.betterend.registry.EndBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FallingBlock;
@@ -35,17 +34,16 @@ public class BlockFixer {
     }
 
     public static void fixBlocks(LevelAccessor level, BlockPos start, BlockPos end, BoundingBox writeBounds) {
-        final Registry<DimensionType> registry = level.registryAccess().lookupOrThrow(Registries.DIMENSION_TYPE);
-        final Identifier dimKey = registry.getKey(level.dimensionType());
-        if (dimKey != null && "world_blender".equals(dimKey.getNamespace())) {
+        final ResourceLocation dimKey = level.dimensionType().effectsLocation();
+        if ("world_blender".equals(dimKey.getNamespace())) {
             return;
         }
         final Set<BlockPos> doubleCheck = Sets.newConcurrentHashSet();
         final int dx = end.getX() - start.getX() + 1;
         final int dz = end.getZ() - start.getZ() + 1;
         final int count = dx * dz;
-        final int minY = Math.max(start.getY(), level.getMinY());
-        final int maxY = Math.min(end.getY(), level.getMaxY());
+        final int minY = Math.max(start.getY(), DimensionType.MIN_Y);
+        final int maxY = Math.min(end.getY(), DimensionType.MIN_Y + level.dimensionType().height() - 1);
         IntStream.range(0, count).forEach(index -> {
             MutableBlockPos POS = new MutableBlockPos();
             POS.setX((index % dx) + start.getX());

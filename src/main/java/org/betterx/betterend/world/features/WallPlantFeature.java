@@ -29,7 +29,18 @@ public class WallPlantFeature extends WallScatterFeature<WallPlantFeatureConfig>
     }
 
     @Override
-    public boolean generate(
+    public boolean canGenerate(
+            WallPlantFeatureConfig cfg,
+            WorldGenLevel world,
+            RandomSource random,
+            BlockPos pos,
+            Direction dir
+    ) {
+        return true;
+    }
+
+    @Override
+    public void generate(
             WallPlantFeatureConfig cfg,
             WorldGenLevel world,
             RandomSource random,
@@ -41,23 +52,22 @@ public class WallPlantFeature extends WallScatterFeature<WallPlantFeatureConfig>
         if (block instanceof BaseWallPlantBlock) {
             if (!plant.hasProperty(BaseWallPlantBlock.FACING)) {
                 logMissingFacingProperty(block, pos, dir, plant, "BaseWallPlantBlock");
-                return false;
+                return;
             }
             plant = plant.setValue(BaseWallPlantBlock.FACING, dir);
         } else if (block instanceof BaseAttachedBlock) {
             if (!plant.hasProperty(BlockStateProperties.FACING)) {
                 logMissingFacingProperty(block, pos, dir, plant, "BaseAttachedBlock");
-                return false;
+                return;
             }
             plant = plant.setValue(BlockStateProperties.FACING, dir);
         }
 
         if (!plant.canSurvive(world, pos)) {
-            return false;
+            return;
         }
 
         BlocksHelper.setWithoutUpdate(world, pos, plant);
-        return true;
     }
 
     private static void logMissingFacingProperty(

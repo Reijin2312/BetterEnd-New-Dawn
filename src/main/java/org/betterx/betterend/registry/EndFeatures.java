@@ -127,6 +127,11 @@ public class EndFeatures {
         builder.feature(EndOreFeatures.THALLASIUM_ORE);
         builder.feature(EndOreFeatures.ENDER_ORE);
         builder.feature(EndTerrainFeatures.CRASHED_SHIP);
+
+        if (hasCaves) {
+            builder.feature(EndTerrainFeatures.ROUND_CAVE);
+            builder.feature(EndTerrainFeatures.TUNEL_CAVE);
+        }
     }
 
     public static void register(RegisterEvent.RegisterHelper<Feature<?>> helper) {

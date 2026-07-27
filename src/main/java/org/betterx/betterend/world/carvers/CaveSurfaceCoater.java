@@ -189,7 +189,7 @@ final class CaveSurfaceCoater {
                 }
                 final BlockState wall = biome.getWall(w);
                 if (wall != null) {
-                    chunk.setBlockState(w, wall);
+                    chunk.setBlockState(w, wall, false);
                 }
             }
         }
@@ -205,7 +205,7 @@ final class CaveSurfaceCoater {
             }
             final BlockState top = biome.getTopMaterial();
             if (top != null && !top.is(Blocks.END_STONE)) {
-                chunk.setBlockState(m, top);
+                chunk.setBlockState(m, top, false);
             }
         }
 
@@ -218,7 +218,7 @@ final class CaveSurfaceCoater {
             }
             final BlockState ceil = biome.getCeil(m);
             if (ceil != null) {
-                chunk.setBlockState(m, ceil);
+                chunk.setBlockState(m, ceil, false);
             }
         }
     }

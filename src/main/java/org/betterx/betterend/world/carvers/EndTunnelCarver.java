@@ -8,7 +8,7 @@ import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
@@ -44,7 +44,7 @@ import java.util.function.Function;
  * not ported).
  */
 public class EndTunnelCarver extends WorldCarver<EndTunnelCarverConfiguration> {
-    private static final Identifier NOISE_SEED_KEY = BetterEnd.C.mk("tunnel_cave_noise");
+    private static final ResourceLocation NOISE_SEED_KEY = BetterEnd.C.mk("tunnel_cave_noise");
 
     private record Noises3(long seed, OpenSimplexNoise h, OpenSimplexNoise v, OpenSimplexNoise d) {}
 
@@ -146,7 +146,7 @@ public class EndTunnelCarver extends WorldCarver<EndTunnelCarverConfiguration> {
                         if (val < threshold
                                 && chunk.getBlockState(pos).is(CommonBlockTags.END_STONES)
                                 && !EndCaveCarver.isWaterNear(chunk, cp, pos, neighbor, minGenY, maxGenY)) {
-                            chunk.setBlockState(pos, CAVE_AIR);
+                            chunk.setBlockState(pos, CAVE_AIR, false);
                             mask.set(lx, y, lz);
                             carvedPositions.add(BlockPos.asLong(wx, y, wz));
                             carved = true;

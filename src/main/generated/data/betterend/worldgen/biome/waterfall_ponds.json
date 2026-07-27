@@ -1,5 +1,8 @@
 {
-  "carvers": [],
+  "carvers": {
+    "air": [],
+    "liquid": []
+  },
   "downfall": 0.5,
   "effects": {
     "fog_color": -8861466,
@@ -11,18 +14,12 @@
       "sound": "betterend:betterend.ambient.dust_wastelands",
       "tick_delay": 6000
     },
-    "music": [
-      {
-        "data": {
-          "max_delay": 2400,
-          "min_delay": 600,
-          "replace_current_music": true,
-          "sound": "betterend:betterend.music.water"
-        },
-        "weight": 1
-      }
-    ],
-    "music_volume": 1.0,
+    "music": {
+      "max_delay": 2400,
+      "min_delay": 600,
+      "replace_current_music": true,
+      "sound": "betterend:betterend.music.water"
+    },
     "particle": {
       "options": {
         "type": "betterend:firefly"
