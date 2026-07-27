@@ -96,6 +96,14 @@ public class EndItems {
             "music_disc_eo_dracona",
             EndSounds.RECORD_EO_DRACONA
     );
+    public final static Item MUSIC_DISC_ENDER_HOLLOW = registerEndDisc(
+            "music_disc_ender_hollow",
+            EndSounds.RECORD_ENDER_HOLLOW
+    );
+    public final static Item MUSIC_DISC_MOONLIT_UNDERCURRENTS = registerEndDisc(
+            "music_disc_moonlit_undercurrents",
+            EndSounds.RECORD_MOONLIT_UNDERCURRENTS
+    );
 
     // Armor //
     public static final Item AETERNIUM_HELMET = registerEndItem(EndItems.prepareItemPath("aeternium_helmet"),
