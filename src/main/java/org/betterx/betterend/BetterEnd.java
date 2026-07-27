@@ -1,4 +1,4 @@
-﻿package org.betterx.betterend;
+package org.betterx.betterend;
 
 import de.ambertation.wunderlib.network.ClientBoundPacketHandler;
 import org.betterx.betterend.advancements.BECriteria;
@@ -74,7 +74,8 @@ public class BetterEnd implements ModInitializer {
         InfusionRecipe.register();
         EndStructures.register();
         EndCarvers.ensureStaticallyLoaded();
-        BiomeDecider.registerDecider(C.mk("cave_biome_decider"), new org.betterx.betterend.world.generator.EndCaveBiomeDecider());
+        // TEMP: keep the new vertical cave pipeline dormant until upstream stabilizes it.
+        // BiomeDecider.registerDecider(C.mk("cave_biome_decider"), new org.betterx.betterend.world.generator.EndCaveBiomeDecider());
         BonemealPlants.init();
         GeneratorOptions.init();
         LootTableUtil.init();

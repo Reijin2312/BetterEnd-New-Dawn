@@ -218,7 +218,7 @@ public class EndCaveCarver extends WorldCarver<EndCaveCarverConfiguration> {
             if (ny < minGenY || ny > maxGenY) {
                 continue;
             }
-            if (SectionPos.blockToSectionCoord(nx) != cp.x || SectionPos.blockToSectionCoord(nz) != cp.z) {
+            if (SectionPos.blockToSectionCoord(nx) != cp.x() || SectionPos.blockToSectionCoord(nz) != cp.z()) {
                 continue;
             }
             neighbor.set(nx, ny, nz);
@@ -229,4 +229,3 @@ public class EndCaveCarver extends WorldCarver<EndCaveCarverConfiguration> {
         return false;
     }
 }
-

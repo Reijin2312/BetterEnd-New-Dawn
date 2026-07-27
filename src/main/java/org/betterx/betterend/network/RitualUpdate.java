@@ -6,20 +6,28 @@ import org.betterx.bclib.api.v2.dataexchange.BaseDataHandler;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.rituals.EternalRitual;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.Level;
 
 import de.ambertation.wunderlib.network.PacketSender;
 
 public class RitualUpdate extends ClientBoundPacketHandler<RitualUpdate.Payload> {
     public static final Identifier CHANNEL = BetterEnd.C.mk("ritual_update");
     public static final RitualUpdate INSTANCE = new RitualUpdate();
+    private static ClientProcessor clientProcessor = (center, axis, active, willActivate, client) -> {};
+
+    @FunctionalInterface
+    public interface ClientProcessor {
+        void process(BlockPos center, Direction.Axis axis, boolean active, boolean willActivate, Object client);
+    }
+
+    public static void registerClientProcessor(ClientProcessor processor) {
+        clientProcessor = processor;
+    }
 
     public RitualUpdate() {
         super(
@@ -72,32 +80,16 @@ public class RitualUpdate extends ClientBoundPacketHandler<RitualUpdate.Payload>
         }
 
         @Override
-        protected void processOnGameThread(Minecraft client) {
-            Level level = getClientLevel(client);
-            if (level == null) {
-                return;
-            }
-
-            EternalRitual.updateActiveStateOnPedestals(
+        protected void processOnGameThread(Object client) {
+            clientProcessor.process(
                     center,
                     axis,
                     (flags & ACTIVE_FLAG) != 0,
                     (flags & WILL_ACTIVATE_FLAG) != 0,
-                    level,
-                    null
+                    client
             );
         }
 
-        private static Level getClientLevel(Minecraft client) {
-            try {
-                Object value = Minecraft.class.getField("level").get(client);
-                if (value instanceof Level level) {
-                    return level;
-                }
-            } catch (NoSuchFieldException | IllegalAccessException ignored) {
-            }
-            return null;
-        }
     }
 
     Payload payload;

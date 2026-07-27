@@ -219,4 +219,3 @@ public class EndCaveBiomeDecider extends BiomeDecider {
         return map.getBiome(posX, posY, posZ);
     }
 }
-

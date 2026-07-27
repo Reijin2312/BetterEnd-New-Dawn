@@ -17,6 +17,7 @@ import org.betterx.wover.datagen.api.provider.WoverModelProvider;
 
 import com.mojang.math.Quadrant;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;

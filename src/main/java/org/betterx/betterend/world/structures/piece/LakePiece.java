@@ -63,9 +63,8 @@ public class LakePiece extends BasePiece {
     // follows the ellipsoid bowl (and the terraced skirt) instead of ending in a flat plane.
     private static final int SHELL_DEPTH = 4;
 
-    // Plants scattered on the lake shore. The attached blocks (fur/wings) survive on any sturdy top,
-    // the bush plants (jungle grass, umbrella moss) grow on CommonBlockTags.SOIL - trying them in a
-    // random order and placing the first that can survive keeps every shore block covered.
+    // Biome-neutral plants scattered on lake shores. Blue Vine Fur and Filalux Wings remain
+    // exclusive to their normal biome features instead of appearing around unrelated ponds.
     private static BlockState[] rimPlants;
 
     private static BlockState[] rimPlants() {
@@ -73,8 +72,6 @@ public class LakePiece extends BasePiece {
             rimPlants = new BlockState[]{
                     EndBlocks.JUNGLE_GRASS.defaultBlockState(),
                     EndBlocks.UMBRELLA_MOSS.defaultBlockState(),
-                    EndBlocks.BLUE_VINE_FUR.defaultBlockState(),
-                    EndBlocks.FILALUX_WINGS.defaultBlockState(),
             };
         }
         return rimPlants;
@@ -189,10 +186,10 @@ public class LakePiece extends BasePiece {
     ) {
         int minY = carveMinY();
         int maxY = this.boundingBox.maxY();
-        int sx = SectionPos.sectionToBlockCoord(chunkPos.x);
-        int sz = SectionPos.sectionToBlockCoord(chunkPos.z);
+        int sx = SectionPos.sectionToBlockCoord(chunkPos.x());
+        int sz = SectionPos.sectionToBlockCoord(chunkPos.z());
         MutableBlockPos mut = new MutableBlockPos();
-        ChunkAccess chunk = world.getChunk(chunkPos.x, chunkPos.z);
+        ChunkAccess chunk = world.getChunk(chunkPos.x(), chunkPos.z());
         for (int x = 0; x < 16; x++) {
             mut.setX(x);
             int wx = x | sx;

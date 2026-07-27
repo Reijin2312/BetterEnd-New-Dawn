@@ -21,6 +21,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 
 @Mixin(value = ServerPlayer.class, priority = 200)
@@ -30,13 +32,14 @@ public abstract class PlayerMixin extends LivingEntity {
     }
 
     private static Direction[] horizontal;
+    private static Constructor<?> respawnPosAngleConstructor;
 
     @Inject(method = "findRespawnAndUseSpawnBlock", at = @At(value = "HEAD"), cancellable = true, remap = false, require = 0)
     private static void be_findRespawnAndUseSpawnBlock(
             ServerLevel world,
             ServerPlayer.RespawnConfig respawnConfig,
             boolean bl,
-            CallbackInfoReturnable<Optional<ServerPlayer.RespawnPosAngle>> info
+            CallbackInfoReturnable<Optional<?>> info
     ) {
         if (respawnConfig == null || respawnConfig.respawnData() == null) {
             return;
@@ -50,7 +53,7 @@ public abstract class PlayerMixin extends LivingEntity {
         }
     }
 
-    private static Optional<ServerPlayer.RespawnPosAngle> be_obeliskRespawnPosition(
+    private static Optional<?> be_obeliskRespawnPosition(
             ServerLevel world,
             BlockPos pos,
             float angle,
@@ -69,9 +72,38 @@ public abstract class PlayerMixin extends LivingEntity {
             BlockPos p = pos.relative(dir);
             BlockState state2 = world.getBlockState(p);
             if (!state2.blocksMotion() && state2.getCollisionShape(world, pos).isEmpty()) {
-                return Optional.of(new ServerPlayer.RespawnPosAngle(Vec3.atLowerCornerOf(p).add(0.5, 0, 0.5), angle, 0.0F));
+                Object respawnPosition = be_createRespawnPosition(
+                        Vec3.atLowerCornerOf(p).add(0.5, 0, 0.5),
+                        angle
+                );
+                return Optional.ofNullable(respawnPosition);
             }
         }
         return Optional.empty();
+    }
+
+    private static Object be_createRespawnPosition(Vec3 position, float yaw) {
+        try {
+            if (respawnPosAngleConstructor == null) {
+                for (Class<?> nestedClass : ServerPlayer.class.getDeclaredClasses()) {
+                    try {
+                        Constructor<?> constructor = nestedClass.getDeclaredConstructor(
+                                Vec3.class,
+                                float.class,
+                                float.class
+                        );
+                        constructor.setAccessible(true);
+                        respawnPosAngleConstructor = constructor;
+                        break;
+                    } catch (NoSuchMethodException ignored) {
+                    }
+                }
+            }
+            return respawnPosAngleConstructor == null
+                    ? null
+                    : respawnPosAngleConstructor.newInstance(position, yaw, 0.0F);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | SecurityException ignored) {
+            return null;
+        }
     }
 }

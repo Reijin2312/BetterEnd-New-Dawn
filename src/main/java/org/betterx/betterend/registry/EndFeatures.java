@@ -8,8 +8,8 @@ import org.betterx.betterend.world.features.*;
 import org.betterx.betterend.world.features.bushes.*;
 import org.betterx.betterend.world.features.terrain.*;
 import org.betterx.betterend.world.features.terrain.caves.CaveChunkPopulatorFeature;
-import org.betterx.betterend.world.features.terrain.caves.StalactiteClusterFeature;
 import org.betterx.betterend.world.features.terrain.caves.RoundCaveFeature;
+import org.betterx.betterend.world.features.terrain.caves.StalactiteClusterFeature;
 import org.betterx.betterend.world.features.terrain.caves.TunelCaveFeature;
 import org.betterx.betterend.world.features.trees.*;
 import org.betterx.wover.feature.api.FeatureManager;
@@ -24,6 +24,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 public class EndFeatures {
+    public static final StalactiteClusterFeature STALACTITE_CLUSTER = inlineBuild("stalactite_cluster", new StalactiteClusterFeature());
     public static final StalactiteFeature STALACTITE_FEATURE = inlineBuild("stalactite_feature", new StalactiteFeature());
     public static final BuildingListFeature BUILDING_LIST_FEATURE = inlineBuild("building_list_feature", new BuildingListFeature());
     public static final VineFeature VINE_FEATURE = inlineBuild("vine_feature", new VineFeature());
@@ -149,10 +150,13 @@ public class EndFeatures {
         builder.feature(EndOreFeatures.THALLASIUM_ORE);
         builder.feature(EndOreFeatures.ENDER_ORE);
         builder.feature(EndTerrainFeatures.CRASHED_SHIP);
+
+        if (hasCaves) {
+            builder.feature(EndTerrainFeatures.ROUND_CAVE);
+            builder.feature(EndTerrainFeatures.TUNEL_CAVE);
+        }
     }
 
     public static void register() {
     }
 }
-
-

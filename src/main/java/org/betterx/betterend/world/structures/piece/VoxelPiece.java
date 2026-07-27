@@ -54,7 +54,7 @@ public class VoxelPiece extends BasePiece {
             BlockPos blockPos
     ) {
         if (this.world.placeChunk(world, chunkPos)) {
-            ChunkAccess chunk = world.getChunk(chunkPos.x, chunkPos.z);
+            ChunkAccess chunk = world.getChunk(chunkPos.x(), chunkPos.z());
             Heightmap.primeHeightmaps(
                     chunk,
                     EnumSet.of(Heightmap.Types.WORLD_SURFACE_WG, Heightmap.Types.OCEAN_FLOOR_WG)
