@@ -324,9 +324,9 @@ public class EndLakePiece extends BasePiece {
             ChunkPos chunkPos,
             BlockPos blockPos
     ) {
-        final ChunkAccess chunk = world.getChunk(chunkPos.x, chunkPos.z);
-        final int sx = SectionPos.sectionToBlockCoord(chunkPos.x);
-        final int sz = SectionPos.sectionToBlockCoord(chunkPos.z);
+        final ChunkAccess chunk = world.getChunk(chunkPos.x(), chunkPos.z());
+        final int sx = SectionPos.sectionToBlockCoord(chunkPos.x());
+        final int sz = SectionPos.sectionToBlockCoord(chunkPos.z());
 
         final double radius = this.radius;
         final double depth = this.depth;

@@ -27,8 +27,7 @@
     ],
     "minecraft:visual/fog_color": "#000000",
     "minecraft:visual/sky_color": "#000000",
-    "minecraft:visual/water_fog_color": "#2a2d50",
-    "neoforge:custom_skybox": "betterend:end_skybox"
+    "minecraft:visual/water_fog_color": "#2a2d50"
   },
   "carvers": [],
   "downfall": 0.5,

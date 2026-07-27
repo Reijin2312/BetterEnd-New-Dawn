@@ -427,16 +427,17 @@ public class EndModelProvider extends WoverModelProvider {
 
     private static void createDefaultPillarModel(WoverBlockModelGenerators generator, Block block) {
         final var texture = TextureMapping.getBlockTexture(block);
-        Identifier side = texture.withSuffix("_side");
-        Identifier end = texture.withSuffix("_top");
+        Identifier textureId = texture.sprite();
+        Material side = withSuffix(texture, "_side");
+        Material end = withSuffix(texture, "_top");
 
-        String path = texture.getPath();
+        String path = textureId.getPath();
         if (path.endsWith("_bark")) {
             Identifier log = Identifier.fromNamespaceAndPath(
-                    texture.getNamespace(),
+                    textureId.getNamespace(),
                     path.substring(0, path.length() - "_bark".length()) + "_log"
             );
-            side = log.withSuffix("_side");
+            side = material(log.withSuffix("_side"));
             end = side;
         }
 

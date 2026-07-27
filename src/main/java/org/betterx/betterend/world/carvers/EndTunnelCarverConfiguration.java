@@ -42,4 +42,3 @@ public class EndTunnelCarverConfiguration extends CarverConfiguration {
         this.threshold = threshold;
     }
 }
-
