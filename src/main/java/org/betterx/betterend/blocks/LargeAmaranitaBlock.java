@@ -8,11 +8,15 @@ import org.betterx.wover.block.api.BlockProperties;
 import org.betterx.wover.block.api.BlockProperties.TripleShape;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
@@ -32,6 +36,7 @@ public class LargeAmaranitaBlock extends EndPlantBlock implements BehaviourPlant
                 .ignitedByLava()
                 .lightLevel((state) -> (state.getValue(SHAPE) == TripleShape.TOP) ? 15 : 0)
         );
+        this.registerDefaultState(this.stateDefinition.any().setValue(SHAPE, TripleShape.TOP));
     }
 
     @Override
@@ -46,14 +51,38 @@ public class LargeAmaranitaBlock extends EndPlantBlock implements BehaviourPlant
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
-        TripleShape shape = state.getValue(SHAPE);
-        if (shape == TripleShape.BOTTOM) {
-            return isTerrain(world.getBlockState(pos.below())) && world.getBlockState(pos.above()).is(this);
-        } else if (shape == TripleShape.TOP) {
-            return world.getBlockState(pos.below()).is(this);
-        } else {
-            return world.getBlockState(pos.below()).is(this) && world.getBlockState(pos.above()).is(this);
-        }
+        BlockState below = world.getBlockState(pos.below());
+        return below.is(this) || isTerrain(below);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+        return this.defaultBlockState().setValue(
+                SHAPE,
+                shapeFor(ctx.getLevel(), ctx.getClickedPos())
+        );
+    }
+
+    @Override
+    public BlockState updateShape(
+            BlockState state,
+            Direction direction,
+            BlockState neighborState,
+            LevelAccessor level,
+            BlockPos pos,
+            BlockPos neighborPos
+    ) {
+        if (!canSurvive(state, level, pos)) return Blocks.AIR.defaultBlockState();
+        return state.setValue(SHAPE, shapeFor(level, pos));
+    }
+
+    private TripleShape shapeFor(LevelReader level, BlockPos pos) {
+        boolean below = level.getBlockState(pos.below()).is(this);
+        boolean above = level.getBlockState(pos.above()).is(this);
+        if (below && above) return TripleShape.MIDDLE;
+        if (below) return TripleShape.TOP;
+        if (above) return TripleShape.BOTTOM;
+        return TripleShape.TOP;
     }
 
     @Override
