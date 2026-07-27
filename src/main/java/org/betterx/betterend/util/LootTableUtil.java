@@ -63,6 +63,8 @@ public class LootTableUtil {
                 builder.add(LootItem.lootTableItem(EndItems.MUSIC_DISC_GRASPING_AT_STARS));
                 builder.add(LootItem.lootTableItem(EndItems.MUSIC_DISC_ENDSEEKER));
                 builder.add(LootItem.lootTableItem(EndItems.MUSIC_DISC_EO_DRACONA));
+                builder.add(LootItem.lootTableItem(EndItems.MUSIC_DISC_ENDER_HOLLOW));
+                builder.add(LootItem.lootTableItem(EndItems.MUSIC_DISC_MOONLIT_UNDERCURRENTS));
                 tableBuilder.withPool(builder);
 
                 tableBuilder.withPool(LootPool
