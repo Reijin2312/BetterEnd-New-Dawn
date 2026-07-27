@@ -292,4 +292,3 @@ final class CaveSurfaceCoater {
         SPHERE = prePos.toArray(new Vec3i[]{});
     }
 }
-

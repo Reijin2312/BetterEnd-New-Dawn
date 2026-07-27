@@ -24,6 +24,7 @@ public class LanceleafSeedBlock extends EndPlantWithAgeBlock implements Survives
         super(BehaviourBuilders.createWalkablePlant(MapColor.TERRACOTTA_BROWN)
                                .randomTicks()
                                .sound(SoundType.HARD_CROP)
+                               .dynamicShape()
                                .offsetType(OffsetType.XZ));
     }
 
