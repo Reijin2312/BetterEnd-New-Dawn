@@ -16,8 +16,9 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
@@ -63,9 +64,8 @@ public class LakePiece extends BasePiece {
     // follows the ellipsoid bowl (and the terraced skirt) instead of ending in a flat plane.
     private static final int SHELL_DEPTH = 4;
 
-    // Plants scattered on the lake shore. The attached blocks (fur/wings) survive on any sturdy top,
-    // the bush plants (jungle grass, umbrella moss) grow on CommonBlockTags.SOIL - trying them in a
-    // random order and placing the first that can survive keeps every shore block covered.
+    // Biome-neutral plants scattered on lake shores. Blue Vine Fur and Filalux Wings remain
+    // exclusive to their normal biome features instead of appearing around unrelated ponds.
     private static BlockState[] rimPlants;
 
     private static BlockState[] rimPlants() {
@@ -73,8 +73,6 @@ public class LakePiece extends BasePiece {
             rimPlants = new BlockState[]{
                     EndBlocks.JUNGLE_GRASS.defaultBlockState(),
                     EndBlocks.UMBRELLA_MOSS.defaultBlockState(),
-                    EndBlocks.BLUE_VINE_FUR.defaultBlockState(),
-                    EndBlocks.FILALUX_WINGS.defaultBlockState(),
             };
         }
         return rimPlants;
@@ -122,24 +120,24 @@ public class LakePiece extends BasePiece {
 
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
-        tag.store("center", BlockPos.CODEC, center);
+        tag.put("center", NbtUtils.writeBlockPos(center));
         tag.putFloat("radius", radius);
         tag.putFloat("depth", depth);
         tag.putInt("seed", seed);
         tag.putInt("water_level", waterLevel);
-        tag.putString("biome", biomeID.identifier().toString());
+        tag.putString("biome", biomeID.location().toString());
     }
 
     @Override
     protected void fromNbt(CompoundTag tag) {
-        center = tag.read("center", BlockPos.CODEC).orElse(BlockPos.ZERO);
-        radius = tag.getFloatOr("radius", 0);
-        depth = tag.getFloatOr("depth", 0);
-        seed = tag.getIntOr("seed", 0);
-        waterLevel = tag.getIntOr("water_level", center.getY());
+        center = NbtUtils.readBlockPos(tag, "center").orElse(BlockPos.ZERO);
+        radius = tag.contains("radius", 5) ? tag.getFloat("radius") : 0;
+        depth = tag.contains("depth", 5) ? tag.getFloat("depth") : 0;
+        seed = tag.contains("seed", 3) ? tag.getInt("seed") : 0;
+        waterLevel = tag.contains("water_level", 3) ? tag.getInt("water_level") : center.getY();
         noise = new OpenSimplexNoise(seed);
         aspect = radius / depth;
-        biomeID = ResourceKey.create(Registries.BIOME, Identifier.parse(tag.getStringOr("biome", "")));
+        biomeID = ResourceKey.create(Registries.BIOME, ResourceLocation.parse(tag.getString("biome")));
     }
 
     /**
@@ -234,7 +232,7 @@ public class LakePiece extends BasePiece {
                         }
                         if (state.is(CommonBlockTags.END_STONES) || state.isAir()) {
                             state = mut.getY() < waterLevel ? WATER : CAVE_AIR;
-                            chunk.setBlockState(mut, state, 3);
+                            chunk.setBlockState(mut, state, false);
                         }
                     } else if (dist <= r3 && mut.getY() < center.getY()) {
                         BlockState state = chunk.getBlockState(mut);
@@ -262,7 +260,7 @@ public class LakePiece extends BasePiece {
                             double edgeT = (dist - r2) / (r3 - r2);
                             double placeChance = edgeT > 0.85 ? 0.2 : edgeT > 0.6 ? 0.5 : 1.0;
                             if (placeChance >= 1.0 || random.nextDouble() < placeChance) {
-                                chunk.setBlockState(mut, state, 3);
+                                chunk.setBlockState(mut, state, false);
                                 // Every placed rim block is filled down to solid ground - the outer
                                 // taper otherwise leaves single blocks floating over air.
                                 fillDownToGround(chunk, mut, mut.getY() - 1);
@@ -322,7 +320,7 @@ public class LakePiece extends BasePiece {
         if (!chunk.getBlockState(mut).getFluidState().isEmpty()) {
             // Under the water: walk down to the lowest water block, then close the gap below it.
             int bottom = surfaceY;
-            while (bottom - 1 > chunk.getMinY()) {
+            while (bottom - 1 > chunk.getMinBuildHeight()) {
                 mut.setY(bottom - 1);
                 if (chunk.getBlockState(mut).getFluidState().isEmpty()) break;
                 bottom--;
@@ -360,7 +358,7 @@ public class LakePiece extends BasePiece {
         final BlockState state = chunk.getBlockState(mut);
         if (!state.getFluidState().isEmpty()) return;
         if (!state.isAir() && !BlocksHelper.replaceableOrPlant(state)) return; // terrain reaches the target
-        chunk.setBlockState(mut, shorePatch(world, wx, wz, -0.55), 3);
+        chunk.setBlockState(mut, shorePatch(world, wx, wz, -0.55), false);
         // Fill the shore solidly down to the real ground with end stone so it never floats.
         fillDownToGround(chunk, mut, target - 1);
     }
@@ -379,7 +377,7 @@ public class LakePiece extends BasePiece {
         final int origY = mut.getY();
         // Measure the gap first: find solid ground within MAX_AIR_FILL blocks.
         int groundY = Integer.MIN_VALUE;
-        final int floor = Math.max(from - MAX_AIR_FILL, chunk.getMinY());
+        final int floor = Math.max(from - MAX_AIR_FILL, chunk.getMinBuildHeight());
         for (int y = from; y >= floor; y--) {
             mut.setY(y);
             final BlockState state = chunk.getBlockState(mut);
@@ -398,7 +396,7 @@ public class LakePiece extends BasePiece {
         }
         for (int y = from; y >= groundY; y--) {
             mut.setY(y);
-            chunk.setBlockState(mut, ENDSTONE, 3);
+            chunk.setBlockState(mut, ENDSTONE, false);
         }
         mut.setY(origY);
     }
@@ -409,7 +407,7 @@ public class LakePiece extends BasePiece {
      * {@link #NO_GROUND} if there is neither.
      */
     private int findGroundBelow(ChunkAccess chunk, MutableBlockPos mut, int from) {
-        final int floor = Math.max(from - GROUND_SEARCH_DEPTH, chunk.getMinY());
+        final int floor = Math.max(from - GROUND_SEARCH_DEPTH, chunk.getMinBuildHeight());
         for (int y = from; y > floor; y--) {
             mut.setY(y);
             final BlockState state = chunk.getBlockState(mut);
@@ -437,7 +435,7 @@ public class LakePiece extends BasePiece {
             final BlockState state = chunk.getBlockState(mut);
             if (!state.getFluidState().isEmpty()) break;
             if (!state.isAir() && !BlocksHelper.replaceableOrPlant(state)) break;
-            chunk.setBlockState(mut, ENDSTONE, 3);
+            chunk.setBlockState(mut, ENDSTONE, false);
         }
     }
 
@@ -463,7 +461,7 @@ public class LakePiece extends BasePiece {
         for (int i = 0; i < plants.length; i++) {
             final BlockState plant = plants[(start + i) % plants.length];
             if (plant.canSurvive(world, plantWorld)) {
-                chunk.setBlockState(plantLocal, plant, 3);
+                chunk.setBlockState(plantLocal, plant, false);
                 return;
             }
         }
@@ -534,10 +532,10 @@ public class LakePiece extends BasePiece {
     }
 
     private void makeEndstonePillar(ChunkAccess chunk, MutableBlockPos mut, BlockState terrain) {
-        chunk.setBlockState(mut, terrain, 3);
+        chunk.setBlockState(mut, terrain, false);
         mut.setY(mut.getY() - 1);
         while (!chunk.getFluidState(mut).isEmpty()) {
-            chunk.setBlockState(mut, ENDSTONE, 3);
+            chunk.setBlockState(mut, ENDSTONE, false);
             mut.setY(mut.getY() - 1);
         }
     }

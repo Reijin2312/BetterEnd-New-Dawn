@@ -1,6 +1,6 @@
 package org.betterx.betterend.registry;
 
-import org.betterx.betterend.client.render.FlowerPotItemRenderer;
+// import org.betterx.betterend.client.render.FlowerPotItemRenderer;
 import org.betterx.betterend.client.render.PedestalItemRenderer;
 
 import net.fabricmc.api.EnvType;
@@ -13,6 +13,7 @@ public class EndBlockEntityRenders {
         BlockEntityRendererRegistry.register(EndBlockEntities.PEDESTAL, PedestalItemRenderer::new);
         BlockEntityRendererRegistry.register(EndBlockEntities.ETERNAL_PEDESTAL, PedestalItemRenderer::new);
         BlockEntityRendererRegistry.register(EndBlockEntities.INFUSION_PEDESTAL, PedestalItemRenderer::new);
-        BlockEntityRendererRegistry.register(EndBlockEntities.FLOWER_POT, FlowerPotItemRenderer::new);
+        // Disabled together with the experimental block-entity flower-pot pipeline.
+        // BlockEntityRendererRegistry.register(EndBlockEntities.FLOWER_POT, FlowerPotItemRenderer::new);
     }
 }

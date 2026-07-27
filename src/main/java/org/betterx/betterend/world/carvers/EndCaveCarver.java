@@ -173,7 +173,7 @@ public class EndCaveCarver extends WorldCarver<EndCaveCarverConfiguration> {
                         pos.set(x, y, z);
                         final BlockState state = chunk.getBlockState(pos);
                         if (isReplaceable(cfg, state) && !isWaterNear(chunk, cp, pos, neighbor, minGenY, maxGenY)) {
-                            chunk.setBlockState(pos, CAVE_AIR);
+                            chunk.setBlockState(pos, CAVE_AIR, false);
                             mask.set(lx, y, lz);
                             carvedPositions.add(BlockPos.asLong(x, y, z));
                             carved = true;
@@ -229,4 +229,3 @@ public class EndCaveCarver extends WorldCarver<EndCaveCarverConfiguration> {
         return false;
     }
 }
-

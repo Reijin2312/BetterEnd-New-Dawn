@@ -1,18 +1,19 @@
 package org.betterx.betterend.blocks.basis;
 
 import org.betterx.bclib.blocks.BaseAttachedBlock;
+import org.betterx.bclib.behaviours.BehaviourBuilders;
+import org.betterx.bclib.client.render.BCLRenderLayer;
+import org.betterx.bclib.interfaces.RenderLayerProvider;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.ScheduledTickAccess;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -31,7 +32,7 @@ import org.jetbrains.annotations.NotNull;
 import net.minecraft.world.level.material.MapColor;
 
 @SuppressWarnings("deprecation")
-public class FurBlock extends BaseAttachedBlock implements SimpleWaterloggedBlock {
+public class FurBlock extends BaseAttachedBlock implements SimpleWaterloggedBlock, RenderLayerProvider {
     private static final EnumMap<Direction, VoxelShape> BOUNDING_SHAPES = Maps.newEnumMap(Direction.class);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
@@ -41,12 +42,16 @@ public class FurBlock extends BaseAttachedBlock implements SimpleWaterloggedBloc
     }
 
     /** Compatibility constructors retained for the older BetterEnd block registry. */
-    public FurBlock(MapColor color, Block sapling, int light) {
-        this(BlockBehaviour.Properties.of().mapColor(color).lightLevel(state -> light));
+    public FurBlock(MapColor color, Block sapling, int dropChance) {
+        this(color, sapling, 0, dropChance, false);
     }
 
-    public FurBlock(MapColor color, Block sapling, int light, int spread, boolean solid) {
-        this(BlockBehaviour.Properties.of().mapColor(color).lightLevel(state -> light));
+    public FurBlock(MapColor color, Block sapling, int light, int dropChance, boolean wet) {
+        this(BehaviourBuilders.createPlant(color)
+                .replaceable()
+                .lightLevel(state -> light)
+                .ignitedByLava()
+                .sound(wet ? SoundType.WET_GRASS : SoundType.GRASS));
     }
 
     @Override
@@ -75,17 +80,15 @@ public class FurBlock extends BaseAttachedBlock implements SimpleWaterloggedBloc
     @Override
     public @NotNull BlockState updateShape(
             BlockState state,
-            LevelReader level,
-            ScheduledTickAccess scheduledTickAccess,
-            BlockPos pos,
             Direction neighborDirection,
-            BlockPos neighborPos,
             BlockState neighborState,
-            RandomSource randomSource
+            LevelAccessor level,
+            BlockPos pos,
+            BlockPos neighborPos
     ) {
         boolean water = state.getValue(WATERLOGGED);
         if (water) {
-            scheduledTickAccess.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+            level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
         // Preserve BaseAttachedBlock's attachment/survival behavior; when it can no longer survive, leave the
         // water behind if this block was waterlogged instead of stranding a dry air pocket.
@@ -98,6 +101,11 @@ public class FurBlock extends BaseAttachedBlock implements SimpleWaterloggedBloc
     @Override
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter view, BlockPos pos, CollisionContext ePos) {
         return BOUNDING_SHAPES.get(state.getValue(FACING));
+    }
+
+    @Override
+    public BCLRenderLayer getRenderLayer() {
+        return BCLRenderLayer.CUTOUT;
     }
 
     static {

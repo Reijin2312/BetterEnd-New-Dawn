@@ -32,7 +32,6 @@ public class BigAuroraCrystalFeature extends DefaultFeature {
 
         int y = MHelper.randRange(minY, maxY, random);
         pos = new BlockPos(pos.getX(), y, pos.getZ());
-
         int height = MHelper.randRange(5, 25, random);
         SDF prism = new SDFHexPrism().setHeight(height)
                                      .setRadius(MHelper.randRange(1.7F, 3F, random))

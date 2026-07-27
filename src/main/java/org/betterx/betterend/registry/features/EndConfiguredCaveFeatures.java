@@ -8,6 +8,8 @@ import org.betterx.betterend.world.features.VineFeatureConfig;
 import org.betterx.betterend.world.features.bushes.BushFeature;
 import org.betterx.betterend.world.features.bushes.BushFeatureConfig;
 import org.betterx.betterend.world.features.terrain.*;
+import org.betterx.betterend.world.features.terrain.caves.StalactiteClusterConfig;
+import org.betterx.betterend.world.features.terrain.caves.StalactiteClusterFeature;
 import org.betterx.wover.feature.api.configured.ConfiguredFeatureKey;
 import org.betterx.wover.feature.api.configured.ConfiguredFeatureManager;
 import org.betterx.wover.feature.api.configured.configurators.WithConfiguration;
@@ -36,4 +38,3 @@ public class EndConfiguredCaveFeatures {
     public static final ConfiguredFeatureKey<WithConfiguration<CavePumpkinFeature, NoneFeatureConfiguration>> CAVE_PUMPKIN = ConfiguredFeatureManager.configuration(BetterEnd.C.mk("cave_pumpkin"), EndFeatures.CAVE_PUMPKIN_FEATURE);
 
 }
-

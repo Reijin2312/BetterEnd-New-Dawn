@@ -427,7 +427,7 @@ public class EndBlocks {
     );
     public static final Block SHADOW_PLANT = registerBlock(
             "shadow_plant",
-            new TerrainPlantBlock(SHADOW_GRASS)
+            new TerrainPlantBlock(EndTags.SURVIVES_ON_SHADOW_GRASS)
     );
     public static final Block BUSHY_GRASS = registerBlock(
             "bushy_grass",
@@ -435,7 +435,7 @@ public class EndBlocks {
     );
     public static final Block AMBER_GRASS = registerBlock(
             "amber_grass",
-            new TerrainPlantBlock(AMBER_MOSS)
+            new TerrainPlantBlock(EndTags.SURVIVES_ON_AMBER_MOSS)
     );
     public static final Block TWISTED_UMBRELLA_MOSS = registerBlock(
             "twisted_umbrella_moss",
@@ -451,11 +451,11 @@ public class EndBlocks {
     );
     public static final Block BLOOMING_COOKSONIA = registerBlock(
             "blooming_cooksonia",
-            new TerrainPlantBlock(END_MOSS)
+            new TerrainPlantBlock(EndTags.SURVIVES_ON_END_MOSS)
     );
-    public static final Block SALTEAGO = registerBlock("salteago", new TerrainPlantBlock(END_MOSS));
-    public static final Block VAIOLUSH_FERN = registerBlock("vaiolush_fern", new TerrainPlantBlock(END_MOSS));
-    public static final Block FRACTURN = registerBlock("fracturn", new TerrainPlantBlock(END_MOSS));
+    public static final Block SALTEAGO = registerBlock("salteago", new TerrainPlantBlock(EndTags.SURVIVES_ON_END_MOSS));
+    public static final Block VAIOLUSH_FERN = registerBlock("vaiolush_fern", new TerrainPlantBlock(EndTags.SURVIVES_ON_END_MOSS));
+    public static final Block FRACTURN = registerBlock("fracturn", new TerrainPlantBlock(EndTags.SURVIVES_ON_END_MOSS));
     public static final Block CLAWFERN = registerBlock(
             "clawfern",
             new TerrainPlantBlock(
@@ -472,10 +472,10 @@ public class EndBlocks {
                     MOSSY_DRAGON_BONE
             )
     );
-    public static final Block ORANGO = registerBlock("orango", new TerrainPlantBlock(RUTISCUS));
-    public static final Block AERIDIUM = registerBlock("aeridium", new TerrainPlantBlock(RUTISCUS));
-    public static final Block LUTEBUS = registerBlock("lutebus", new TerrainPlantBlock(RUTISCUS));
-    public static final Block LAMELLARIUM = registerBlock("lamellarium", new TerrainPlantBlock(RUTISCUS));
+    public static final Block ORANGO = registerBlock("orango", new TerrainPlantBlock(EndTags.SURVIVES_ON_RUTISCUS));
+    public static final Block AERIDIUM = registerBlock("aeridium", new TerrainPlantBlock(EndTags.SURVIVES_ON_RUTISCUS));
+    public static final Block LUTEBUS = registerBlock("lutebus", new TerrainPlantBlock(EndTags.SURVIVES_ON_RUTISCUS));
+    public static final Block LAMELLARIUM = registerBlock("lamellarium", new TerrainPlantBlock(EndTags.SURVIVES_ON_RUTISCUS));
     public static final Block INFLEXIA = registerBlock(
             "inflexia",
             new TerrainPlantBlock(

@@ -24,6 +24,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 
 public class EndFeatures {
     public static final StalactiteFeature STALACTITE_FEATURE = inlineBuild("stalactite_feature", new StalactiteFeature());
+    public static final StalactiteClusterFeature STALACTITE_CLUSTER = inlineBuild("stalactite_cluster", new StalactiteClusterFeature());
     public static final BuildingListFeature BUILDING_LIST_FEATURE = inlineBuild("building_list_feature", new BuildingListFeature());
     public static final VineFeature VINE_FEATURE = inlineBuild("vine_feature", new VineFeature());
     public static final WallPlantFeature WALL_PLANT_FEATURE = inlineBuild("wall_plant_feature", new WallPlantFeature());
@@ -148,10 +149,13 @@ public class EndFeatures {
         builder.feature(EndOreFeatures.THALLASIUM_ORE);
         builder.feature(EndOreFeatures.ENDER_ORE);
         builder.feature(EndTerrainFeatures.CRASHED_SHIP);
+
+        if (hasCaves) {
+            builder.feature(EndTerrainFeatures.ROUND_CAVE);
+            builder.feature(EndTerrainFeatures.TUNEL_CAVE);
+        }
     }
 
     public static void register() {
     }
 }
-
-
