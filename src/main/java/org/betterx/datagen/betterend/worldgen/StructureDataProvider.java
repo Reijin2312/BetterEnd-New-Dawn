@@ -66,6 +66,23 @@ public class StructureDataProvider extends WoverStructureProvider {
                 .addStructure(EndStructures.MEGALAKE_SMALL)
                 .randomPlacement(4, 1)
                 .register();
+        // The three End lake variants replace the old EndLakeFeature (onceEvery 4/20/40). A
+        // RandomSpread with spacing S places roughly one structure per S*S chunks. The common variant's
+        // spacing was bumped past the naive sqrt(chance)=2 estimate: unlike the old chunk-decoration
+        // feature (real Bernoulli variance, its own rejection paths), a structure_set attempt nearly
+        // always succeeds, so the naive conversion read as far too dense in practice.
+        StructureSetManager
+                .bootstrap(EndStructures.END_LAKE, context)
+                .randomPlacement(6, 1)
+                .register();
+        StructureSetManager
+                .bootstrap(EndStructures.END_LAKE_NORMAL, context)
+                .randomPlacement(5, 2)
+                .register();
+        StructureSetManager
+                .bootstrap(EndStructures.END_LAKE_RARE, context)
+                .randomPlacement(6, 2)
+                .register();
         StructureSetManager
                 .bootstrap(EndStructures.END_BRIDGE, context)
                 .randomPlacement(6, 2)
