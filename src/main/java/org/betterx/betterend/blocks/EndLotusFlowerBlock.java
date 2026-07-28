@@ -11,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootParams;
@@ -27,7 +28,9 @@ public class EndLotusFlowerBlock extends EndPlantBlock implements BehaviourPlant
     private static final VoxelShape SHAPE_COLLISION = Block.box(0, 0, 0, 16, 2, 16);
 
     public EndLotusFlowerBlock() {
-        super(BehaviourBuilders.createPlant(MapColor.COLOR_PINK).lightLevel((bs) -> 15));
+        super(BehaviourBuilders.createPlant(MapColor.COLOR_PINK)
+                .offsetType(BlockBehaviour.OffsetType.NONE)
+                .lightLevel((bs) -> 15));
     }
 
     @Override
