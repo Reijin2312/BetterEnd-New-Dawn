@@ -10,6 +10,7 @@ import org.betterx.wover.block.api.model.BlockModelProvider;
 import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
 import org.betterx.wover.block.api.model.WoverBlockModelGeneratorsAccess;
 
+import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.resources.model.sprite.Material;
@@ -50,6 +51,6 @@ public class HydraluxPetalColoredBlock extends HydraluxPetalBlock implements Cus
         if (PETAL_MODEL == null)
             PETAL_MODEL = EndModels.PETAL_COLORED.create(modelLocation, mapping, generator.modelOutput());
         generator.acceptBlockState(WoverBlockModelGeneratorsAccess.createSimpleBlock(this, PETAL_MODEL));
-        generator.delegateItemModel(this, modelLocation);
+        generator.delegateTintedItemModel(this, modelLocation, ItemModelUtils.constantTint(BlocksHelper.getBlockColor(this)));
     }
 }
