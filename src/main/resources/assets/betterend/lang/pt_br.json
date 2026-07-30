@@ -921,5 +921,11 @@
   "betterend.jei.damage.amount&dmg": "Dano da ferramenta: %s",
   "betterend.jei.infusion.time&val": "%s ticks",
   "betterend.jei.recipe_level.anvil": "Nível: %s",
-  "config.jade.plugin_betterend.plant_growth": "Plantas do BetterEnd"
+  "config.jade.plugin_betterend.plant_growth": "Plantas do BetterEnd",
+  "jukebox_song.betterend.endseeker": "Firel - Caçador do End",
+  "jukebox_song.betterend.eo_dracona": "Firel - Eo Dracona",
+  "jukebox_song.betterend.grasping_at_stars": "Firel - Agarrando-se às Estrelas",
+  "jukebox_song.betterend.ender_hollow": "noqwww - Ender Hollow",
+  "jukebox_song.betterend.moonlit_undercurrents": "noqwww - Moonlit Undercurrents",
+  "jukebox_song.betterend.strange_and_alien": "Firel - Estranho e Alienígena"
 }

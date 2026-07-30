@@ -25,5 +25,11 @@
 	"betterend.jei.damage.amount&dmg": "Tool damage: %s",
 	"betterend.jei.infusion.time&val": "%s ticks",
 	"betterend.jei.recipe_level.anvil": "Lvl: %s",
-	"config.jade.plugin_betterend.plant_growth": "BetterEnd Plants"
+	"config.jade.plugin_betterend.plant_growth": "BetterEnd Plants",
+	"jukebox_song.betterend.endseeker": "Firel - Endseeker",
+	"jukebox_song.betterend.eo_dracona": "Firel - Eo Dracona",
+	"jukebox_song.betterend.grasping_at_stars": "Firel - Grasping At Stars",
+	"jukebox_song.betterend.ender_hollow": "noqwww - Ender Hollow",
+	"jukebox_song.betterend.moonlit_undercurrents": "noqwww - Moonlit Undercurrents",
+	"jukebox_song.betterend.strange_and_alien": "Firel - Strange And Alien"
 }

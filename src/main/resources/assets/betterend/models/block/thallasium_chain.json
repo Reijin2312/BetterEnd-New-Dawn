@@ -2,7 +2,7 @@
   "parent": "block/chain",
   "textures": {
     "particle": "betterend:block/thallasium_chain",
-    "chain": "betterend:block/thallasium_chain"
+    "all": "betterend:block/thallasium_chain"
   }
 }
 
