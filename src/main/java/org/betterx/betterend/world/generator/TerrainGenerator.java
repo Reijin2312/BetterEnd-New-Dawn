@@ -56,23 +56,48 @@ public class TerrainGenerator {
     private static Sampler sampler;
 
     public static void initNoise(long seed, BiomeSource biomeSource, Sampler sampler) {
-        TerrainGenerator.config = resolveEndConfig(biomeSource);
-        if (config == null) {
-            TerrainGenerator.biomeSource = null;
-            TerrainGenerator.sampler = null;
-            return;
+        LOCKER.lock();
+        try {
+            resetNoiseState();
+            TerrainGenerator.config = resolveEndConfig(biomeSource);
+            if (config == null) {
+                return;
+            }
+
+            RandomSource random = new LegacyRandomSource(seed);
+            largeIslands = new IslandLayer(random.nextInt(), GeneratorOptions.bigOptions);
+            mediumIslands = new IslandLayer(random.nextInt(), GeneratorOptions.mediumOptions);
+            smallIslands = new IslandLayer(random.nextInt(), GeneratorOptions.smallOptions);
+            noise1 = new OpenSimplexNoise(random.nextInt());
+            noise2 = new OpenSimplexNoise(random.nextInt());
+            TerrainGenerator.biomeSource = biomeSource;
+            TerrainGenerator.sampler = sampler;
+        } finally {
+            LOCKER.unlock();
         }
+    }
 
-        RandomSource random = new LegacyRandomSource(seed);
-        largeIslands = new IslandLayer(random.nextInt(), GeneratorOptions.bigOptions);
-        mediumIslands = new IslandLayer(random.nextInt(), GeneratorOptions.mediumOptions);
-        smallIslands = new IslandLayer(random.nextInt(), GeneratorOptions.smallOptions);
-        noise1 = new OpenSimplexNoise(random.nextInt());
-        noise2 = new OpenSimplexNoise(random.nextInt());
+    private static void resetNoiseState() {
         TERRAIN_BOOL_CACHE_MAP.clear();
-        TerrainGenerator.biomeSource = biomeSource;
-        TerrainGenerator.sampler = sampler;
+        largeIslands = null;
+        mediumIslands = null;
+        smallIslands = null;
+        noise1 = null;
+        noise2 = null;
+        biomeSource = null;
+        sampler = null;
+        config = null;
+    }
 
+    private static boolean isNoiseReady() {
+        return largeIslands != null
+                && mediumIslands != null
+                && smallIslands != null
+                && noise1 != null
+                && noise2 != null
+                && biomeSource != null
+                && sampler != null
+                && config != null;
     }
 
     private static @Nullable WoverEndConfig resolveEndConfig(BiomeSource biomeSource) {
@@ -98,6 +123,12 @@ public class TerrainGenerator {
         // island caches can never orphan the static LOCKER and deadlock every worker + the server thread.
         LOCKER.lock();
         try {
+        if (!isNoiseReady()) {
+            for (int y = 0; y < buffer.length; y++) {
+                buffer[y] = -1;
+            }
+            return;
+        }
         final float fadeOutDist = 27.0f;
         final float fadOutStart = maxHeight - (fadeOutDist + 1);
         largeIslands.clearCache();
@@ -222,6 +253,9 @@ public class TerrainGenerator {
         LOCKER.lock();
         // try/finally so an exception below can never orphan the static LOCKER (see fillTerrainDensity).
         try {
+        if (!isNoiseReady()) {
+            return false;
+        }
         POS.setLocation(sectionX, sectionZ);
 
         TerrainBoolCache section = TERRAIN_BOOL_CACHE_MAP.get(POS);
@@ -295,7 +329,6 @@ public class TerrainGenerator {
                     BETargetChecker.class
                             .cast(sHolder.value())
                             .be_setTarget(false);
-                    return;
                 }
 
             }

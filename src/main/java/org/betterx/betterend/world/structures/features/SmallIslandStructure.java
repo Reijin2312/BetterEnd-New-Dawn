@@ -12,12 +12,10 @@ import org.betterx.bclib.sdf.operator.SDFSmoothUnion;
 import org.betterx.bclib.sdf.operator.SDFTranslate;
 import org.betterx.bclib.sdf.primitive.SDFCappedCone;
 import org.betterx.bclib.util.MHelper;
-import org.betterx.betterend.mixin.common.NoiseBasedChunkGeneratorAccessor;
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.betterend.registry.EndBiomes;
 import org.betterx.betterend.registry.EndStructures;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.betterend.world.generator.TerrainGenerator;
 import org.betterx.betterend.world.structures.piece.VoxelPiece;
 
 import org.betterx.wover.block.api.BlockProperties.TripleShape;
@@ -32,7 +30,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 
@@ -366,14 +364,10 @@ public class SmallIslandStructure extends SDFStructureFeature {
         // below can probe with the true island radius.
         final IslandGeometry geom = drawGeometry(random, flowerIslets);
 
-        // Never overlap native End terrain: probe TerrainGenerator.isLand at the island centre and at
-        // +-radius on each horizontal axis (block coords -> quart via >>2). isLand is static +
-        // LOCKER-guarded and safe off-thread. If ANY probe hits native land, skip this island without
-        // adding a piece. (TerrainGenerator may be uninitialized during early datagen -> its null guard
-        // returns false = fails open = island generates; acceptable.)
-        final int maxHeight = terrainMaxHeight(context);
+        // Never overlap terrain produced by the active chunk generator. This also supports vanilla and
+        // third-party End generators, for which BetterEnd's private TerrainGenerator is not initialized.
         final int r = Math.round(geom.radius());
-        if (overlapsNativeLand(x, z, r, maxHeight)) {
+        if (overlapsNativeLand(context, x, z, r)) {
             return;
         }
         VoxelPiece piece = new VoxelPiece((world) -> {
@@ -383,36 +377,27 @@ public class SmallIslandStructure extends SDFStructureFeature {
     }
 
     /**
-     * Probes {@link TerrainGenerator#isLand} at the island centre and at {@code +-r} on each horizontal
-     * axis, converting block coordinates to quart positions ({@code >> 2}). Returns true if ANY probe
-     * lands on native End terrain, so the caller can skip the island rather than overlap real land.
+     * Probes the active generator at the island centre and at {@code +-r} on each horizontal axis.
+     * Returns true if any probe contains terrain, so the caller does not overlap native or third-party
+     * End land.
      */
-    private static boolean overlapsNativeLand(int blockX, int blockZ, int r, int maxHeight) {
+    private static boolean overlapsNativeLand(GenerationContext context, int blockX, int blockZ, int r) {
+        final ChunkGenerator generator = context.chunkGenerator();
+        final int minBuildHeight = context.heightAccessor().getMinBuildHeight();
         final int[][] probes = {{0, 0}, {r, 0}, {-r, 0}, {0, r}, {0, -r}};
         for (int[] p : probes) {
-            final int qx = (blockX + p[0]) >> 2;
-            final int qz = (blockZ + p[1]) >> 2;
-            if (TerrainGenerator.isLand(qx, qz, maxHeight)) {
+            final int surfaceY = generator.getBaseHeight(
+                    blockX + p[0],
+                    blockZ + p[1],
+                    Heightmap.Types.WORLD_SURFACE_WG,
+                    context.heightAccessor(),
+                    context.randomState()
+            );
+            if (surfaceY > minBuildHeight) {
                 return true;
             }
         }
         return false;
-    }
-
-    /**
-     * The world's noise-generation height ({@code noiseSettings().height()}) - the same {@code maxHeight}
-     * the biome deciders feed {@link TerrainGenerator#isLand}, so the overlap probe matches the cached
-     * land/void classification. Falls back to 128 for non-noise generators (never the case for the End).
-     */
-    private static int terrainMaxHeight(GenerationContext context) {
-        // Cast from the ChunkGenerator supertype (not the concrete NoiseBasedChunkGenerator) so the
-        // mixin-applied accessor interface is visible to the compiler, mirroring
-        // TerrainGenerator.onServerLevelInit.
-        final ChunkGenerator cg = context.chunkGenerator();
-        if (cg instanceof NoiseBasedChunkGenerator) {
-            return ((NoiseBasedChunkGeneratorAccessor) cg).be_getSettings().value().noiseSettings().height();
-        }
-        return 128;
     }
 
     private boolean isFlowerIslets(GenerationContext context, int x, int y, int z) {
