@@ -4,5 +4,5 @@
     "translate": "jukebox_song.betterend.grasping_at_stars"
   },
   "length_in_seconds": 528.0,
-  "sound_event": "betterend:betterend.record.grasping_at_stars"
+  "sound_event": "betterend:record.grasping_at_stars"
 }

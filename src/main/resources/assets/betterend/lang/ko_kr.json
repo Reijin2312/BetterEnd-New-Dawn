@@ -917,5 +917,11 @@
 	"betterend.jei.infusion.time&val": "%s틱",
 	"betterend.jei.container.infusion": "주입 레시피",
 	"betterend.jei.container.anvil": "모루 레시피",
-	"betterend.jei.alloying.experience_time": "%s XP | %s초"
+	"betterend.jei.alloying.experience_time": "%s XP | %s초",
+	"jukebox_song.betterend.endseeker": "Firel - Endseeker",
+	"jukebox_song.betterend.eo_dracona": "Firel - Eo Dracona",
+	"jukebox_song.betterend.grasping_at_stars": "Firel - Grasping At Stars",
+	"jukebox_song.betterend.ender_hollow": "noqwww - Ender Hollow",
+	"jukebox_song.betterend.moonlit_undercurrents": "noqwww - Moonlit Undercurrents",
+	"jukebox_song.betterend.strange_and_alien": "Firel - Strange And Alien"
 }

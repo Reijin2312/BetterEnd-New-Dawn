@@ -86,12 +86,12 @@ public class EndSounds {
             ENTITY_SHADOW_WALKER_DAMAGE = register(helper, key("betterend.entity.shadow_walker_damage"));
             ENTITY_SHADOW_WALKER_DEATH = register(helper, key("betterend.entity.shadow_walker_death"));
 
-            RECORD_STRANGE_AND_ALIEN_SOUND = registerRef(helper, key("betterend.record.strange_and_alien"));
-            RECORD_GRASPING_AT_STARS_SOUND = registerRef(helper, key("betterend.record.grasping_at_stars"));
-            RECORD_ENDSEEKER_SOUND = registerRef(helper, key("betterend.record.endseeker"));
-            RECORD_EO_DRACONA_SOUND = registerRef(helper, key("betterend.record.eo_dracona"));
-            RECORD_ENDER_HOLLOW_SOUND = registerRef(helper, key("betterend.record.ender_hollow"));
-            RECORD_MOONLIT_UNDERCURRENTS_SOUND = registerRef(helper, key("betterend.record.moonlit_undercurrents"));
+            RECORD_STRANGE_AND_ALIEN_SOUND = registerRef(helper, key("record.strange_and_alien"));
+            RECORD_GRASPING_AT_STARS_SOUND = registerRef(helper, key("record.grasping_at_stars"));
+            RECORD_ENDSEEKER_SOUND = registerRef(helper, key("record.endseeker"));
+            RECORD_EO_DRACONA_SOUND = registerRef(helper, key("record.eo_dracona"));
+            RECORD_ENDER_HOLLOW_SOUND = registerRef(helper, key("record.ender_hollow"));
+            RECORD_MOONLIT_UNDERCURRENTS_SOUND = registerRef(helper, key("record.moonlit_undercurrents"));
         });
     }
 

@@ -1017,5 +1017,11 @@
   "betterend.jei.infusion.time&val": "%s 刻",
   "betterend.jei.container.infusion": "灌注配方",
   "betterend.jei.container.anvil": "铁砧配方",
-  "betterend.jei.alloying.experience_time": "%s 经验 | %s 秒"
+  "betterend.jei.alloying.experience_time": "%s 经验 | %s 秒",
+  "jukebox_song.betterend.endseeker": "Firel - Endseeker",
+  "jukebox_song.betterend.eo_dracona": "Firel - Eo Dracona",
+  "jukebox_song.betterend.grasping_at_stars": "Firel - Grasping At Stars",
+  "jukebox_song.betterend.ender_hollow": "noqwww - Ender Hollow",
+  "jukebox_song.betterend.moonlit_undercurrents": "noqwww - Moonlit Undercurrents",
+  "jukebox_song.betterend.strange_and_alien": "Firel - Strange And Alien"
 }

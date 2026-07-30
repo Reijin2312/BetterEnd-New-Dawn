@@ -4,5 +4,5 @@
     "translate": "jukebox_song.betterend.endseeker"
   },
   "length_in_seconds": 461.0,
-  "sound_event": "betterend:betterend.record.endseeker"
+  "sound_event": "betterend:record.endseeker"
 }

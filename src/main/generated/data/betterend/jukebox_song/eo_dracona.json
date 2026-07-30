@@ -4,5 +4,5 @@
     "translate": "jukebox_song.betterend.eo_dracona"
   },
   "length_in_seconds": 353.0,
-  "sound_event": "betterend:betterend.record.eo_dracona"
+  "sound_event": "betterend:record.eo_dracona"
 }

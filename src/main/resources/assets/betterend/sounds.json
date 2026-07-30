@@ -309,7 +309,7 @@
 		]
 	},
 	
-	"betterend.record.strange_and_alien": {
+	"record.strange_and_alien": {
 		"category": "record",
 		"sounds": [
 			{
@@ -319,7 +319,7 @@
 			}
 		]
 	},
-	"betterend.record.grasping_at_stars": {
+	"record.grasping_at_stars": {
 		"category": "record",
 		"sounds": [
 			{
@@ -329,7 +329,7 @@
 			}
 		]
 	},
-	"betterend.record.endseeker": {
+	"record.endseeker": {
 		"category": "record",
 		"sounds": [
 			{
@@ -339,7 +339,7 @@
 			}
 		]
 	},
-	"betterend.record.eo_dracona": {
+	"record.eo_dracona": {
 		"category": "record",
 		"sounds": [
 			{
@@ -349,7 +349,7 @@
 			}
 		]
 	},
-	"betterend.record.ender_hollow": {
+	"record.ender_hollow": {
 		"category": "record",
 		"sounds": [
 			{
@@ -359,7 +359,7 @@
 			}
 		]
 	},
-	"betterend.record.moonlit_undercurrents": {
+	"record.moonlit_undercurrents": {
 		"category": "record",
 		"sounds": [
 			{
