@@ -118,7 +118,14 @@ public class SulphuricLakeFeature extends DefaultFeature {
                                 BlocksHelper.setWithoutUpdate(world, POS.move(Direction.DOWN), Blocks.WATER);
                                 brimstone.remove(POS);
                                 for (Direction dir : BlocksHelper.HORIZONTAL) {
-                                    BlockPos offseted = POS.relative(dir);
+                                    // Same one-block overshoot as the peek above, and the same clamp. POS was
+                                    // moved down by the setWithoutUpdate on the line above, so getY() is
+                                    // already the lowered Y this peek is meant to read at.
+                                    BlockPos offseted = new BlockPos(
+                                            zone.clampX(POS.getX() + dir.getStepX()),
+                                            POS.getY(),
+                                            zone.clampZ(POS.getZ() + dir.getStepZ())
+                                    );
                                     if (world.getBlockState(offseted).is(CommonBlockTags.END_STONES)) {
                                         brimstone.add(offseted);
                                     }
