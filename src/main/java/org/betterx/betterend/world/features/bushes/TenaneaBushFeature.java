@@ -1,7 +1,6 @@
 package org.betterx.betterend.world.features.bushes;
 
 
-import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.wover.block.api.BlockProperties;
 import org.betterx.wover.block.api.BlockProperties.TripleShape;
@@ -16,6 +15,7 @@ import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.blocks.basis.FurBlock;
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.betterend.registry.EndBlocks;
+import org.betterx.wover.feature.api.WriteZone;
 import org.betterx.betterend.world.features.trees.EndTreeHelper;
 import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
@@ -91,7 +91,7 @@ public class TenaneaBushFeature extends DefaultFeature {
             }
             return info.getState();
         });
-        sphere.fillRecursive(world, pos);
+        sphere.fillRecursive(world, pos, WriteZone.of(world).toBoundingBox());
         BlockState stem = EndBlocks.TENANEA.getBark().defaultBlockState();
         BlocksHelper.setWithoutUpdate(world, pos, stem);
         for (Direction d : Direction.values()) {

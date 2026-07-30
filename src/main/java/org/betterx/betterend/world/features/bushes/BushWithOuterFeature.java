@@ -10,6 +10,7 @@ import org.betterx.bclib.sdf.primitive.SDFSphere;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.noise.OpenSimplexNoise;
+import org.betterx.wover.feature.api.WriteZone;
 import org.betterx.betterend.world.features.trees.EndTreeHelper;
 import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
@@ -89,7 +90,7 @@ public class BushWithOuterFeature extends Feature<BushWithOuterFeatureConfig> {
             }
             return info.getState();
         });
-        sphere.fillRecursive(world, pos);
+        sphere.fillRecursive(world, pos, WriteZone.of(world).toBoundingBox());
         BlocksHelper.setWithoutUpdate(world, pos, stem);
         for (Direction d : Direction.values()) {
             BlockPos p = pos.relative(d);

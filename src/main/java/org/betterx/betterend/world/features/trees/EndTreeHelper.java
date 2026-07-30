@@ -1,6 +1,7 @@
 package org.betterx.betterend.world.features.trees;
 
 import org.betterx.bclib.util.BlocksHelper;
+import org.betterx.wover.feature.api.WriteZone;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
@@ -46,22 +47,71 @@ public final class EndTreeHelper {
     }
 
     /**
+     * A leaf ball's radius, shrunk to the room its centre actually has.
+     * <p>
+     * The write zone gives a feature 16 blocks of room in the worst case and 23 in the best, measured from
+     * the trunk; a branch tip several blocks out with a ball on the end of it routinely asks for more than
+     * that, and {@code fillRecursive}'s {@code writeBounds} then takes a flat chord out of the ball. Sizing
+     * the ball to its headroom instead leaves a complete, slightly smaller ball - and because a ball's
+     * centre always fits (it sits on a branch, and a branch that long could not have been drawn) this is
+     * always well defined.
+     *
+     * @param bulge     how much further than {@code radius} the finished surface reaches. Every one of
+     *                  these balls runs through {@code SDFDisplacement}, and that <em>adds</em> its
+     *                  function to the distance, so a negative displacement grows the shape: a ball under
+     *                  {@code noise * 3} and {@code randRange(-1.5, 1.5)} reaches {@code radius + 4.5}.
+     *                  The bulge is additive on the surface, so it is added before fitting and subtracted
+     *                  afterwards rather than scaled.
+     * @param minRadius floor below which the ball is not shrunk any further. Nothing useful is left of a
+     *                  leaf ball under a couple of blocks, and a branch that carries one has by
+     *                  construction more headroom than that, so this is a guard rather than a case that
+     *                  fires.
+     */
+    public static float fitBallRadius(
+            WriteZone zone,
+            BlockPos center,
+            float radius,
+            float bulge,
+            float minRadius
+    ) {
+        if (zone.isUnbounded()) return radius;
+        final float fitted = zone.fitRadius(center.getX(), center.getZ(), radius + bulge, 0F) - bulge;
+        return Math.max(Math.min(radius, fitted), minRadius);
+    }
+
+    /**
      * Waterlog every submerged waterloggable block in a tree's footprint.
      *
      * @param world    the generating world (writes are masked to the current generation region)
      * @param origin   the tree's origin (trunk base / ground level)
      * @param radiusXZ half-extent of the tree's canopy horizontally; the scan box is
-     *                 {@code origin +/- radiusXZ} on X/Z
+     *                 {@code origin +/- radiusXZ} on X/Z, clipped to the chunk write zone
      *                 <p>
      *                 Only reads and writes inside the {@code origin +/- radiusXZ} x {@code [-SCAN_DOWN,
-     *                 SCAN_UP]} box - the same region the feature already wrote to - so it is safe during
-     *                 worldgen (no cross-chunk spread, no biome/heightmap lookups).
+     *                 SCAN_UP]} box - the same region the feature already wrote to - so it needs no
+     *                 biome/heightmap lookups. That box is <em>not</em> automatically inside the chunks
+     *                 worldgen lets a feature touch, though: callers pass radii of up to 32 while
+     *                 {@code ChunkStatus.FEATURES} permits only the 3x3 chunks around the one being
+     *                 decorated (see {@link WriteZone}). Unclipped, the two scans below were by far
+     *                 the loudest source of "Detected unsafe terrain read during worldgen" warnings on
+     *                 26.3 - {@link #hasWater} alone probes {@code (2r+1)^2 * 6} positions for every single
+     *                 tree, and the underlying defect (deciding from a chunk that has no terrain in it yet)
+     *                 is present on 26.1 too even without the warning. Clipping is behaviour-neutral: the
+     *                 canopy blocks this pass exists to re-flood could never have been written outside the
+     *                 zone in the first place.
      */
     public static void waterlogSubmerged(WorldGenLevel world, BlockPos origin, int radiusXZ) {
-        final int minX = origin.getX() - radiusXZ;
-        final int maxX = origin.getX() + radiusXZ;
-        final int minZ = origin.getZ() - radiusXZ;
-        final int maxZ = origin.getZ() + radiusXZ;
+        final WriteZone zone = WriteZone.of(world);
+        if (zone.isDisjoint(
+                origin.getX() - radiusXZ, origin.getZ() - radiusXZ,
+                origin.getX() + radiusXZ, origin.getZ() + radiusXZ
+        )) {
+            return;
+        }
+        final int minX = zone.clampX(origin.getX() - radiusXZ);
+        final int maxX = zone.clampX(origin.getX() + radiusXZ);
+        final int minZ = zone.clampZ(origin.getZ() - radiusXZ);
+        final int maxZ = zone.clampZ(origin.getZ() + radiusXZ);
         final MutableBlockPos p = new MutableBlockPos();
 
         // Cheap gate: bail unless this tree actually overlaps water. Most trees are nowhere near a lake, so

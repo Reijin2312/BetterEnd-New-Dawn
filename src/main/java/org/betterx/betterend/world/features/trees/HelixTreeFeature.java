@@ -1,5 +1,6 @@
 package org.betterx.betterend.world.features.trees;
 
+
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.sdf.PosInfo;
 import org.betterx.bclib.sdf.SDF;
@@ -11,6 +12,9 @@ import org.betterx.betterend.blocks.HelixTreeLeavesBlock;
 import org.betterx.betterend.registry.EndBlocks;
 
 import com.mojang.math.Axis;
+
+import org.betterx.wover.feature.api.WriteZone;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.tags.BlockTags;
@@ -22,7 +26,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 
 import org.joml.Vector3f;
 
@@ -31,6 +34,8 @@ import java.util.List;
 import java.util.function.Function;
 
 public class HelixTreeFeature extends DefaultFeature {
+    private static final Function<PosInfo, BlockState> POST;
+
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
         final RandomSource random = featureConfig.random();
@@ -71,13 +76,26 @@ public class HelixTreeFeature extends DefaultFeature {
         dx = 30 * scale;
         float dy1 = -20 * scale;
         float dy2 = 100 * scale;
-        sdf.addPostProcess(postProcessFunc())
+        // fillArea reads every block in the box, and this box is up to 61 blocks wide - far past the 3x3
+        // chunks a feature may touch. Clipping it to the write zone drops nothing the tree could have placed
+        // there anyway (those writes were already being discarded) and removes the reads from chunks that
+        // have not been carved - or even filled - yet. See WriteZone.
+        final WriteZone zone = WriteZone.of(world);
+        sdf.addPostProcess(POST)
            .fillArea(
                    world,
                    pos,
                    new AABB(
-                           Vec3.atCenterOf(pos.offset((int) -dx, (int) dy1, (int) -dx)),
-                           Vec3.atCenterOf(pos.offset((int) dx, (int) dy2, (int) dx))
+                            new BlockPos(
+                                    zone.clampX(pos.getX() - (int) dx),
+                                    pos.getY() + (int) dy1,
+                                   zone.clampZ(pos.getZ() - (int) dx)
+                           ).getCenter(),
+                           new BlockPos(
+                                   zone.clampX(pos.getX() + (int) dx),
+                                   pos.getY() + (int) dy2,
+                                    zone.clampZ(pos.getZ() + (int) dx)
+                            ).getCenter()
                    )
            );
         SplineHelper.scale(spline, scale);
@@ -105,7 +123,7 @@ public class HelixTreeFeature extends DefaultFeature {
         SplineHelper.fillSplineForce(
                 spline2,
                 world,
-                EndBlocks.HELIX_TREE.getBark().defaultBlockState(),
+                EndBlocks.HELIX_TREE.getLog().defaultBlockState(),
                 leafStart,
                 BlockBehaviour.BlockStateBase::canBeReplaced
         );
@@ -169,6 +187,9 @@ public class HelixTreeFeature extends DefaultFeature {
             }
         }
 
+        // Helix leaves are a custom Block without the WATERLOGGED property, so this is a no-op for the
+        // leaves today; kept for uniformity (and its trunk shares the shore-flood scan).
+        EndTreeHelper.waterlogSubmerged(world, pos, 20);
         return true;
     }
 
@@ -210,10 +231,10 @@ public class HelixTreeFeature extends DefaultFeature {
         }
     }
 
-    private Function<PosInfo, BlockState> postProcessFunc() {
-        return (info) -> {
+    static {
+        POST = (info) -> {
             if (EndBlocks.HELIX_TREE.isTreeLog(info.getStateUp()) && EndBlocks.HELIX_TREE.isTreeLog(info.getStateDown())) {
-                return EndBlocks.HELIX_TREE.getBark().defaultBlockState();
+                return EndBlocks.HELIX_TREE.getLog().defaultBlockState();
             }
             return info.getState();
         };

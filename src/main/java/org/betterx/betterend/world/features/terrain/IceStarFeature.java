@@ -7,6 +7,7 @@ import org.betterx.bclib.sdf.operator.SDFUnion;
 import org.betterx.bclib.sdf.primitive.SDFCappedCone;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.registry.EndBlocks;
+import org.betterx.wover.feature.api.WriteZone;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -88,7 +89,10 @@ public class IceStarFeature extends Feature<IceStarFeatureConfig> {
                 return ice;
             }
             return info.getState();
-        }).fillRecursive(world, pos);
+        // The star's spikes fan out to `size` in any direction and size can be large; clip the flood-fill to
+        // the write zone - behaviour-neutral (writes out there were already dropped by WorldGenRegion) and
+        // it removes the "Detected unsafe terrain read during worldgen" spam. See WriteZone.
+        }).fillRecursive(world, pos, WriteZone.of(world).toBoundingBox());
 
         return true;
     }
