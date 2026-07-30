@@ -35,11 +35,9 @@
     "water_color": "#195a9d"
   },
   "features": [
+    [],
     [
       "betterend:geyser",
-      "betterend:sulphuric_cave"
-    ],
-    [
       "betterend:sulphuric_lake"
     ],
     [],
