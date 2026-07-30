@@ -19,6 +19,7 @@ public class EndStructures {
     public static final StructurePieceType PAINTED_MOUNTAIN_PIECE = StructureManager.registerPiece(BetterEnd.C.mk("painted_mountain_piece"), PaintedMountainPiece::new);
     public static final StructurePieceType NBT_PIECE = StructureManager.registerPiece(BetterEnd.C.mk("nbt_piece"), NBTPiece::new);
     public static final StructurePieceType END_BRIDGE_PIECE = StructureManager.registerPiece(BetterEnd.C.mk("end_bridge_piece"), EndBridgePiece::new);
+    public static final StructurePieceType SULPHURIC_CAVE_PIECE = StructureManager.registerPiece(BetterEnd.C.mk("sulphuric_cave_piece"), SulphuricCavePiece::new);
 
 
     public static final StructureKey.Simple<GiantMossyGlowshroomStructure> GIANT_MOSSY_GLOWSHROOM = StructureManager
@@ -64,6 +65,14 @@ public class EndStructures {
             .structure(BetterEnd.C.mk("small_island"), SmallIslandStructure::new)
             .step(Decoration.RAW_GENERATION);
 
+    // Replaces the old SulphuricCaveFeature (RAW_GENERATION feature). Kept at the same step so it
+    // still generates before GEYSER (moved to LAKES specifically so it's guaranteed to run after this
+    // cave - see EndTerrainFeatures.GEYSER) and before SURFACE_VENT/SULPHURIC_LAKE, which were
+    // already later than RAW_GENERATION.
+    public static final StructureKey.Simple<EndSulphuricCaveStructure> SULPHURIC_CAVE = StructureManager
+            .structure(BetterEnd.C.mk("sulphuric_cave"), EndSulphuricCaveStructure::new)
+            .step(Decoration.RAW_GENERATION);
+
     public static final StructureKey.Jigsaw END_VILLAGE = StructureManager
             .jigsaw(BetterEnd.C.mk("end_village"))
             .step(Decoration.SURFACE_STRUCTURES);
@@ -82,6 +91,7 @@ public class EndStructures {
                 ETERNAL_PORTAL,
                 GIANT_ICE_STAR,
                 SMALL_ISLAND,
+                SULPHURIC_CAVE,
                 END_VILLAGE
         );
     }

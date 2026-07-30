@@ -86,7 +86,6 @@ public class EndFeatures {
     public static final BiomeIslandFeature OVERWORLD_ISLAND = new BiomeIslandFeature();
 
     // Caves
-    public static final SulphuricCaveFeature SULPHURIC_CAVE_FEATURE = new SulphuricCaveFeature();
     public static final TunelCaveFeature TUNEL_CAVE_FEATURE = new TunelCaveFeature();
     public static final SmaragdantCrystalFeature SMARAGDANT_CRYSTAL_FEATURE = new SmaragdantCrystalFeature();
     public static final BigAuroraCrystalFeature BIG_AURORA_CRYSTAL_FEATURE = new BigAuroraCrystalFeature();

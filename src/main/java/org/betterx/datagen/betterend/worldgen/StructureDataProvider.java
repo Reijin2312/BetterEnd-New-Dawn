@@ -44,6 +44,7 @@ public class StructureDataProvider extends WoverStructureProvider {
         EndStructures.ETERNAL_PORTAL.bootstrap(context).register();
         EndStructures.GIANT_ICE_STAR.bootstrap(context).register();
         EndStructures.SMALL_ISLAND.bootstrap(context).register();
+        EndStructures.SULPHURIC_CAVE.bootstrap(context).register();
         EndStructures.END_VILLAGE
                 .bootstrap(context)
                 .startPool(VillagePools.START)
@@ -86,6 +87,15 @@ public class StructureDataProvider extends WoverStructureProvider {
         StructureSetManager
                 .bootstrap(EndStructures.SMALL_ISLAND, context)
                 .randomPlacement(5, 2)
+                .register();
+
+        // Replaces the legacy SulphuricCaveFeature's count(2)-per-chunk placement. Per the END_LAKE
+        // comment above, a structure_set attempt nearly always succeeds (no per-attempt Bernoulli
+        // rejection the way a feature had), so this starts noticeably wider than a naive sqrt(chance)
+        // translation of "2 per chunk" would suggest - tune from the manual smoke test.
+        StructureSetManager
+                .bootstrap(EndStructures.SULPHURIC_CAVE, context)
+                .randomPlacement(9, 4)
                 .register();
 
         StructureSetManager
