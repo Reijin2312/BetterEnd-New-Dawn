@@ -1,5 +1,6 @@
 package org.betterx.betterend.world.features.terrain;
 
+
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.sdf.SDF;
 import org.betterx.bclib.sdf.operator.SDFDisplacement;
@@ -9,6 +10,7 @@ import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.betterend.registry.EndBlocks;
+import org.betterx.wover.feature.api.WriteZone;
 import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
@@ -70,6 +72,8 @@ public class ObsidianBoulderFeature extends DefaultFeature {
             return info.getState();
         }).setReplaceFunction((state) -> {
             return state.is(CommonBlockTags.END_STONES) || BlocksHelper.replaceableOrPlant(state);
-        }).fillRecursive(world, pos);
+        // The noise displacement (+/-1.5) can push the flood-fill a little past the sphere's own radius;
+        // clip it to the write zone so it can't wander into unloaded neighbour chunks. See WriteZone.
+        }).fillRecursive(world, pos, WriteZone.of(world).toBoundingBox());
     }
 }

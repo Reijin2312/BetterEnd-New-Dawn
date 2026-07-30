@@ -1,5 +1,6 @@
 package org.betterx.betterend.world.features.terrain;
 
+
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
@@ -8,6 +9,7 @@ import org.betterx.betterend.blocks.SulphurCrystalBlock;
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.util.GlobalState;
+import org.betterx.wover.feature.api.WriteZone;
 import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
@@ -43,10 +45,14 @@ public class SulphuricLakeFeature extends DefaultFeature {
         double radius = MHelper.randRange(10.0, 20.0, random);
         int dist2 = MHelper.floor(radius * 1.5);
 
-        int minX = blockPos.getX() - dist2;
-        int maxX = blockPos.getX() + dist2;
-        int minZ = blockPos.getZ() - dist2;
-        int maxZ = blockPos.getZ() + dist2;
+        // dist2 reaches up to 30 blocks, past the 3x3 chunks a feature may touch. Clip the scan to the write
+        // zone - behaviour-neutral (writes out there were already dropped by WorldGenRegion) and it removes
+        // the "Detected unsafe terrain read during worldgen" spam this loop produced. See WriteZone.
+        final WriteZone zone = WriteZone.of(world);
+        int minX = zone.clampX(blockPos.getX() - dist2);
+        int maxX = zone.clampX(blockPos.getX() + dist2);
+        int minZ = zone.clampZ(blockPos.getZ() - dist2);
+        int maxZ = zone.clampZ(blockPos.getZ() + dist2);
 
         Set<BlockPos> brimstone = Sets.newHashSet();
         for (int x = minX; x <= maxX; x++) {

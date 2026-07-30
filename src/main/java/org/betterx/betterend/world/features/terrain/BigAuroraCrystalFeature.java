@@ -1,5 +1,6 @@
 package org.betterx.betterend.world.features.terrain;
 
+
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.sdf.SDF;
 import org.betterx.bclib.sdf.operator.SDFRotation;
@@ -7,6 +8,7 @@ import org.betterx.bclib.sdf.primitive.SDFHexPrism;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.registry.EndBlocks;
+import org.betterx.wover.feature.api.WriteZone;
 import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
@@ -32,6 +34,7 @@ public class BigAuroraCrystalFeature extends DefaultFeature {
 
         int y = MHelper.randRange(minY, maxY, random);
         pos = new BlockPos(pos.getX(), y, pos.getZ());
+
         int height = MHelper.randRange(5, 25, random);
         SDF prism = new SDFHexPrism().setHeight(height)
                                      .setRadius(MHelper.randRange(1.7F, 3F, random))
@@ -43,7 +46,10 @@ public class BigAuroraCrystalFeature extends DefaultFeature {
                     || BlocksHelper.replaceableOrPlant(bState)
                     || bState.is(CommonBlockTags.LEAVES);
         });
-        prism.fillRecursive(world, pos);
+        // The prism is randomly tilted (any axis, up to a full turn) and height reaches 25, so a shallow
+        // tilt can swing tens of blocks horizontally - well past the 3x3 chunks a feature may touch. Clip
+        // the flood-fill to the write zone; see WriteZone.
+        prism.fillRecursive(world, pos, WriteZone.of(world).toBoundingBox());
         BlocksHelper.setWithoutUpdate(world, pos, EndBlocks.AURORA_CRYSTAL);
 
         return true;

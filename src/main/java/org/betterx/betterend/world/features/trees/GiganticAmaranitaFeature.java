@@ -1,5 +1,6 @@
 package org.betterx.betterend.world.features.trees;
 
+
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.blocks.BaseAttachedBlock;
 import org.betterx.bclib.sdf.PosInfo;
@@ -8,6 +9,7 @@ import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.bclib.util.SplineHelper;
 import org.betterx.betterend.registry.EndBlocks;
+import org.betterx.wover.feature.api.WriteZone;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
@@ -28,6 +30,10 @@ import java.util.List;
 import java.util.function.Function;
 
 public class GiganticAmaranitaFeature extends DefaultFeature {
+    private static final Function<BlockState, Boolean> REPLACE;
+    private static final Function<BlockState, Boolean> IGNORE;
+    private static final Function<PosInfo, BlockState> POST;
+
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
         final RandomSource random = featureConfig.random();
@@ -35,11 +41,15 @@ public class GiganticAmaranitaFeature extends DefaultFeature {
         final WorldGenLevel world = featureConfig.level();
         if (!world.getBlockState(pos.below()).is(BlockTags.NYLIUM)) return false;
 
+        // Small tree, but reuses the same unbounded BCLib primitives as the larger ones - clip them to the
+        // write zone for consistency/safety; see WriteZone.
+        final WriteZone zone = WriteZone.of(world);
+
         float size = MHelper.randRange(5, 10, random);
         List<Vector3f> spline = SplineHelper.makeSpline(0, 0, 0, 0, size, 0, 5);
         SplineHelper.offsetParts(spline, random, 0.7F, 0, 0.7F);
 
-        if (!SplineHelper.canGenerate(spline, pos, world, replaceFunc())) {
+        if (!SplineHelper.canGenerate(spline, pos, world, REPLACE, zone.toBoundingBox())) {
             return false;
         }
         BlocksHelper.setWithoutUpdate(world, pos, AIR);
@@ -57,16 +67,24 @@ public class GiganticAmaranitaFeature extends DefaultFeature {
                 (int) (capPos.z() + 0.5F)
         ), Mth.floor(size / 1.6F));
 
-        function.setReplaceFunction(replaceFunc());
-        function.addPostProcess(postProcessFunc());
-        function.fillRecursiveIgnore(world, pos, ignoreFunc());
+        function.setReplaceFunction(REPLACE);
+        function.addPostProcess(POST);
+        function.fillRecursiveIgnore(world, pos, zone.toBoundingBox(), IGNORE);
 
         for (int i = 0; i < 3; i++) {
             List<Vector3f> copy = SplineHelper.copySpline(spline);
             SplineHelper.offsetParts(copy, random, 0.2F, 0, 0.2F);
-            SplineHelper.fillSplineForce(copy, world, EndBlocks.AMARANITA_HYPHAE.defaultBlockState(), pos, replaceFunc());
+            SplineHelper.fillSplineForce(
+                    copy,
+                    world,
+                    EndBlocks.AMARANITA_HYPHAE.defaultBlockState(),
+                    pos,
+                    REPLACE,
+                    zone.toBoundingBox()
+            );
         }
 
+        EndTreeHelper.waterlogSubmerged(world, pos, 14);
         return true;
     }
 
@@ -355,16 +373,12 @@ public class GiganticAmaranitaFeature extends DefaultFeature {
         }
     }
 
-    private Function<BlockState, Boolean> replaceFunc() {
-        return BlocksHelper::replaceableOrPlant;
-    }
+    static {
+        REPLACE = BlocksHelper::replaceableOrPlant;
 
-    private Function<BlockState, Boolean> ignoreFunc() {
-        return EndBlocks.DRAGON_TREE::isTreeLog;
-    }
+        IGNORE = EndBlocks.DRAGON_TREE::isTreeLog;
 
-    private Function<PosInfo, BlockState> postProcessFunc() {
-        return (info) -> {
+        POST = (info) -> {
             if (!info.getStateUp().is(EndBlocks.AMARANITA_STEM) || !info.getStateDown().is(EndBlocks.AMARANITA_STEM)) {
                 return EndBlocks.AMARANITA_HYPHAE.defaultBlockState();
             }

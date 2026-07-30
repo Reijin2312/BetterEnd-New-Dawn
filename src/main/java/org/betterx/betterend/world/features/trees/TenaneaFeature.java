@@ -1,5 +1,6 @@
 package org.betterx.betterend.world.features.trees;
 
+
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.wover.block.api.BlockProperties;
 import org.betterx.wover.block.api.BlockProperties.TripleShape;
@@ -12,6 +13,7 @@ import org.betterx.bclib.util.SplineHelper;
 import org.betterx.betterend.blocks.basis.FurBlock;
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.betterend.registry.EndBlocks;
+import org.betterx.wover.feature.api.WriteZone;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
@@ -32,14 +34,16 @@ import java.util.function.Function;
 
 public class TenaneaFeature extends DefaultFeature {
     private static final Direction[] DIRECTIONS = Direction.values();
-    private static final List<Vector3f> SPLINE = Lists.newArrayList(
-            new Vector3f(0.00F, 0.00F, 0.00F),
-            new Vector3f(0.10F, 0.35F, 0.00F),
-            new Vector3f(0.20F, 0.50F, 0.00F),
-            new Vector3f(0.30F, 0.55F, 0.00F),
-            new Vector3f(0.42F, 0.70F, 0.00F),
-            new Vector3f(0.50F, 1.00F, 0.00F)
-    );
+    private static final Function<BlockState, Boolean> REPLACE;
+    private static final Function<BlockState, Boolean> IGNORE;
+    private static final List<Vector3f> SPLINE;
+
+    /**
+     * How far past its nominal radius a leaf ball's surface reaches: {@code noise * 2} plus
+     * {@code randRange(-1.5, 1.5)}, both applied through {@code SDFDisplacement}, which adds to the
+     * distance - so the negative half of each range grows the shape.
+     */
+    private static final float LEAF_BALL_BULGE = 3.5F;
 
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
@@ -47,6 +51,11 @@ public class TenaneaFeature extends DefaultFeature {
         final BlockPos pos = featureConfig.origin();
         final WorldGenLevel world = featureConfig.level();
         if (!world.getBlockState(pos.below()).is(BlockTags.NYLIUM)) return false;
+
+        // Branch splines are scaled by up to `size * 1.5` and rotated to any angle, so fillSpline and the
+        // leaf-ball flood-fill can read/write past the 3x3 chunks a feature may touch. Clip both to the
+        // write zone; see WriteZone.
+        final WriteZone zone = WriteZone.of(world);
 
         float size = MHelper.randRange(7, 10, random);
         int count = (int) (size * 0.45F);
@@ -58,13 +67,28 @@ public class TenaneaFeature extends DefaultFeature {
             SplineHelper.rotateSpline(spline, angle);
             SplineHelper.scale(spline, size + MHelper.randRange(0, size * 0.5F, random));
             SplineHelper.offsetParts(spline, random, 1F, 0, 1F);
-            SplineHelper.fillSpline(spline, world, EndBlocks.TENANEA.getBark().defaultBlockState(), pos, replaceFunc());
+            SplineHelper.fillSpline(
+                    spline,
+                    world,
+                    EndBlocks.TENANEA.getBark().defaultBlockState(),
+                    pos,
+                    REPLACE,
+                    zone.toBoundingBox()
+            );
             Vector3f last = spline.get(spline.size() - 1);
             float leavesRadius = (size * 0.3F + MHelper.randRange(0.8F, 1.5F, random)) * 1.4F;
             OpenSimplexNoise noise = new OpenSimplexNoise(random.nextLong());
-            leavesBall(world, pos.offset((int) last.x(), (int) last.y(), (int) last.z()), leavesRadius, random, noise);
+            leavesBall(
+                    world,
+                    pos.offset((int) last.x(), (int) last.y(), (int) last.z()),
+                    leavesRadius,
+                    random,
+                    noise,
+                    zone
+            );
         }
 
+        EndTreeHelper.waterlogSubmerged(world, pos, 16);
         return true;
     }
 
@@ -73,8 +97,14 @@ public class TenaneaFeature extends DefaultFeature {
             BlockPos pos,
             float radius,
             RandomSource random,
-            OpenSimplexNoise noise
+            OpenSimplexNoise noise,
+            WriteZone zone
     ) {
+        // Size the ball to the room its centre has rather than letting the write bounds take a chord out
+        // of it; see EndTreeHelper.fitBallRadius. Barely visible here - about one tenanea in seventy - but
+        // it is the same one line.
+        radius = EndTreeHelper.fitBallRadius(zone, pos, radius, LEAF_BALL_BULGE, 2F);
+
         SDF sphere = new SDFSphere().setRadius(radius)
                                     .setBlock(EndBlocks.TENANEA_LEAVES.defaultBlockState()
                                                                       .setValue(LeavesBlock.DISTANCE, 6));
@@ -156,7 +186,7 @@ public class TenaneaFeature extends DefaultFeature {
             }
             return info.getState();
         });
-        sphere.fillRecursiveIgnore(world, pos, ignoreFunc());
+        sphere.fillRecursiveIgnore(world, pos, zone.toBoundingBox(), IGNORE);
         BlocksHelper.setWithoutUpdate(world, pos, EndBlocks.TENANEA.getBark());
 
         support.forEach((bpos) -> {
@@ -180,16 +210,26 @@ public class TenaneaFeature extends DefaultFeature {
         });
     }
 
-    private Function<BlockState, Boolean> replaceFunc() {
-        return (state) -> {
+    static {
+        REPLACE = (state) -> {
+            /*if (state.is(CommonBlockTags.END_STONES)) {
+                return true;
+            }*/
             if (state.getBlock() == EndBlocks.TENANEA_LEAVES) {
                 return true;
             }
             return BlocksHelper.replaceableOrPlant(state);
         };
-    }
 
-    private Function<BlockState, Boolean> ignoreFunc() {
-        return EndBlocks.TENANEA::isTreeLog;
+        IGNORE = EndBlocks.TENANEA::isTreeLog;
+
+        SPLINE = Lists.newArrayList(
+                new Vector3f(0.00F, 0.00F, 0.00F),
+                new Vector3f(0.10F, 0.35F, 0.00F),
+                new Vector3f(0.20F, 0.50F, 0.00F),
+                new Vector3f(0.30F, 0.55F, 0.00F),
+                new Vector3f(0.42F, 0.70F, 0.00F),
+                new Vector3f(0.50F, 1.00F, 0.00F)
+        );
     }
 }
