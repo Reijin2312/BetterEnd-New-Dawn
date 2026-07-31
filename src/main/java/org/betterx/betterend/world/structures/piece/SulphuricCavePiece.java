@@ -419,8 +419,7 @@ public class SulphuricCavePiece extends BasePiece {
                 return false;
             }
             above.set(pos.getX(), y, pos.getZ());
-            BlockState state = chunk.getBlockState(above);
-            if (state.isAir() || !state.getFluidState().isEmpty()) {
+            if (chunk.getBlockState(above).isAir()) {
                 return false;
             }
         }
