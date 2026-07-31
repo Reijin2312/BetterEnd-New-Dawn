@@ -64,7 +64,7 @@ public class SulphuricLakeFeature extends DefaultFeature {
                 int dist = x2 + z2;
                 if (dist <= r) {
                     POS.setY(getYOnSurface(world, x, z) - 1);
-                    if (world.getBlockState(POS).is(CommonBlockTags.END_STONES)) {
+                    if (world.getBlockState(POS).is(CommonBlockTags.END_STONES) || SulphurFloorMix.isDepositBlock(world.getBlockState(POS))) {
                         if (isBorder(world, POS)) {
                             if (random.nextInt(8) > 0) {
                                 brimstone.add(POS.immutable());
@@ -98,7 +98,7 @@ public class SulphuricLakeFeature extends DefaultFeature {
                             brimstone.remove(POS);
                             for (Direction dir : BlocksHelper.HORIZONTAL) {
                                 BlockPos offseted = POS.relative(dir);
-                                if (world.getBlockState(offseted).is(CommonBlockTags.END_STONES)) {
+                                if (world.getBlockState(offseted).is(CommonBlockTags.END_STONES) || SulphurFloorMix.isDepositBlock(world.getBlockState(offseted))) {
                                     brimstone.add(offseted);
                                 }
                             }
@@ -107,7 +107,7 @@ public class SulphuricLakeFeature extends DefaultFeature {
                                 brimstone.remove(POS);
                                 for (Direction dir : BlocksHelper.HORIZONTAL) {
                                     BlockPos offseted = POS.relative(dir);
-                                    if (world.getBlockState(offseted).is(CommonBlockTags.END_STONES)) {
+                                    if (world.getBlockState(offseted).is(CommonBlockTags.END_STONES) || SulphurFloorMix.isDepositBlock(world.getBlockState(offseted))) {
                                         brimstone.add(offseted);
                                     }
                                 }
@@ -123,7 +123,7 @@ public class SulphuricLakeFeature extends DefaultFeature {
                     }
                 } else if (dist < r2) {
                     POS.setY(getYOnSurface(world, x, z) - 1);
-                    if (world.getBlockState(POS).is(CommonBlockTags.END_STONES)) {
+                    if (world.getBlockState(POS).is(CommonBlockTags.END_STONES) || SulphurFloorMix.isDepositBlock(world.getBlockState(POS))) {
                         brimstone.add(POS.immutable());
                         if (random.nextBoolean()) {
                             brimstone.add(POS.below());

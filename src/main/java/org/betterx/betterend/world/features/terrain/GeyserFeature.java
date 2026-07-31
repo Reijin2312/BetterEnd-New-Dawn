@@ -285,12 +285,14 @@ public class GeyserFeature extends DefaultFeature {
     }
 
     private Function<BlockState, Boolean> replaceFunc1() {
-        return (state) -> state.isAir() || (state.is(CommonBlockTags.END_STONES));
+        return (state) -> state.isAir() || state.is(CommonBlockTags.END_STONES)
+                || SulphurFloorMix.isDepositBlock(state);
     }
 
     private Function<BlockState, Boolean> replaceFunc2() {
         return (state) -> {
-            if (state.is(CommonBlockTags.END_STONES) || state.is(EndBlocks.HYDROTHERMAL_VENT) || state.is(EndBlocks.SULPHUR_CRYSTAL)) {
+            if (state.is(CommonBlockTags.END_STONES) || state.is(EndBlocks.HYDROTHERMAL_VENT) || state.is(EndBlocks.SULPHUR_CRYSTAL)
+                    || SulphurFloorMix.isDepositBlock(state)) {
                 return true;
             }
             return BlocksHelper.replaceableOrPlant(state);
@@ -299,6 +301,6 @@ public class GeyserFeature extends DefaultFeature {
 
     private Function<BlockState, Boolean> ignoreFunc() {
         return (state) -> state.is(Blocks.WATER) || state.is(Blocks.CAVE_AIR) || state.is(EndBlocks.SULPHURIC_ROCK.stone) || state
-                .is(EndBlocks.BRIMSTONE);
+                .is(EndBlocks.BRIMSTONE) || SulphurFloorMix.isDepositBlock(state);
     }
 }
