@@ -1,6 +1,7 @@
 package org.betterx.betterend.world.features.terrain;
 
 
+import org.betterx.betterend.blocks.EndBlockProperties;
 
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.sdf.SDF;
@@ -288,6 +289,21 @@ public class GeyserFeature extends DefaultFeature {
                 zone.clampZ(pos.getZ() + (int) distance)
         );
         BlockFixer.fixBlocks(world, start, end);
+
+        // Turn the buried part of the brimstone bowl into the same sulfur/cinnabar deposit the lake bed
+        // gets. Deliberately a post-pass over the finished geometry rather than a change to the SDF
+        // fills above: the fills paint whole shells in one block, and the rule here depends on how each
+        // position ended up being covered. Reuses the box BlockFixer just walked, which is already
+        // write-zone clamped and bounds the whole bowl.
+        for (BlockPos floorPos : BlockPos.betweenClosed(start, end)) {
+            BlockState floorState = world.getBlockState(floorPos);
+            // Skip ACTIVE brimstone: the sulphuric lake placed just above runs through here too, and its
+            // water-touching brimstone is what carries the hydrothermal look and the crystal shards.
+            if (floorState.is(EndBlocks.BRIMSTONE)
+                    && !floorState.getValue(EndBlockProperties.ACTIVE)) {
+                SulphurFloorMix.apply(world, zone, floorPos.immutable());
+            }
+        }
 
         return true;
     }
