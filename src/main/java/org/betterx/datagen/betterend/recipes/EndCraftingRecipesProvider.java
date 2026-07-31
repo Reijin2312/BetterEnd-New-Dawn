@@ -89,6 +89,19 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
                                .shapeless()
                                .build(context);
 
+        // 26.2 added a vanilla sulfur spike. Grinding one down yields the same four crystalline
+        // sulphur a spike is worth, and four of them pack back into a spike.
+        CraftingRecipeBuilder sulfurSpikeToSulphur = RecipeBuilder
+                .crafting(BetterEnd.C.mk("sulfur_spike_to_crystalline_sulphur"), EndItems.CRYSTALLINE_SULPHUR)
+                .addMaterial('#', Blocks.SULFUR_SPIKE);
+        sulfurSpikeToSulphur.outputCount(4)
+                            .shapeless()
+                            .build(context);
+        RecipeBuilder.crafting(BetterEnd.C.mk("crystalline_sulphur_to_sulfur_spike"), Blocks.SULFUR_SPIKE)
+                     .shape("OO", "OO")
+                     .addMaterial('O', EndItems.CRYSTALLINE_SULPHUR)
+                     .build(context);
+
         RecipeBuilder.crafting(BetterEnd.C.mk("blue_vine_seed_dye"), Items.BLUE_DYE)
                      .shapeless()
                      .addMaterial('#', EndBlocks.BLUE_VINE_SEED)

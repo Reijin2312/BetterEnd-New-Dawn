@@ -49,6 +49,14 @@ public class BlockTagProvider extends WoverTagProvider.ForBlocks {
                 EndBlocks.RUTISCUS,
                 EndBlocks.SANGNUM
         );
+        // Vanilla sulfur and cinnabar make up parts of the sulphur spring floor and sulphuric cave,
+        // so plants that root on brimstone must accept those materials as well.
+        context.add(
+                EndTags.SURVIVES_ON_BRIMSTONE,
+                EndBlocks.BRIMSTONE,
+                Blocks.SULFUR,
+                Blocks.CINNABAR
+        );
         addEndGround(context, EndBlocks.THALLASIUM.ore);
         addEndGround(context, EndBlocks.ENDSTONE_DUST);
         addEndGround(context, EndBlocks.AMBER_ORE);
