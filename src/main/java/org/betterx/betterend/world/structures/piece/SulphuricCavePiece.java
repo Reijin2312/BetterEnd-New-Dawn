@@ -131,6 +131,7 @@ public class SulphuricCavePiece extends BasePiece {
 
     private boolean isReplaceable(BlockState state) {
         return state.is(CommonBlockTags.END_STONES)
+                || SulphurFloorMix.isDepositBlock(state)
                 || state.is(EndBlocks.HYDROTHERMAL_VENT)
                 || state.is(EndBlocks.VENT_BUBBLE_COLUMN)
                 || state.is(EndBlocks.SULPHUR_CRYSTAL)

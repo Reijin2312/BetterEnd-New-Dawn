@@ -128,6 +128,11 @@ public final class SulphurFloorMix {
         return true;
     }
 
+    /** The deposit blocks this rule can produce - what a cleanup pass has to look for. */
+    public static boolean isDepositBlock(BlockState state) {
+        return state.is(Blocks.SULFUR) || state.is(Blocks.CINNABAR);
+    }
+
     /**
      * True when any of the six neighbours is air. Horizontal peeks are clamped to the write zone.
      * <p>
