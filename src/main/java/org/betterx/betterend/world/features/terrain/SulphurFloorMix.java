@@ -34,8 +34,13 @@ public final class SulphurFloorMix {
     private static final OpenSimplexNoise TYPE_NOISE = new OpenSimplexNoise(70021);
     private static final OpenSimplexNoise CINNABAR_NOISE = new OpenSimplexNoise(70022);
 
-    /** Blocks of cover required above a position before vanilla blocks may appear under it. */
-    public static final int MIN_DEPTH = 2;
+    /**
+     * How far below the open surface a position must sit. "Below the surface" means below water or
+     * rock, not below rock specifically - the point of the deposit is that it <b>shows on the lake
+     * bed</b>, so the bed's top block qualifies as long as there is enough water over it. Requiring
+     * solid cover instead buried the whole thing inside the rock.
+     */
+    public static final int MIN_DEPTH = 3;
 
     private static final double TYPE_SCALE = 0.11;
     private static final double CINNABAR_SCALE = 0.14;
@@ -119,8 +124,10 @@ public final class SulphurFloorMix {
         BlockPos.MutableBlockPos above = new BlockPos.MutableBlockPos();
         for (int i = 1; i <= MIN_DEPTH; i++) {
             above.set(pos.getX(), pos.getY() + i, pos.getZ());
-            BlockState state = world.getBlockState(above);
-            if (state.isAir() || !state.getFluidState().isEmpty()) {
+            // Water counts as cover, rock counts as cover, air does not. So the top of a lake bed
+            // qualifies once it is MIN_DEPTH under the water line, while the shallow rim and anything
+            // open to the sky does not.
+            if (world.getBlockState(above).isAir()) {
                 return false;
             }
         }
