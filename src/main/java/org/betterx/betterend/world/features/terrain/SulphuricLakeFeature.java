@@ -184,7 +184,9 @@ public class SulphuricLakeFeature extends DefaultFeature {
     private void placeBrimstone(WorldGenLevel world, BlockPos pos, RandomSource random) {
         BlockState state = getBrimstone(world, pos);
         BlocksHelper.setWithoutUpdate(world, pos, state);
-        if (state.getValue(EndBlockProperties.ACTIVE)) {
+        // getBrimstone can now hand back vanilla sulfur or cinnabar, which have no ACTIVE property -
+        // reading it unguarded would throw. Only brimstone ever grows shards anyway.
+        if (state.hasProperty(EndBlockProperties.ACTIVE) && state.getValue(EndBlockProperties.ACTIVE)) {
             makeShards(world, pos, random);
         }
     }
@@ -194,6 +196,13 @@ public class SulphuricLakeFeature extends DefaultFeature {
             if (world.getBlockState(pos.relative(dir)).is(Blocks.WATER)) {
                 return EndBlocks.BRIMSTONE.defaultBlockState().setValue(EndBlockProperties.ACTIVE, true);
             }
+        }
+        // Water-touching brimstone above keeps its ACTIVE look and its sulphur crystal shards. Everything
+        // else that is buried deeply enough, and not exposed to air on any side, joins the sulfur/cinnabar
+        // deposit the geyser bowl uses. See SulphurFloorMix.
+        BlockState mixed = SulphurFloorMix.pick(world, zone, pos);
+        if (mixed != null) {
+            return mixed;
         }
         return EndBlocks.BRIMSTONE.defaultBlockState();
     }

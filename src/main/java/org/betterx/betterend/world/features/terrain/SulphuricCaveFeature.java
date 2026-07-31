@@ -200,8 +200,14 @@ public class SulphuricCaveFeature extends DefaultFeature {
 
     private void placeBrimstone(WorldGenLevel world, BlockPos pos, RandomSource random) {
         BlockState state = getBrimstone(world, pos);
+        if (!state.getValue(EndBlockProperties.ACTIVE)) {
+            BlockState mixed = SulphurFloorMix.pick(world, pos);
+            if (mixed != null) {
+                state = mixed;
+            }
+        }
         BlocksHelper.setWithoutUpdate(world, pos, state);
-        if (state.getValue(EndBlockProperties.ACTIVE)) {
+        if (state.hasProperty(EndBlockProperties.ACTIVE) && state.getValue(EndBlockProperties.ACTIVE)) {
             makeShards(world, pos, random);
         }
     }
