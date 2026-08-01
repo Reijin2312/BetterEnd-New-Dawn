@@ -7,6 +7,7 @@ import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.util.BlockFixer;
 import org.betterx.betterend.util.GlobalState;
+import org.betterx.wover.feature.api.WriteZone;
 import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
@@ -59,11 +60,20 @@ public class DesertLakeFeature extends DefaultFeature {
         if (Math.abs(blockPos.getY() - pos.getY()) > 5) return false;
         waterLevel = MHelper.min(pos.getY(), waterLevel);
         BlockState state;
+        final BlockState borderMaterial = EndBiome.sampleTopMaterial(world, blockPos.below());
 
-        int minX = blockPos.getX() - dist2;
-        int maxX = blockPos.getX() + dist2;
-        int minZ = blockPos.getZ() - dist2;
-        int maxZ = blockPos.getZ() + dist2;
+        // The shore reaches dist2 (up to 22) blocks out and BlockFixer another 2 on top, but a feature may
+        // only touch the 3x3 chunks around the one it is decorating - at most 16 blocks past the origin's
+        // own chunk in any direction. Everything from here on is therefore clipped to that zone. This is
+        // behaviour-neutral for the world (writes out there were already dropped by WorldGenRegion); what it
+        // removes is the "Detected unsafe terrain read during worldgen" spam and, more importantly, the lake
+        // shaping itself reading blocks from chunks that have not been carved - or even filled - yet.
+        // See WriteZone.
+        final WriteZone zone = WriteZone.of(world);
+        int minX = zone.clampX(blockPos.getX() - dist2);
+        int maxX = zone.clampX(blockPos.getX() + dist2);
+        int minZ = zone.clampZ(blockPos.getZ() - dist2);
+        int maxZ = zone.clampZ(blockPos.getZ() + dist2);
         int maskMinX = minX - 1;
         int maskMinZ = minZ - 1;
 
@@ -126,10 +136,7 @@ public class DesertLakeFeature extends DefaultFeature {
                                 }
                                 pos = POS.below();
                                 if (world.getBlockState(pos).is(CommonBlockTags.END_STONES)) {
-                                    state = EndBiome.findTopMaterial(
-                                            world,
-                                            pos
-                                    ); //world.getBiome(pos).getGenerationSettings().getSurfaceBuilderConfig().getTopMaterial();
+                                    state = borderMaterial;
                                     if (y > waterLevel + 1) BlocksHelper.setWithoutUpdate(world, pos, state);
                                     else if (y > waterLevel)
                                         BlocksHelper.setWithoutUpdate(
@@ -157,12 +164,14 @@ public class DesertLakeFeature extends DefaultFeature {
 
         double aspect = (radius / depth);
 
-        for (int x = blockPos.getX() - dist; x <= blockPos.getX() + dist; x++) {
+        // The bowl is narrower than the shore, but it still has to stay inside the clipped box above - both
+        // to keep the reads legal and because `mask` is indexed relative to it.
+        for (int x = Math.max(blockPos.getX() - dist, minX); x <= Math.min(blockPos.getX() + dist, maxX); x++) {
             POS.setX(x);
             int x2 = x - blockPos.getX();
             x2 *= x2;
             int mx = x - maskMinX;
-            for (int z = blockPos.getZ() - dist; z <= blockPos.getZ() + dist; z++) {
+            for (int z = Math.max(blockPos.getZ() - dist, minZ); z <= Math.min(blockPos.getZ() + dist, maxZ); z++) {
                 POS.setZ(z);
                 int z2 = z - blockPos.getZ();
                 z2 *= z2;
@@ -202,10 +211,7 @@ public class DesertLakeFeature extends DefaultFeature {
                                 BlocksHelper.setWithoutUpdate(world, POS, EndBlocks.END_MOSS);
                             } else if (y < waterLevel) {
                                 if (world.isEmptyBlock(POS.above())) {
-                                    state = EndBiome.findTopMaterial(
-                                            world,
-                                            pos
-                                    ); //world.getBiome(POS).getGenerationSettings().getSurfaceBuilderConfig().getTopMaterial();
+                                    state = borderMaterial;
                                     BlocksHelper.setWithoutUpdate(
                                             world,
                                             POS,
@@ -229,8 +235,8 @@ public class DesertLakeFeature extends DefaultFeature {
 
         BlockFixer.fixBlocks(
                 world,
-                new BlockPos(minX - 2, waterLevel - 2, minZ - 2),
-                new BlockPos(maxX + 2, blockPos.getY() + 20, maxZ + 2)
+                new BlockPos(zone.clampX(minX - 2), waterLevel - 2, zone.clampZ(minZ - 2)),
+                new BlockPos(zone.clampX(maxX + 2), blockPos.getY() + 20, zone.clampZ(maxZ + 2))
         );
 
         return true;

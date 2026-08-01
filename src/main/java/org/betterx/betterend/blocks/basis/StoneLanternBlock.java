@@ -35,6 +35,7 @@ public class StoneLanternBlock extends EndLanternBlock implements CustomColorPro
     }
 
     @Override
+    @net.fabricmc.api.Environment(net.fabricmc.api.EnvType.CLIENT)
     public BlockColorProvider getProvider() {
         return ((CustomColorProvider) EndBlocks.AURORA_CRYSTAL).getProvider();
     }

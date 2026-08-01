@@ -2,6 +2,7 @@ package org.betterx.betterend.world.features;
 
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
+import org.betterx.wover.feature.api.WriteZone;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
@@ -37,14 +38,22 @@ public abstract class WallScatterFeature<FC extends ScatterFeatureConfig> extend
         }
         int py = MHelper.randRange(minY, maxY, random);
 
+        // The box below reaches +/-cfg.radius on X/Z, past the 3x3 chunks a feature may touch for a large
+        // enough radius. Clip it to the write zone; see WriteZone.
+        final WriteZone zone = WriteZone.of(world);
+        int minX = zone.clampX(center.getX() - cfg.radius);
+        int maxX = zone.clampX(center.getX() + cfg.radius);
+        int minZ = zone.clampZ(center.getZ() - cfg.radius);
+        int maxZ = zone.clampZ(center.getZ() + cfg.radius);
+
         MutableBlockPos mut = new MutableBlockPos();
-        for (int x = -cfg.radius; x <= cfg.radius; x++) {
-            mut.setX(center.getX() + x);
+        for (int x = minX; x <= maxX; x++) {
+            mut.setX(x);
             for (int y = -cfg.radius; y <= cfg.radius; y++) {
                 mut.setY(py + y);
-                for (int z = -cfg.radius; z <= cfg.radius; z++) {
-                    mut.setZ(center.getZ() + z);
-                    if (random.nextInt(4) == 0 && world.isEmptyBlock(mut)) {
+                for (int z = minZ; z <= maxZ; z++) {
+                    mut.setZ(z);
+                    if (random.nextInt(4) == 0 && world.isEmptyBlock(mut) && !overLakeWater(world, mut)) {
                         shuffle(random);
                         for (Direction dir : DIR) {
                             if (canGenerate(cfg, world, random, mut, dir)) {
@@ -58,6 +67,17 @@ public abstract class WallScatterFeature<FC extends ScatterFeatureConfig> extend
         }
 
         return true;
+    }
+
+    private static boolean overLakeWater(WorldGenLevel world, BlockPos pos) {
+        final MutableBlockPos m = new MutableBlockPos().set(pos);
+        for (int i = 0; i < 4; i++) {
+            m.setY(m.getY() - 1);
+            final var state = world.getBlockState(m);
+            if (!state.getFluidState().isEmpty()) return true;
+            if (state.isSolid()) return false;
+        }
+        return false;
     }
 
     private void shuffle(RandomSource random) {

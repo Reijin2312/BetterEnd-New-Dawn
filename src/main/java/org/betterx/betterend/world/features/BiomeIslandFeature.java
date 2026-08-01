@@ -7,6 +7,7 @@ import org.betterx.bclib.sdf.operator.SDFTranslate;
 import org.betterx.bclib.sdf.primitive.SDFCappedCone;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.noise.OpenSimplexNoise;
+import org.betterx.wover.feature.api.WriteZone;
 import org.betterx.betterend.world.biome.EndBiome;
 
 import net.minecraft.core.BlockPos;
@@ -32,7 +33,7 @@ public class BiomeIslandFeature extends DefaultFeature {
         //Holder<Biome> biome = world.getBiome(pos);
         int dist = BlocksHelper.downRay(world, pos, 10) + 1;
         BlockPos surfacePos = new BlockPos(pos.getX(), pos.getY() - dist, pos.getZ());
-        BlockState topMaterial = EndBiome.findTopMaterial(world, surfacePos);
+        BlockState topMaterial = world.getBlockState(surfacePos.above());
 
         if (BlocksHelper.isFluid(topMaterial)) {
             topBlock = Blocks.GRAVEL.defaultBlockState();
@@ -43,7 +44,9 @@ public class BiomeIslandFeature extends DefaultFeature {
 
         simplexNoise = new OpenSimplexNoise(world.getSeed());
         CENTER.set(pos);
-        ISLAND.fillRecursive(world, pos.below());
+        // Small island, but reuses the same unbounded flood-fill as the larger features - clip it to the
+        // write zone for consistency/safety; see WriteZone.
+        ISLAND.fillRecursive(world, pos.below(), WriteZone.of(world).toBoundingBox());
         return true;
     }
 

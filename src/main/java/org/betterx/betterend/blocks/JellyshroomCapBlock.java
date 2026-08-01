@@ -83,6 +83,7 @@ public class JellyshroomCapBlock extends SlimeBlock implements RenderLayerProvid
     }
 
     @Override
+    @net.fabricmc.api.Environment(net.fabricmc.api.EnvType.CLIENT)
     public BlockColorProvider getProvider() {
         return (state, world, pos, tintIndex) -> {
             float delta = (float) state.getValue(COLOR) / 7F;

@@ -57,6 +57,7 @@ public class BetterEnd implements ModInitializer {
         // must not read their fields before this point.
         EndBlocks.ensureStaticallyLoaded();
         EndItems.ensureStaticallyLoaded();
+        EndItems.registerCompostableFoods();
         // Fabric initializes some client/post-init hooks while the lazy registries are
         // still being populated. Rebuild the pot lookup only after both blocks and
         // their BlockItems are complete, otherwise the first partial snapshot is cached.
@@ -72,6 +73,9 @@ public class BetterEnd implements ModInitializer {
         EndPotions.register();
         InfusionRecipe.register();
         EndStructures.register();
+        EndCarvers.ensureStaticallyLoaded();
+        // TEMP: keep the new vertical cave pipeline dormant until upstream stabilizes it.
+        // BiomeDecider.registerDecider(C.mk("cave_biome_decider"), new org.betterx.betterend.world.generator.EndCaveBiomeDecider());
         BonemealPlants.init();
         GeneratorOptions.init();
         LootTableUtil.init();

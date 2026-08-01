@@ -8,15 +8,18 @@
   "has_caves": false,
   "surface": {
     "alt": {
-      "Name": "minecraft:end_stone"
+      "Name": "betterend:sulphuric_rock"
     },
     "floor_rule": false,
     "top": {
-      "Name": "betterend:flavolite"
+      "Name": "betterend:brimstone",
+      "Properties": {
+        "active": "false"
+      }
     },
     "under": {
       "Name": "minecraft:end_stone"
     }
   },
-  "terrainHeight": 0.0
+  "terrainHeight": 0
 }

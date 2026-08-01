@@ -9,6 +9,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 
 public class EndFishEntityModel<T extends LivingEntityRenderState> extends EntityModel<T> {
     private final ModelPart model;
@@ -62,7 +63,7 @@ public class EndFishEntityModel<T extends LivingEntityRenderState> extends Entit
     }
 
     public EndFishEntityModel(ModelPart modelPart) {
-        super(modelPart);
+        super(modelPart, RenderTypes::entityCutoutCull);
 
         model = modelPart.getChild(PartNames.BODY);
         fin_top = model.getChild(PartNames.TOP_FIN);

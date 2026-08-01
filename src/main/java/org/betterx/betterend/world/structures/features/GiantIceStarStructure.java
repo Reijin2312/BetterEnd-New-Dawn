@@ -40,6 +40,11 @@ public class GiantIceStarStructure extends SDFStructureFeature {
         return EndStructures.GIANT_ICE_STAR.type();
     }
 
+    @Override
+    public java.util.Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
+        return findVoidGenerationPoint(context, 80);
+    }
+
     protected static SDF getSDF(BlockPos pos, RandomSource random) {
         float size = MHelper.randRange(minSize, maxSize, random);
         int count = MHelper.randRange(minCount, maxCount, random);

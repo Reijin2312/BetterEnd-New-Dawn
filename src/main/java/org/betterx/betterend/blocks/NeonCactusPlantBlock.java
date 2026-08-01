@@ -58,7 +58,11 @@ public class NeonCactusPlantBlock extends BaseBlockNotFull implements SimpleWate
     private static final int MAX_LENGTH = 12;
 
     public NeonCactusPlantBlock() {
-        super(BlockBehaviour.Properties.ofLegacyCopy(Blocks.CACTUS).lightLevel((bs) -> 15).randomTicks());
+        super(BlockBehaviour.Properties.ofLegacyCopy(Blocks.CACTUS)
+                .lightLevel((bs) -> 15)
+                .randomTicks()
+                .strength(1.0F)
+                .sound(SoundType.BAMBOO));
         registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false)
                                                 .setValue(FACING, Direction.UP)
                                                 .setValue(SHAPE, TripleShape.TOP));
@@ -114,7 +118,9 @@ public class NeonCactusPlantBlock extends BaseBlockNotFull implements SimpleWate
             BlockState newState,
             RandomSource random
     ) {
-        scheduledTickAccess.scheduleTick(pos, this, 2);
+        if (!state.canSurvive(world, pos)) {
+            scheduledTickAccess.scheduleTick(pos, this, 2);
+        }
         if (state.getValue(WATERLOGGED)) {
             scheduledTickAccess.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
         }
@@ -136,7 +142,7 @@ public class NeonCactusPlantBlock extends BaseBlockNotFull implements SimpleWate
     @Override
     public void tick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource random) {
         if (!blockState.canSurvive(serverLevel, blockPos)) {
-            serverLevel.destroyBlock(blockPos, true, null, 1);
+            serverLevel.destroyBlock(blockPos, true);
         }
     }
 

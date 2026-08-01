@@ -1,5 +1,6 @@
 package org.betterx.betterend.world.features.trees;
 
+
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.sdf.PosInfo;
 import org.betterx.bclib.sdf.SDF;
@@ -13,6 +14,7 @@ import org.betterx.bclib.util.MHelper;
 import org.betterx.bclib.util.SplineHelper;
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.betterend.registry.EndBlocks;
+import org.betterx.wover.feature.api.WriteZone;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
@@ -23,6 +25,7 @@ import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 import org.joml.Vector3f;
 
@@ -30,6 +33,16 @@ import java.util.List;
 import java.util.function.Function;
 
 public class PythadendronTreeFeature extends DefaultFeature {
+    private static final Function<BlockState, Boolean> REPLACE;
+    private static final Function<BlockState, Boolean> IGNORE;
+    private static final Function<PosInfo, BlockState> POST;
+
+    /**
+     * How far past its nominal radius a leaf ball's surface reaches: {@code noise * 3} plus
+     * {@code nextFloat() * 3 - 1.5}, both applied through {@code SDFDisplacement}, which adds to the
+     * distance - so the negative half of each range grows the shape.
+     */
+    private static final float LEAF_BALL_BULGE = 4.5F;
 
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
@@ -40,6 +53,12 @@ public class PythadendronTreeFeature extends DefaultFeature {
             return false;
         }
         BlocksHelper.setWithoutUpdate(world, pos, AIR);
+
+        // The recursive branch() below fans out repeatedly (each level spawns two more, up to `depth`
+        // levels), and the trunk/leaf-ball flood-fills are otherwise bounded only by their own shape - all
+        // of it can reach past the 3x3 chunks a feature may touch. Clip every read/write to the write zone;
+        // see WriteZone.
+        final WriteZone zone = WriteZone.of(world);
 
         float size = MHelper.randRange(10, 20, random);
         List<Vector3f> spline = SplineHelper.makeSpline(0, 0, 0, 0, size, 0, 4);
@@ -57,7 +76,8 @@ public class PythadendronTreeFeature extends DefaultFeature {
                 random,
                 depth,
                 world,
-                pos
+                pos,
+                zone
         );
 
         SDF function = SplineHelper.buildSDF(
@@ -66,10 +86,11 @@ public class PythadendronTreeFeature extends DefaultFeature {
                 1.1F,
                 (bpos) -> EndBlocks.PYTHADENDRON.getBark().defaultBlockState()
         );
-        function.setReplaceFunction(replaceFunc());
-        function.addPostProcess(postProcessFunc());
-        function.fillRecursive(world, pos);
+        function.setReplaceFunction(REPLACE);
+        function.addPostProcess(POST);
+        function.fillRecursive(world, pos, zone.toBoundingBox());
 
+        EndTreeHelper.waterlogSubmerged(world, pos, 28);
         return true;
     }
 
@@ -82,7 +103,8 @@ public class PythadendronTreeFeature extends DefaultFeature {
             RandomSource random,
             int depth,
             WorldGenLevel world,
-            BlockPos pos
+            BlockPos pos,
+            WriteZone zone
     ) {
         if (depth == 0) return;
 
@@ -94,6 +116,8 @@ public class PythadendronTreeFeature extends DefaultFeature {
         float x2 = x - dx;
         float z2 = z - dz;
 
+        final BoundingBox bounds = zone.toBoundingBox();
+
         List<Vector3f> spline = SplineHelper.makeSpline(x, y, z, x1, y, z1, 5);
         SplineHelper.powerOffset(spline, size * MHelper.randRange(1.0F, 2.0F, random), 4);
         SplineHelper.offsetParts(spline, random, 0.3F, 0, 0.3F);
@@ -104,7 +128,8 @@ public class PythadendronTreeFeature extends DefaultFeature {
                 world,
                 EndBlocks.PYTHADENDRON.getBark().defaultBlockState(),
                 pos,
-                replaceFunc()
+                REPLACE,
+                bounds
         );
 
         spline = SplineHelper.makeSpline(x, y, z, x2, y, z2, 5);
@@ -117,16 +142,17 @@ public class PythadendronTreeFeature extends DefaultFeature {
                 world,
                 EndBlocks.PYTHADENDRON.getBark().defaultBlockState(),
                 pos,
-                replaceFunc()
+                REPLACE,
+                bounds
         );
 
         OpenSimplexNoise noise = new OpenSimplexNoise(random.nextInt());
         if (depth < 3) {
             if (s1) {
-                leavesBall(world, pos.offset((int) pos1.x(), (int) pos1.y(), (int) pos1.z()), random, noise);
+                leavesBall(world, pos.offset((int) pos1.x(), (int) pos1.y(), (int) pos1.z()), random, noise, zone);
             }
             if (s2) {
-                leavesBall(world, pos.offset((int) pos2.x(), (int) pos2.y(), (int) pos2.z()), random, noise);
+                leavesBall(world, pos.offset((int) pos2.x(), (int) pos2.y(), (int) pos2.z()), random, noise, zone);
             }
         }
 
@@ -136,15 +162,26 @@ public class PythadendronTreeFeature extends DefaultFeature {
         float angle2 = angle + (float) Math.PI * 0.5F + MHelper.randRange(-0.1F, 0.1F, random);
 
         if (s1) {
-            branch(pos1.x(), pos1.y(), pos1.z(), size1, angle1, random, depth - 1, world, pos);
+            branch(pos1.x(), pos1.y(), pos1.z(), size1, angle1, random, depth - 1, world, pos, zone);
         }
         if (s2) {
-            branch(pos2.x(), pos2.y(), pos2.z(), size2, angle2, random, depth - 1, world, pos);
+            branch(pos2.x(), pos2.y(), pos2.z(), size2, angle2, random, depth - 1, world, pos, zone);
         }
     }
 
-    private void leavesBall(WorldGenLevel world, BlockPos pos, RandomSource random, OpenSimplexNoise noise) {
+    private void leavesBall(
+            WorldGenLevel world,
+            BlockPos pos,
+            RandomSource random,
+            OpenSimplexNoise noise,
+            WriteZone zone
+    ) {
         float radius = MHelper.randRange(4.5F, 6.5F, random);
+        // Pythadendron's leaf balls are what hits the wall, not its branches: the recursive fan walks only
+        // about 12 blocks out in total (four levels of size * 0.15 each), inside the 16 blocks of room a
+        // feature is always guaranteed, while a ball on the end of one reaches radius + 4.5 further. Size
+        // the ball to the room its own centre has and the write bounds have nothing left to cut.
+        radius = EndTreeHelper.fitBallRadius(zone, pos, radius, LEAF_BALL_BULGE, 2.5F);
 
         SDF sphere = new SDFSphere().setRadius(radius)
                                     .setBlock(EndBlocks.PYTHADENDRON_LEAVES.defaultBlockState()
@@ -193,26 +230,25 @@ public class PythadendronTreeFeature extends DefaultFeature {
             }
             return info.getState();
         });
-        sphere.fillRecursiveIgnore(world, pos, ignoreFunc());
+        sphere.fillRecursiveIgnore(world, pos, zone.toBoundingBox(), IGNORE);
     }
 
-    private static Function<BlockState, Boolean> replaceFunc() {
-        return (state) -> {
+    static {
+        REPLACE = (state) -> {
+            /*if (state.is(CommonBlockTags.END_STONES)) {
+                return true;
+            }*/
             if (state.getBlock() == EndBlocks.PYTHADENDRON_LEAVES) {
                 return true;
             }
             return BlocksHelper.replaceableOrPlant(state);
         };
-    }
 
-    private static Function<BlockState, Boolean> ignoreFunc() {
-        return EndBlocks.PYTHADENDRON::isTreeLog;
-    }
+        IGNORE = EndBlocks.PYTHADENDRON::isTreeLog;
 
-    private static Function<PosInfo, BlockState> postProcessFunc() {
-        return (info) -> {
+        POST = (info) -> {
             if (EndBlocks.PYTHADENDRON.isTreeLog(info.getStateUp()) && EndBlocks.PYTHADENDRON.isTreeLog(info.getStateDown())) {
-                return EndBlocks.PYTHADENDRON.getBark().defaultBlockState();
+                return EndBlocks.PYTHADENDRON.getLog().defaultBlockState();
             }
             return info.getState();
         };

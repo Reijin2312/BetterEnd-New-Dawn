@@ -35,11 +35,9 @@
     "water_color": "#195a9d"
   },
   "features": [
+    [],
     [
       "betterend:geyser",
-      "betterend:sulphuric_cave"
-    ],
-    [
       "betterend:sulphuric_lake"
     ],
     [],
@@ -75,7 +73,7 @@
         "type": "minecraft:enderman",
         "maxCount": 4,
         "minCount": 1,
-        "weight": 50
+        "weight": 1
       }
     ],
     "underground_water_creature": [],

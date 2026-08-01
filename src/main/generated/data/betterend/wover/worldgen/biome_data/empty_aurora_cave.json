@@ -1,0 +1,37 @@
+﻿{
+  "type": "betterend:empty_aurora_cave_biome",
+  "biome": "betterend:empty_aurora_cave",
+  "ceil_features": {
+    "configured_features": [
+      {
+        "configured_feature": "betterend:end_stone_stalactite",
+        "weight": 1.0
+      }
+    ]
+  },
+  "floor_features": {
+    "configured_features": [
+      {
+        "configured_feature": "betterend:big_aurora_crystal",
+        "weight": 1.0
+      }
+    ]
+  },
+  "fogDensity": 2.0,
+  "generation_data": {
+    "intended_placement": "betterend:is_end_cave"
+  },
+  "has_caves": false,
+  "surface": {
+    "alt": {
+      "Name": "minecraft:end_stone"
+    },
+    "floor_rule": true,
+    "top": {
+      "Name": "minecraft:end_stone"
+    },
+    "under": {
+      "Name": "minecraft:end_stone"
+    }
+  }
+}

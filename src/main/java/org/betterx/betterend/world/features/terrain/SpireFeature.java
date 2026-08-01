@@ -11,6 +11,7 @@ import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.betterend.registry.EndBiomes;
 import org.betterx.betterend.registry.features.EndConfiguredVegetation;
+import org.betterx.wover.feature.api.WriteZone;
 import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
@@ -68,13 +69,14 @@ public class SpireFeature extends DefaultFeature {
             )) * 1.3F);
         }).setSource(sdf);
         final BlockPos center = pos;
+        final BlockState spireTop = EndBiome.sampleTopMaterial(world, center.below());
         List<BlockPos> support = Lists.newArrayList();
         sdf.setReplaceFunction(REPLACE).addPostProcess((info) -> {
             if (info.getStateUp().isAir()) {
                 if (random.nextInt(16) == 0) {
                     support.add(info.getPos().above());
                 }
-                return EndBiome.findTopMaterial(world, info.getPos());
+                return spireTop;
                 //return world.getBiome(info.getPos()).getGenerationSettings().getSurfaceBuilderConfig().getTopMaterial();
             } else if (info.getState(Direction.UP, 3).isAir()) {
                 return EndBiome.findUnderMaterial(world, info.getPos());
@@ -84,7 +86,7 @@ public class SpireFeature extends DefaultFeature {
 //							.getUnderMaterial();
             }
             return info.getState();
-        }).fillRecursive(world, center);
+        }).fillRecursive(world, center, WriteZone.of(world).toBoundingBox());
 
         support.forEach((bpos) -> {
             Holder<Biome> biome = world.getBiome(bpos);

@@ -9,6 +9,7 @@ import org.betterx.betterend.world.features.bushes.*;
 import org.betterx.betterend.world.features.terrain.*;
 import org.betterx.betterend.world.features.terrain.caves.CaveChunkPopulatorFeature;
 import org.betterx.betterend.world.features.terrain.caves.RoundCaveFeature;
+import org.betterx.betterend.world.features.terrain.caves.StalactiteClusterFeature;
 import org.betterx.betterend.world.features.terrain.caves.TunelCaveFeature;
 import org.betterx.betterend.world.features.trees.*;
 import org.betterx.wover.feature.api.FeatureManager;
@@ -23,6 +24,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
 public class EndFeatures {
+    public static final StalactiteClusterFeature STALACTITE_CLUSTER = inlineBuild("stalactite_cluster", new StalactiteClusterFeature());
     public static final StalactiteFeature STALACTITE_FEATURE = inlineBuild("stalactite_feature", new StalactiteFeature());
     public static final BuildingListFeature BUILDING_LIST_FEATURE = inlineBuild("building_list_feature", new BuildingListFeature());
     public static final VineFeature VINE_FEATURE = inlineBuild("vine_feature", new VineFeature());
@@ -54,6 +56,7 @@ public class EndFeatures {
     public static final DragonTreeFeature DRAGON_TREE_FEATURE = inlineBuild("dragon_tree", new DragonTreeFeature());
     public static final TenaneaFeature TENANEA_FEATURE = inlineBuild("tenanea", new TenaneaFeature());
     public static final HelixTreeFeature HELIX_TREE_FEATURE = inlineBuild("helix_tree", new HelixTreeFeature());
+    public static final DragonHelixTreeFeature DRAGON_HELIX_TREE_FEATURE = inlineBuild("dragon_helix_tree", new DragonHelixTreeFeature());
     public static final UmbrellaTreeFeature UMBRELLA_TREE_FEATURE = inlineBuild("umbrella_tree", new UmbrellaTreeFeature());
     public static final JellyshroomFeature JELLYSHROOM_FEATURE = inlineBuild("jellyshroom", new JellyshroomFeature());
     public static final GiganticAmaranitaFeature GIGANTIC_AMARANITA_FEATURE = inlineBuild("gigantic_amaranita", new GiganticAmaranitaFeature());
@@ -61,6 +64,7 @@ public class EndFeatures {
     public static final TenaneaBushFeature TENANEA_BUSH_FEATURE = inlineBuild("tenanea_bush", new TenaneaBushFeature());
     public static final Lumecorn LUMECORN_FEATURE = inlineBuild("lumecorn", new Lumecorn());
     public static final LargeAmaranitaFeature LARGE_AMARANITA_FEATURE = inlineBuild("large_amaranita", new LargeAmaranitaFeature());
+    public static final AmaranitaPatchFeature AMARANITA_PATCH_FEATURE = inlineBuild("amaranita_patch", new AmaranitaPatchFeature());
     public static final NeonCactusFeature NEON_CACTUS_FEATURE = inlineBuild("neon_cactus", new NeonCactusFeature());
 
     //Ores
@@ -84,10 +88,10 @@ public class EndFeatures {
     public static final SpireFeature SPIRE_FEATURE = inlineBuild("spire", new SpireFeature());
     public static final FloatingSpireFeature FLOATING_SPIRE_FEATURE = inlineBuild("floating_spire", new FloatingSpireFeature());
     public static final GeyserFeature GEYSER_FEATURE = inlineBuild("geyser", new GeyserFeature());
+    public static final PondWithWaterfallFeature POND_WITH_WATERFALL_FEATURE = inlineBuild("pond_with_waterfall", new PondWithWaterfallFeature());
     public static final BiomeIslandFeature OVERWORLD_ISLAND = inlineBuild("overworld_island", new BiomeIslandFeature());
 
     // Caves
-    public static final SulphuricCaveFeature SULPHURIC_CAVE_FEATURE = inlineBuild("sulphuric_cave", new SulphuricCaveFeature());
     public static final TunelCaveFeature TUNEL_CAVE_FEATURE = inlineBuild("tunel_cave", new TunelCaveFeature());
     public static final SmaragdantCrystalFeature SMARAGDANT_CRYSTAL_FEATURE = inlineBuild("smaragdant_crystal", new SmaragdantCrystalFeature());
     public static final BigAuroraCrystalFeature BIG_AURORA_CRYSTAL_FEATURE = inlineBuild("big_aurora_crystal", new BigAuroraCrystalFeature());

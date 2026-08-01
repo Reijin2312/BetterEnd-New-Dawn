@@ -9,6 +9,7 @@ import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
 import org.betterx.betterend.world.surface.SplitNoiseCondition;
 import org.betterx.wover.surface.api.SurfaceRuleBuilder;
+import org.betterx.wover.surface.impl.BaseSurfaceRuleBuilder;
 import org.betterx.wover.surface.impl.rules.SwitchRuleSource;
 
 import net.minecraft.world.entity.EntityTypes;
@@ -31,7 +32,7 @@ public class CrystalMountainsBiome extends EndBiome.Config {
                 .music(EndSounds.MUSIC_OPENSPACE)
                 .feature(EndVegetationFeatures.CRYSTAL_GRASS)
                 .feature(EndVegetationFeatures.CRYSTAL_MOSS_COVER)
-                .spawn(EntityTypes.ENDERMAN, 50, 1, 2);
+                .spawn(EntityTypes.ENDERMAN, 3, 1, 2);
     }
 
     @Override
@@ -48,12 +49,16 @@ public class CrystalMountainsBiome extends EndBiome.Config {
                         new SplitNoiseCondition(),
                         List.of(
                                 SurfaceRules.state(EndBlocks.END_MOSS.defaultBlockState()),
-                                SurfaceRules.state(Blocks.END_STONE.defaultBlockState())
+                                SurfaceRules.state(EndBlocks.CRYSTAL_MOSS.defaultBlockState())
                         )
                 );
                 return super
                         .surface()
-                        .rule(SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, surfaceBlockRule), 1);
+                        .rule(
+                                SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, surfaceBlockRule),
+                                BaseSurfaceRuleBuilder.SUB_SURFACE_PRIORITY
+                        )
+                        .steep(EndBlocks.CRYSTAL_MOSS.defaultBlockState(), 1);
             }
         };
     }

@@ -9,10 +9,13 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 
+import java.util.EnumSet;
 import java.util.function.Consumer;
 
 public class VoxelPiece extends BasePiece {
@@ -50,6 +53,12 @@ public class VoxelPiece extends BasePiece {
             ChunkPos chunkPos,
             BlockPos blockPos
     ) {
-        this.world.placeChunk(world, chunkPos);
+        if (this.world.placeChunk(world, chunkPos)) {
+            ChunkAccess chunk = world.getChunk(chunkPos.x(), chunkPos.z());
+            Heightmap.primeHeightmaps(
+                    chunk,
+                    EnumSet.of(Heightmap.Types.WORLD_SURFACE_WG, Heightmap.Types.OCEAN_FLOOR_WG)
+            );
+        }
     }
 }

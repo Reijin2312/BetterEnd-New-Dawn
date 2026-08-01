@@ -57,34 +57,20 @@ public class RendererEntityEndSlime extends MobRenderer<EndSlimeEntity, Renderer
                     float yRot,
                     float xRot
             ) {
-                submitNodeCollector.order(1)
-                    .submitModel(
-                            this.getParentModel(),
-                            state,
-                            matrices,
-                            GLOW[state.slimeType],
-                            15728640,
-                            OverlayTexture.NO_OVERLAY,
-                            -1,
-                            null,
-                            state.outlineColor,
-                            null
-                    );
+                submitNodeCollector.submitCustomGeometry(matrices, GLOW[state.slimeType], (pose, buffer) -> {
+                    PoseStack local = new PoseStack();
+                    local.mulPose(pose.pose());
+                    this.getParentModel()
+                        .renderToBuffer(local, buffer, 15728640, OverlayTexture.NO_OVERLAY, 0xffffffff);
+                });
 
                 if (state.isLake) {
-                    submitNodeCollector.order(1)
-                        .submitModel(
-                                flowerModel,
-                                state,
-                                matrices,
-                                GLOW[state.slimeType],
-                                15728640,
-                                OverlayTexture.NO_OVERLAY,
-                                -1,
-                                null,
-                                state.outlineColor,
-                                null
-                        );
+                    flowerModel.setupAnim(state);
+                    submitNodeCollector.submitCustomGeometry(matrices, GLOW[state.slimeType], (pose, buffer) -> {
+                        PoseStack local = new PoseStack();
+                        local.mulPose(pose.pose());
+                        flowerModel.renderToBuffer(local, buffer, 15728640, OverlayTexture.NO_OVERLAY, 0xffffffff);
+                    });
                 }
             }
         });
@@ -157,48 +143,40 @@ public class RendererEntityEndSlime extends MobRenderer<EndSlimeEntity, Renderer
             final int overlay = LivingEntityRenderer.getOverlayCoords(state, 0.0F);
 
             if (state.isLake) {
-                submitNodeCollector.order(1)
-                    .submitModel(
-                            flowerModel,
-                            state,
-                            matrixStack,
-                            RenderTypes.entityCutout(texture),
-                            light,
-                            overlay,
-                            -1,
-                            null,
-                            state.outlineColor,
-                            null
-                    );
+                flowerModel.setupAnim(state);
+                submitNodeCollector.submitCustomGeometry(
+                        matrixStack,
+                        RenderTypes.entityCutoutCull(texture),
+                        (pose, buffer) -> {
+                            PoseStack local = new PoseStack();
+                            local.mulPose(pose.pose());
+                            flowerModel.renderToBuffer(local, buffer, light, overlay, 0xffffffff);
+                        }
+                );
             } else if (state.isAmber || state.isChorus) {
-                submitNodeCollector.order(1)
-                    .submitModel(
-                            cropModel,
-                            state,
-                            matrixStack,
-                            RenderTypes.entityCutout(texture),
-                            light,
-                            overlay,
-                            -1,
-                            null,
-                            state.outlineColor,
-                            null
-                    );
+                cropModel.setupAnim(state);
+                submitNodeCollector.submitCustomGeometry(
+                        matrixStack,
+                        RenderTypes.entityCutoutCull(texture),
+                        (pose, buffer) -> {
+                            PoseStack local = new PoseStack();
+                            local.mulPose(pose.pose());
+                            cropModel.renderToBuffer(local, buffer, light, overlay, 0xffffffff);
+                        }
+                );
             }
 
-            submitNodeCollector.order(1)
-                .submitModel(
-                        shellModel,
-                        state,
-                        matrixStack,
-                        RenderTypes.entityTranslucent(texture),
-                        light,
-                        overlay,
-                        -1,
-                        null,
-                        state.outlineColor,
-                        null
-                );
+            shellModel.setupAnim(state);
+            int shellColor = state.slimeType == 0 ? 0xA0ffffff : 0xffffffff;
+            submitNodeCollector.submitCustomGeometry(
+                    matrixStack,
+                    RenderTypes.entityTranslucent(texture),
+                    (pose, buffer) -> {
+                        PoseStack local = new PoseStack();
+                        local.mulPose(pose.pose());
+                        shellModel.renderToBuffer(local, buffer, light, overlay, shellColor);
+                    }
+            );
         }
     }
 

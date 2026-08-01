@@ -45,15 +45,15 @@ public class SulphurSpringsBiome extends EndBiome.Config {
                 .feature(EndTerrainFeatures.GEYSER)
                 .feature(EndTerrainFeatures.SURFACE_VENT)
                 .feature(EndLakeFeatures.SULPHURIC_LAKE)
-                .feature(EndTerrainFeatures.SULPHURIC_CAVE)
                 .feature(EndVegetationFeatures.HYDRALUX)
                 .feature(EndVegetationFeatures.CHARNIA_GREEN)
                 .feature(EndVegetationFeatures.CHARNIA_ORANGE)
                 .feature(EndVegetationFeatures.CHARNIA_RED_RARE)
                 .structure(EndStructures.ETERNAL_PORTAL)
+                .structure(EndStructures.SULPHURIC_CAVE)
                 .spawn(EndEntities.END_FISH.type(), 50, 3, 8)
                 .spawn(EndEntities.CUBOZOA.type(), 50, 3, 8)
-                .spawn(EntityTypes.ENDERMAN, 50, 1, 4);
+                .spawn(EntityTypes.ENDERMAN, 1, 1, 4);
     }
 
     @Override
@@ -61,12 +61,12 @@ public class SulphurSpringsBiome extends EndBiome.Config {
         return new EndBiome.DefaultSurfaceMaterialProvider() {
             @Override
             public BlockState getTopMaterial() {
-                return EndBlocks.FLAVOLITE.stone.defaultBlockState();
+                return EndBlocks.BRIMSTONE.defaultBlockState();
             }
 
             @Override
             public BlockState getAltTopMaterial() {
-                return Blocks.END_STONE.defaultBlockState();
+                return EndBlocks.SULPHURIC_ROCK.stone.defaultBlockState();
             }
 
             @Override
@@ -87,13 +87,13 @@ public class SulphurSpringsBiome extends EndBiome.Config {
                 );
                 return super
                         .surface()
-                        .rule(SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, surfaceBlockRule), 2)
+                        .rule(SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, surfaceBlockRule), SurfaceRuleBuilder.TOP_SURFACE_PRIORITY)
                         .rule(
                                 SurfaceRules.ifTrue(
                                         SurfaceRules.stoneDepthCheck(5, false, CaveSurface.FLOOR),
                                         surfaceBlockRule
                                 ),
-                                2
+                                SurfaceRuleBuilder.SUB_SURFACE_PRIORITY
                         );
             }
         };

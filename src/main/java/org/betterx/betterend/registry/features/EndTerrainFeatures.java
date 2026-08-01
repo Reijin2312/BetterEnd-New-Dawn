@@ -56,9 +56,11 @@ public class EndTerrainFeatures {
             .createKey(BetterEnd.C.mk("floating_spire"))
             .setDecoration(GenerationStep.Decoration.RAW_GENERATION);
 
+    // Moved from RAW_GENERATION to LAKES so it's guaranteed to run after EndStructures.SULPHURIC_CAVE
+    // (also RAW_GENERATION, in the same biome) rather than depend on same-step registration order.
     public static final PlacedFeatureKey GEYSER = PlacedFeatureManager
             .createKey(BetterEnd.C.mk("geyser"))
-            .setDecoration(GenerationStep.Decoration.RAW_GENERATION);
+            .setDecoration(GenerationStep.Decoration.LAKES);
 
     public static final PlacedFeatureKey ICE_STAR = PlacedFeatureManager
             .createKey(BetterEnd.C.mk("ice_star"))
@@ -68,12 +70,12 @@ public class EndTerrainFeatures {
             .createKey(BetterEnd.C.mk("ice_star_small"))
             .setDecoration(GenerationStep.Decoration.RAW_GENERATION);
 
+    public static final PlacedFeatureKey POND_WITH_WATERFALL = PlacedFeatureManager
+            .createKey(BetterEnd.C.mk("pond_with_waterfall"))
+            .setDecoration(GenerationStep.Decoration.LAKES);
+
     public static final PlacedFeatureKey BIOME_ISLAND = PlacedFeatureManager
             .createKey(BetterEnd.C.mk("overworld_island"))
-            .setDecoration(GenerationStep.Decoration.RAW_GENERATION);
-
-    public static final PlacedFeatureKey SULPHURIC_CAVE = PlacedFeatureManager
-            .createKey(BetterEnd.C.mk("sulphuric_cave"))
             .setDecoration(GenerationStep.Decoration.RAW_GENERATION);
 
     public static final PlacedFeatureKey TUNEL_CAVE = PlacedFeatureManager

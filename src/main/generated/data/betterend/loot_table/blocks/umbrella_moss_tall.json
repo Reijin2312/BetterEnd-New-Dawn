@@ -3,17 +3,14 @@
   "pools": [
     {
       "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "condition": "minecraft:match_tool",
-          "predicate": {
-            "items": "minecraft:shears"
-          }
-        }
-      ],
       "entries": [
         {
           "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "minecraft:survives_explosion"
+            }
+          ],
           "functions": [
             {
               "add": false,
@@ -26,6 +23,5 @@
       ],
       "rolls": 1.0
     }
-  ],
-  "random_sequence": "betterend:blocks/umbrella_moss_tall"
+  ]
 }

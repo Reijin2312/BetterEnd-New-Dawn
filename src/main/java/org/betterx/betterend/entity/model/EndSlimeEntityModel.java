@@ -13,6 +13,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 
 public class EndSlimeEntityModel<T extends LivingEntityRenderState> extends EntityModel<T> {
     public enum RenderMode {
@@ -106,7 +107,7 @@ public class EndSlimeEntityModel<T extends LivingEntityRenderState> extends Enti
     }
 
     public EndSlimeEntityModel(ModelPart modelPart, boolean onlyShell, RenderMode renderMode) {
-        super(modelPart);
+        super(modelPart, RenderTypes::entityCutoutCull);
 
         innerCube = modelPart.getChild(PartNames.BODY);
         this.renderMode = renderMode;

@@ -6,9 +6,12 @@ import org.betterx.betterend.config.screen.ConfigScreen;
 import org.betterx.betterend.events.ItemTooltipCallback;
 import org.betterx.betterend.interfaces.MultiModelItem;
 import org.betterx.betterend.item.CrystaliteArmor;
+import org.betterx.betterend.network.RitualUpdate;
 import org.betterx.betterend.registry.*;
+import org.betterx.betterend.rituals.EternalRitual;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -18,6 +21,11 @@ import net.fabricmc.api.ClientModInitializer;
 public class BetterEndClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
+        RitualUpdate.registerClientProcessor((center, axis, active, willActivate, client) ->
+                EternalRitual.updateActiveStateOnPedestals(
+                        center, axis, active, willActivate, ((Minecraft) client).level, null
+                )
+        );
         EndBlockEntityRenders.register();
         EndScreens.register();
         EndParticles.register();

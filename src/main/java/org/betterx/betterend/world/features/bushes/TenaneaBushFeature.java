@@ -1,5 +1,6 @@
 package org.betterx.betterend.world.features.bushes;
 
+
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.wover.block.api.BlockProperties;
 import org.betterx.wover.block.api.BlockProperties.TripleShape;
@@ -14,6 +15,8 @@ import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.blocks.basis.FurBlock;
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.betterend.registry.EndBlocks;
+import org.betterx.wover.feature.api.WriteZone;
+import org.betterx.betterend.world.features.trees.EndTreeHelper;
 import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
@@ -44,6 +47,8 @@ public class TenaneaBushFeature extends DefaultFeature {
         final BlockPos pos = featureConfig.origin();
         final WorldGenLevel world = featureConfig.level();
         if (!world.getBlockState(pos.below()).is(CommonBlockTags.END_STONES)) return false;
+        // Don't grow a bush whose base sits in water (e.g. on the lake floor).
+        if (!world.getFluidState(pos).isEmpty()) return false;
 
         float radius = MHelper.randRange(1.8F, 3.5F, random);
         OpenSimplexNoise noise = new OpenSimplexNoise(random.nextInt());
@@ -86,7 +91,7 @@ public class TenaneaBushFeature extends DefaultFeature {
             }
             return info.getState();
         });
-        sphere.fillRecursive(world, pos);
+        sphere.fillRecursive(world, pos, WriteZone.of(world).toBoundingBox());
         BlockState stem = EndBlocks.TENANEA.getBark().defaultBlockState();
         BlocksHelper.setWithoutUpdate(world, pos, stem);
         for (Direction d : Direction.values()) {
@@ -123,6 +128,8 @@ public class TenaneaBushFeature extends DefaultFeature {
             }
         });
 
+        // Waterlog leaves/outer-leaves the bush placed into a lake (bushes decorate after the lake carves).
+        EndTreeHelper.waterlogSubmerged(world, pos, 12);
         return true;
     }
 

@@ -28,10 +28,7 @@
     "water_color": "#3f76e4"
   },
   "features": [
-    [
-      "betterend:round_cave",
-      "betterend:tunel_cave"
-    ],
+    [],
     [],
     [],
     [],
@@ -63,7 +60,7 @@
         "type": "minecraft:enderman",
         "maxCount": 2,
         "minCount": 1,
-        "weight": 50
+        "weight": 3
       }
     ],
     "underground_water_creature": [],

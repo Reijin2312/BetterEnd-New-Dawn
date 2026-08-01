@@ -20,5 +20,6 @@ public class EndTerrainBlock extends BaseTerrainBlock implements PottableTerrain
     @Override
     public void registerBlockTags(Identifier location, TagBootstrapContext<Block> context) {
         context.add(CommonBlockTags.END_STONES, this);
+        context.add(CommonBlockTags.SOIL, this);
     }
 }

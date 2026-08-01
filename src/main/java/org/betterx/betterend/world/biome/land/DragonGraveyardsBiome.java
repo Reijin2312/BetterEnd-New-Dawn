@@ -40,7 +40,7 @@ public class DragonGraveyardsBiome extends EndBiome.Config {
                 .feature(EndVegetationFeatures.GLOBULAGUS)
                 .feature(EndVegetationFeatures.CLAWFERN)
                 .structure(EndStructures.ETERNAL_PORTAL)
-                .spawn(EntityTypes.ENDERMAN, 50, 1, 2);
+                .spawn(EntityTypes.ENDERMAN, 1, 1, 2);
     }
 
     @Override

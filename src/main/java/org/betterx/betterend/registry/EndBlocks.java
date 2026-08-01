@@ -413,7 +413,7 @@ public class EndBlocks {
         END_LOTUS_STEM = registerBlock(EndBlocks.prepareBlockPath("end_lotus_stem"), new EndLotusStemBlock());
         END_LOTUS_LEAF = registerEndBlockOnly(EndBlocks.prepareBlockPath("end_lotus_leaf"), new EndLotusLeafBlock());
         END_LOTUS_FLOWER = registerEndBlockOnly(EndBlocks.prepareBlockPath("end_lotus_flower"), new EndLotusFlowerBlock());
-        END_LOTUS = new EndWoodenComplexMaterial( "end_lotus", MapColor.COLOR_LIGHT_BLUE, MapColor.COLOR_CYAN, Blocks.WOOL.lightBlue() ).init();
+        END_LOTUS = new EndWoodenComplexMaterial( "end_lotus", MapColor.COLOR_LIGHT_BLUE, MapColor.COLOR_CYAN, Blocks.WOOL.lightBlue() ).useRaft().init();
         LACUGROVE_SAPLING = registerBlock(EndBlocks.prepareBlockPath("lacugrove_sapling"), new LacugroveSaplingBlock());
         LACUGROVE_LEAVES = registerBlock(EndBlocks.prepareBlockPath("lacugrove_leaves"), new PottableLeavesBlock( LACUGROVE_SAPLING, MapColor.COLOR_CYAN ) );
         LACUGROVE = new EndWoodenComplexMaterial( "lacugrove", MapColor.COLOR_BROWN, MapColor.COLOR_YELLOW, Blocks.WOOL.cyan() ).init();
@@ -446,22 +446,22 @@ public class EndBlocks {
         CHORUS_GRASS = registerBlock(EndBlocks.prepareBlockPath("chorus_grass"), new ChorusGrassBlock());
         CAVE_GRASS = registerBlock(EndBlocks.prepareBlockPath("cave_grass"), new TerrainPlantBlock(CAVE_MOSS) );
         CRYSTAL_GRASS = registerBlock(EndBlocks.prepareBlockPath("crystal_grass"), new TerrainPlantBlock(CRYSTAL_MOSS) );
-        SHADOW_PLANT = registerBlock(EndBlocks.prepareBlockPath("shadow_plant"), new TerrainPlantBlock(SHADOW_GRASS) );
+        SHADOW_PLANT = registerBlock(EndBlocks.prepareBlockPath("shadow_plant"), new TerrainPlantBlock(EndTags.SURVIVES_ON_SHADOW_GRASS) );
         BUSHY_GRASS = registerBlock(EndBlocks.prepareBlockPath("bushy_grass"), new TerrainPlantBlock(PINK_MOSS) );
-        AMBER_GRASS = registerBlock(EndBlocks.prepareBlockPath("amber_grass"), new TerrainPlantBlock(AMBER_MOSS) );
+        AMBER_GRASS = registerBlock(EndBlocks.prepareBlockPath("amber_grass"), new TerrainPlantBlock(EndTags.SURVIVES_ON_AMBER_MOSS) );
         TWISTED_UMBRELLA_MOSS = registerBlock(EndBlocks.prepareBlockPath("twisted_umbrella_moss"), new TwistedUmbrellaMossBlock() );
         TWISTED_UMBRELLA_MOSS_TALL = registerBlock(EndBlocks.prepareBlockPath("twisted_umbrella_moss_tall"), new TwistedUmbrellaMossTallBlock() );
-        JUNGLE_GRASS = registerBlock(EndBlocks.prepareBlockPath("jungle_grass"), new TerrainPlantBlock(JUNGLE_MOSS) );
-        BLOOMING_COOKSONIA = registerBlock(EndBlocks.prepareBlockPath("blooming_cooksonia"), new TerrainPlantBlock(END_MOSS) );
-        SALTEAGO = registerBlock(EndBlocks.prepareBlockPath("salteago"), new TerrainPlantBlock(END_MOSS));
-        VAIOLUSH_FERN = registerBlock(EndBlocks.prepareBlockPath("vaiolush_fern"), new TerrainPlantBlock(END_MOSS));
-        FRACTURN = registerBlock(EndBlocks.prepareBlockPath("fracturn"), new TerrainPlantBlock(END_MOSS));
+        JUNGLE_GRASS = registerBlock(EndBlocks.prepareBlockPath("jungle_grass"), new TerrainPlantBlock(CommonBlockTags.SOIL) );
+        BLOOMING_COOKSONIA = registerBlock(EndBlocks.prepareBlockPath("blooming_cooksonia"), new TerrainPlantBlock(EndTags.SURVIVES_ON_END_MOSS) );
+        SALTEAGO = registerBlock(EndBlocks.prepareBlockPath("salteago"), new TerrainPlantBlock(EndTags.SURVIVES_ON_END_MOSS));
+        VAIOLUSH_FERN = registerBlock(EndBlocks.prepareBlockPath("vaiolush_fern"), new TerrainPlantBlock(EndTags.SURVIVES_ON_END_MOSS));
+        FRACTURN = registerBlock(EndBlocks.prepareBlockPath("fracturn"), new TerrainPlantBlock(EndTags.SURVIVES_ON_END_MOSS));
         CLAWFERN = registerBlock(EndBlocks.prepareBlockPath("clawfern"), new TerrainPlantBlock( SANGNUM, MOSSY_OBSIDIAN, MOSSY_DRAGON_BONE ) );
         GLOBULAGUS = registerBlock(EndBlocks.prepareBlockPath("globulagus"), new TerrainPlantBlock( SANGNUM, MOSSY_OBSIDIAN, MOSSY_DRAGON_BONE ) );
-        ORANGO = registerBlock(EndBlocks.prepareBlockPath("orango"), new TerrainPlantBlock(RUTISCUS));
-        AERIDIUM = registerBlock(EndBlocks.prepareBlockPath("aeridium"), new TerrainPlantBlock(RUTISCUS));
-        LUTEBUS = registerBlock(EndBlocks.prepareBlockPath("lutebus"), new TerrainPlantBlock(RUTISCUS));
-        LAMELLARIUM = registerBlock(EndBlocks.prepareBlockPath("lamellarium"), new TerrainPlantBlock(RUTISCUS));
+        ORANGO = registerBlock(EndBlocks.prepareBlockPath("orango"), new TerrainPlantBlock(EndTags.SURVIVES_ON_RUTISCUS));
+        AERIDIUM = registerBlock(EndBlocks.prepareBlockPath("aeridium"), new TerrainPlantBlock(EndTags.SURVIVES_ON_RUTISCUS));
+        LUTEBUS = registerBlock(EndBlocks.prepareBlockPath("lutebus"), new TerrainPlantBlock(EndTags.SURVIVES_ON_RUTISCUS));
+        LAMELLARIUM = registerBlock(EndBlocks.prepareBlockPath("lamellarium"), new TerrainPlantBlock(EndTags.SURVIVES_ON_RUTISCUS));
         INFLEXIA = registerBlock(EndBlocks.prepareBlockPath("inflexia"), new TerrainPlantBlock( PALLIDIUM_FULL, PALLIDIUM_HEAVY, PALLIDIUM_THIN, PALLIDIUM_TINY ) );
         FLAMMALIX = registerBlock(EndBlocks.prepareBlockPath("flammalix"), new FlammalixBlock());
         CRYSTAL_MOSS_COVER = registerBlock(EndBlocks.prepareBlockPath("crystal_moss_cover"), new CrystalMossCoverBlock(MapColor.COLOR_PINK) );
@@ -484,7 +484,10 @@ public class EndBlocks {
         AMARANITA_STEM = registerBlock(EndBlocks.prepareBlockPath("amaranita_stem"), new AmaranitaStemBlock());
         AMARANITA_HYPHAE = registerBlock(EndBlocks.prepareBlockPath("amaranita_hyphae"), new AmaranitaStemBlock());
         AMARANITA_HYMENOPHORE = registerBlock(EndBlocks.prepareBlockPath("amaranita_hymenophore"), new AmaranitaHymenophoreBlock() );
-        AMARANITA_LANTERN = registerBlock(EndBlocks.prepareBlockPath("amaranita_lantern"), new GlowingHymenophoreBlock());
+        AMARANITA_LANTERN = registerBlock(
+                EndBlocks.prepareBlockPath("amaranita_lantern"),
+                new GlowingHymenophoreBlock(MapColor.WOOD)
+        );
         AMARANITA_FUR = registerBlock(EndBlocks.prepareBlockPath("amaranita_fur"), new FurBlock(MapColor.COLOR_CYAN, SMALL_AMARANITA_MUSHROOM, 15, 4, true) );
         AMARANITA_CAP = registerBlock(EndBlocks.prepareBlockPath("amaranita_cap"), new AmaranitaCapBlock());
         NEON_CACTUS = registerBlock(EndBlocks.prepareBlockPath("neon_cactus"), new NeonCactusPlantBlock());

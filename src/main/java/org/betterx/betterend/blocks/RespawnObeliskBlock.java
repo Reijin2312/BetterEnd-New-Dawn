@@ -13,10 +13,14 @@ import org.betterx.betterend.registry.EndItems;
 import org.betterx.ui.ColorUtil;
 import org.betterx.wover.block.api.BlockProperties;
 import org.betterx.wover.block.api.BlockProperties.TripleShape;
+import org.betterx.wover.loot.api.LootLookupProvider;
 
+import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -37,7 +41,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.storage.LevelData;
-import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -45,9 +53,7 @@ import net.minecraft.util.RandomSource;
 
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
-import com.google.common.collect.Lists;
-
-import java.util.List;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class RespawnObeliskBlock extends BaseBlock.Stone implements CustomColorProvider, RenderLayerProvider {
@@ -146,12 +152,22 @@ public class RespawnObeliskBlock extends BaseBlock.Stone implements CustomColorP
     }
 
     @Override
-    public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
-        if (state.getValue(SHAPE) == TripleShape.BOTTOM) {
-            return Lists.newArrayList(new ItemStack(this));
-        } else {
-            return Lists.newArrayList();
-        }
+    public LootTable.Builder registerBlockLoot(
+            @NotNull Identifier location,
+            @NotNull LootLookupProvider provider,
+            @NotNull ResourceKey<LootTable> tableKey
+    ) {
+        return LootTable
+                .lootTable()
+                .withPool(LootPool
+                        .lootPool()
+                        .setRolls(ConstantValue.exactly(1.0F))
+                        .when(LootItemBlockStatePropertyCondition
+                                .hasBlockStateProperties(this)
+                                .setProperties(StatePropertiesPredicate.Builder
+                                        .properties()
+                                        .hasProperty(SHAPE, TripleShape.BOTTOM)))
+                        .add(LootItem.lootTableItem(this)));
     }
 
     @Override
@@ -160,6 +176,7 @@ public class RespawnObeliskBlock extends BaseBlock.Stone implements CustomColorP
     }
 
     @Override
+    @net.fabricmc.api.Environment(net.fabricmc.api.EnvType.CLIENT)
     public BlockColorProvider getProvider() {
         return ((CustomColorProvider) EndBlocks.AURORA_CRYSTAL).getProvider();
     }

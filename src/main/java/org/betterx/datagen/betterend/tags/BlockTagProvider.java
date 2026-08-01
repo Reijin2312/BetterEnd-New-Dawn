@@ -29,6 +29,26 @@ public class BlockTagProvider extends WoverTagProvider.ForBlocks {
     @Override
     public void prepareTags(TagBootstrapContext<Block> context) {
         context.add(CommonBlockTags.END_STONES, Blocks.END_STONE);
+        context.add(EndTags.SURVIVES_ON_SHADOW_GRASS, EndBlocks.SHADOW_GRASS);
+        context.add(EndTags.SURVIVES_ON_AMBER_MOSS, EndBlocks.AMBER_MOSS);
+        context.add(
+                EndTags.SURVIVES_ON_END_MOSS,
+                EndBlocks.END_MOSS,
+                EndBlocks.PALLIDIUM_FULL,
+                EndBlocks.PALLIDIUM_HEAVY,
+                EndBlocks.PALLIDIUM_THIN,
+                EndBlocks.PALLIDIUM_TINY,
+                EndBlocks.SANGNUM
+        );
+        context.add(
+                EndTags.SURVIVES_ON_RUTISCUS,
+                EndBlocks.PALLIDIUM_FULL,
+                EndBlocks.PALLIDIUM_HEAVY,
+                EndBlocks.PALLIDIUM_THIN,
+                EndBlocks.PALLIDIUM_TINY,
+                EndBlocks.RUTISCUS,
+                EndBlocks.SANGNUM
+        );
         addEndGround(context, EndBlocks.THALLASIUM.ore);
         addEndGround(context, EndBlocks.ENDSTONE_DUST);
         addEndGround(context, EndBlocks.AMBER_ORE);

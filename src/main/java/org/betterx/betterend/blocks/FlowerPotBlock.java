@@ -54,7 +54,7 @@ import java.util.Map;
 public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvider, PostInitable {
     private static final IntegerProperty PLANT_ID = EndBlockProperties.PLANT_ID;
     private static final IntegerProperty SOIL_ID = EndBlockProperties.SOIL_ID;
-    private static final IntegerProperty POT_LIGHT = EndBlockProperties.POT_LIGHT;
+    public static final IntegerProperty POT_LIGHT = EndBlockProperties.POT_LIGHT;
     private static final VoxelShape SHAPE_EMPTY;
     private static final VoxelShape SHAPE_FULL;
     private static Block[] plants;
@@ -137,6 +137,16 @@ public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvi
         super.createBlockStateDefinition(builder);
         builder.add(PLANT_ID, SOIL_ID, POT_LIGHT);
     }
+
+    /*
+     * Disabled New Dawn/WorldWeaver block-entity flower-pot pipeline.
+     * Keep the implementation in the source tree until it is stable enough to re-enable.
+     *
+     * @Override
+     * public BlockEntity newBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState) {
+     *     return new FlowerPotBlockEntity(blockPos, blockState);
+     * }
+     */
 
     @Override
     public List<ItemStack> getDrops(BlockState state, Builder builder) {
@@ -245,12 +255,6 @@ public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvi
         FlowerPotBlock.soils = new Block[maxNotNull(soils) + 1];
         System.arraycopy(soils, 0, FlowerPotBlock.soils, 0, FlowerPotBlock.soils.length);
 
-        if (PLANT_ID.getValue(Integer.toString(FlowerPotBlock.plants.length)).isEmpty()) {
-            throw new RuntimeException("There are too much plant ID values!");
-        }
-        if (SOIL_ID.getValue(Integer.toString(FlowerPotBlock.soils.length)).isEmpty()) {
-            throw new RuntimeException("There are too much soil ID values!");
-        }
     }
 
     public static PottableEntries getPottableEntries() {
@@ -315,7 +319,7 @@ public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvi
     ) {
         ensureInit();
         if (level.isClientSide()) {
-                return InteractionResult.CONSUME;
+            return InteractionResult.CONSUME;
         }
         int soilID = state.getValue(SOIL_ID);
         if (soilID == 0 || soilID > soils.length || soils[soilID - 1] == null) {
@@ -342,7 +346,17 @@ public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvi
                     return InteractionResult.SUCCESS;
                 }
             }
-            return InteractionResult.TRY_WITH_EMPTY_HAND;
+            level.playSound(
+                    player,
+                    pos.getX() + 0.5,
+                    pos.getY() + 0.5,
+                    pos.getZ() + 0.5,
+                    SoundEvents.DISPENSER_FAIL,
+                    SoundSource.BLOCKS,
+                    0.6F,
+                    1
+            );
+            return InteractionResult.FAIL;
         }
 
         int plantID = state.getValue(PLANT_ID);

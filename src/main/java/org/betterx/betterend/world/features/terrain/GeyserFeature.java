@@ -1,5 +1,7 @@
 package org.betterx.betterend.world.features.terrain;
 
+
+
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.sdf.SDF;
 import org.betterx.bclib.sdf.operator.*;
@@ -14,6 +16,7 @@ import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.features.EndConfiguredLakeFeature;
 import org.betterx.betterend.util.BlockFixer;
+import org.betterx.wover.feature.api.WriteZone;
 import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
 import com.mojang.math.Axis;
@@ -33,8 +36,10 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import java.util.function.Function;
 
 public class GeyserFeature extends DefaultFeature {
+    protected static final Function<BlockState, Boolean> REPLACE1;
+    protected static final Function<BlockState, Boolean> REPLACE2;
+    private static final Function<BlockState, Boolean> IGNORE;
     private static final Direction[] HORIZONTAL = BlocksHelper.makeHorizontal();
-    private static final int MIN_FOUNDATION_DEPTH = 25;
 
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
@@ -42,6 +47,12 @@ public class GeyserFeature extends DefaultFeature {
         final WorldGenLevel world = featureConfig.level();
         final BlockPos pos = getPosOnSurfaceWG(world, featureConfig.origin());
         final ChunkGenerator chunkGenerator = featureConfig.chunkGenerator();
+        // The SDF sculpting below (cones/bowls/caves up to radius1 ~= halfHeight * 0.5, halfHeight up to 20)
+        // and the closing BlockFixer box are otherwise bounded only by their own shapes/radii, not by the
+        // chunks a feature may touch. Clipping both to the write zone is behaviour-neutral (writes out there
+        // were already dropped by WorldGenRegion) and removes reads from chunks that have not been carved -
+        // or even filled - yet. See WriteZone.
+        final WriteZone zone = WriteZone.of(world);
 
         if (pos.getY() < 10) {
             return false;
@@ -55,7 +66,7 @@ public class GeyserFeature extends DefaultFeature {
             state = world.getBlockState(bpos);
         }
 
-        if (pos.getY() - bpos.getY() < MIN_FOUNDATION_DEPTH) {
+        if (pos.getY() - bpos.getY() < 25) {
             return false;
         }
 
@@ -110,7 +121,7 @@ public class GeyserFeature extends DefaultFeature {
             bowl = new SDFRotation().setRotation(Axis.YP, i * 4F).setSource(bowl);
             sdf = new SDFUnion().setSourceA(sdf).setSourceB(bowl);
         }
-        sdf.setReplaceFunction(replaceFunc2()).fillRecursive(world, pos);
+        sdf.setReplaceFunction(REPLACE2).fillRecursive(world, pos, zone.toBoundingBox());
 
         radius2 = radius2 * 0.5F;
         if (radius2 < 0.7F) {
@@ -142,29 +153,29 @@ public class GeyserFeature extends DefaultFeature {
 
         obj1.setBlock(WATER);
         obj2.setBlock(WATER);
-        sdf.setReplaceFunction(replaceFunc2());
-        sdf.fillRecursive(world, pos);
+        sdf.setReplaceFunction(REPLACE2);
+        sdf.fillRecursive(world, pos, zone.toBoundingBox());
 
         obj1.setBlock(EndBlocks.BRIMSTONE);
         obj2.setBlock(EndBlocks.BRIMSTONE);
         new SDFDisplacement().setFunction((vec) -> -2F)
                              .setSource(sdf)
-                             .setReplaceFunction(replaceFunc1())
-                             .fillRecursiveIgnore(world, pos, ignoreFunc());
+                             .setReplaceFunction(REPLACE1)
+                             .fillRecursiveIgnore(world, pos, zone.toBoundingBox(), IGNORE);
 
         obj1.setBlock(EndBlocks.SULPHURIC_ROCK.stone);
         obj2.setBlock(EndBlocks.SULPHURIC_ROCK.stone);
         new SDFDisplacement().setFunction((vec) -> -4F)
                              .setSource(cave)
-                             .setReplaceFunction(replaceFunc1())
-                             .fillRecursiveIgnore(world, pos, ignoreFunc());
+                             .setReplaceFunction(REPLACE1)
+                             .fillRecursiveIgnore(world, pos, zone.toBoundingBox(), IGNORE);
 
         obj1.setBlock(Blocks.END_STONE);
         obj2.setBlock(Blocks.END_STONE);
         new SDFDisplacement().setFunction((vec) -> -6F)
                              .setSource(cave)
-                             .setReplaceFunction(replaceFunc1())
-                             .fillRecursiveIgnore(world, pos, ignoreFunc());
+                             .setReplaceFunction(REPLACE1)
+                             .fillRecursiveIgnore(world, pos, zone.toBoundingBox(), IGNORE);
 
         BlocksHelper.setWithoutUpdate(world, pos, WATER);
         MutableBlockPos mut = new MutableBlockPos().set(pos);
@@ -177,16 +188,18 @@ public class GeyserFeature extends DefaultFeature {
             mut.setY(mut.getY() + 1);
         }
 
+        // The two vent-cluster loops below jitter mut around pos with an unbounded gaussian offset
+        // (rare tails reach well past the 3x3 chunks a feature may touch) and then read/write freely -
+        // unlike the SDF sculpting above, nothing here was clamped to the write zone. distRaw/dist are
+        // computed from the true (unclamped) offset so the cluster's own math stays unchanged; only the
+        // actual world-touching position is clamped, same behaviour-neutral approach as the SDF calls.
         for (int i = 0; i < 150; i++) {
-            mut.set(pos)
-               .move(
-                       MHelper.floor(random.nextGaussian() * 4 + 0.5),
-                       -halfHeight - 10,
-                       MHelper.floor(random.nextGaussian() * 4 + 0.5)
-               );
-            float distRaw = MHelper.length(mut.getX() - pos.getX(), mut.getZ() - pos.getZ());
+            int dx = MHelper.floor(random.nextGaussian() * 4 + 0.5);
+            int dz = MHelper.floor(random.nextGaussian() * 4 + 0.5);
+            float distRaw = MHelper.length(dx, dz);
             int dist = MHelper.floor(6 - distRaw) + random.nextInt(2);
             if (dist >= 0) {
+                mut.set(zone.clampX(pos.getX() + dx), pos.getY() - halfHeight - 10, zone.clampZ(pos.getZ() + dz));
                 state = world.getBlockState(mut);
                 while (!state.getFluidState().isEmpty() || state.is(CommonBlockTags.WATER_PLANT)) {
                     mut.setY(mut.getY() - 1);
@@ -198,7 +211,13 @@ public class GeyserFeature extends DefaultFeature {
                         BlocksHelper.setWithoutUpdate(world, mut, EndBlocks.SULPHURIC_ROCK.stone);
                         MHelper.shuffle(HORIZONTAL, random);
                         for (Direction dir : HORIZONTAL) {
-                            BlockPos p = mut.relative(dir);
+                            // mut's x/z is already zone-clamped, but a further 1-block relative(dir)
+                            // peek can still step past the zone right at its edge - clamp this too.
+                            BlockPos p = new BlockPos(
+                                    zone.clampX(mut.getX() + dir.getStepX()),
+                                    mut.getY(),
+                                    zone.clampZ(mut.getZ() + dir.getStepZ())
+                            );
                             if (random.nextBoolean() && world.getBlockState(p).is(Blocks.WATER)) {
                                 BlocksHelper.setWithoutUpdate(
                                         world,
@@ -225,15 +244,12 @@ public class GeyserFeature extends DefaultFeature {
         }
 
         for (int i = 0; i < 10; i++) {
-            mut.set(pos)
-               .move(
-                       MHelper.floor(random.nextGaussian() * 0.7 + 0.5),
-                       -halfHeight - 10,
-                       MHelper.floor(random.nextGaussian() * 0.7 + 0.5)
-               );
-            float distRaw = MHelper.length(mut.getX() - pos.getX(), mut.getZ() - pos.getZ());
+            int dx = MHelper.floor(random.nextGaussian() * 0.7 + 0.5);
+            int dz = MHelper.floor(random.nextGaussian() * 0.7 + 0.5);
+            float distRaw = MHelper.length(dx, dz);
             int dist = MHelper.floor(6 - distRaw) + random.nextInt(2);
             if (dist >= 0) {
+                mut.set(zone.clampX(pos.getX() + dx), pos.getY() - halfHeight - 10, zone.clampZ(pos.getZ() + dz));
                 state = world.getBlockState(mut);
                 while (state.is(Blocks.WATER)) {
                     mut.setY(mut.getY() - 1);
@@ -261,28 +277,32 @@ public class GeyserFeature extends DefaultFeature {
         EndConfiguredLakeFeature.SULPHURIC_LAKE.placeInWorld(world, pos, random);
 
         double distance = radius1 * 1.7;
-        BlockPos start = pos.offset((int) -distance, (int) (-halfHeight - 15 - distance), (int) -distance);
-        BlockPos end = pos.offset((int) distance, (int) (-halfHeight - 5 + distance), (int) distance);
+        BlockPos start = new BlockPos(
+                zone.clampX(pos.getX() - (int) distance),
+                pos.getY() + (int) (-halfHeight - 15 - distance),
+                zone.clampZ(pos.getZ() - (int) distance)
+        );
+        BlockPos end = new BlockPos(
+                zone.clampX(pos.getX() + (int) distance),
+                pos.getY() + (int) (-halfHeight - 5 + distance),
+                zone.clampZ(pos.getZ() + (int) distance)
+        );
         BlockFixer.fixBlocks(world, start, end);
 
         return true;
     }
 
-    private Function<BlockState, Boolean> replaceFunc1() {
-        return (state) -> state.isAir() || (state.is(CommonBlockTags.END_STONES));
-    }
+    static {
+        REPLACE1 = (state) -> state.isAir() || (state.is(CommonBlockTags.END_STONES));
 
-    private Function<BlockState, Boolean> replaceFunc2() {
-        return (state) -> {
+        REPLACE2 = (state) -> {
             if (state.is(CommonBlockTags.END_STONES) || state.is(EndBlocks.HYDROTHERMAL_VENT) || state.is(EndBlocks.SULPHUR_CRYSTAL)) {
                 return true;
             }
             return BlocksHelper.replaceableOrPlant(state);
         };
-    }
 
-    private Function<BlockState, Boolean> ignoreFunc() {
-        return (state) -> state.is(Blocks.WATER) || state.is(Blocks.CAVE_AIR) || state.is(EndBlocks.SULPHURIC_ROCK.stone) || state
+        IGNORE = (state) -> state.is(Blocks.WATER) || state.is(Blocks.CAVE_AIR) || state.is(EndBlocks.SULPHURIC_ROCK.stone) || state
                 .is(EndBlocks.BRIMSTONE);
     }
 }

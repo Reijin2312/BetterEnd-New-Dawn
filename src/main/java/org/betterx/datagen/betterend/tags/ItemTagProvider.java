@@ -1,6 +1,5 @@
 package org.betterx.datagen.betterend.tags;
 
-import org.betterx.bclib.api.v2.ComposterAPI;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.complexmaterials.MaterialManager;
 import org.betterx.betterend.item.tool.EndHammerItem;
@@ -27,10 +26,6 @@ public class ItemTagProvider extends WoverTagProvider.ForItems {
 
     @Override
     public void prepareTags(ItemTagBootstrapContext context) {
-        EndItems.getCompostableFoods().forEach((item, food) -> {
-            float compost = food.nutrition() * food.saturation() * 0.18F;
-            ComposterAPI.allowCompost(compost, item);
-        });
         EndItems.getModItems().forEach(item -> {
             if (EndHammerItem.class.isInstance(item)) {
                 context.add(CommonItemTags.HAMMERS, item);

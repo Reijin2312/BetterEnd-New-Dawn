@@ -14,8 +14,8 @@ import net.minecraft.world.level.levelgen.synth.NormalNoise;
 public class VerticalBandNoiseCondition implements NumericProvider {
     public static final VerticalBandNoiseCondition DEFAULT = new VerticalBandNoiseCondition(
             Noises.CLAY_BANDS_OFFSET,
-            4.0,
-            4.0,
+            1.5,
+            5.0,
             6.0,
             1.3
     );

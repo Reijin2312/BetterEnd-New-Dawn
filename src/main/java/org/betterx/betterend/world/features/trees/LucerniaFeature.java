@@ -1,5 +1,6 @@
 package org.betterx.betterend.world.features.trees;
 
+
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.wover.block.api.BlockProperties;
 import org.betterx.wover.block.api.BlockProperties.TripleShape;
@@ -12,6 +13,7 @@ import org.betterx.bclib.util.SplineHelper;
 import org.betterx.betterend.blocks.basis.FurBlock;
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.betterend.registry.EndBlocks;
+import org.betterx.wover.feature.api.WriteZone;
 import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
@@ -33,8 +35,17 @@ import java.util.function.Function;
 
 public class LucerniaFeature extends DefaultFeature {
     private static final Direction[] DIRECTIONS = Direction.values();
+    private static final Function<BlockState, Boolean> REPLACE;
+    private static final Function<BlockState, Boolean> IGNORE;
     private static final List<Vector3f> SPLINE;
     private static final List<Vector3f> ROOT;
+
+    /**
+     * How far past its nominal radius a leaf ball's surface reaches: {@code noise * 2} plus
+     * {@code randRange(-1.5, 1.5)}, both applied through {@code SDFDisplacement}, which adds to the
+     * distance - so the negative half of each range grows the shape.
+     */
+    private static final float LEAF_BALL_BULGE = 3.5F;
 
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
@@ -43,6 +54,11 @@ public class LucerniaFeature extends DefaultFeature {
         final WorldGenLevel world = featureConfig.level();
         final NoneFeatureConfiguration config = featureConfig.config();
         if (!world.getBlockState(pos.below()).is(BlockTags.NYLIUM)) return false;
+
+        // Branch splines are scaled by up to `size` (up to 20) and rotated to any angle, so the fillSpline
+        // below, the leaf-ball flood-fill, and the root splines can all read/write past the 3x3 chunks a
+        // feature may touch. Clip every one of them to the write zone; see WriteZone.
+        final WriteZone zone = WriteZone.of(world);
 
         float size = MHelper.randRange(12, 20, random);
         int count = (int) (size * 0.3F);
@@ -54,7 +70,14 @@ public class LucerniaFeature extends DefaultFeature {
             SplineHelper.rotateSpline(spline, angle);
             SplineHelper.scale(spline, size * MHelper.randRange(0.5F, 1F, random));
             SplineHelper.offsetParts(spline, random, 1F, 0, 1F);
-            SplineHelper.fillSpline(spline, world, EndBlocks.LUCERNIA.getBark().defaultBlockState(), pos, replaceFunc());
+            SplineHelper.fillSpline(
+                    spline,
+                    world,
+                    EndBlocks.LUCERNIA.getBark().defaultBlockState(),
+                    pos,
+                    REPLACE,
+                    zone.toBoundingBox()
+            );
             Vector3f last = spline.get(spline.size() - 1);
             float leavesRadius = (size * 0.13F + MHelper.randRange(0.8F, 1.5F, random)) * 1.4F;
             OpenSimplexNoise noise = new OpenSimplexNoise(random.nextLong());
@@ -64,12 +87,14 @@ public class LucerniaFeature extends DefaultFeature {
                     leavesRadius,
                     random,
                     noise,
-                    config != null
+                    config != null,
+                    zone
             );
         }
 
-        makeRoots(world, pos.offset(0, MHelper.randRange(3, 5, random), 0), size * 0.35F, random);
+        makeRoots(world, pos.offset(0, MHelper.randRange(3, 5, random), 0), size * 0.35F, random, zone);
 
+        EndTreeHelper.waterlogSubmerged(world, pos, 20);
         return true;
     }
 
@@ -79,8 +104,13 @@ public class LucerniaFeature extends DefaultFeature {
             float radius,
             RandomSource random,
             OpenSimplexNoise noise,
-            boolean natural
+            boolean natural,
+            WriteZone zone
     ) {
+        // Size the ball to the room its centre has rather than letting the write bounds take a chord out
+        // of it; see EndTreeHelper.fitBallRadius. About one lucernia in twenty is affected.
+        radius = EndTreeHelper.fitBallRadius(zone, pos, radius, LEAF_BALL_BULGE, 2F);
+
         SDF sphere = new SDFSphere().setRadius(radius)
                                     .setBlock(EndBlocks.LUCERNIA_LEAVES.defaultBlockState()
                                                                        .setValue(LeavesBlock.DISTANCE, 6));
@@ -161,7 +191,7 @@ public class LucerniaFeature extends DefaultFeature {
             }
             return info.getState();
         });
-        sphere.fillRecursiveIgnore(world, pos, ignoreFunc());
+        sphere.fillRecursiveIgnore(world, pos, zone.toBoundingBox(), IGNORE);
         BlocksHelper.setWithoutUpdate(world, pos, EndBlocks.LUCERNIA.getBark());
 
         support.forEach((bpos) -> {
@@ -185,7 +215,13 @@ public class LucerniaFeature extends DefaultFeature {
         });
     }
 
-    private void makeRoots(WorldGenLevel world, BlockPos pos, float radius, RandomSource random) {
+    private void makeRoots(
+            WorldGenLevel world,
+            BlockPos pos,
+            float radius,
+            RandomSource random,
+            WriteZone zone
+    ) {
         int count = (int) (radius * 1.5F);
         for (int i = 0; i < count; i++) {
             float angle = (float) i / (float) count * MHelper.PI2;
@@ -202,26 +238,26 @@ public class LucerniaFeature extends DefaultFeature {
                         world,
                         EndBlocks.LUCERNIA.getBark().defaultBlockState(),
                         pos,
-                        replaceFunc()
+                        REPLACE,
+                        zone.toBoundingBox()
                 );
             }
         }
     }
 
-    private Function<BlockState, Boolean> replaceFunc() {
-        return (state) -> {
+    static {
+        REPLACE = (state) -> {
+            /*if (state.is(CommonBlockTags.END_STONES)) {
+                return true;
+            }*/
             if (state.getBlock() == EndBlocks.LUCERNIA_LEAVES) {
                 return true;
             }
             return BlocksHelper.replaceableOrPlant(state);
         };
-    }
 
-    private Function<BlockState, Boolean> ignoreFunc() {
-        return EndBlocks.LUCERNIA::isTreeLog;
-    }
+        IGNORE = EndBlocks.LUCERNIA::isTreeLog;
 
-    static {
         SPLINE = Lists.newArrayList(
                 new Vector3f(0.00F, 0.00F, 0.00F),
                 new Vector3f(0.10F, 0.35F, 0.00F),

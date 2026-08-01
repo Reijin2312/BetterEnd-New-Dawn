@@ -38,6 +38,7 @@ public class AuroraCrystalBlock extends TransparentBlock implements BlockLootPro
         super(BehaviourBuilders
                 .createGlass()
                 .strength(1F)
+                .noOcclusion()
                 .lightLevel((bs) -> 15)
         );
     }
@@ -54,6 +55,7 @@ public class AuroraCrystalBlock extends TransparentBlock implements BlockLootPro
     }
 
     @Override
+    @net.fabricmc.api.Environment(net.fabricmc.api.EnvType.CLIENT)
     public BlockColorProvider getProvider() {
         return (state, world, pos, tintIndex) -> {
             if (pos == null) {
