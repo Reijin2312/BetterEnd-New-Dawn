@@ -4,13 +4,16 @@ import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.bclib.blocks.BaseBlockNotFull;
 import org.betterx.bclib.client.render.BCLRenderLayer;
 import org.betterx.bclib.interfaces.RenderLayerProvider;
-import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndItems;
+import org.betterx.wover.loot.api.LootLookupProvider;
 import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
+import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -21,13 +24,20 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 
-import java.util.Collections;
-import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("deprecation")
 public class LumecornBlock extends BaseBlockNotFull.Wood implements RenderLayerProvider {
@@ -92,18 +102,36 @@ public class LumecornBlock extends BaseBlockNotFull.Wood implements RenderLayerP
     }
 
     @Override
-    public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
-        EndBlockProperties.LumecornShape shape = state.getValue(SHAPE);
-        if (shape == EndBlockProperties.LumecornShape.BOTTOM_BIG || shape == EndBlockProperties.LumecornShape.BOTTOM_SMALL || shape == EndBlockProperties.LumecornShape.MIDDLE) {
-            return Collections.singletonList(new ItemStack(
-                    EndBlocks.LUMECORN_SEED,
-                    MHelper.randRange(1, 2, MHelper.RANDOM_SOURCE)
-            ));
-        }
-        return MHelper.RANDOM.nextBoolean()
-                ? Collections.singletonList(new ItemStack(EndItems.LUMECORN_ROD))
-                : Collections
-                        .emptyList();
+    public LootTable.Builder registerBlockLoot(
+            @NotNull Identifier location,
+            @NotNull LootLookupProvider provider,
+            @NotNull ResourceKey<LootTable> tableKey
+    ) {
+        final LootItemCondition.Builder seedBearing =
+                shapeIs(EndBlockProperties.LumecornShape.BOTTOM_BIG)
+                        .or(shapeIs(EndBlockProperties.LumecornShape.BOTTOM_SMALL))
+                        .or(shapeIs(EndBlockProperties.LumecornShape.MIDDLE));
+
+        return LootTable
+                .lootTable()
+                .withPool(LootPool
+                        .lootPool()
+                        .setRolls(ConstantValue.exactly(1.0F))
+                        .when(seedBearing)
+                        .add(LootItem.lootTableItem(EndBlocks.LUMECORN_SEED)
+                                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))))
+                .withPool(LootPool
+                        .lootPool()
+                        .setRolls(ConstantValue.exactly(1.0F))
+                        .when(seedBearing.invert())
+                        .when(LootItemRandomChanceCondition.randomChance(0.5F))
+                        .add(LootItem.lootTableItem(EndItems.LUMECORN_ROD)));
+    }
+
+    private LootItemCondition.Builder shapeIs(EndBlockProperties.LumecornShape shape) {
+        return LootItemBlockStatePropertyCondition
+                .hasBlockStateProperties(this)
+                .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(SHAPE, shape));
     }
 
     @Override

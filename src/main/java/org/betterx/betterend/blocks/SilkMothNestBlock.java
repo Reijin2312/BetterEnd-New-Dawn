@@ -10,9 +10,13 @@ import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.entity.SilkMothEntity;
 import org.betterx.betterend.registry.EndEntities;
 import org.betterx.betterend.registry.EndItems;
+import org.betterx.wover.loot.api.LootLookupProvider;
 
+import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -35,7 +39,11 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -44,8 +52,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
-import java.util.Collections;
-import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 public class SilkMothNestBlock extends BaseBlock implements RenderLayerProvider, AddMineableShears {
     public static final BooleanProperty ACTIVE = EndBlockProperties.ACTIVE;
@@ -121,8 +128,20 @@ public class SilkMothNestBlock extends BaseBlock implements RenderLayerProvider,
     }
 
     @Override
-    public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
-        return state.getValue(ACTIVE) ? Collections.singletonList(new ItemStack(this)) : Collections.emptyList();
+    public LootTable.Builder registerBlockLoot(
+            @NotNull Identifier location,
+            @NotNull LootLookupProvider provider,
+            @NotNull ResourceKey<LootTable> tableKey
+    ) {
+        return LootTable
+                .lootTable()
+                .withPool(LootPool
+                        .lootPool()
+                        .setRolls(ConstantValue.exactly(1.0F))
+                        .when(LootItemBlockStatePropertyCondition
+                                .hasBlockStateProperties(this)
+                                .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(ACTIVE, true)))
+                        .add(LootItem.lootTableItem(this)));
     }
 
     @Override

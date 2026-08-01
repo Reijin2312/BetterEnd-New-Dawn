@@ -4,7 +4,11 @@
     {
       "conditions": [
         {
-          "condition": "minecraft:survives_explosion"
+          "block": "betterend:silk_moth_nest",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "active": "true"
+          }
         }
       ],
       "entries": [
@@ -15,6 +19,5 @@
       ],
       "rolls": 1.0
     }
-  ],
-  "random_sequence": "betterend:blocks/silk_moth_nest"
+  ]
 }

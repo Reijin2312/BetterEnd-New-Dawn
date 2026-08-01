@@ -5,24 +5,31 @@ import org.betterx.wover.block.api.BlockProperties;
 import org.betterx.bclib.client.render.BCLRenderLayer;
 import org.betterx.bclib.interfaces.RenderLayerProvider;
 import org.betterx.betterend.registry.EndBlocks;
+import org.betterx.wover.loot.api.LootLookupProvider;
 
+import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
-import java.util.Collections;
-import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 public class CavePumpkinBlock extends BaseBlockNotFull implements RenderLayerProvider {
     public static final BooleanProperty SMALL = BlockProperties.SMALL;
@@ -51,11 +58,27 @@ public class CavePumpkinBlock extends BaseBlockNotFull implements RenderLayerPro
     }
 
     @Override
-    public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
-        return state.getValue(SMALL)
-                ? Collections.singletonList(new ItemStack(EndBlocks.CAVE_PUMPKIN_SEED))
-                : Collections
-                        .singletonList(new ItemStack(this));
+    public LootTable.Builder registerBlockLoot(
+            @NotNull Identifier location,
+            @NotNull LootLookupProvider provider,
+            @NotNull ResourceKey<LootTable> tableKey
+    ) {
+        final LootItemCondition.Builder small = LootItemBlockStatePropertyCondition
+                .hasBlockStateProperties(this)
+                .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(SMALL, true));
+
+        return LootTable
+                .lootTable()
+                .withPool(LootPool
+                        .lootPool()
+                        .setRolls(ConstantValue.exactly(1.0F))
+                        .when(small)
+                        .add(LootItem.lootTableItem(EndBlocks.CAVE_PUMPKIN_SEED)))
+                .withPool(LootPool
+                        .lootPool()
+                        .setRolls(ConstantValue.exactly(1.0F))
+                        .when(small.invert())
+                        .add(LootItem.lootTableItem(this)));
     }
 
     static {

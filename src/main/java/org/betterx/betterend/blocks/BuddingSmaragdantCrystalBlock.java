@@ -8,18 +8,19 @@ import org.betterx.betterend.registry.EndBlocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.PushReaction;
-import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
 
-import java.util.Collections;
-import java.util.List;
+import org.betterx.wover.loot.api.LootLookupProvider;
+import org.jetbrains.annotations.NotNull;
 
 public class BuddingSmaragdantCrystalBlock extends LitPillarBlock implements BehaviourGlass {
     public BuddingSmaragdantCrystalBlock() {
@@ -34,8 +35,12 @@ public class BuddingSmaragdantCrystalBlock extends LitPillarBlock implements Beh
     }
 
     @Override
-    public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
-        return Collections.emptyList();
+    public LootTable.Builder registerBlockLoot(
+            @NotNull Identifier location,
+            @NotNull LootLookupProvider provider,
+            @NotNull ResourceKey<LootTable> tableKey
+    ) {
+        return null;
     }
 
     @SuppressWarnings("deprecation")
