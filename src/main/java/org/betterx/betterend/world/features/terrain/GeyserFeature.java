@@ -188,16 +188,18 @@ public class GeyserFeature extends DefaultFeature {
             mut.setY(mut.getY() + 1);
         }
 
+        // The two vent-cluster loops below jitter mut around pos with an unbounded gaussian offset
+        // (rare tails reach well past the 3x3 chunks a feature may touch) and then read/write freely -
+        // unlike the SDF sculpting above, nothing here was clamped to the write zone. distRaw/dist are
+        // computed from the true (unclamped) offset so the cluster's own math stays unchanged; only the
+        // actual world-touching position is clamped, same behaviour-neutral approach as the SDF calls.
         for (int i = 0; i < 150; i++) {
-            mut.set(pos)
-               .move(
-                       MHelper.floor(random.nextGaussian() * 4 + 0.5),
-                       -halfHeight - 10,
-                       MHelper.floor(random.nextGaussian() * 4 + 0.5)
-               );
-            float distRaw = MHelper.length(mut.getX() - pos.getX(), mut.getZ() - pos.getZ());
+            int dx = MHelper.floor(random.nextGaussian() * 4 + 0.5);
+            int dz = MHelper.floor(random.nextGaussian() * 4 + 0.5);
+            float distRaw = MHelper.length(dx, dz);
             int dist = MHelper.floor(6 - distRaw) + random.nextInt(2);
             if (dist >= 0) {
+                mut.set(zone.clampX(pos.getX() + dx), pos.getY() - halfHeight - 10, zone.clampZ(pos.getZ() + dz));
                 state = world.getBlockState(mut);
                 while (!state.getFluidState().isEmpty() || state.is(CommonBlockTags.WATER_PLANT)) {
                     mut.setY(mut.getY() - 1);
@@ -209,7 +211,13 @@ public class GeyserFeature extends DefaultFeature {
                         BlocksHelper.setWithoutUpdate(world, mut, EndBlocks.SULPHURIC_ROCK.stone);
                         MHelper.shuffle(HORIZONTAL, random);
                         for (Direction dir : HORIZONTAL) {
-                            BlockPos p = mut.relative(dir);
+                            // mut's x/z is already zone-clamped, but a further 1-block relative(dir)
+                            // peek can still step past the zone right at its edge - clamp this too.
+                            BlockPos p = new BlockPos(
+                                    zone.clampX(mut.getX() + dir.getStepX()),
+                                    mut.getY(),
+                                    zone.clampZ(mut.getZ() + dir.getStepZ())
+                            );
                             if (random.nextBoolean() && world.getBlockState(p).is(Blocks.WATER)) {
                                 BlocksHelper.setWithoutUpdate(
                                         world,
@@ -236,15 +244,12 @@ public class GeyserFeature extends DefaultFeature {
         }
 
         for (int i = 0; i < 10; i++) {
-            mut.set(pos)
-               .move(
-                       MHelper.floor(random.nextGaussian() * 0.7 + 0.5),
-                       -halfHeight - 10,
-                       MHelper.floor(random.nextGaussian() * 0.7 + 0.5)
-               );
-            float distRaw = MHelper.length(mut.getX() - pos.getX(), mut.getZ() - pos.getZ());
+            int dx = MHelper.floor(random.nextGaussian() * 0.7 + 0.5);
+            int dz = MHelper.floor(random.nextGaussian() * 0.7 + 0.5);
+            float distRaw = MHelper.length(dx, dz);
             int dist = MHelper.floor(6 - distRaw) + random.nextInt(2);
             if (dist >= 0) {
+                mut.set(zone.clampX(pos.getX() + dx), pos.getY() - halfHeight - 10, zone.clampZ(pos.getZ() + dz));
                 state = world.getBlockState(mut);
                 while (state.is(Blocks.WATER)) {
                     mut.setY(mut.getY() - 1);
