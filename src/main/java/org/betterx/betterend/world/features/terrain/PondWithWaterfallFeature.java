@@ -162,7 +162,6 @@ public class PondWithWaterfallFeature extends DefaultFeature {
                 for (int y = floorY + 1; y <= waterLevel; y++) {
                     final BlockPos wpos = new BlockPos(x, y, z);
                     BlocksHelper.setWithoutUpdate(world, wpos, WATER);
-                    world.getChunk(x >> 4, z >> 4).markPosForPostprocessing(wpos);
                     world.scheduleTick(wpos, Fluids.WATER, 0);
                 }
                 // Clear the lip above the water so the pond is open to the sky.

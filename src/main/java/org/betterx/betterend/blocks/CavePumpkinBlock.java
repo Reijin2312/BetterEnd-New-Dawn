@@ -7,7 +7,7 @@ import org.betterx.bclib.interfaces.RenderLayerProvider;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.wover.loot.api.LootLookupProvider;
 
-import net.minecraft.advancements.criterion.StatePropertiesPredicate;
+import net.minecraft.advancements.predicates.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;

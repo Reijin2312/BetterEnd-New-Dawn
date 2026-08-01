@@ -46,11 +46,11 @@
         "fabric-api": ">=0.155.2",
         "java": ">=25",
         "minecraft": [
-            ">=26.1 <26.1.3"
+            ">=26.2 <26.3"
         ],
-        "bclib": "26.1.x",
-        "wover": "26.1.x",
-        "wunderlib": "26.1.x"
+        "bclib": "26.2.x",
+        "wover": "26.2.x",
+        "wunderlib": "26.2.x"
     },
     "breaks": {
         "bclib": "<26.1.0",

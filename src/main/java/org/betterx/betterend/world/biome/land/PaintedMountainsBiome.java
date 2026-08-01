@@ -12,7 +12,6 @@ import org.betterx.wover.surface.impl.rules.SwitchRuleSource;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.EntityTypes;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.SurfaceRules;
 

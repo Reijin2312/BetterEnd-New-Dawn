@@ -12,8 +12,7 @@
     ],
     "wings": [
       {
-        "texture": "betterend:elytra_armored",
-        "use_player_texture": true
+        "texture": "betterend:elytra_armored"
       }
     ]
   }

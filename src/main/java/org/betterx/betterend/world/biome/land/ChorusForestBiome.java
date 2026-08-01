@@ -5,7 +5,6 @@ import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndEntities;
 import org.betterx.betterend.registry.EndSounds;
 import org.betterx.betterend.registry.EndStructures;
-import org.betterx.betterend.registry.features.EndLakeFeatures;
 import org.betterx.betterend.registry.features.EndOreFeatures;
 import org.betterx.betterend.registry.features.EndVegetationFeatures;
 import org.betterx.betterend.world.biome.EndBiome;
@@ -34,7 +33,7 @@ public class ChorusForestBiome extends EndBiome.Config {
                 .loop(EndSounds.AMBIENT_CHORUS_FOREST)
                 .music(EndSounds.MUSIC_DARK)
                 .feature(EndOreFeatures.VIOLECITE_LAYER)
-                .feature(EndLakeFeatures.END_LAKE_RARE)
+                .structure(EndStructures.END_LAKE_RARE)
                 .feature(EndVegetationFeatures.PYTHADENDRON_TREE)
                 .feature(EndVegetationFeatures.PYTHADENDRON_BUSH)
                 .feature(Decoration.VEGETAL_DECORATION, EndPlacements.CHORUS_PLANT)
