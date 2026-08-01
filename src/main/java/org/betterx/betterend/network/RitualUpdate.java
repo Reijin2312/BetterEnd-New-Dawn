@@ -6,6 +6,7 @@ import org.betterx.bclib.api.v2.dataexchange.BaseDataHandler;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.rituals.EternalRitual;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -80,7 +81,7 @@ public class RitualUpdate extends ClientBoundPacketHandler<RitualUpdate.Payload>
         }
 
         @Override
-        protected void processOnGameThread(Object client) {
+        protected void processOnGameThread(Minecraft client) {
             clientProcessor.process(
                     center,
                     axis,
