@@ -25,8 +25,10 @@
 	"betterend.jei.container.infusion": "Infusion Recipes",
 	"betterend.jei.alloying.experience_time": "%s XP | %s s",
 	"betterend.jei.container.alloying": "Alloying and Blasting",
-	"jukebox_song.betterend.strange_and_alien": "§5Firel§r - §fStrange And Alien§r",
-	"jukebox_song.betterend.grasping_at_stars": "§5Firel§r - §fGrasping At Stars§r",
-	"jukebox_song.betterend.endseeker": "§5Firel§r - §fEndseeker§r",
-	"jukebox_song.betterend.eo_dracona": "§5Firel§r - §fEo Dracona§r"
+	"jukebox_song.betterend.endseeker": "Firel - Endseeker",
+	"jukebox_song.betterend.eo_dracona": "Firel - Eo Dracona",
+	"jukebox_song.betterend.grasping_at_stars": "Firel - Grasping At Stars",
+	"jukebox_song.betterend.ender_hollow": "noqwww - Ender Hollow",
+	"jukebox_song.betterend.moonlit_undercurrents": "noqwww - Moonlit Undercurrents",
+	"jukebox_song.betterend.strange_and_alien": "Firel - Strange And Alien"
 }
