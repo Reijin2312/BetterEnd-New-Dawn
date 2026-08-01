@@ -71,7 +71,7 @@ public class SulphuricLakeFeature extends DefaultFeature {
                 if (dist <= r) {
                     POS.setY(getYOnSurface(world, x, z) - 1);
                     if (world.getBlockState(POS).is(CommonBlockTags.END_STONES)) {
-                        if (isBorder(world, POS)) {
+                        if (isBorder(world, zone, POS)) {
                             if (random.nextInt(8) > 0) {
                                 brimstone.add(POS.immutable());
                                 if (random.nextBoolean()) {
@@ -81,7 +81,7 @@ public class SulphuricLakeFeature extends DefaultFeature {
                                     }
                                 }
                             } else {
-                                if (!isAbsoluteBorder(world, POS)) {
+                                if (!isAbsoluteBorder(world, zone, POS)) {
                                     BlocksHelper.setWithoutUpdate(world, POS, Blocks.WATER);
                                     //world.setBlock(blockPos, Blocks.WATER.defaultBlockState(), 2);
                                     world.scheduleTick(POS, Fluids.WATER, 0);
@@ -103,12 +103,18 @@ public class SulphuricLakeFeature extends DefaultFeature {
                             BlocksHelper.setWithoutUpdate(world, POS, Blocks.WATER);
                             brimstone.remove(POS);
                             for (Direction dir : BlocksHelper.HORIZONTAL) {
-                                BlockPos offseted = POS.relative(dir);
+                                // A plain POS.relative(dir) peek can step 1 block past the main loop's
+                                // already-clamped x/z at the very edge columns - clamp it too.
+                                BlockPos offseted = new BlockPos(
+                                        zone.clampX(POS.getX() + dir.getStepX()),
+                                        POS.getY(),
+                                        zone.clampZ(POS.getZ() + dir.getStepZ())
+                                );
                                 if (world.getBlockState(offseted).is(CommonBlockTags.END_STONES)) {
                                     brimstone.add(offseted);
                                 }
                             }
-                            if (isDeepWater(world, POS)) {
+                            if (isDeepWater(world, zone, POS)) {
                                 BlocksHelper.setWithoutUpdate(world, POS.move(Direction.DOWN), Blocks.WATER);
                                 brimstone.remove(POS);
                                 for (Direction dir : BlocksHelper.HORIZONTAL) {
@@ -143,71 +149,90 @@ public class SulphuricLakeFeature extends DefaultFeature {
         }
 
         brimstone.forEach((bpos) -> {
-            placeBrimstone(world, bpos, random);
+            placeBrimstone(world, zone, bpos, random);
         });
 
         return true;
     }
 
-    private boolean isBorder(WorldGenLevel world, BlockPos pos) {
+    /** Clamps only the horizontal step of a relative(dir) peek - dir may include UP/DOWN, which never
+     *  needs clamping since the write zone only bounds x/z. */
+    private static BlockPos clampedRelative(WriteZone zone, BlockPos pos, Direction dir) {
+        return new BlockPos(
+                zone.clampX(pos.getX() + dir.getStepX()),
+                pos.getY() + dir.getStepY(),
+                zone.clampZ(pos.getZ() + dir.getStepZ())
+        );
+    }
+
+    // Each helper below peeks up to 3 blocks past the (already write-zone-clamped) column the main
+    // loop is currently at. Clamping the peek position too - not just the loop bounds - keeps these
+    // reads inside the zone even for columns sitting right at its edge. Behaviour-neutral in the same
+    // sense as the main loop's clamp: a peek that would have landed outside the zone reads that
+    // boundary column instead, which only affects the outermost couple of columns of the lake.
+    private boolean isBorder(WorldGenLevel world, WriteZone zone, BlockPos pos) {
         int y = pos.getY() + 1;
         for (Direction dir : BlocksHelper.DIRECTIONS) {
-            if (getYOnSurface(world, pos.getX() + dir.getStepX(), pos.getZ() + dir.getStepZ()) < y) {
+            int x = zone.clampX(pos.getX() + dir.getStepX());
+            int z = zone.clampZ(pos.getZ() + dir.getStepZ());
+            if (getYOnSurface(world, x, z) < y) {
                 return true;
             }
         }
         return false;
     }
 
-    private boolean isAbsoluteBorder(WorldGenLevel world, BlockPos pos) {
+    private boolean isAbsoluteBorder(WorldGenLevel world, WriteZone zone, BlockPos pos) {
         int y = pos.getY() - 2;
         for (Direction dir : BlocksHelper.DIRECTIONS) {
-            if (getYOnSurface(world, pos.getX() + dir.getStepX() * 3, pos.getZ() + dir.getStepZ() * 3) < y) {
+            int x = zone.clampX(pos.getX() + dir.getStepX() * 3);
+            int z = zone.clampZ(pos.getZ() + dir.getStepZ() * 3);
+            if (getYOnSurface(world, x, z) < y) {
                 return true;
             }
         }
         return false;
     }
 
-    private boolean isDeepWater(WorldGenLevel world, BlockPos pos) {
+    private boolean isDeepWater(WorldGenLevel world, WriteZone zone, BlockPos pos) {
         int y = pos.getY() + 1;
         for (Direction dir : BlocksHelper.DIRECTIONS) {
-            if (getYOnSurface(world, pos.getX() + dir.getStepX(), pos.getZ() + dir.getStepZ()) < y || getYOnSurface(
-                    world,
-                    pos.getX() + dir.getStepX() * 2,
-                    pos.getZ() + dir.getStepZ() * 2
-            ) < y || getYOnSurface(
-                    world,
-                    pos.getX() + dir.getStepX() * 3,
-                    pos.getZ() + dir.getStepZ() * 3
-            ) < y) {
+            int x1 = zone.clampX(pos.getX() + dir.getStepX());
+            int z1 = zone.clampZ(pos.getZ() + dir.getStepZ());
+            int x2 = zone.clampX(pos.getX() + dir.getStepX() * 2);
+            int z2 = zone.clampZ(pos.getZ() + dir.getStepZ() * 2);
+            int x3 = zone.clampX(pos.getX() + dir.getStepX() * 3);
+            int z3 = zone.clampZ(pos.getZ() + dir.getStepZ() * 3);
+            if (getYOnSurface(world, x1, z1) < y
+                    || getYOnSurface(world, x2, z2) < y
+                    || getYOnSurface(world, x3, z3) < y) {
                 return false;
             }
         }
         return true;
     }
 
-    private void placeBrimstone(WorldGenLevel world, BlockPos pos, RandomSource random) {
-        BlockState state = getBrimstone(world, pos);
+    private void placeBrimstone(WorldGenLevel world, WriteZone zone, BlockPos pos, RandomSource random) {
+        BlockState state = getBrimstone(world, zone, pos);
         BlocksHelper.setWithoutUpdate(world, pos, state);
         if (state.getValue(EndBlockProperties.ACTIVE)) {
-            makeShards(world, pos, random);
+            makeShards(world, zone, pos, random);
         }
     }
 
-    private BlockState getBrimstone(WorldGenLevel world, BlockPos pos) {
+    private BlockState getBrimstone(WorldGenLevel world, WriteZone zone, BlockPos pos) {
         for (Direction dir : BlocksHelper.DIRECTIONS) {
-            if (world.getBlockState(pos.relative(dir)).is(Blocks.WATER)) {
+            if (world.getBlockState(clampedRelative(zone, pos, dir)).is(Blocks.WATER)) {
                 return EndBlocks.BRIMSTONE.defaultBlockState().setValue(EndBlockProperties.ACTIVE, true);
             }
         }
         return EndBlocks.BRIMSTONE.defaultBlockState();
     }
 
-    private void makeShards(WorldGenLevel world, BlockPos pos, RandomSource random) {
+    private void makeShards(WorldGenLevel world, WriteZone zone, BlockPos pos, RandomSource random) {
         for (Direction dir : BlocksHelper.DIRECTIONS) {
             BlockPos side;
-            if (random.nextInt(16) == 0 && world.getBlockState((side = pos.relative(dir))).is(Blocks.WATER)) {
+            if (random.nextInt(16) == 0 && world.getBlockState((side = clampedRelative(zone, pos, dir))).is(Blocks.WATER)) {
                 BlockState state = EndBlocks.SULPHUR_CRYSTAL.defaultBlockState()
                                                             .setValue(SulphurCrystalBlock.WATERLOGGED, true)
                                                             .setValue(SulphurCrystalBlock.FACING, dir)
