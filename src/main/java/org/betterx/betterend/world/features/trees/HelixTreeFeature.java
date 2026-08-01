@@ -26,6 +26,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 import org.joml.Vector3f;
 
@@ -73,29 +74,28 @@ public class HelixTreeFeature extends DefaultFeature {
         sdf = new SDFSmoothUnion().setRadius(3).setSourceA(sdf).setSourceB(stem);
 
         sdf = new SDFScale().setScale(scale).setSource(sdf);
-        dx = 30 * scale;
-        float dy1 = -20 * scale;
-        float dy2 = 100 * scale;
-        // fillArea reads every block in the box, and this box is up to 61 blocks wide - far past the 3x3
-        // chunks a feature may touch. Clipping it to the write zone drops nothing the tree could have placed
-        // there anyway (those writes were already being discarded) and removes the reads from chunks that
-        // have not been carved - or even filled - yet. See WriteZone.
+        // Fit the real helix geometry to the feature write zone. The old fixed +/-30 box read
+        // chunks that could never receive blocks, while geometry-only bounds still need clipping
+        // when the tree starts next to the edge of the writable 3x3 region.
+        int horizontalRadius = Mth.ceil((0.9F * radiusRange + 1.7F + 0.75F) * scale) + 1;
+        int minYOffset = Mth.floor((-1.7F - 0.75F) * scale) - 1;
+        int maxYOffset = Mth.ceil((38F + 1F + 0.75F) * scale) + 1;
         final WriteZone zone = WriteZone.of(world);
         sdf.addPostProcess(POST)
            .fillArea(
                    world,
                    pos,
                    new AABB(
-                            new BlockPos(
-                                    zone.clampX(pos.getX() - (int) dx),
-                                    pos.getY() + (int) dy1,
-                                   zone.clampZ(pos.getZ() - (int) dx)
-                           ).getCenter(),
-                           new BlockPos(
-                                   zone.clampX(pos.getX() + (int) dx),
-                                   pos.getY() + (int) dy2,
-                                    zone.clampZ(pos.getZ() + (int) dx)
-                            ).getCenter()
+                           Vec3.atCenterOf(new BlockPos(
+                                   zone.clampX(pos.getX() - horizontalRadius),
+                                   pos.getY() + minYOffset,
+                                   zone.clampZ(pos.getZ() - horizontalRadius)
+                           )),
+                           Vec3.atCenterOf(new BlockPos(
+                                   zone.clampX(pos.getX() + horizontalRadius),
+                                   pos.getY() + maxYOffset,
+                                   zone.clampZ(pos.getZ() + horizontalRadius)
+                           ))
                    )
            );
         SplineHelper.scale(spline, scale);
