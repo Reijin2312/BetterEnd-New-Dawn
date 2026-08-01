@@ -27,8 +27,7 @@
     ],
     "minecraft:visual/fog_color": "#63e4f7",
     "minecraft:visual/sky_color": "#000000",
-    "minecraft:visual/water_fog_color": "#5cfae6",
-    "neoforge:custom_skybox": "betterend:end_skybox"
+    "minecraft:visual/water_fog_color": "#5cfae6"
   },
   "carvers": [],
   "downfall": 0.5,
@@ -38,10 +37,7 @@
     "water_color": "#5cfae6"
   },
   "features": [
-    [
-      "betterend:round_cave",
-      "betterend:tunel_cave"
-    ],
+    [],
     [
       "betterend:end_lake_rare"
     ],
@@ -85,7 +81,7 @@
         "type": "minecraft:enderman",
         "maxCount": 2,
         "minCount": 1,
-        "weight": 50
+        "weight": 3
       }
     ],
     "underground_water_creature": [],

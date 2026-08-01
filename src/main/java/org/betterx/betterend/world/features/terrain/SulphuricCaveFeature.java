@@ -38,6 +38,7 @@ public class SulphuricCaveFeature extends DefaultFeature {
         BlockPos pos = featureConfig.origin();
         final WorldGenLevel world = featureConfig.level();
         int radius = MHelper.randRange(10, 30, random);
+        final int minY = world.getMinY();
 
         int top = world.getHeight(Heightmap.Types.WORLD_SURFACE_WG, pos.getX(), pos.getZ());
         MutableBlockPos bpos = new MutableBlockPos();
@@ -46,16 +47,16 @@ public class SulphuricCaveFeature extends DefaultFeature {
         bpos.setY(top - 1);
 
         BlockState state = world.getBlockState(bpos);
-        while (!state.is(CommonBlockTags.END_STONES) && bpos.getY() > 5) {
+        while (!state.is(CommonBlockTags.END_STONES) && bpos.getY() > minY + 5) {
             bpos.setY(bpos.getY() - 1);
             state = world.getBlockState(bpos);
         }
-        if (bpos.getY() < 10) {
+        if (bpos.getY() < minY + 10) {
             return false;
         }
         top = (int) (bpos.getY() - (radius * 1.3F + 5));
 
-        while (state.is(CommonBlockTags.END_STONES) || !state.getFluidState().isEmpty() && bpos.getY() > 5) {
+        while (state.is(CommonBlockTags.END_STONES) || !state.getFluidState().isEmpty() && bpos.getY() > minY + 5) {
             bpos.setY(bpos.getY() - 1);
             state = world.getBlockState(bpos);
         }

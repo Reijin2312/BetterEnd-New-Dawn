@@ -15,8 +15,10 @@ public class EndStructures {
     public static final StructurePieceType MOUNTAIN_PIECE = StructureManager.registerPiece(BetterEnd.C.mk("mountain_piece"), CrystalMountainPiece::new);
     public static final StructurePieceType CAVE_PIECE = StructureManager.registerPiece(BetterEnd.C.mk("cave_piece"), CavePiece::new);
     public static final StructurePieceType LAKE_PIECE = StructureManager.registerPiece(BetterEnd.C.mk("lake_piece"), LakePiece::new);
+    public static final StructurePieceType END_LAKE_PIECE = StructureManager.registerPiece(BetterEnd.C.mk("end_lake_piece"), EndLakePiece::new);
     public static final StructurePieceType PAINTED_MOUNTAIN_PIECE = StructureManager.registerPiece(BetterEnd.C.mk("painted_mountain_piece"), PaintedMountainPiece::new);
     public static final StructurePieceType NBT_PIECE = StructureManager.registerPiece(BetterEnd.C.mk("nbt_piece"), NBTPiece::new);
+    public static final StructurePieceType END_BRIDGE_PIECE = StructureManager.registerPiece(BetterEnd.C.mk("end_bridge_piece"), EndBridgePiece::new);
 
 
     public static final StructureKey.Simple<GiantMossyGlowshroomStructure> GIANT_MOSSY_GLOWSHROOM = StructureManager
@@ -31,6 +33,20 @@ public class EndStructures {
             .structure(BetterEnd.C.mk("megalake_small"), MegaLakeSmallStructure::new)
             .step(Decoration.LAKES);
 
+    public static final StructureKey.Simple<EndLakeStructure> END_LAKE = StructureManager
+            .structure(BetterEnd.C.mk("end_lake"), EndLakeStructure::new)
+            .step(Decoration.LAKES);
+    public static final StructureKey.Simple<EndLakeNormalStructure> END_LAKE_NORMAL = StructureManager
+            .structure(BetterEnd.C.mk("end_lake_normal"), EndLakeNormalStructure::new)
+            .step(Decoration.LAKES);
+    public static final StructureKey.Simple<EndLakeRareStructure> END_LAKE_RARE = StructureManager
+            .structure(BetterEnd.C.mk("end_lake_rare"), EndLakeRareStructure::new)
+            .step(Decoration.LAKES);
+
+    public static final StructureKey.Simple<EndBridgeStructure> END_BRIDGE = StructureManager
+            .structure(BetterEnd.C.mk("end_bridge"), EndBridgeStructure::new)
+            .step(Decoration.SURFACE_STRUCTURES);
+
     public static final StructureKey.Simple<MountainStructure> MOUNTAIN = StructureManager
             .structure(BetterEnd.C.mk("mountain"), MountainStructure::new)
             .step(Decoration.RAW_GENERATION);
@@ -44,6 +60,10 @@ public class EndStructures {
             .structure(BetterEnd.C.mk("giant_ice_star"), GiantIceStarStructure::new)
             .step(Decoration.SURFACE_STRUCTURES);
 
+    public static final StructureKey.Simple<SmallIslandStructure> SMALL_ISLAND = StructureManager
+            .structure(BetterEnd.C.mk("small_island"), SmallIslandStructure::new)
+            .step(Decoration.RAW_GENERATION);
+
     public static final StructureKey.Jigsaw END_VILLAGE = StructureManager
             .jigsaw(BetterEnd.C.mk("end_village"))
             .step(Decoration.SURFACE_STRUCTURES);
@@ -53,10 +73,15 @@ public class EndStructures {
                 GIANT_MOSSY_GLOWSHROOM,
                 MEGALAKE,
                 MEGALAKE_SMALL,
+                END_LAKE,
+                END_LAKE_NORMAL,
+                END_LAKE_RARE,
+                END_BRIDGE,
                 MOUNTAIN,
                 PAINTED_MOUNTAIN,
                 ETERNAL_PORTAL,
                 GIANT_ICE_STAR,
+                SMALL_ISLAND,
                 END_VILLAGE
         );
     }

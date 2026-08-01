@@ -8,6 +8,7 @@ import org.betterx.betterend.world.features.*;
 import org.betterx.betterend.world.features.bushes.*;
 import org.betterx.betterend.world.features.terrain.*;
 import org.betterx.betterend.world.features.terrain.caves.CaveChunkPopulatorFeature;
+import org.betterx.betterend.world.features.terrain.caves.StalactiteClusterFeature;
 import org.betterx.betterend.world.features.terrain.caves.RoundCaveFeature;
 import org.betterx.betterend.world.features.terrain.caves.TunelCaveFeature;
 import org.betterx.betterend.world.features.trees.*;
@@ -18,6 +19,7 @@ import net.neoforged.neoforge.registries.RegisterEvent;
 
 public class EndFeatures {
     public static final StalactiteFeature STALACTITE_FEATURE = new StalactiteFeature();
+    public static final StalactiteClusterFeature STALACTITE_CLUSTER = new StalactiteClusterFeature();
     public static final BuildingListFeature BUILDING_LIST_FEATURE = new BuildingListFeature();
     public static final VineFeature VINE_FEATURE = new VineFeature();
     public static final WallPlantFeature WALL_PLANT_FEATURE = new WallPlantFeature();
@@ -48,6 +50,7 @@ public class EndFeatures {
     public static final DragonTreeFeature DRAGON_TREE_FEATURE = new DragonTreeFeature();
     public static final TenaneaFeature TENANEA_FEATURE = new TenaneaFeature();
     public static final HelixTreeFeature HELIX_TREE_FEATURE = new HelixTreeFeature();
+    public static final DragonHelixTreeFeature DRAGON_HELIX_TREE_FEATURE = new DragonHelixTreeFeature();
     public static final UmbrellaTreeFeature UMBRELLA_TREE_FEATURE = new UmbrellaTreeFeature();
     public static final JellyshroomFeature JELLYSHROOM_FEATURE = new JellyshroomFeature();
     public static final GiganticAmaranitaFeature GIGANTIC_AMARANITA_FEATURE = new GiganticAmaranitaFeature();
@@ -55,6 +58,7 @@ public class EndFeatures {
     public static final TenaneaBushFeature TENANEA_BUSH_FEATURE = new TenaneaBushFeature();
     public static final Lumecorn LUMECORN_FEATURE = new Lumecorn();
     public static final LargeAmaranitaFeature LARGE_AMARANITA_FEATURE = new LargeAmaranitaFeature();
+    public static final AmaranitaPatchFeature AMARANITA_PATCH_FEATURE = new AmaranitaPatchFeature();
     public static final NeonCactusFeature NEON_CACTUS_FEATURE = new NeonCactusFeature();
 
     //Ores
@@ -78,6 +82,7 @@ public class EndFeatures {
     public static final SpireFeature SPIRE_FEATURE = new SpireFeature();
     public static final FloatingSpireFeature FLOATING_SPIRE_FEATURE = new FloatingSpireFeature();
     public static final GeyserFeature GEYSER_FEATURE = new GeyserFeature();
+    public static final PondWithWaterfallFeature POND_WITH_WATERFALL_FEATURE = new PondWithWaterfallFeature();
     public static final BiomeIslandFeature OVERWORLD_ISLAND = new BiomeIslandFeature();
 
     // Caves
@@ -134,6 +139,7 @@ public class EndFeatures {
         registered = true;
 
         helper.register(BetterEnd.C.mk("stalactite_feature"), STALACTITE_FEATURE);
+        helper.register(BetterEnd.C.mk("stalactite_cluster"), STALACTITE_CLUSTER);
         helper.register(BetterEnd.C.mk("building_list_feature"), BUILDING_LIST_FEATURE);
         helper.register(BetterEnd.C.mk("vine_feature"), VINE_FEATURE);
         helper.register(BetterEnd.C.mk("wall_plant_feature"), WALL_PLANT_FEATURE);
@@ -164,6 +170,7 @@ public class EndFeatures {
         helper.register(BetterEnd.C.mk("dragon_tree"), DRAGON_TREE_FEATURE);
         helper.register(BetterEnd.C.mk("tenanea"), TENANEA_FEATURE);
         helper.register(BetterEnd.C.mk("helix_tree"), HELIX_TREE_FEATURE);
+        helper.register(BetterEnd.C.mk("dragon_helix_tree"), DRAGON_HELIX_TREE_FEATURE);
         helper.register(BetterEnd.C.mk("umbrella_tree"), UMBRELLA_TREE_FEATURE);
         helper.register(BetterEnd.C.mk("jellyshroom"), JELLYSHROOM_FEATURE);
         helper.register(BetterEnd.C.mk("gigantic_amaranita"), GIGANTIC_AMARANITA_FEATURE);
@@ -171,6 +178,7 @@ public class EndFeatures {
         helper.register(BetterEnd.C.mk("tenanea_bush"), TENANEA_BUSH_FEATURE);
         helper.register(BetterEnd.C.mk("lumecorn"), LUMECORN_FEATURE);
         helper.register(BetterEnd.C.mk("large_amaranita"), LARGE_AMARANITA_FEATURE);
+        helper.register(BetterEnd.C.mk("amaranita_patch"), AMARANITA_PATCH_FEATURE);
         helper.register(BetterEnd.C.mk("neon_cactus"), NEON_CACTUS_FEATURE);
         helper.register(BetterEnd.C.mk("ore_layer"), LAYERED_ORE_FEATURE);
         helper.register(BetterEnd.C.mk("end_lake"), END_LAKE_FEATURE);
@@ -188,6 +196,7 @@ public class EndFeatures {
         helper.register(BetterEnd.C.mk("spire"), SPIRE_FEATURE);
         helper.register(BetterEnd.C.mk("floating_spire"), FLOATING_SPIRE_FEATURE);
         helper.register(BetterEnd.C.mk("geyser"), GEYSER_FEATURE);
+        helper.register(BetterEnd.C.mk("pond_with_waterfall"), POND_WITH_WATERFALL_FEATURE);
         helper.register(BetterEnd.C.mk("overworld_island"), OVERWORLD_ISLAND);
         helper.register(BetterEnd.C.mk("sulphuric_cave"), SULPHURIC_CAVE_FEATURE);
         helper.register(BetterEnd.C.mk("tunel_cave"), TUNEL_CAVE_FEATURE);

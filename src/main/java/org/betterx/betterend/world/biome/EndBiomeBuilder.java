@@ -20,8 +20,6 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.GenerationStep;
 
-import net.neoforged.neoforge.common.world.NeoForgeEnvironmentAttributes;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,7 +41,6 @@ public class EndBiomeBuilder extends WoverBiomeBuilder.AbstractWoverBiomeBuilder
                 .waterFogColor(BiomeBuilder.DEFAULT_END_WATER_FOG_COLOR)
                 .fogColor(BiomeBuilder.DEFAULT_END_FOG_COLOR)
                 .skyColor(BiomeBuilder.DEFAULT_END_SKY_COLOR)
-                .environmentAttribute(NeoForgeEnvironmentAttributes.CUSTOM_SKYBOX, BetterEnd.C.mk("end_skybox"))
                 .mood(EndSounds.AMBIENT_DUST_WASTELANDS)
                 .temperature(BiomeBuilder.DEFAULT_END_TEMPERATURE)
                 .downfall(BiomeBuilder.DEFAULT_END_WETNESS)

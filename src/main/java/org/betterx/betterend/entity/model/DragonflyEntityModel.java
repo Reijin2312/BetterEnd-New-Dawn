@@ -9,6 +9,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 
 public class DragonflyEntityModel extends EntityModel<LivingEntityRenderState> {
     private final ModelPart model;
@@ -90,7 +91,7 @@ public class DragonflyEntityModel extends EntityModel<LivingEntityRenderState> {
     }
 
     public DragonflyEntityModel(ModelPart modelPart) {
-        super(modelPart);
+        super(modelPart, RenderTypes::entityCutoutCull);
 
         model = modelPart.getChild(PartNames.BODY);
         head = model.getChild(PartNames.HEAD);

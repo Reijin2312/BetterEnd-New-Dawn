@@ -41,6 +41,7 @@ public class HelixTreeLeavesBlock extends BaseBlock implements BehaviourLeaves, 
     }
 
     @Override
+    @net.neoforged.api.distmarker.OnlyIn(net.neoforged.api.distmarker.Dist.CLIENT)
     public BlockColorProvider getProvider() {
         return (state, world, pos, tintIndex) -> ColorUtil.color(237, getGreen(state.getValue(COLOR)), 20);
     }

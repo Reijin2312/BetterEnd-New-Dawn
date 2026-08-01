@@ -30,7 +30,7 @@ public class ShadowForestBiome extends EndBiome.Config {
                 .waterAndFogColor(42, 45, 80)
                 .particles(ParticleTypes.MYCELIUM, 0.01F)
                 .loop(EndSounds.AMBIENT_CHORUS_FOREST)
-                .music(EndSounds.MUSIC_DARK)
+                .music(EndSounds.MUSIC_ENDER_HOLLOW)
                 .feature(EndOreFeatures.VIOLECITE_LAYER)
                 .feature(EndLakeFeatures.END_LAKE_RARE)
                 .feature(EndVegetationFeatures.DRAGON_TREE)
@@ -48,7 +48,7 @@ public class ShadowForestBiome extends EndBiome.Config {
                 .structure(BiomeTags.HAS_END_CITY)
                 .structure(EndStructures.ETERNAL_PORTAL)
                 .spawn(EndEntities.SHADOW_WALKER.type(), 80, 2, 4)
-                .spawn(EntityTypes.ENDERMAN, 40, 1, 4)
+                .spawn(EntityTypes.ENDERMAN, 3, 1, 4)
                 .spawn(EntityTypes.PHANTOM, 1, 1, 2);
     }
 

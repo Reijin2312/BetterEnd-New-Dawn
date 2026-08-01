@@ -32,7 +32,7 @@ public class DryShrublandBiome extends EndBiome.Config {
                 .feature(EndVegetationFeatures.LAMELLARIUM)
                 .structure(BiomeTags.HAS_END_CITY)
                 .structure(EndStructures.ETERNAL_PORTAL)
-                .spawn(EntityTypes.ENDERMAN, 50, 1, 2);
+                .spawn(EntityTypes.ENDERMAN, 3, 1, 2);
     }
 
     @Override

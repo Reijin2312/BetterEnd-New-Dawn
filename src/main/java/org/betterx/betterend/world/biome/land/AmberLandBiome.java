@@ -42,7 +42,7 @@ public class AmberLandBiome extends EndBiome.Config {
                 .feature(EndVegetationFeatures.CHARNIA_ORANGE)
                 .feature(EndVegetationFeatures.CHARNIA_RED)
                 .structure(BiomeTags.HAS_END_CITY)
-                .spawn(EntityTypes.ENDERMAN, 50, 1, 4)
+                .spawn(EntityTypes.ENDERMAN, 3, 1, 4)
                 .spawn(EndEntities.END_SLIME.type(), 30, 1, 2);
     }
 

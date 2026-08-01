@@ -29,6 +29,6 @@ public class BiomeIceStarfield extends EndBiome.Config {
                .particles(EndParticles.SNOWFLAKE, 0.002F)
                .feature(EndTerrainFeatures.ICE_STAR)
                .feature(EndTerrainFeatures.ICE_STAR_SMALL)
-               .spawn(EntityTypes.ENDERMAN, 20, 1, 4);
+               .spawn(EntityTypes.ENDERMAN, 3, 1, 4);
     }
 }

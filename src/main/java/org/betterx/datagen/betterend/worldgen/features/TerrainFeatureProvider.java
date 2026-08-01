@@ -68,6 +68,15 @@ public class TerrainFeatureProvider extends WoverFeatureProvider {
         registerChanced(context, EndTerrainFeatures.ICE_STAR, EndFeatures.ICE_STAR_FEATURE, new IceStarFeatureConfig(5, 15, 10, 25), 15);
         registerChanced(context, EndTerrainFeatures.ICE_STAR_SMALL, EndFeatures.ICE_STAR_FEATURE, new IceStarFeatureConfig(3, 5, 7, 12), 8);
 
+        EndTerrainFeatures.POND_WITH_WATERFALL
+                .inlineConfiguration(context)
+                .withFeature(EndFeatures.POND_WITH_WATERFALL_FEATURE)
+                .configuration(FeatureConfiguration.NONE)
+                .inlinePlace()
+                .count(1)
+                .onlyInBiome()
+                .register();
+
 
         EndTerrainFeatures.BIOME_ISLAND
                 .inlineConfiguration(context)

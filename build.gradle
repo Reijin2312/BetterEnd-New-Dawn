@@ -134,9 +134,9 @@ dependencies {
         println "WTHIT runtime disabled (set -Penable_wthit_runtime=true to re-enable)"
     }
 
-    compileOnly "dev.emi:emi-neoforge:${emi_version}:api"
     if (enableEmiRuntime) {
-        runtimeOnly "dev.emi:emi-neoforge:${emi_version}"
+        compileOnly "maven.modrinth:emi:${emi_version}+neoforge"
+        runtimeOnly "maven.modrinth:emi:${emi_version}+neoforge"
     } else {
         println "EMI runtime disabled (set -Penable_emi_runtime=true to re-enable)"
     }
@@ -260,7 +260,6 @@ processResources {
 }
 
 tasks.named("jar") {
-    dependsOn(tasks.named("generateBetterXResources"))
     dependsOn(tasks.named("syncGeneratedResources"))
     from("src/main/generated")
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
@@ -431,6 +430,7 @@ tasks.register("fixMixinRefmap") {
     def refmapFile = layout.buildDirectory.file("resources/main/${refmapName}")
     inputs.files(refmapFile).optional()
     outputs.file(refmapFile)
+    dependsOn(tasks.named("syncGeneratedResources"))
     dependsOn(tasks.named("compileJava"))
     dependsOn(tasks.named("syncGeneratedResources"))
     mustRunAfter(tasks.named("processResources"))
@@ -515,8 +515,7 @@ jar {
 
 // Collect built jars for BetterEnd and its local BetterX libraries into one folder
 def distDir = new File(rootProject.projectDir.parentFile, "betterx-dist")
-def modrinthModsDir = new File("C:/Users/Redmi/AppData/Roaming/ModrinthApp/profiles/26.1/mods")
-def test2ModsDir = file((project.findProperty("test2_mods_dir") ?: "C:/Users/Redmi/Desktop/test2/mods").toString())
+def modrinthModsDir = new File("C:/Users/Roboute Guilliman/AppData/Roaming/ModrinthApp/profiles/26.1-neo/mods")
 def betterEndModrinthJarPatterns = [
         "BetterEnd-*.jar",
         "bclib-*.jar",
@@ -557,22 +556,8 @@ tasks.register("copyModrinthJars", Copy) {
     into(modrinthModsDir)
 }
 
-tasks.register("copyTest2Jars", Copy) {
-    dependsOn(
-            tasks.named("jar"),
-            project(":BCLib").tasks.named("jar"),
-            project(":WorldWeaver").tasks.named("jar"),
-            project(":wunderlib").tasks.named("jar")
-    )
-    from(tasks.named("jar"))
-    from(project(":BCLib").tasks.named("jar"))
-    from(project(":WorldWeaver").tasks.named("jar"))
-    from(project(":wunderlib").tasks.named("jar"))
-    into(test2ModsDir)
-}
-
 tasks.named("build") {
-    finalizedBy("copyModrinthJars", "copyTest2Jars")
+    finalizedBy("copyModrinthJars")
     if (!simpleBuildRequested) {
         finalizedBy("copyDistJars")
     }

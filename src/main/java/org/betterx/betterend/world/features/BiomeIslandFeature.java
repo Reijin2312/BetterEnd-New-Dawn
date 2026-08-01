@@ -32,7 +32,7 @@ public class BiomeIslandFeature extends DefaultFeature {
         //Holder<Biome> biome = world.getBiome(pos);
         int dist = BlocksHelper.downRay(world, pos, 10) + 1;
         BlockPos surfacePos = new BlockPos(pos.getX(), pos.getY() - dist, pos.getZ());
-        BlockState topMaterial = EndBiome.findTopMaterial(world, surfacePos);
+        BlockState topMaterial = world.getBlockState(surfacePos.above());
 
         if (BlocksHelper.isFluid(topMaterial)) {
             topBlock = Blocks.GRAVEL.defaultBlockState();

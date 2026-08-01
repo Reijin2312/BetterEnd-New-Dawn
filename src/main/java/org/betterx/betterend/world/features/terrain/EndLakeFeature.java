@@ -62,6 +62,7 @@ public class EndLakeFeature extends DefaultFeature {
         if (Math.abs(blockPos.getY() - pos.getY()) > 5) return false;
         waterLevel = MHelper.min(pos.getY(), waterLevel);
         BlockState state;
+        final BlockState borderMaterial = EndBiome.sampleTopMaterial(world, blockPos.below());
 
         int minX = blockPos.getX() - dist2;
         int maxX = blockPos.getX() + dist2;
@@ -129,7 +130,7 @@ public class EndLakeFeature extends DefaultFeature {
                                 }
                                 pos = POS.below();
                                 if (world.getBlockState(pos).is(CommonBlockTags.END_STONES)) {
-                                    state = EndBiome.findTopMaterial(world, pos);
+                                    state = borderMaterial;
                                     if (y > waterLevel + 1) BlocksHelper.setWithoutUpdate(world, pos, state);
                                     else if (y > waterLevel)
                                         BlocksHelper.setWithoutUpdate(
@@ -198,7 +199,7 @@ public class EndLakeFeature extends DefaultFeature {
                         // Make border
                         else if (y < waterLevel && y2 + x2 + z2 <= rb) {
                             if (world.isEmptyBlock(POS.above())) {
-                                state = EndBiome.findTopMaterial(world, pos);
+                                state = borderMaterial;
 //								state = world.getBiome(POS)
 //											 .getGenerationSettings()
 //											 .getSurfaceBuilderConfig()

@@ -38,6 +38,7 @@ public class AuroraCrystalBlock extends TransparentBlock implements BlockLootPro
         super(BehaviourBuilders
                 .createGlass()
                 .strength(1F)
+                .noOcclusion()
                 .lightLevel((bs) -> 15)
         );
     }
@@ -54,6 +55,7 @@ public class AuroraCrystalBlock extends TransparentBlock implements BlockLootPro
     }
 
     @Override
+    @net.neoforged.api.distmarker.OnlyIn(net.neoforged.api.distmarker.Dist.CLIENT)
     public BlockColorProvider getProvider() {
         return (state, world, pos, tintIndex) -> {
             if (pos == null) {

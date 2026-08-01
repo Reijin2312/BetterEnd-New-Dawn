@@ -8,6 +8,8 @@ import org.betterx.betterend.world.features.VineFeatureConfig;
 import org.betterx.betterend.world.features.bushes.BushFeature;
 import org.betterx.betterend.world.features.bushes.BushFeatureConfig;
 import org.betterx.betterend.world.features.terrain.*;
+import org.betterx.betterend.world.features.terrain.caves.StalactiteClusterConfig;
+import org.betterx.betterend.world.features.terrain.caves.StalactiteClusterFeature;
 import org.betterx.wover.feature.api.configured.ConfiguredFeatureKey;
 import org.betterx.wover.feature.api.configured.ConfiguredFeatureManager;
 import org.betterx.wover.feature.api.configured.configurators.WithConfiguration;
@@ -16,6 +18,9 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
 
 public class EndConfiguredCaveFeatures {
+    public static final ConfiguredFeatureKey<WithConfiguration<StalactiteClusterFeature, StalactiteClusterConfig>> STALACTITE_CLUSTER_PLAIN = ConfiguredFeatureManager.configuration(BetterEnd.C.mk("stalactite_cluster_plain"), EndFeatures.STALACTITE_CLUSTER);
+    public static final ConfiguredFeatureKey<WithConfiguration<StalactiteClusterFeature, StalactiteClusterConfig>> STALACTITE_CLUSTER_CAVEMOSS = ConfiguredFeatureManager.configuration(BetterEnd.C.mk("stalactite_cluster_cavemoss"), EndFeatures.STALACTITE_CLUSTER);
+
     public static final ConfiguredFeatureKey<WithConfiguration<SmaragdantCrystalFeature, NoneFeatureConfiguration>> SMARAGDANT_CRYSTAL = ConfiguredFeatureManager.configuration(BetterEnd.C.mk("smaragdant_crystal"), EndFeatures.SMARAGDANT_CRYSTAL_FEATURE);
     public static final ConfiguredFeatureKey<WithConfiguration<SingleBlockFeature, SimpleBlockConfiguration>> SMARAGDANT_CRYSTAL_SHARD = ConfiguredFeatureManager.configuration(BetterEnd.C.mk("smaragdant_crystal_shard"), EndFeatures.SINGLE_BLOCK_FEATURE);
     public static final ConfiguredFeatureKey<WithConfiguration<BigAuroraCrystalFeature, NoneFeatureConfiguration>> BIG_AURORA_CRYSTAL = ConfiguredFeatureManager.configuration(BetterEnd.C.mk("big_aurora_crystal"), EndFeatures.BIG_AURORA_CRYSTAL_FEATURE);

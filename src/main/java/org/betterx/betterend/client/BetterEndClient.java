@@ -6,10 +6,13 @@ import org.betterx.betterend.config.screen.ConfigScreen;
 import org.betterx.betterend.events.ItemTooltipCallback;
 import org.betterx.betterend.interfaces.MultiModelItem;
 import org.betterx.betterend.item.CrystaliteArmor;
+import org.betterx.betterend.network.RitualUpdate;
 import org.betterx.betterend.registry.*;
+import org.betterx.betterend.rituals.EternalRitual;
 import org.betterx.betterend.world.generator.GeneratorOptions;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -23,7 +26,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
-import net.neoforged.neoforge.client.event.RegisterCustomEnvironmentEffectRendererEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
@@ -34,7 +36,6 @@ import java.util.Map;
 
 @EventBusSubscriber(modid = BetterEnd.MOD_ID, value = Dist.CLIENT)
 public class BetterEndClient {
-    private static final Identifier END_SKYBOX_ID = BetterEnd.C.mk("end_skybox");
     private static final Identifier CHECK_FLOWER_ID = Identifier.withDefaultNamespace("chorus_flower");
     private static final Identifier CHECK_PLANT_ID = Identifier.withDefaultNamespace("chorus_plant");
     private static final Identifier TO_LOAD_FLOWER_ID = BetterEnd.C.mk("custom_chorus_flower");
@@ -43,6 +44,11 @@ public class BetterEndClient {
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
+            RitualUpdate.registerClientProcessor((center, axis, active, willActivate, client) ->
+                    EternalRitual.updateActiveStateOnPedestals(
+                            center, axis, active, willActivate, ((Minecraft) client).level, null
+                    )
+            );
             EndModelProviders.register();
             MultiModelItem.register();
             registerTooltips();
@@ -76,15 +82,6 @@ public class BetterEndClient {
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         EndEntitiesRenders.registerLayerDefinitions(event);
-    }
-
-    @SubscribeEvent
-    public static void registerEnvironmentEffects(RegisterCustomEnvironmentEffectRendererEvent event) {
-        // TEMP: custom End sky is fully disabled for debugging.
-        // if (!Configs.CLIENT_CONFIG.customSky.get()) {
-        //     return;
-        // }
-        // event.registerSkyboxRenderer(END_SKYBOX_ID, new BetterEndSkyEffect());
     }
 
     @SubscribeEvent

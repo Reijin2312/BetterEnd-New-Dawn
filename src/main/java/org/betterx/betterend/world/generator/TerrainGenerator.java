@@ -93,7 +93,10 @@ public class TerrainGenerator {
     }
 
     public static void fillTerrainDensity(double[] buffer, int posX, int posZ, int scaleXZ, int scaleY, int maxHeight) {
+        // try/finally so a RuntimeException from the biome source (getAverageDepth -> getNoiseBiome) or the
+        // island caches can never orphan the static LOCKER and deadlock every worker + the server thread.
         LOCKER.lock();
+        try {
         final float fadeOutDist = 27.0f;
         final float fadOutStart = maxHeight - (fadeOutDist + 1);
         largeIslands.clearCache();
@@ -137,7 +140,32 @@ public class TerrainGenerator {
             buffer[y] = dist;
         }
 
-        LOCKER.unlock();
+        } finally {
+            LOCKER.unlock();
+        }
+    }
+
+    public static int getSurfaceHeight(
+            int blockX,
+            int blockZ,
+            int scaleXZ,
+            int scaleY,
+            int maxHeight,
+            int noiseMinY
+    ) {
+        if (largeIslands == null || mediumIslands == null || smallIslands == null) {
+            return noiseMinY;
+        }
+        final int alignedX = Math.floorDiv(blockX, scaleXZ) * scaleXZ;
+        final int alignedZ = Math.floorDiv(blockZ, scaleXZ) * scaleXZ;
+        final double[] buffer = new double[Math.max(1, maxHeight / scaleY + 1)];
+        fillTerrainDensity(buffer, alignedX, alignedZ, scaleXZ, scaleY, maxHeight);
+        for (int y = buffer.length - 1; y >= 0; y--) {
+            if (buffer[y] > 0) {
+                return noiseMinY + y * scaleY;
+            }
+        }
+        return noiseMinY;
     }
 
     private static float getAverageDepth(int x, int z) {
@@ -191,6 +219,8 @@ public class TerrainGenerator {
         int sectionZ = TerrainBoolCache.scaleCoordinate(z);
         final int stepY = (int) Math.ceil(maxHeight / SCALE_Y);
         LOCKER.lock();
+        // try/finally so an exception below can never orphan the static LOCKER (see fillTerrainDensity).
+        try {
         POS.setLocation(sectionX, sectionZ);
 
         TerrainBoolCache section = TERRAIN_BOOL_CACHE_MAP.get(POS);
@@ -203,7 +233,6 @@ public class TerrainGenerator {
         }
         byte value = section.getData(x, z);
         if (value > 0) {
-            LOCKER.unlock();
             return value > 1;
         }
 
@@ -243,9 +272,11 @@ public class TerrainGenerator {
         }
 
         section.setData(x, z, (byte) (result ? 2 : 1));
-        LOCKER.unlock();
 
         return result;
+        } finally {
+            LOCKER.unlock();
+        }
     }
 
     public static void onServerLevelInit(ServerLevel level, LevelStem levelStem, long seed) {

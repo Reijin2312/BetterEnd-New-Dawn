@@ -4,6 +4,7 @@ import org.betterx.bclib.complexmaterials.set.stone.StoneSlots;
 import org.betterx.bclib.complexmaterials.set.wood.WoodSlots;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndBlocks;
+import org.betterx.betterend.registry.EndBiomes;
 import org.betterx.betterend.registry.EndProcessors;
 import org.betterx.betterend.registry.EndStructures;
 import org.betterx.betterend.world.structures.village.VillagePools;
@@ -14,6 +15,7 @@ import org.betterx.wover.tag.api.event.context.TagBootstrapContext;
 
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
@@ -36,10 +38,12 @@ public class StructureDataProvider extends WoverStructureProvider {
         EndStructures.GIANT_MOSSY_GLOWSHROOM.bootstrap(context).register();
         EndStructures.MEGALAKE.bootstrap(context).register();
         EndStructures.MEGALAKE_SMALL.bootstrap(context).register();
+        EndStructures.END_BRIDGE.bootstrap(context).register();
         EndStructures.MOUNTAIN.bootstrap(context).register();
         EndStructures.PAINTED_MOUNTAIN.bootstrap(context).register();
         EndStructures.ETERNAL_PORTAL.bootstrap(context).register();
         EndStructures.GIANT_ICE_STAR.bootstrap(context).register();
+        EndStructures.SMALL_ISLAND.bootstrap(context).register();
         EndStructures.END_VILLAGE
                 .bootstrap(context)
                 .startPool(VillagePools.START)
@@ -62,6 +66,10 @@ public class StructureDataProvider extends WoverStructureProvider {
                 .randomPlacement(4, 1)
                 .register();
         StructureSetManager
+                .bootstrap(EndStructures.END_BRIDGE, context)
+                .randomPlacement(6, 2)
+                .register();
+        StructureSetManager
                 .bootstrap(EndStructures.MOUNTAIN, context)
                 .addStructure(EndStructures.PAINTED_MOUNTAIN)
                 .randomPlacement(3, 2)
@@ -73,6 +81,11 @@ public class StructureDataProvider extends WoverStructureProvider {
         StructureSetManager
                 .bootstrap(EndStructures.GIANT_ICE_STAR, context)
                 .randomPlacement(16, 8)
+                .register();
+
+        StructureSetManager
+                .bootstrap(EndStructures.SMALL_ISLAND, context)
+                .randomPlacement(5, 2)
                 .register();
 
         StructureSetManager
@@ -366,7 +379,12 @@ public class StructureDataProvider extends WoverStructureProvider {
 
     @Override
     protected void prepareBiomeTags(TagBootstrapContext<Biome> context) {
-
+        context.add(EndStructures.END_BRIDGE.biomeTag(), Biomes.SMALL_END_ISLANDS);
+        context.add(
+                EndStructures.SMALL_ISLAND.biomeTag(),
+                EndBiomes.FLOWER_ISLETS.key,
+                EndBiomes.WATERFALL_PONDS.key
+        );
     }
 
 }

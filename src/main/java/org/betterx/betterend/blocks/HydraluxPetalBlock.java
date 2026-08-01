@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 
@@ -16,7 +17,7 @@ public class HydraluxPetalBlock extends BaseBlock.Wood {
     public HydraluxPetalBlock() {
         this(
                 BehaviourBuilders
-                        .createWalkablePlant(MapColor.PODZOL)
+                        .createWalkablePlant(MapColor.PODZOL, BlockBehaviour.OffsetType.NONE)
                         .strength(1)
                         .sound(SoundType.WART_BLOCK)
         );

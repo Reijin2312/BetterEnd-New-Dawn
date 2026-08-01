@@ -25,6 +25,7 @@ public class TenaneaFlowersBlock extends BaseVineBlock implements CustomColorPro
     }
 
     @Override
+    @net.neoforged.api.distmarker.OnlyIn(net.neoforged.api.distmarker.Dist.CLIENT)
     public BlockColorProvider getProvider() {
         return (state, world, pos, tintIndex) -> {
             if (pos == null) {

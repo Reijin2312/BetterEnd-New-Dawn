@@ -15,12 +15,17 @@ import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 
 public class LanceleafSeedBlock extends EndPlantWithAgeBlock implements SurvivesOnAmberMoss, BehaviourSeed {
     public LanceleafSeedBlock() {
-        super(BehaviourBuilders.createSeed(MapColor.TERRACOTTA_BROWN));
+        super(BehaviourBuilders.createWalkablePlant(MapColor.TERRACOTTA_BROWN)
+                               .randomTicks()
+                               .sound(SoundType.HARD_CROP)
+                               .dynamicShape()
+                               .offsetType(OffsetType.XZ));
     }
 
     @Override

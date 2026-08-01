@@ -25,6 +25,7 @@ public class HydraluxPetalColoredBlock extends HydraluxPetalBlock implements Cus
     }
 
     @Override
+    @net.neoforged.api.distmarker.OnlyIn(net.neoforged.api.distmarker.Dist.CLIENT)
     public BlockColorProvider getProvider() {
         return (state, world, pos, tintIndex) -> BlocksHelper.getBlockColor(this);
     }

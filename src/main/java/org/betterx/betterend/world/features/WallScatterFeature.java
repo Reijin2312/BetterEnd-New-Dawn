@@ -44,7 +44,7 @@ public abstract class WallScatterFeature<FC extends ScatterFeatureConfig> extend
                 mut.setY(py + y);
                 for (int z = -cfg.radius; z <= cfg.radius; z++) {
                     mut.setZ(center.getZ() + z);
-                    if (random.nextInt(4) == 0 && world.isEmptyBlock(mut)) {
+                    if (random.nextInt(4) == 0 && world.isEmptyBlock(mut) && !overLakeWater(world, mut)) {
                         shuffle(random);
                         for (Direction dir : DIR) {
                             if (canGenerate(cfg, world, random, mut, dir)) {
@@ -58,6 +58,17 @@ public abstract class WallScatterFeature<FC extends ScatterFeatureConfig> extend
         }
 
         return true;
+    }
+
+    private static boolean overLakeWater(WorldGenLevel world, BlockPos pos) {
+        final MutableBlockPos m = new MutableBlockPos().set(pos);
+        for (int i = 0; i < 4; i++) {
+            m.setY(m.getY() - 1);
+            final var state = world.getBlockState(m);
+            if (!state.getFluidState().isEmpty()) return true;
+            if (state.isSolid()) return false;
+        }
+        return false;
     }
 
     private void shuffle(RandomSource random) {
