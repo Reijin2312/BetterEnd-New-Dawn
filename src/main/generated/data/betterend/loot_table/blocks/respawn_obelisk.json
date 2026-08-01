@@ -5,7 +5,11 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "condition": "minecraft:survives_explosion"
+          "block": "betterend:respawn_obelisk",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "shape": "bottom"
+          }
         }
       ],
       "entries": [
@@ -16,6 +20,5 @@
       ],
       "rolls": 1.0
     }
-  ],
-  "random_sequence": "betterend:blocks/respawn_obelisk"
+  ]
 }

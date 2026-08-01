@@ -21,6 +21,7 @@ import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.BonusLevelTableCondition;
 import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
 import org.jetbrains.annotations.NotNull;
@@ -66,6 +67,7 @@ public class BulbVineBlock extends BaseVineBlock implements BlockLootProvider {
                 .setProperties(StatePropertiesPredicate.Builder
                         .properties()
                         .hasProperty(SHAPE, BlockProperties.TripleShape.BOTTOM));
+        final LootItemCondition.Builder shearsOrHoeOrSilk = provider.shearsOrHoeSilkTouchCondition();
 
         return LootTable
                 .lootTable()
@@ -76,6 +78,7 @@ public class BulbVineBlock extends BaseVineBlock implements BlockLootProvider {
                                 .add(LootItem.lootTableItem(EndItems.GLOWING_BULB.asItem())
                                              .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1)))
                                 )
+                                .when(shearsOrHoeOrSilk)
                                 .when(bottom)
                 )
                 .withPool(
@@ -87,6 +90,7 @@ public class BulbVineBlock extends BaseVineBlock implements BlockLootProvider {
                                              .when(ExplosionCondition.survivesExplosion())
                                              .when(BonusLevelTableCondition.bonusLevelFlatChance(provider.fortune(), LootLookupProvider.VANILLA_LEAVES_SAPLING_CHANCES))
                                 )
+                                .when(shearsOrHoeOrSilk)
                                 .when(bottom.invert())
                 );
     }

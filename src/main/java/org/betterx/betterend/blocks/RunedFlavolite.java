@@ -4,24 +4,25 @@ import org.betterx.bclib.blocks.BaseBlock;
 import org.betterx.wover.block.api.BlockProperties;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.registry.EndBlocks;
+import org.betterx.wover.loot.api.LootLookupProvider;
 
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
 
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
-import com.google.common.collect.Lists;
-
-import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 public class RunedFlavolite extends BaseBlock.Stone {
     public static final BooleanProperty ACTIVATED = BlockProperties.ACTIVE;
+    private final boolean unbreakable;
 
     public RunedFlavolite(boolean unbreakable) {
         super(BlockBehaviour.Properties.ofLegacyCopy(EndBlocks.FLAVOLITE.polished)
@@ -32,6 +33,7 @@ public class RunedFlavolite extends BaseBlock.Stone {
                                                  : Blocks.OBSIDIAN.getExplosionResistance()
                                  )
                                  .lightLevel(state -> state.getValue(ACTIVATED) ? 8 : 0));
+        this.unbreakable = unbreakable;
         this.registerDefaultState(stateDefinition.any().setValue(ACTIVATED, false));
     }
 
@@ -46,10 +48,11 @@ public class RunedFlavolite extends BaseBlock.Stone {
     }
 
     @Override
-    public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
-        if (BlocksHelper.isInvulnerableUnsafe(this.defaultBlockState())) {
-            return Lists.newArrayList();
-        }
-        return super.getDrops(state, builder);
+    public LootTable.Builder registerBlockLoot(
+            @NotNull Identifier location,
+            @NotNull LootLookupProvider provider,
+            @NotNull ResourceKey<LootTable> tableKey
+    ) {
+        return unbreakable ? null : super.registerBlockLoot(location, provider, tableKey);
     }
 }
