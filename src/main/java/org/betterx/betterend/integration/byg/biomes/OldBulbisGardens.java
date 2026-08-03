@@ -3,7 +3,7 @@ package org.betterx.betterend.integration.byg.biomes;
 import org.betterx.bclib.interfaces.SurfaceMaterialProvider;
 import org.betterx.betterend.integration.Integrations;
 import org.betterx.betterend.integration.byg.features.BYGFeatures;
-import org.betterx.betterend.registry.features.EndLakeFeatures;
+import org.betterx.betterend.registry.EndStructures;
 import org.betterx.betterend.registry.features.EndVegetationFeatures;
 import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
@@ -47,7 +47,7 @@ public class OldBulbisGardens extends EndBiome.Config {
                        ParticleTypes.REVERSE_PORTAL,
                        0.002F
                )
-               .feature(EndLakeFeatures.END_LAKE_RARE)
+               .structure(EndStructures.END_LAKE_RARE)
                .feature(BYGFeatures.OLD_BULBIS_TREE);
 
         Holder<Biome> biome = Integrations.BYG.getBiome("bulbis_gardens");

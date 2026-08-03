@@ -8,18 +8,8 @@ import org.betterx.wover.feature.api.placed.PlacedFeatureManager;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 
 public class EndLakeFeatures {
-    public static final PlacedFeatureKey END_LAKE = PlacedFeatureManager
-            .createKey(BetterEnd.C.mk("end_lake"))
-            .setDecoration(Decoration.LAKES);
-
-    public static final PlacedFeatureKey END_LAKE_NORMAL = PlacedFeatureManager
-            .createKey(BetterEnd.C.mk("end_lake_normal"))
-            .setDecoration(Decoration.LAKES);
-
-    public static final PlacedFeatureKey END_LAKE_RARE = PlacedFeatureManager
-            .createKey(BetterEnd.C.mk("end_lake_rare"))
-            .setDecoration(Decoration.LAKES);
-
+    // The regular End lakes are structures (EndStructures.END_LAKE*) rather than cross-chunk
+    // decoration features. Desert and sulphuric lakes remain bounded features.
     public static final PlacedFeatureKey DESERT_LAKE = PlacedFeatureManager
             .createKey(BetterEnd.C.mk("desert_lake"))
             .setDecoration(Decoration.LAKES);

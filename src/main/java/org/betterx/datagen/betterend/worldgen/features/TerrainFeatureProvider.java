@@ -84,15 +84,6 @@ public class TerrainFeatureProvider extends WoverFeatureProvider {
                 .inlinePlace()
                 .register();
 
-        EndTerrainFeatures.SULPHURIC_CAVE
-                .inlineConfiguration(context)
-                .withFeature(EndFeatures.SULPHURIC_CAVE_FEATURE)
-                .inlinePlace()
-                .count(2)
-                .squarePlacement()
-                .onlyInBiome()
-                .register();
-
         EndTerrainFeatures.TUNEL_CAVE
                 .inlineConfiguration(context)
                 .withFeature(EndFeatures.TUNEL_CAVE_FEATURE)
