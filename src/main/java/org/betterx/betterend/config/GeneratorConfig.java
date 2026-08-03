@@ -63,7 +63,7 @@ public class GeneratorConfig extends ConfigFile {
 
     public final IntValue endCityFailChance = new IntValue(
             MainConfig.STRUCTURE_GROUP.title(), "end_city_fail_chance",
-            5
+            1
     ).setGroup(MainConfig.STRUCTURE_GROUP).min(1).max(50);
 
     public final BooleanValue newGenerator = new BooleanValue(

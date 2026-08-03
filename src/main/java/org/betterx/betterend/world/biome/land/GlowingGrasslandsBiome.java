@@ -5,7 +5,6 @@ import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndParticles;
 import org.betterx.betterend.registry.EndSounds;
 import org.betterx.betterend.registry.EndStructures;
-import org.betterx.betterend.registry.features.EndLakeFeatures;
 import org.betterx.betterend.registry.features.EndVegetationFeatures;
 import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
@@ -29,7 +28,7 @@ public class GlowingGrasslandsBiome extends EndBiome.Config {
                 .loop(EndSounds.AMBIENT_GLOWING_GRASSLANDS)
                 .waterAndFogColor(92, 250, 230)
                 .plantsColor(73, 210, 209)
-                .feature(EndLakeFeatures.END_LAKE_RARE)
+                .structure(EndStructures.END_LAKE_RARE)
                 .feature(EndVegetationFeatures.LUMECORN)
                 .feature(EndVegetationFeatures.BLOOMING_COOKSONIA)
                 .feature(EndVegetationFeatures.SALTEAGO)

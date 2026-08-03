@@ -44,7 +44,7 @@ public class SulphurSpringsBiome extends EndBiome.Config {
                 .feature(EndTerrainFeatures.GEYSER)
                 .feature(EndTerrainFeatures.SURFACE_VENT)
                 .feature(EndLakeFeatures.SULPHURIC_LAKE)
-                .feature(EndTerrainFeatures.SULPHURIC_CAVE)
+                .structure(EndStructures.SULPHURIC_CAVE)
                 .feature(EndVegetationFeatures.HYDRALUX)
                 .feature(EndVegetationFeatures.CHARNIA_GREEN)
                 .feature(EndVegetationFeatures.CHARNIA_ORANGE)
