@@ -38,12 +38,16 @@ public class StructureDataProvider extends WoverStructureProvider {
         EndStructures.GIANT_MOSSY_GLOWSHROOM.bootstrap(context).register();
         EndStructures.MEGALAKE.bootstrap(context).register();
         EndStructures.MEGALAKE_SMALL.bootstrap(context).register();
+        EndStructures.END_LAKE.bootstrap(context).register();
+        EndStructures.END_LAKE_NORMAL.bootstrap(context).register();
+        EndStructures.END_LAKE_RARE.bootstrap(context).register();
         EndStructures.END_BRIDGE.bootstrap(context).register();
         EndStructures.MOUNTAIN.bootstrap(context).register();
         EndStructures.PAINTED_MOUNTAIN.bootstrap(context).register();
         EndStructures.ETERNAL_PORTAL.bootstrap(context).register();
         EndStructures.GIANT_ICE_STAR.bootstrap(context).register();
         EndStructures.SMALL_ISLAND.bootstrap(context).register();
+        EndStructures.SULPHURIC_CAVE.bootstrap(context).register();
         EndStructures.END_VILLAGE
                 .bootstrap(context)
                 .startPool(VillagePools.START)
@@ -65,6 +69,9 @@ public class StructureDataProvider extends WoverStructureProvider {
                 .addStructure(EndStructures.MEGALAKE_SMALL)
                 .randomPlacement(4, 1)
                 .register();
+        StructureSetManager.bootstrap(EndStructures.END_LAKE, context).randomPlacement(6, 1).register();
+        StructureSetManager.bootstrap(EndStructures.END_LAKE_NORMAL, context).randomPlacement(5, 2).register();
+        StructureSetManager.bootstrap(EndStructures.END_LAKE_RARE, context).randomPlacement(6, 2).register();
         StructureSetManager
                 .bootstrap(EndStructures.END_BRIDGE, context)
                 .randomPlacement(6, 2)
@@ -87,6 +94,7 @@ public class StructureDataProvider extends WoverStructureProvider {
                 .bootstrap(EndStructures.SMALL_ISLAND, context)
                 .randomPlacement(5, 2)
                 .register();
+        StructureSetManager.bootstrap(EndStructures.SULPHURIC_CAVE, context).randomPlacement(9, 4).register();
 
         StructureSetManager
                 .bootstrap(EndStructures.END_VILLAGE, context)
