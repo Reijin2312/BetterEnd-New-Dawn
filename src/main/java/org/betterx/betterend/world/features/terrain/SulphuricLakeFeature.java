@@ -64,7 +64,7 @@ public class SulphuricLakeFeature extends DefaultFeature {
                 int dist = x2 + z2;
                 if (dist <= r) {
                     POS.setY(getYOnSurface(world, x, z) - 1);
-                    if (world.getBlockState(POS).is(CommonBlockTags.END_STONES) || SulphurFloorMix.isDepositBlock(world.getBlockState(POS))) {
+                    if (world.getBlockState(POS).is(CommonBlockTags.END_STONES)) {
                         if (isBorder(world, POS)) {
                             if (random.nextInt(8) > 0) {
                                 brimstone.add(POS.immutable());
@@ -98,7 +98,7 @@ public class SulphuricLakeFeature extends DefaultFeature {
                             brimstone.remove(POS);
                             for (Direction dir : BlocksHelper.HORIZONTAL) {
                                 BlockPos offseted = POS.relative(dir);
-                                if (world.getBlockState(offseted).is(CommonBlockTags.END_STONES) || SulphurFloorMix.isDepositBlock(world.getBlockState(offseted))) {
+                                if (world.getBlockState(offseted).is(CommonBlockTags.END_STONES)) {
                                     brimstone.add(offseted);
                                 }
                             }
@@ -107,7 +107,7 @@ public class SulphuricLakeFeature extends DefaultFeature {
                                 brimstone.remove(POS);
                                 for (Direction dir : BlocksHelper.HORIZONTAL) {
                                     BlockPos offseted = POS.relative(dir);
-                                    if (world.getBlockState(offseted).is(CommonBlockTags.END_STONES) || SulphurFloorMix.isDepositBlock(world.getBlockState(offseted))) {
+                                    if (world.getBlockState(offseted).is(CommonBlockTags.END_STONES)) {
                                         brimstone.add(offseted);
                                     }
                                 }
@@ -123,7 +123,7 @@ public class SulphuricLakeFeature extends DefaultFeature {
                     }
                 } else if (dist < r2) {
                     POS.setY(getYOnSurface(world, x, z) - 1);
-                    if (world.getBlockState(POS).is(CommonBlockTags.END_STONES) || SulphurFloorMix.isDepositBlock(world.getBlockState(POS))) {
+                    if (world.getBlockState(POS).is(CommonBlockTags.END_STONES)) {
                         brimstone.add(POS.immutable());
                         if (random.nextBoolean()) {
                             brimstone.add(POS.below());
@@ -184,9 +184,7 @@ public class SulphuricLakeFeature extends DefaultFeature {
     private void placeBrimstone(WorldGenLevel world, BlockPos pos, RandomSource random) {
         BlockState state = getBrimstone(world, pos);
         BlocksHelper.setWithoutUpdate(world, pos, state);
-        // getBrimstone can now hand back vanilla sulfur or cinnabar, which have no ACTIVE property -
-        // reading it unguarded would throw. Only brimstone ever grows shards anyway.
-        if (state.hasProperty(EndBlockProperties.ACTIVE) && state.getValue(EndBlockProperties.ACTIVE)) {
+        if (state.getValue(EndBlockProperties.ACTIVE)) {
             makeShards(world, pos, random);
         }
     }
@@ -196,13 +194,6 @@ public class SulphuricLakeFeature extends DefaultFeature {
             if (world.getBlockState(pos.relative(dir)).is(Blocks.WATER)) {
                 return EndBlocks.BRIMSTONE.defaultBlockState().setValue(EndBlockProperties.ACTIVE, true);
             }
-        }
-        // Water-touching brimstone above keeps its ACTIVE look and its sulphur crystal shards. Everything
-        // else that is buried deeply enough, and not exposed to air on any side, joins the sulfur/cinnabar
-        // deposit the geyser bowl uses. See SulphurFloorMix.
-        BlockState mixed = SulphurFloorMix.pick(world, zone, pos);
-        if (mixed != null) {
-            return mixed;
         }
         return EndBlocks.BRIMSTONE.defaultBlockState();
     }

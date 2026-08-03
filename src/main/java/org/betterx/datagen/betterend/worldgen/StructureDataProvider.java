@@ -38,12 +38,16 @@ public class StructureDataProvider extends WoverStructureProvider {
         EndStructures.GIANT_MOSSY_GLOWSHROOM.bootstrap(context).register();
         EndStructures.MEGALAKE.bootstrap(context).register();
         EndStructures.MEGALAKE_SMALL.bootstrap(context).register();
+        EndStructures.END_LAKE.bootstrap(context).register();
+        EndStructures.END_LAKE_NORMAL.bootstrap(context).register();
+        EndStructures.END_LAKE_RARE.bootstrap(context).register();
         EndStructures.END_BRIDGE.bootstrap(context).register();
         EndStructures.MOUNTAIN.bootstrap(context).register();
         EndStructures.PAINTED_MOUNTAIN.bootstrap(context).register();
         EndStructures.ETERNAL_PORTAL.bootstrap(context).register();
         EndStructures.GIANT_ICE_STAR.bootstrap(context).register();
         EndStructures.SMALL_ISLAND.bootstrap(context).register();
+        EndStructures.SULPHURIC_CAVE.bootstrap(context).register();
         EndStructures.END_VILLAGE
                 .bootstrap(context)
                 .startPool(VillagePools.START)
@@ -64,6 +68,23 @@ public class StructureDataProvider extends WoverStructureProvider {
                 .bootstrap(EndStructures.MEGALAKE, context)
                 .addStructure(EndStructures.MEGALAKE_SMALL)
                 .randomPlacement(4, 1)
+                .register();
+        // The three End lake variants replace the old EndLakeFeature (onceEvery 4/20/40). A
+        // RandomSpread with spacing S places roughly one structure per S*S chunks. The common variant's
+        // spacing was bumped past the naive sqrt(chance)=2 estimate: unlike the old chunk-decoration
+        // feature (real Bernoulli variance, its own rejection paths), a structure_set attempt nearly
+        // always succeeds, so the naive conversion read as far too dense in practice.
+        StructureSetManager
+                .bootstrap(EndStructures.END_LAKE, context)
+                .randomPlacement(6, 1)
+                .register();
+        StructureSetManager
+                .bootstrap(EndStructures.END_LAKE_NORMAL, context)
+                .randomPlacement(5, 2)
+                .register();
+        StructureSetManager
+                .bootstrap(EndStructures.END_LAKE_RARE, context)
+                .randomPlacement(6, 2)
                 .register();
         StructureSetManager
                 .bootstrap(EndStructures.END_BRIDGE, context)
@@ -86,6 +107,15 @@ public class StructureDataProvider extends WoverStructureProvider {
         StructureSetManager
                 .bootstrap(EndStructures.SMALL_ISLAND, context)
                 .randomPlacement(5, 2)
+                .register();
+
+        // Replaces the legacy SulphuricCaveFeature's count(2)-per-chunk placement. Per the END_LAKE
+        // comment above, a structure_set attempt nearly always succeeds (no per-attempt Bernoulli
+        // rejection the way a feature had), so this starts noticeably wider than a naive sqrt(chance)
+        // translation of "2 per chunk" would suggest - tune from the manual smoke test.
+        StructureSetManager
+                .bootstrap(EndStructures.SULPHURIC_CAVE, context)
+                .randomPlacement(9, 4)
                 .register();
 
         StructureSetManager

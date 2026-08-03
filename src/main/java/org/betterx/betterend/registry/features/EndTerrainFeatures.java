@@ -15,17 +15,6 @@ public class EndTerrainFeatures {
             .createKey(BetterEnd.C.mk("sulphur_hill"))
             .setDecoration(GenerationStep.Decoration.SURFACE_STRUCTURES);
 
-    // Vanilla places its own sulfur_spike/sulfur_spike_cluster in UNDERGROUND_DECORATION (sulfur_caves),
-    // so the two End variants use the same step: after the ores, before the vegetation that has to sit on
-    // the surface the spikes share.
-    public static final PlacedFeatureKey SULPHUR_SPIKE = PlacedFeatureManager
-            .createKey(BetterEnd.C.mk("sulphur_spike"))
-            .setDecoration(GenerationStep.Decoration.UNDERGROUND_DECORATION);
-
-    public static final PlacedFeatureKey SULPHUR_SPIKE_HANGING = PlacedFeatureManager
-            .createKey(BetterEnd.C.mk("sulphur_spike_hanging"))
-            .setDecoration(GenerationStep.Decoration.UNDERGROUND_DECORATION);
-
     public static final PlacedFeatureKey OBSIDIAN_PILLAR_BASEMENT = PlacedFeatureManager
             .createKey(BetterEnd.C.mk("obsidian_pillar_basement"))
             .setDecoration(GenerationStep.Decoration.SURFACE_STRUCTURES);
@@ -67,9 +56,11 @@ public class EndTerrainFeatures {
             .createKey(BetterEnd.C.mk("floating_spire"))
             .setDecoration(GenerationStep.Decoration.RAW_GENERATION);
 
+    // Moved from RAW_GENERATION to LAKES so it's guaranteed to run after EndStructures.SULPHURIC_CAVE
+    // (also RAW_GENERATION, in the same biome) rather than depend on same-step registration order.
     public static final PlacedFeatureKey GEYSER = PlacedFeatureManager
             .createKey(BetterEnd.C.mk("geyser"))
-            .setDecoration(GenerationStep.Decoration.RAW_GENERATION);
+            .setDecoration(GenerationStep.Decoration.LAKES);
 
     public static final PlacedFeatureKey ICE_STAR = PlacedFeatureManager
             .createKey(BetterEnd.C.mk("ice_star"))
@@ -85,10 +76,6 @@ public class EndTerrainFeatures {
 
     public static final PlacedFeatureKey BIOME_ISLAND = PlacedFeatureManager
             .createKey(BetterEnd.C.mk("overworld_island"))
-            .setDecoration(GenerationStep.Decoration.RAW_GENERATION);
-
-    public static final PlacedFeatureKey SULPHURIC_CAVE = PlacedFeatureManager
-            .createKey(BetterEnd.C.mk("sulphuric_cave"))
             .setDecoration(GenerationStep.Decoration.RAW_GENERATION);
 
     public static final PlacedFeatureKey TUNEL_CAVE = PlacedFeatureManager

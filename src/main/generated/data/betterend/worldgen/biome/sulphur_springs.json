@@ -35,11 +35,9 @@
     "water_color": "#195a9d"
   },
   "features": [
+    [],
     [
       "betterend:geyser",
-      "betterend:sulphuric_cave"
-    ],
-    [
       "betterend:sulphuric_lake"
     ],
     [],
@@ -54,10 +52,7 @@
       "betterend:thallasium_ore",
       "betterend:ender_ore"
     ],
-    [
-      "betterend:sulphur_spike",
-      "betterend:sulphur_spike_hanging"
-    ],
+    [],
     [],
     [
       "betterend:hydralux",

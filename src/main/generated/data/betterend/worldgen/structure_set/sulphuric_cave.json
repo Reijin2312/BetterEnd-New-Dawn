@@ -1,13 +1,13 @@
-﻿{
+{
   "placement": {
     "type": "minecraft:random_spread",
-    "salt": 656268008,
-    "separation": 1,
-    "spacing": 6
+    "salt": 1073037128,
+    "separation": 4,
+    "spacing": 9
   },
   "structures": [
     {
-      "structure": "betterend:end_lake",
+      "structure": "betterend:sulphuric_cave",
       "weight": 1
     }
   ]

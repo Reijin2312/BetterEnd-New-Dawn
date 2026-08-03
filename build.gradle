@@ -520,7 +520,7 @@ jar {
 
 // Collect built jars for BetterEnd and its local BetterX libraries into one folder
 def distDir = new File(rootProject.projectDir.parentFile, "betterx-dist")
-def modrinthModsDir = new File("C:/Users/Roboute Guilliman/AppData/Roaming/ModrinthApp/profiles/26.1-neo/mods")
+def modrinthModsDir = new File("C:/Users/Redmi/AppData/Roaming/ModrinthApp/profiles/NeoForge 26.1/mods")
 def betterEndModrinthJarPatterns = [
         "BetterEnd-*.jar",
         "bclib-*.jar",
