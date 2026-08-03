@@ -43,8 +43,6 @@ public class SulphurSpringsBiome extends EndBiome.Config {
                 .particles(EndParticles.SULPHUR_PARTICLE, 0.001F)
                 .feature(EndTerrainFeatures.GEYSER)
                 .feature(EndTerrainFeatures.SURFACE_VENT)
-                .feature(EndTerrainFeatures.SULPHUR_SPIKE)
-                .feature(EndTerrainFeatures.SULPHUR_SPIKE_HANGING)
                 .feature(EndLakeFeatures.SULPHURIC_LAKE)
                 .feature(EndVegetationFeatures.HYDRALUX)
                 .feature(EndVegetationFeatures.CHARNIA_GREEN)

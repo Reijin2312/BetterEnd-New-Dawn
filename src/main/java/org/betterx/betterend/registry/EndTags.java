@@ -21,6 +21,7 @@ public class EndTags {
     public static final TagKey<Block> SURVIVES_ON_SHADOW_GRASS = TagManager.BLOCKS.makeTag(BetterEnd.C, "survives_on/shadow_grass");
     public static final TagKey<Block> SURVIVES_ON_AMBER_MOSS = TagManager.BLOCKS.makeTag(BetterEnd.C, "survives_on/amber_moss");
     public static final TagKey<Block> SURVIVES_ON_RUTISCUS = TagManager.BLOCKS.makeTag(BetterEnd.C, "survives_on/rutiscus");
+    public static final TagKey<Block> SURVIVES_ON_BRIMSTONE = TagManager.BLOCKS.makeTag(BetterEnd.C, "survives_on/brimstone");
 
     // Item Tags
     public static final TagKey<Item> ALLOYING_IRON = TagManager.ITEMS.makeTag(BetterEnd.C, "alloying_iron");
