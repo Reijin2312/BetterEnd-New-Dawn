@@ -36,8 +36,7 @@
   },
   "features": [
     [
-      "betterend:geyser",
-      "betterend:sulphuric_cave"
+      "betterend:geyser"
     ],
     [
       "betterend:sulphuric_lake"

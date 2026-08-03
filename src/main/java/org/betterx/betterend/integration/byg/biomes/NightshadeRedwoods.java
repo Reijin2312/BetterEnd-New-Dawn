@@ -3,7 +3,7 @@ package org.betterx.betterend.integration.byg.biomes;
 import org.betterx.bclib.interfaces.SurfaceMaterialProvider;
 import org.betterx.betterend.integration.Integrations;
 import org.betterx.betterend.integration.byg.features.BYGFeatures;
-import org.betterx.betterend.registry.features.EndLakeFeatures;
+import org.betterx.betterend.registry.EndStructures;
 import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
 import org.betterx.wover.surface.api.SurfaceRuleBuilder;
@@ -33,7 +33,7 @@ public class NightshadeRedwoods extends EndBiome.Config {
                )
                .grassColorOverride(48, 13, 89)
                .plantsColor(200, 125, 9)
-               .feature(EndLakeFeatures.END_LAKE_RARE)
+               .structure(EndStructures.END_LAKE_RARE)
                .feature(BYGFeatures.NIGHTSHADE_REDWOOD_TREE)
                .feature(BYGFeatures.NIGHTSHADE_MOSS_WOOD)
                .feature(BYGFeatures.NIGHTSHADE_MOSS);

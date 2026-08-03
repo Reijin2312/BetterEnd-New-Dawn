@@ -27,9 +27,7 @@ public class LakeFeatureProvider extends WoverFeatureProvider {
 
     @Override
     protected void bootstrapPlaced(BootstrapContext<PlacedFeature> context) {
-        registerLake(context, EndLakeFeatures.END_LAKE, EndFeatures.END_LAKE_FEATURE, 4);
-        registerLake(context, EndLakeFeatures.END_LAKE_NORMAL, EndFeatures.END_LAKE_FEATURE, 20);
-        registerLake(context, EndLakeFeatures.END_LAKE_RARE, EndFeatures.END_LAKE_FEATURE, 40);
+        // Regular End lakes are emitted by StructureDataProvider.
         registerLake(context, EndLakeFeatures.DESERT_LAKE, EndFeatures.DESERT_LAKE_FEATURE, 8);
 
         EndLakeFeatures
