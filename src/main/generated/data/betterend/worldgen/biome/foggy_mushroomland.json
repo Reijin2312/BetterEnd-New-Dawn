@@ -37,10 +37,11 @@
     "water_color": "#77e3fa"
   },
   "features": [
-    [],
     [
-      "betterend:end_lake"
+      "betterend:round_cave",
+      "betterend:tunel_cave"
     ],
+    [],
     [],
     [],
     [
@@ -89,13 +90,13 @@
         "type": "betterend:end_slime",
         "maxCount": 2,
         "minCount": 1,
-        "weight": 3
+        "weight": 10
       },
       {
         "type": "minecraft:enderman",
         "maxCount": 2,
         "minCount": 1,
-        "weight": 10
+        "weight": 3
       }
     ],
     "underground_water_creature": [],

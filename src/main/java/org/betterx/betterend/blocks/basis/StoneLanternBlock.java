@@ -72,5 +72,6 @@ public class StoneLanternBlock extends EndLanternBlock implements CustomColorPro
         DatagenModelDispatch.propertyDispatchSelect(properties, true, BlockModelGenerators.plainVariant(floorModel));
         DatagenModelDispatch.propertyDispatchSelect(properties, false, BlockModelGenerators.plainVariant(ceilModel));
         generator.acceptBlockState(DatagenModelDispatch.dispatchWith(this, properties));
+        generator.delegateItemModel(this, ceilModel);
     }
 }

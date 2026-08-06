@@ -35,7 +35,10 @@
     "water_color": "#c0b483"
   },
   "features": [
-    [],
+    [
+      "betterend:round_cave",
+      "betterend:tunel_cave"
+    ],
     [],
     [],
     [],

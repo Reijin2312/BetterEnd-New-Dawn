@@ -37,10 +37,10 @@
     ],
     "selector": {
       "type": "betterend:vertical_band",
-      "band_scale": 5,
+      "band_scale": 5.0,
       "noise": "minecraft:clay_bands_offset",
       "offset_scale": 1.5,
-      "xz_scale": 6,
+      "xz_scale": 6.0,
       "y_scale": 1.3
     }
   }

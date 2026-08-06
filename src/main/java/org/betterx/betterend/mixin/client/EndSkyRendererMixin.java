@@ -27,7 +27,7 @@ public class EndSkyRendererMixin {
         }
 
         PoseStack poseStack = new PoseStack();
-        poseStack.last().pose().set(RenderSystem.getModelViewMatrix());
+        poseStack.last().pose().set(RenderSystem.getModelViewStack());
         float partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(false);
         float time = (float) (((minecraft.level.getGameTime() + (double) partialTick) % 360000L) * 0.000017453292F);
         betterend$skyRenderer.renderSkyboxWithStars(poseStack, time, () -> {});

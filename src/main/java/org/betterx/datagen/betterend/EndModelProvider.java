@@ -9,6 +9,7 @@ import org.betterx.betterend.blocks.basis.PottableLeavesBlock;
 import org.betterx.betterend.client.models.EndModels;
 import org.betterx.betterend.interfaces.PottablePlant;
 import org.betterx.betterend.registry.EndBlocks;
+import org.betterx.betterend.registry.EndItems;
 import org.betterx.wover.block.api.BlockProperties;
 import org.betterx.wover.block.api.BlockRegistry;
 import org.betterx.wover.block.api.model.WoverBlockModelGenerators;
@@ -73,6 +74,9 @@ public class EndModelProvider extends WoverModelProvider {
                 itemModelGenerator.generateFlatItem(item, Items.BARRIER, ModelTemplates.FLAT_ITEM);
             }
         }
+
+        itemModelGenerator.generateFlatItem(EndItems.MUSIC_DISC_ENDER_HOLLOW, ModelTemplates.FLAT_ITEM);
+        itemModelGenerator.generateFlatItem(EndItems.MUSIC_DISC_MOONLIT_UNDERCURRENTS, ModelTemplates.FLAT_ITEM);
     }
 
     @Override
@@ -96,12 +100,12 @@ public class EndModelProvider extends WoverModelProvider {
                                      .put(TextureSlot.TOP, material(IntegrationCore.MINECRAFT.mk("block/quartz_pillar_top")))
                                      .put(TextureSlot.BOTTOM, material(IntegrationCore.MINECRAFT.mk("block/quartz_block_bottom")))
                                      .put(EndModels.BASE, material(IntegrationCore.MINECRAFT.mk("block/quartz_block_side")))
-                                     .put(EndModels.PILLAR, material(IntegrationCore.MINECRAFT.mk("block/quartz_pillar"))), block))
+                                     .put(EndModels.PILLAR, material(IntegrationCore.MINECRAFT.mk("block/quartz_pillar_side"))), block))
                              .override(EndBlocks.PURPUR_PEDESTAL, block -> PedestalBlock.provideBlockModel(generator, new TextureMapping()
                                      .put(TextureSlot.TOP, material(IntegrationCore.MINECRAFT.mk("block/purpur_pillar_top")))
                                      .put(TextureSlot.BOTTOM, material(IntegrationCore.MINECRAFT.mk("block/purpur_block")))
                                      .put(EndModels.BASE, material(IntegrationCore.MINECRAFT.mk("block/purpur_block")))
-                                     .put(EndModels.PILLAR, material(IntegrationCore.MINECRAFT.mk("block/purpur_pillar"))), block))
+                                     .put(EndModels.PILLAR, material(IntegrationCore.MINECRAFT.mk("block/purpur_pillar_side"))), block))
                              .override(EndBlocks.NEON_CACTUS_BLOCK_STAIRS, block -> {
                                  final var id = TextureMapping.getBlockTexture(block).sprite();
                                  final var texture = BetterEnd.C.mk("block/neon_cactus_block");
@@ -267,6 +271,10 @@ public class EndModelProvider extends WoverModelProvider {
                              .override(EndBlocks.TAIL_MOSS, generator::createFlatItem)
                              .override(EndBlocks.SULPHURIC_ROCK.stone, generator::delegateItemModel)
                              .override(EndBlocks.TENANEA_OUTER_LEAVES, generator::delegateItemModel)
+                             .override(EndBlocks.TENANEA_LEAVES, b -> generator.delegateItemModel(
+                                     b,
+                                     BetterEnd.C.mk("block/tenanea_leaves")
+                             ))
                              .override(EndBlocks.UMBRALITH.stone, b -> generator.delegateItemModel(b, BetterEnd.C.mk("block/umbralith_5")))
                              .override(EndBlocks.TWISTED_MOSS, generator::createFlatItem)
                              .override(EndBlocks.VAIOLUSH_FERN, generator::createFlatItem)

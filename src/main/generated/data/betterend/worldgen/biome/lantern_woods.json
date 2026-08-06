@@ -36,10 +36,11 @@
     "water_color": "#abeae2"
   },
   "features": [
-    [],
     [
-      "betterend:end_lake_normal"
+      "betterend:round_cave",
+      "betterend:tunel_cave"
     ],
+    [],
     [],
     [],
     [

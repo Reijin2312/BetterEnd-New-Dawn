@@ -65,7 +65,7 @@ public class EndFeatures {
     public static final OreLayerFeature LAYERED_ORE_FEATURE = new OreLayerFeature();
 
     //Lakes
-    public static final EndLakeFeature END_LAKE_FEATURE = new EndLakeFeature();
+    // Regular End lakes are registered as per-chunk structures in EndStructures.
     public static final DesertLakeFeature DESERT_LAKE_FEATURE = new DesertLakeFeature();
     public static final SulphuricLakeFeature SULPHURIC_LAKE_FEATURE = new SulphuricLakeFeature();
 
@@ -180,7 +180,6 @@ public class EndFeatures {
         helper.register(BetterEnd.C.mk("amaranita_patch"), AMARANITA_PATCH_FEATURE);
         helper.register(BetterEnd.C.mk("neon_cactus"), NEON_CACTUS_FEATURE);
         helper.register(BetterEnd.C.mk("ore_layer"), LAYERED_ORE_FEATURE);
-        helper.register(BetterEnd.C.mk("end_lake"), END_LAKE_FEATURE);
         helper.register(BetterEnd.C.mk("desert_lake"), DESERT_LAKE_FEATURE);
         helper.register(BetterEnd.C.mk("sulphuric_lake"), SULPHURIC_LAKE_FEATURE);
         helper.register(BetterEnd.C.mk("surface_vent"), SURFACE_VENT_FEATURE);
@@ -197,7 +196,6 @@ public class EndFeatures {
         helper.register(BetterEnd.C.mk("geyser"), GEYSER_FEATURE);
         helper.register(BetterEnd.C.mk("pond_with_waterfall"), POND_WITH_WATERFALL_FEATURE);
         helper.register(BetterEnd.C.mk("overworld_island"), OVERWORLD_ISLAND);
-        helper.register(BetterEnd.C.mk("sulphuric_cave"), SULPHURIC_CAVE_FEATURE);
         helper.register(BetterEnd.C.mk("tunel_cave"), TUNEL_CAVE_FEATURE);
         helper.register(BetterEnd.C.mk("smaragdant_crystal"), SMARAGDANT_CRYSTAL_FEATURE);
         helper.register(BetterEnd.C.mk("big_aurora_crystal"), BIG_AURORA_CRYSTAL_FEATURE);

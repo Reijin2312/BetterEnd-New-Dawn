@@ -3,6 +3,7 @@
   "textures": {
     "front": "betterend:block/azure_jadestone_furnace_front_on",
     "glow": "betterend:block/azure_jadestone_furnace_glow",
+    "particle": "betterend:block/azure_jadestone_furnace_side",
     "side": "betterend:block/azure_jadestone_furnace_side",
     "top": "betterend:block/azure_jadestone_furnace_top"
   }
