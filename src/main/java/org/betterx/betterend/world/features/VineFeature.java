@@ -1,5 +1,6 @@
 package org.betterx.betterend.world.features;
 
+import com.mojang.serialization.MapCodec;
 import org.betterx.bclib.blocks.BaseVineBlock;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.wover.block.api.BlockProperties;
@@ -11,11 +12,17 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class VineFeature extends InvertedScatterFeature<VineFeatureConfig> {
+    public static final MapCodec<VineFeature> CODEC = VineFeatureConfig.CODEC.xmap(VineFeature::new, f -> f.config);
     private BlockState plant;
     boolean vine;
 
-    public VineFeature() {
-        super(VineFeatureConfig.CODEC);
+    public VineFeature(VineFeatureConfig config) {
+        super(config);
+    }
+
+    @Override
+    public MapCodec<VineFeature> codec() {
+        return CODEC;
     }
 
     @Override

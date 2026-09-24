@@ -1,5 +1,7 @@
 package org.betterx.betterend.world.features;
 
+import com.mojang.serialization.MapCodec;
+
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.blocks.BaseCropBlock;
 import org.betterx.bclib.blocks.BaseDoublePlantBlock;
@@ -13,11 +15,17 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SinglePlantFeature extends ScatterFeature<SinglePlantFeatureConfig> {
+    public static final MapCodec<SinglePlantFeature> CODEC = SinglePlantFeatureConfig.CODEC.xmap(SinglePlantFeature::new, f -> f.config);
+
+    @Override
+    public MapCodec<SinglePlantFeature> codec() {
+        return CODEC;
+    }
 
     BlockState plant;
 
-    public SinglePlantFeature() {
-        super(SinglePlantFeatureConfig.CODEC);
+    public SinglePlantFeature(SinglePlantFeatureConfig config) {
+        super(config);
     }
 
     @Override

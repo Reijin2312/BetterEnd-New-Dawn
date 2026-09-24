@@ -6,9 +6,8 @@ import org.betterx.betterend.registry.features.EndConfiguredVegetation;
 import org.betterx.betterend.world.features.trees.HelixTreeFeature;
 
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public class HelixTreeSaplingBlock extends PottableFeatureSapling<HelixTreeFeature, NoneFeatureConfiguration> implements SurvivesOnAmberMoss {
+public class HelixTreeSaplingBlock extends PottableFeatureSapling implements SurvivesOnAmberMoss {
     public HelixTreeSaplingBlock() {
         super((level, pos, state, rnd) -> EndConfiguredVegetation.HELIX_TREE.placeInWorld(level, pos, rnd));
     }

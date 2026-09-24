@@ -16,14 +16,14 @@ import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.boss.enderdragon.EndCrystal;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.EndSpikeFeature;
 import net.minecraft.world.level.levelgen.feature.EndSpikeFeature.EndSpike;
-import net.minecraft.world.level.levelgen.feature.configurations.EndSpikeConfiguration;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
@@ -35,9 +35,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EndSpikeFeature.class)
 public class SpikeFeatureMixin {
-    @Inject(method = "place", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "place", at = @At("HEAD"), cancellable = true, remap = false)
     private void be_place(
-            FeaturePlaceContext<EndSpikeConfiguration> featurePlaceContext,
+            WorldGenLevel level,
+            ChunkGenerator generator,
+            RandomSource random,
+            BlockPos origin,
             CallbackInfoReturnable<Boolean> info
     ) {
         if (!GeneratorOptions.hasPillars()) {
@@ -45,11 +48,10 @@ public class SpikeFeatureMixin {
         }
     }
 
-    @Inject(method = "placeSpike", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "placeSpike", at = @At("HEAD"), cancellable = true, remap = false)
     private void be_placeSpike(
             ServerLevelAccessor world,
             RandomSource random,
-            EndSpikeConfiguration config,
             EndSpike spike,
             CallbackInfo info
     ) {
@@ -146,10 +148,11 @@ public class SpikeFeatureMixin {
             mut.setY(maxY);
             BlocksHelper.setWithoutUpdate(world, mut, Blocks.BEDROCK);
 
-            EndCrystal crystal = EntityTypes.END_CRYSTAL.create(world.getLevel(), EntitySpawnReason.TRIGGERED);
-            crystal.setBeamTarget(config.getCrystalBeamTarget());
-            crystal.setInvulnerable(config.isCrystalInvulnerable());
+            EndSpikeFeature self = (EndSpikeFeature) (Object) this;
+            EndCrystal crystal = EntityTypes.END_CRYSTAL.create(world.getLevel(), EntitySpawnReason.STRUCTURE);
             if (crystal != null) {
+                crystal.setBeamTarget(self.crystalBeamTarget().orElse(null));
+                crystal.setPermanentlyInvulnerable(self.crystalInvulnerable());
                 crystal.snapTo(x + 0.5D, maxY + 1, z + 0.5D, random.nextFloat() * 360.0F, 0.0F);
                 world.addFreshEntity(crystal);
             }

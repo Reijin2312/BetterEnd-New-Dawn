@@ -6,7 +6,6 @@ import org.betterx.bclib.client.render.BCLRenderLayer;
 import org.betterx.bclib.interfaces.RenderLayerProvider;
 import org.betterx.betterend.registry.EndBlocks;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -26,7 +25,6 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.MapColor;
 
 public class CrystalMossCoverBlock extends MultifaceSpreadeableBlock implements BonemealableBlock, SimpleWaterloggedBlock, RenderLayerProvider, BehaviourShearablePlant {
-    public static final MapCodec<CrystalMossCoverBlock> CODEC = simpleCodec(CrystalMossCoverBlock::new);
     private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     private final MultifaceSpreader spreader = new MultifaceSpreader(this);
 
@@ -41,12 +39,7 @@ public class CrystalMossCoverBlock extends MultifaceSpreadeableBlock implements 
     }
 
     @Override
-    public MapCodec<? extends MultifaceSpreadeableBlock> codec() {
-        return CODEC;
-    }
-
-    @Override
-    public BlockState updateShape(
+    protected BlockState updateShape(
             BlockState blockState,
             LevelReader levelReader,
             ScheduledTickAccess scheduledTickAccess,
@@ -74,7 +67,8 @@ public class CrystalMossCoverBlock extends MultifaceSpreadeableBlock implements 
     public boolean isValidBonemealTarget(
             LevelReader blockGetter,
             BlockPos blockPos,
-            BlockState blockState
+            BlockState blockState,
+            BonemealSource bonemealSource
     ) {
         return Direction.stream()
                         .anyMatch(direction -> this.spreader.canSpreadInAnyDirection(
@@ -86,7 +80,7 @@ public class CrystalMossCoverBlock extends MultifaceSpreadeableBlock implements 
     }
 
     @Override
-    public boolean isBonemealSuccess(Level level, RandomSource randomSource, BlockPos blockPos, BlockState blockState) {
+    public boolean isBonemealSuccess(Level level, RandomSource randomSource, BlockPos blockPos, BlockState blockState, BonemealSource bonemealSource) {
         return true;
     }
 
@@ -95,7 +89,8 @@ public class CrystalMossCoverBlock extends MultifaceSpreadeableBlock implements 
             ServerLevel serverLevel,
             RandomSource randomSource,
             BlockPos blockPos,
-            BlockState blockState
+            BlockState blockState,
+            BonemealSource bonemealSource
     ) {
         this.spreader.spreadFromRandomFaceTowardRandomDirection(blockState, serverLevel, blockPos, randomSource);
     }
@@ -108,7 +103,7 @@ public class CrystalMossCoverBlock extends MultifaceSpreadeableBlock implements 
         return super.getFluidState(blockState);
     }
 
-    public boolean propagatesSkylightDown(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
+    protected boolean propagatesSkylightDown(BlockState blockState) {
         return blockState.getFluidState().isEmpty();
     }
 

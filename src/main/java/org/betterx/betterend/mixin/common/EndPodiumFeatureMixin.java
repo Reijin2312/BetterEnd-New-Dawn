@@ -10,10 +10,9 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.levelgen.feature.EndPodiumFeature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
@@ -26,8 +25,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.Optional;
-
 @Mixin(EndPodiumFeature.class)
 public class EndPodiumFeatureMixin {
     @Unique
@@ -37,17 +34,18 @@ public class EndPodiumFeatureMixin {
     @Shadow
     private boolean active;
 
-    @Inject(method = "place", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "place", at = @At("HEAD"), cancellable = true, remap = false)
     private void be_place(
-            FeaturePlaceContext<NoneFeatureConfiguration> featurePlaceContext,
+            WorldGenLevel world,
+            ChunkGenerator generator,
+            RandomSource random,
+            BlockPos origin,
             CallbackInfoReturnable<Boolean> info
     ) {
         if (!GeneratorOptions.hasPortal()) {
             info.setReturnValue(false);
             info.cancel();
         } else if (GeneratorOptions.replacePortal()) {
-            RandomSource random = featurePlaceContext.random();
-            WorldGenLevel world = featurePlaceContext.level();
             BlockPos blockPos = be_updatePortalPos(world);
             String path = active
                     ? "portal/end_portal_active"
@@ -61,18 +59,14 @@ public class EndPodiumFeatureMixin {
         }
     }
 
-    @ModifyVariable(method = "place", ordinal = 0, at = @At("HEAD"), argsOnly = true)
-    private FeaturePlaceContext<NoneFeatureConfiguration> be_setPosOnGround(FeaturePlaceContext<NoneFeatureConfiguration> featurePlaceContext) {
-        WorldGenLevel world = featurePlaceContext.level();
-        BlockPos pos = be_updatePortalPos(world);
-        return new FeaturePlaceContext<NoneFeatureConfiguration>(
-                Optional.empty(),
-                world,
-                featurePlaceContext.chunkGenerator(),
-                featurePlaceContext.random(),
-                pos,
-                featurePlaceContext.config()
-        );
+    @ModifyVariable(method = "place", ordinal = 0, at = @At("HEAD"), argsOnly = true, remap = false)
+    private BlockPos be_setPosOnGround(
+            BlockPos origin,
+            WorldGenLevel world,
+            ChunkGenerator generator,
+            RandomSource random
+    ) {
+        return be_updatePortalPos(world);
     }
 
     @Unique

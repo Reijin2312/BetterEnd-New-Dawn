@@ -47,8 +47,7 @@ public class RendererEntityEndFish extends MobRenderer<EndFishEntity, RendererEn
                             OverlayTexture.NO_OVERLAY,
                             -1,
                             null,
-                            state.outlineColor,
-                            null
+                            state.outlineColor
                     );
             }
         });

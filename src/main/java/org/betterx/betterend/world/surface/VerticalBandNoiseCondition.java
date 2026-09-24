@@ -1,6 +1,7 @@
 package org.betterx.betterend.world.surface;
 
-import org.betterx.wover.surface.api.conditions.SurfaceRulesContext;
+import org.betterx.betterend.mixin.common.MaterialRuleContextAccessor;
+import net.minecraft.world.level.levelgen.material.MaterialRuleContext;
 import org.betterx.wover.surface.api.noise.NumericProvider;
 
 import com.mojang.serialization.Codec;
@@ -10,6 +11,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.Noises;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
+import net.minecraft.world.level.levelgen.synth.Noise;
 
 public class VerticalBandNoiseCondition implements NumericProvider {
     public static final VerticalBandNoiseCondition DEFAULT = new VerticalBandNoiseCondition(
@@ -29,14 +31,14 @@ public class VerticalBandNoiseCondition implements NumericProvider {
             )
             .apply(instance, VerticalBandNoiseCondition::new));
 
-    private final ResourceKey<NormalNoise.NoiseParameters> noise;
+    private final ResourceKey<NormalNoise> noise;
     private final double offsetScale;
     private final double bandScale;
     private final double xzScale;
     private final double yScale;
 
     public VerticalBandNoiseCondition(
-            ResourceKey<NormalNoise.NoiseParameters> noise,
+            ResourceKey<NormalNoise> noise,
             double offsetScale,
             double bandScale,
             double xzScale,
@@ -50,16 +52,18 @@ public class VerticalBandNoiseCondition implements NumericProvider {
     }
 
     @Override
-    public int getNumber(SurfaceRulesContext context) {
-        final NormalNoise normalNoise = context.getRandomState().getOrCreateNoise(this.noise);
-        double offset = normalNoise.getValue(
-                (double) context.getBlockX() * xzScale,
-                context.getBlockY() * yScale * 10,
-                (double) context.getBlockZ() * xzScale
+    public int getNumber(MaterialRuleContext context) {
+        final Noise normalNoise = ((MaterialRuleContextAccessor) (Object) context)
+                .be_getRandomState()
+                .getOrCreateNoise(this.noise);
+        double offset = normalNoise.get(
+                (double) context.blockX() * xzScale,
+                context.blockY() * yScale * 10,
+                (double) context.blockZ() * xzScale
         ) * offsetScale;
 
 
-        return (int) (context.getBlockY() / bandScale + offset);
+        return (int) (context.blockY() / bandScale + offset);
     }
 
     @Override

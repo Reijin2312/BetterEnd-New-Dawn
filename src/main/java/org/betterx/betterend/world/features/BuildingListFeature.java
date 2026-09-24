@@ -6,6 +6,7 @@ import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -27,10 +28,16 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import org.jetbrains.annotations.Nullable;
 
 public class BuildingListFeature extends NBTFeature<BuildingListFeatureConfig> {
+    public static final MapCodec<BuildingListFeature> CODEC = BuildingListFeatureConfig.CODEC.xmap(BuildingListFeature::new, f -> f.config);
     private StructureInfo selected;
 
-    public BuildingListFeature() {
-        super(BuildingListFeatureConfig.CODEC);
+    public BuildingListFeature(BuildingListFeatureConfig config) {
+        super(config);
+    }
+
+    @Override
+    public MapCodec<BuildingListFeature> codec() {
+        return CODEC;
 
     }
 

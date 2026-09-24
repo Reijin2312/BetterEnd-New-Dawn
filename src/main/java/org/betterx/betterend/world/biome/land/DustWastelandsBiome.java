@@ -14,7 +14,8 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.SurfaceRules;
+import net.minecraft.world.level.levelgen.material.MaterialRules;
+import net.minecraft.world.level.levelgen.material.rule.MaterialRule;
 import net.minecraft.world.level.levelgen.placement.CaveSurface;
 
 public class DustWastelandsBiome extends EndBiome.Config {
@@ -51,9 +52,9 @@ public class DustWastelandsBiome extends EndBiome.Config {
                 return super
                         .surface()
                         .ceil(Blocks.END_STONE.defaultBlockState())
-                        .rule(SurfaceRules.ifTrue(
-                                SurfaceRules.stoneDepthCheck(2, true, CaveSurface.FLOOR),
-                                SurfaceRules.state(EndBlocks.ENDSTONE_DUST.defaultBlockState())
+                        .rule(MaterialRules.ifTrue(
+                                MaterialRules.stoneDepthCheck(2, true, CaveSurface.FLOOR),
+                                MaterialRules.state(EndBlocks.ENDSTONE_DUST.defaultBlockState())
                         ), BaseSurfaceRuleBuilder.SUB_SURFACE_PRIORITY);
             }
         };

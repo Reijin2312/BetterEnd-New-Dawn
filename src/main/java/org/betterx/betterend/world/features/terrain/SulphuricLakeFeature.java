@@ -1,5 +1,9 @@
 package org.betterx.betterend.world.features.terrain;
 
+import com.mojang.serialization.Codec;
+
+import com.mojang.serialization.MapCodec;
+
 
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.util.BlocksHelper;
@@ -17,10 +21,9 @@ import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.material.Fluids;
 
 import com.google.common.collect.Sets;
@@ -28,19 +31,25 @@ import com.google.common.collect.Sets;
 import java.util.Set;
 
 public class SulphuricLakeFeature extends DefaultFeature {
+    public static final MapCodec<SulphuricLakeFeature> CODEC = MapCodec.unit(SulphuricLakeFeature::new);
+
+    @Override
+    public MapCodec<SulphuricLakeFeature> codec() {
+        return CODEC;
+    }
     private static final OpenSimplexNoise NOISE = new OpenSimplexNoise(15152);
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
-        BlockPos blockPos = featureConfig.origin();
-        final WorldGenLevel world = featureConfig.level();
+    public boolean place(WorldGenLevel featureWorld, ChunkGenerator featureGenerator, RandomSource featureRandom, BlockPos featureOrigin) {
+        BlockPos blockPos = featureOrigin;
+        final WorldGenLevel world = featureWorld;
         blockPos = getPosOnSurfaceWG(world, blockPos);
 
         if (blockPos.getY() < 57) {
             return false;
         }
 
-        final RandomSource random = featureConfig.random();
+        final RandomSource random = featureRandom;
         final MutableBlockPos POS = GlobalState.stateForThread().POS;
         double radius = MHelper.randRange(10.0, 20.0, random);
         int dist2 = MHelper.floor(radius * 1.5);

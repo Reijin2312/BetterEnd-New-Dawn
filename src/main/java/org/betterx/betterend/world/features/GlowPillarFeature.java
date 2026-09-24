@@ -1,5 +1,7 @@
 package org.betterx.betterend.world.features;
 
+import com.mojang.serialization.MapCodec;
+
 import org.betterx.betterend.blocks.basis.EndPlantWithAgeBlock;
 import org.betterx.betterend.registry.EndBlocks;
 
@@ -8,8 +10,14 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 
 public class GlowPillarFeature extends ScatterFeature<ScatterFeatureConfig> {
-    public GlowPillarFeature() {
-        super(ScatterFeatureConfig.CODEC);
+    public static final MapCodec<GlowPillarFeature> CODEC = ScatterFeatureConfig.CODEC.xmap(GlowPillarFeature::new, f -> f.config);
+
+    @Override
+    public MapCodec<GlowPillarFeature> codec() {
+        return CODEC;
+    }
+    public GlowPillarFeature(ScatterFeatureConfig config) {
+        super(config);
     }
 
     @Override

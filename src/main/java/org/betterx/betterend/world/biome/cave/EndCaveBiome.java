@@ -23,45 +23,43 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.util.KeyDispatchDataCodec;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.betterx.wover.state.api.WorldState;
 
 public class EndCaveBiome extends EndBiome {
-    private static final Codec<WeightedList<ResourceKey<ConfiguredFeature<?, ?>>>> FEATURE_KEY_LIST_CODEC =
+    private static final Codec<WeightedList<ResourceKey<Feature>>> FEATURE_KEY_LIST_CODEC =
             WeightedList.listCodec(
-                    ResourceKey.codec(Registries.CONFIGURED_FEATURE),
+                    ResourceKey.codec(Registries.FEATURE),
                     "configured_features",
                     "configured_feature"
             );
     public static final MapCodec<EndCaveBiome> CODEC = simpleCaveBiomeCodec(EndCaveBiome::new);
-    public static final MapCodec<EndCaveBiome> NETWORK_CODEC = simpleCaveBiomeNetworkCodec(EndCaveBiome::new);
 
 
-    public static <T extends EndCaveBiome> MapCodec<T> simpleCaveBiomeCodec(final Function13<Float, ResourceKey<Biome>, BiomeGenerationDataContainer, Float, Float, Integer, Boolean, ResourceKey<Biome>, ResourceKey<Biome>, Boolean, SurfaceMaterialProvider, WeightedList<Holder<ConfiguredFeature<?, ?>>>, WeightedList<Holder<ConfiguredFeature<?, ?>>>, T> factory) {
+    public static <T extends EndCaveBiome> MapCodec<T> simpleCaveBiomeCodec(final Function13<Float, ResourceKey<Biome>, BiomeGenerationDataContainer, Float, Float, Integer, Boolean, ResourceKey<Biome>, ResourceKey<Biome>, Boolean, SurfaceMaterialProvider, WeightedList<Holder<Feature>>, WeightedList<Holder<Feature>>, T> factory) {
         return codec(
                 Codec.BOOL.fieldOf("has_caves").orElse(true).forGetter(EndBiome::hasCaves),
                 SurfaceMaterialProvider.CODEC.fieldOf("surface")
                                              .orElse(new DefaultSurfaceMaterialProvider())
                                              .forGetter(o -> o.surfMatProv),
-                WeightedList.listCodec(ConfiguredFeature.CODEC, "configured_features", "configured_feature")
+                WeightedList.listCodec(Feature.CODEC, "configured_features", "configured_feature")
                             .fieldOf("floor_features")
                             .forGetter(o -> (WeightedList) ((EndCaveBiome) o).floorFeatures),
-                WeightedList.listCodec(ConfiguredFeature.CODEC, "configured_features", "configured_feature")
+                WeightedList.listCodec(Feature.CODEC, "configured_features", "configured_feature")
                             .fieldOf("ceil_features")
                             .forGetter(o -> (WeightedList) ((EndCaveBiome) o).ceilFeatures),
                 factory
         );
     }
 
-    public static <T extends EndCaveBiome> MapCodec<T> simpleCaveBiomeNetworkCodec(final Function13<Float, ResourceKey<Biome>, BiomeGenerationDataContainer, Float, Float, Integer, Boolean, ResourceKey<Biome>, ResourceKey<Biome>, Boolean, SurfaceMaterialProvider, WeightedList<Holder<ConfiguredFeature<?, ?>>>, WeightedList<Holder<ConfiguredFeature<?, ?>>>, T> factory) {
+    public static <T extends EndCaveBiome> MapCodec<T> simpleCaveBiomeNetworkCodec(final Function13<Float, ResourceKey<Biome>, BiomeGenerationDataContainer, Float, Float, Integer, Boolean, ResourceKey<Biome>, ResourceKey<Biome>, Boolean, SurfaceMaterialProvider, WeightedList<Holder<Feature>>, WeightedList<Holder<Feature>>, T> factory) {
         return codec(
                 Codec.BOOL.fieldOf("has_caves").orElse(true).forGetter(EndBiome::hasCaves),
                 SurfaceMaterialProvider.CODEC.fieldOf("surface")
@@ -105,17 +103,10 @@ public class EndCaveBiome extends EndBiome {
         );
     }
 
-    public static final KeyDispatchDataCodec<EndCaveBiome> KEY_CODEC = KeyDispatchDataCodec.of(CODEC);
-    public static final KeyDispatchDataCodec<EndCaveBiome> NETWORK_KEY_CODEC = KeyDispatchDataCodec.of(NETWORK_CODEC);
 
     @Override
-    public KeyDispatchDataCodec<? extends WoverBiomeData> codec() {
-        return KEY_CODEC;
-    }
-
-    @Override
-    public KeyDispatchDataCodec<? extends WoverBiomeData> networkCodec() {
-        return NETWORK_KEY_CODEC;
+    public MapCodec<? extends WoverBiomeData> codec() {
+        return CODEC;
     }
 
 
@@ -131,8 +122,8 @@ public class EndCaveBiome extends EndBiome {
             @Nullable ResourceKey<Biome> parent,
             boolean hasCaves,
             SurfaceMaterialProvider surface,
-            WeightedList<Holder<ConfiguredFeature<?, ?>>> floorFeatures,
-            WeightedList<Holder<ConfiguredFeature<?, ?>>> ceilFeatures
+            WeightedList<Holder<Feature>> floorFeatures,
+            WeightedList<Holder<Feature>> ceilFeatures
     ) {
         super(
                 fogDensity, biome, generatorData, terrainHeight,
@@ -202,35 +193,35 @@ public class EndCaveBiome extends EndBiome {
 
     }
 
-    private final WeightedList<Holder<? extends ConfiguredFeature<?, ?>>> floorFeatures = new WeightedList<>();
-    private final WeightedList<Holder<? extends ConfiguredFeature<?, ?>>> ceilFeatures = new WeightedList<>();
-    private final WeightedList<ResourceKey<ConfiguredFeature<?, ?>>> floorFeatureKeys = new WeightedList<>();
-    private final WeightedList<ResourceKey<ConfiguredFeature<?, ?>>> ceilFeatureKeys = new WeightedList<>();
+    private final WeightedList<Holder<? extends Feature>> floorFeatures = new WeightedList<>();
+    private final WeightedList<Holder<? extends Feature>> ceilFeatures = new WeightedList<>();
+    private final WeightedList<ResourceKey<Feature>> floorFeatureKeys = new WeightedList<>();
+    private final WeightedList<ResourceKey<Feature>> ceilFeatureKeys = new WeightedList<>();
     private boolean featuresResolved = false;
 
-    public void addFloorFeature(Holder<? extends ConfiguredFeature<?, ?>> feature, float weight) {
+    public void addFloorFeature(Holder<? extends Feature> feature, float weight) {
         floorFeatures.add(feature, weight);
         feature.unwrapKey().ifPresent(key -> floorFeatureKeys.add(castFeatureKey(key), weight));
     }
 
-    public void addCeilFeature(Holder<? extends ConfiguredFeature<?, ?>> feature, float weight) {
+    public void addCeilFeature(Holder<? extends Feature> feature, float weight) {
         ceilFeatures.add(feature, weight);
         feature.unwrapKey().ifPresent(key -> ceilFeatureKeys.add(castFeatureKey(key), weight));
     }
 
-    public Holder<? extends ConfiguredFeature<?, ?>> getFloorFeature(RandomSource random) {
+    public Holder<? extends Feature> getFloorFeature(RandomSource random) {
         resolveFeatureKeys();
         return floorFeatures.isEmpty() ? null : floorFeatures.get(random);
     }
 
-    public Holder<? extends ConfiguredFeature<?, ?>> getCeilFeature(RandomSource random) {
+    public Holder<? extends Feature> getCeilFeature(RandomSource random) {
         resolveFeatureKeys();
         return ceilFeatures.isEmpty() ? null : ceilFeatures.get(random);
     }
 
     protected void setFeatureKeys(
-            WeightedList<ResourceKey<ConfiguredFeature<?, ?>>> floorKeys,
-            WeightedList<ResourceKey<ConfiguredFeature<?, ?>>> ceilKeys
+            WeightedList<ResourceKey<Feature>> floorKeys,
+            WeightedList<ResourceKey<Feature>> ceilKeys
     ) {
         if (floorKeys != null && !floorKeys.isEmpty()) {
             this.floorFeatureKeys.addAll(floorKeys);
@@ -240,14 +231,14 @@ public class EndCaveBiome extends EndBiome {
         }
     }
 
-    private WeightedList<ResourceKey<ConfiguredFeature<?, ?>>> getFloorFeatureKeysForCodec() {
+    private WeightedList<ResourceKey<Feature>> getFloorFeatureKeysForCodec() {
         if (floorFeatureKeys.isEmpty() && !floorFeatures.isEmpty()) {
             floorFeatureKeys.addAll(toKeyList(floorFeatures));
         }
         return floorFeatureKeys;
     }
 
-    private WeightedList<ResourceKey<ConfiguredFeature<?, ?>>> getCeilFeatureKeysForCodec() {
+    private WeightedList<ResourceKey<Feature>> getCeilFeatureKeysForCodec() {
         if (ceilFeatureKeys.isEmpty() && !ceilFeatures.isEmpty()) {
             ceilFeatureKeys.addAll(toKeyList(ceilFeatures));
         }
@@ -274,7 +265,7 @@ public class EndCaveBiome extends EndBiome {
         if (access == null) {
             return;
         }
-        Registry<ConfiguredFeature<?, ?>> registry = access.lookup(Registries.CONFIGURED_FEATURE).orElse(null);
+        Registry<Feature> registry = access.lookup(Registries.FEATURE).orElse(null);
         if (registry == null) {
             return;
         }
@@ -286,28 +277,28 @@ public class EndCaveBiome extends EndBiome {
 
     @SuppressWarnings("unchecked")
     private static void addFeaturesFromKeys(
-            Registry<ConfiguredFeature<?, ?>> registry,
-            WeightedList<ResourceKey<ConfiguredFeature<?, ?>>> keys,
-            WeightedList<Holder<? extends ConfiguredFeature<?, ?>>> target
+            Registry<Feature> registry,
+            WeightedList<ResourceKey<Feature>> keys,
+            WeightedList<Holder<? extends Feature>> target
     ) {
         for (int i = 0; i < keys.size(); i++) {
-            ResourceKey<ConfiguredFeature<?, ?>> key = keys.get(i);
+            ResourceKey<Feature> key = keys.get(i);
             final float weight = keys.getWeight(i);
             registry.get(key).ifPresent(holder -> target.add((Holder) holder, weight));
         }
     }
 
     @SuppressWarnings("unchecked")
-    private static WeightedList<ResourceKey<ConfiguredFeature<?, ?>>> toKeyList(
-            WeightedList<? extends Holder<? extends ConfiguredFeature<?, ?>>> holders
+    private static WeightedList<ResourceKey<Feature>> toKeyList(
+            WeightedList<? extends Holder<? extends Feature>> holders
     ) {
-        WeightedList<ResourceKey<ConfiguredFeature<?, ?>>> keys = new WeightedList<>();
+        WeightedList<ResourceKey<Feature>> keys = new WeightedList<>();
         if (holders == null || holders.isEmpty()) {
             return keys;
         }
         for (int i = 0; i < holders.size(); i++) {
-            Holder<? extends ConfiguredFeature<?, ?>> holder = holders.get(i);
-            ResourceKey<? extends ConfiguredFeature<?, ?>> key = holder.unwrapKey().orElse(null);
+            Holder<? extends Feature> holder = holders.get(i);
+            ResourceKey<? extends Feature> key = holder.unwrapKey().orElse(null);
             if (key != null) {
                 keys.add(castFeatureKey(key), holders.getWeight(i));
             }
@@ -316,10 +307,10 @@ public class EndCaveBiome extends EndBiome {
     }
 
     @SuppressWarnings("unchecked")
-    private static ResourceKey<ConfiguredFeature<?, ?>> castFeatureKey(
-            ResourceKey<? extends ConfiguredFeature<?, ?>> key
+    private static ResourceKey<Feature> castFeatureKey(
+            ResourceKey<? extends Feature> key
     ) {
-        return (ResourceKey<ConfiguredFeature<?, ?>>) key;
+        return (ResourceKey<Feature>) key;
     }
 
     public float getFloorDensity() {

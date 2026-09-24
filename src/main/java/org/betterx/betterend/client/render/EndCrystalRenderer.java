@@ -44,20 +44,20 @@ public class EndCrystalRenderer {
         matrices.pushPose();
         matrices.scale(0.8F, 0.8F, 0.8F);
         matrices.translate(0.0D, -0.5D, 0.0D);
-        matrices.mulPose(Axis.YP.rotationDegrees(rotation));
+        matrices.mulPose(new org.joml.Matrix4f().rotation(Axis.YP.rotationDegrees(rotation)));
         matrices.translate(0.0D, 0.8F, 0.0D);
         //matrices.mulPose(new Quaternion(new Vector3f(SINE_45_DEGREES, 0.0F, SINE_45_DEGREES), 60.0F, true));
-        matrices.mulPose(ROTATOR);
+        matrices.mulPose(new org.joml.Matrix4f().rotation(ROTATOR));
         submitNodeCollector.submitModelPart(FRAME, matrices, END_CRYSTAL, light, overlay, null);
         matrices.scale(0.875F, 0.875F, 0.875F);
         //matrices.mulPose(new Quaternion(new Vector3f(SINE_45_DEGREES, 0.0F, SINE_45_DEGREES), 60.0F, true));
-        matrices.mulPose(ROTATOR);
-        matrices.mulPose(Axis.YP.rotationDegrees(rotation));
+        matrices.mulPose(new org.joml.Matrix4f().rotation(ROTATOR));
+        matrices.mulPose(new org.joml.Matrix4f().rotation(Axis.YP.rotationDegrees(rotation)));
         submitNodeCollector.submitModelPart(FRAME, matrices, END_CRYSTAL, light, overlay, null);
         matrices.scale(0.875F, 0.875F, 0.875F);
         //matrices.mulPose(new Quaternion(new Vector3f(SINE_45_DEGREES, 0.0F, SINE_45_DEGREES), 60.0F, true));
-        matrices.mulPose(ROTATOR);
-        matrices.mulPose(Axis.YP.rotationDegrees(rotation));
+        matrices.mulPose(new org.joml.Matrix4f().rotation(ROTATOR));
+        matrices.mulPose(new org.joml.Matrix4f().rotation(Axis.YP.rotationDegrees(rotation)));
         submitNodeCollector.submitModelPart(CORE, matrices, END_CRYSTAL, light, overlay, null);
         matrices.popPose();
     }

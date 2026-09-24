@@ -27,7 +27,7 @@ public class GameRendererMixin {
         if (wobble == null) wobble = EternalHint.wobble(partialTick);
         if (wobble == null) return;
 
-        poseStack.mulPose(Axis.ZP.rotationDegrees(wobble[0]));
-        poseStack.mulPose(Axis.XP.rotationDegrees(wobble[1]));
+        poseStack.mulPose(new org.joml.Matrix4f().rotation(Axis.ZP.rotationDegrees(wobble[0])));
+        poseStack.mulPose(new org.joml.Matrix4f().rotation(Axis.XP.rotationDegrees(wobble[1])));
     }
 }

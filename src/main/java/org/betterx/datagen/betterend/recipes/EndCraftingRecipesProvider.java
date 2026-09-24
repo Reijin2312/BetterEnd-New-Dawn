@@ -27,7 +27,7 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
     }
 
     @Override
-    protected void bootstrap(HolderLookup.Provider provider, RecipeOutput context) {
+    protected void bootstrap(net.minecraft.data.worldgen.BootstrapContextAccess provider, RecipeOutput context) {
         CraftingRecipeBuilder craftingRecipeBuilder62 = RecipeBuilder.crafting(BetterEnd.C.mk("ender_perl_to_block"), EndBlocks.ENDER_BLOCK);
         craftingRecipeBuilder62.shape("OO", "OO")
                                .addMaterial('O', Items.ENDER_PEARL)

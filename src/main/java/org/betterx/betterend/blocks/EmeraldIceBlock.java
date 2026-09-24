@@ -12,8 +12,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -41,8 +41,8 @@ public class EmeraldIceBlock extends HalfTransparentBlock implements RenderLayer
 
     @Override
     public void playerDestroy(
-            Level world,
-            Player player,
+            ServerLevel world,
+            ServerPlayer player,
             BlockPos pos,
             BlockState state,
             @Nullable BlockEntity blockEntity,
@@ -56,7 +56,7 @@ public class EmeraldIceBlock extends HalfTransparentBlock implements RenderLayer
             }
 
             BlockState belowState = world.getBlockState(pos.below());
-            if (belowState.blocksMotion() || belowState.liquid()) {
+            if (belowState.isSolid() || belowState.liquid()) {
                 world.setBlockAndUpdate(pos, Blocks.WATER.defaultBlockState());
             }
         }

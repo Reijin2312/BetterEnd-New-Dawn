@@ -1,5 +1,7 @@
 package org.betterx.betterend.world.features;
 
+import com.mojang.serialization.MapCodec;
+
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.wover.block.api.BlockProperties.TripleShape;
 import org.betterx.bclib.util.BlocksHelper;
@@ -15,8 +17,14 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class EndLotusLeafFeature extends ScatterFeature<ScatterFeatureConfig> {
-    public EndLotusLeafFeature() {
-        super(ScatterFeatureConfig.CODEC);
+    public static final MapCodec<EndLotusLeafFeature> CODEC = ScatterFeatureConfig.CODEC.xmap(EndLotusLeafFeature::new, f -> f.config);
+
+    @Override
+    public MapCodec<EndLotusLeafFeature> codec() {
+        return CODEC;
+    }
+    public EndLotusLeafFeature(ScatterFeatureConfig config) {
+        super(config);
     }
 
     @Override

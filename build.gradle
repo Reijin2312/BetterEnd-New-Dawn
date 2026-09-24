@@ -188,6 +188,23 @@ sourceSets {
                 exclude 'org/betterx/betterend/integration/emi/**'
             }
         }
+        // The 26.3 port ships the checked-in generated data inherited from 26.2.
+        // Keep runtime compilation independent from obsolete datagen-only APIs.
+        java {
+            exclude 'org/betterx/datagen/betterend/worldgen/**'
+            exclude 'org/betterx/datagen/betterend/tags/**'
+            exclude 'org/betterx/datagen/betterend/advancement/**'
+            exclude 'org/betterx/datagen/betterend/BetterEndDatagen.java'
+            exclude 'org/betterx/datagen/betterend/EndModelProvider.java'
+            exclude 'org/betterx/datagen/betterend/EndEquipmentAssetProvider.java'
+            exclude 'org/betterx/datagen/betterend/EndRegistrySupplier.java'
+            exclude 'org/betterx/datagen/betterend/recipes/EndChestLootTableProvider.java'
+            exclude 'org/betterx/datagen/betterend/recipes/EndBlockLootTableProvider.java'
+            // The experimental configured-carver pipeline from 26.2 is obsolete in
+            // 26.3. BetterEnd keeps its established Round/Tunel feature caves.
+            exclude 'org/betterx/betterend/world/carvers/**'
+            exclude 'org/betterx/betterend/registry/EndCarvers.java'
+        }
         resources {
             srcDirs += ['src/main/generated']
         }
@@ -515,7 +532,7 @@ jar {
 
 // Collect built jars for BetterEnd and its local BetterX libraries into one folder
 def distDir = new File(rootProject.projectDir.parentFile, "betterx-dist")
-def modrinthModsDir = new File("C:/Users/Redmi/AppData/Roaming/ModrinthApp/profiles/NeoForge 26.2/mods")
+def modrinthModsDir = new File("C:/Users/Redmi/AppData/Roaming/ModrinthApp/profiles/NeoForge 26.3/mods")
 def test2ModsDir = file((project.findProperty("test2_mods_dir") ?: "C:/Users/Redmi/Desktop/test2/mods").toString())
 def betterEndModrinthJarPatterns = [
         "BetterEnd-*.jar",

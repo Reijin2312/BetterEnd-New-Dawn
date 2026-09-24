@@ -1,5 +1,6 @@
 package org.betterx.betterend.world.features.bushes;
 
+import com.mojang.serialization.MapCodec;
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.sdf.SDF;
 import org.betterx.bclib.sdf.operator.SDFDisplacement;
@@ -18,30 +19,34 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
 import java.util.function.Function;
 
-public class BushWithOuterFeature extends Feature<BushWithOuterFeatureConfig> {
+public class BushWithOuterFeature implements Feature {
+    public static final MapCodec<BushWithOuterFeature> CODEC = BushWithOuterFeatureConfig.CODEC.xmap(BushWithOuterFeature::new, f -> f.config);
+    public final BushWithOuterFeatureConfig config;
     private static final Direction[] DIRECTIONS = Direction.values();
     private static final Function<BlockState, Boolean> REPLACE;
 
 
-    public BushWithOuterFeature() {
-        super(BushWithOuterFeatureConfig.CODEC);
+    public BushWithOuterFeature(BushWithOuterFeatureConfig config) {
+        this.config = config;
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<BushWithOuterFeatureConfig> featureConfig) {
-        final RandomSource random = featureConfig.random();
-        final BlockPos pos = featureConfig.origin();
-        final WorldGenLevel world = featureConfig.level();
-        BushWithOuterFeatureConfig cfg = featureConfig.config();
+    public MapCodec<BushWithOuterFeature> codec() {
+        return CODEC;
+    }
+
+    @Override
+    public boolean place(WorldGenLevel world, ChunkGenerator generator, RandomSource random, BlockPos pos) {
+        BushWithOuterFeatureConfig cfg = config;
         BlockState outer_leaves = cfg.outer_leaves.getState(world, random, pos);
         Block leaves = cfg.leaves.getState(world, random, pos).getBlock();
         BlockState stem = cfg.stem.getState(world, random, pos);

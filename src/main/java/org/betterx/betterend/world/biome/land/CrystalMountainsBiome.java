@@ -14,7 +14,8 @@ import org.betterx.wover.surface.impl.rules.SwitchRuleSource;
 
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.SurfaceRules;
+import net.minecraft.world.level.levelgen.material.MaterialRules;
+import net.minecraft.world.level.levelgen.material.rule.MaterialRule;
 
 import java.util.List;
 
@@ -44,17 +45,17 @@ public class CrystalMountainsBiome extends EndBiome.Config {
 
             @Override
             public SurfaceRuleBuilder surface() {
-                SurfaceRules.RuleSource surfaceBlockRule = new SwitchRuleSource(
+                MaterialRule surfaceBlockRule = new SwitchRuleSource(
                         new SplitNoiseCondition(),
                         List.of(
-                                SurfaceRules.state(EndBlocks.END_MOSS.defaultBlockState()),
-                                SurfaceRules.state(EndBlocks.CRYSTAL_MOSS.defaultBlockState())
+                                MaterialRules.state(EndBlocks.END_MOSS.defaultBlockState()),
+                                MaterialRules.state(EndBlocks.CRYSTAL_MOSS.defaultBlockState())
                         )
                 );
                 return super
                         .surface()
                         .rule(
-                                SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, surfaceBlockRule),
+                                MaterialRules.ifTrue(MaterialRules.stoneDepthCheck(0, false, net.minecraft.world.level.levelgen.placement.CaveSurface.FLOOR), surfaceBlockRule),
                                 BaseSurfaceRuleBuilder.SUB_SURFACE_PRIORITY
                         )
                         .steep(EndBlocks.CRYSTAL_MOSS.defaultBlockState(), 1);

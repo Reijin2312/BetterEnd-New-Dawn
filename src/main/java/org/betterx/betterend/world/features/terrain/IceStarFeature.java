@@ -1,5 +1,6 @@
 package org.betterx.betterend.world.features.terrain;
 
+import com.mojang.serialization.MapCodec;
 import org.betterx.bclib.sdf.SDF;
 import org.betterx.bclib.sdf.operator.SDFRotation;
 import org.betterx.bclib.sdf.operator.SDFTranslate;
@@ -13,27 +14,30 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class IceStarFeature extends Feature<IceStarFeatureConfig> {
+public class IceStarFeature implements Feature {
+    public static final MapCodec<IceStarFeature> CODEC = IceStarFeatureConfig.CODEC.xmap(IceStarFeature::new, f -> f.config);
+    public final IceStarFeatureConfig config;
 
-
-    public IceStarFeature() {
-        super(IceStarFeatureConfig.CODEC);
+    public IceStarFeature(IceStarFeatureConfig config) {
+        this.config = config;
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<IceStarFeatureConfig> featureConfig) {
-        final RandomSource random = featureConfig.random();
-        BlockPos pos = featureConfig.origin();
-        final WorldGenLevel world = featureConfig.level();
-        IceStarFeatureConfig cfg = featureConfig.config();
+    public MapCodec<IceStarFeature> codec() {
+        return CODEC;
+    }
+
+    @Override
+    public boolean place(WorldGenLevel world, ChunkGenerator generator, RandomSource random, BlockPos pos) {
+        IceStarFeatureConfig cfg = config;
         float size = MHelper.randRange(cfg.minSize, cfg.maxSize, random);
         int count = MHelper.randRange(cfg.minCount, cfg.maxCount, random);
         List<Vector3f> points = getFibonacciPoints(count);

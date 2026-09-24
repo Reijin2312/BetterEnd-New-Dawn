@@ -1,5 +1,6 @@
 package org.betterx.betterend.world.features;
 
+import com.mojang.serialization.MapCodec;
 import org.betterx.bclib.blocks.BaseAttachedBlock;
 import org.betterx.bclib.blocks.BaseWallPlantBlock;
 import org.betterx.bclib.util.BlocksHelper;
@@ -11,12 +12,19 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.levelgen.feature.Feature;
 
 public class WallPlantFeature extends WallScatterFeature<WallPlantFeatureConfig> {
+    public static final MapCodec<WallPlantFeature> CODEC = WallPlantFeatureConfig.CODEC.xmap(WallPlantFeature::new, f -> f.config);
     protected BlockState plant;
 
-    public WallPlantFeature() {
-        super(WallPlantFeatureConfig.CODEC);
+    public WallPlantFeature(WallPlantFeatureConfig config) {
+        super(config);
+    }
+
+    @Override
+    public MapCodec<? extends Feature> codec() {
+        return CODEC;
     }
 
     @Override

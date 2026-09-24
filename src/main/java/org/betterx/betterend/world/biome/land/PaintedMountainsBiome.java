@@ -13,7 +13,8 @@ import org.betterx.wover.surface.impl.rules.SwitchRuleSource;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.SurfaceRules;
+import net.minecraft.world.level.levelgen.material.MaterialRules;
+import net.minecraft.world.level.levelgen.material.rule.MaterialRule;
 
 import java.util.List;
 
@@ -44,14 +45,14 @@ public class PaintedMountainsBiome extends EndBiome.Config {
             }
 
             public SurfaceRuleBuilder surface() {
-                SurfaceRules.RuleSource surfaceBlockRule = new SwitchRuleSource(
+                MaterialRule surfaceBlockRule = new SwitchRuleSource(
                         VerticalBandNoiseCondition.DEFAULT,
                         List.of(
-                                SurfaceRules.state(EndBlocks.FLAVOLITE.stone.defaultBlockState()),
-                                SurfaceRules.state(EndBlocks.VIOLECITE.stone.defaultBlockState()),
-                                SurfaceRules.state(EndBlocks.VIRID_JADESTONE.stone.defaultBlockState()),
-                                SurfaceRules.state(EndBlocks.AZURE_JADESTONE.stone.defaultBlockState()),
-                                SurfaceRules.state(EndBlocks.SANDY_JADESTONE.stone.defaultBlockState())
+                                MaterialRules.state(EndBlocks.FLAVOLITE.stone.defaultBlockState()),
+                                MaterialRules.state(EndBlocks.VIOLECITE.stone.defaultBlockState()),
+                                MaterialRules.state(EndBlocks.VIRID_JADESTONE.stone.defaultBlockState()),
+                                MaterialRules.state(EndBlocks.AZURE_JADESTONE.stone.defaultBlockState()),
+                                MaterialRules.state(EndBlocks.SANDY_JADESTONE.stone.defaultBlockState())
                         )
                 );
                 return SurfaceRuleBuilder.start().rule(surfaceBlockRule, 9);

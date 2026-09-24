@@ -17,7 +17,6 @@ import org.betterx.betterend.util.BonemealPlants;
 import org.betterx.betterend.util.LootTableUtil;
 import org.betterx.betterend.world.generator.EndLandBiomeDecider;
 import org.betterx.betterend.world.generator.GeneratorOptions;
-import org.betterx.datagen.betterend.BetterEndDatagen;
 import org.betterx.wover.core.api.Logger;
 import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.generator.api.biomesource.end.BiomeDecider;
@@ -58,7 +57,6 @@ public class BetterEnd {
         modBus.addListener(RegisterEvent.class, EndParticles::onRegister);
         modBus.addListener(RegisterEvent.class, EndPoiTypes::onRegister);
         modBus.addListener(RegisterEvent.class, this::registerFeatures);
-        modBus.addListener(RegisterEvent.class, EndCarvers::onRegister);
         modBus.addListener(RegisterEvent.class, EndMenuTypes::onRegister);
         modBus.addListener(RegisterEvent.class, EndBlockEntities::register);
         modBus.addListener(RegisterEvent.class, this::ensureBlocksLoaded);
@@ -77,11 +75,6 @@ public class BetterEnd {
         EndBlocks.ensureRegistered();
         org.betterx.wover.block.api.BlockRegistry.hook(modBus);
         org.betterx.wover.item.api.ItemRegistry.hook(modBus);
-        if (ModCore.isDatagen()) {
-            BetterEndDatagen datagen = new BetterEndDatagen();
-            modBus.addListener(net.neoforged.neoforge.data.event.GatherDataEvent.Client.class, datagen::onGatherData);
-            modBus.addListener(net.neoforged.neoforge.data.event.GatherDataEvent.Server.class, datagen::onGatherData);
-        }
         initialize();
     }
 
@@ -97,7 +90,6 @@ public class BetterEnd {
         EndPotions.register();
         InfusionRecipe.register();
         EndStructures.register();
-        EndCarvers.ensureStaticallyLoaded();
         // TEMP: keep the new vertical cave pipeline dormant until upstream stabilizes it.
         // BiomeDecider.registerDecider(C.mk("cave_biome_decider"), new org.betterx.betterend.world.generator.EndCaveBiomeDecider());
         GeneratorOptions.init();
@@ -144,7 +136,6 @@ public class BetterEnd {
 
     private void registerFeatures(RegisterEvent event) {
         if (event.getRegistryKey().equals(net.minecraft.core.registries.Registries.FEATURE)) {
-            EndFeatures.onRegister(event);
             // Keep BYG integration features attached to the same FEATURE pass so
             // placed-feature JSONs never reference missing feature IDs.
             BYGFeatures.onRegister(event);

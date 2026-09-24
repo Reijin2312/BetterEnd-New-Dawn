@@ -4,13 +4,13 @@ import org.betterx.bclib.util.BackgroundInfo;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.BetterEnd;
 
-import com.mojang.blaze3d.buffers.GpuBuffer;
-import com.mojang.blaze3d.buffers.GpuBufferSlice;
-import com.mojang.blaze3d.PrimitiveTopology;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
-import com.mojang.blaze3d.systems.RenderPass;
+import com.mojang.renderpearl.api.buffers.GpuBuffer;
+import com.mojang.renderpearl.api.buffers.GpuBufferSlice;
+import com.mojang.renderpearl.api.commands.RenderPass;
+import com.mojang.renderpearl.api.pipeline.PrimitiveTopology;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.textures.GpuTextureView;
+import com.mojang.renderpearl.api.textures.GpuTextureView;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.AbstractTexture;
@@ -110,7 +110,7 @@ public class BetterEndSkyRenderer {
 
         if (blindA > 0) {
             matrices.pushPose();
-            matrices.mulPose(new Quaternionf().rotationXYZ(0, time, 0));
+            matrices.mulPose(new org.joml.Matrix4f().rotation(new Quaternionf().rotationXYZ(0, time, 0)));
             renderBuffer(
                     matrices,
                     horizon,
@@ -202,12 +202,12 @@ public class BetterEndSkyRenderer {
 
         if (blindA > 0) {
             matrices.pushPose();
-            matrices.mulPose(new Quaternionf().setAngleAxis(time3, axis1.x, axis1.y, axis1.z));
+            matrices.mulPose(new org.joml.Matrix4f().rotation(new Quaternionf().setAngleAxis(time3, axis1.x, axis1.y, axis1.z)));
             renderBuffer(matrices, stars1, null, false, 1, 1, 1, blind06, setupFog);
             matrices.popPose();
 
             matrices.pushPose();
-            matrices.mulPose(new Quaternionf().setAngleAxis(time2, axis2.x, axis2.y, axis2.z));
+            matrices.mulPose(new org.joml.Matrix4f().rotation(new Quaternionf().setAngleAxis(time2, axis2.x, axis2.y, axis2.z)));
             renderBuffer(
                     matrices,
                     stars2,
@@ -302,13 +302,13 @@ public class BetterEndSkyRenderer {
                                                          depthTexture,
                                                          OptionalDouble.empty()
                                                  )) {
-            renderPass.setPipeline(pipeline);
+            renderPass.setPipeline(RenderSystem.getCompiledPipeline(pipeline));
             RenderSystem.bindDefaultUniforms(renderPass);
             renderPass.setUniform("DynamicTransforms", transforms);
             renderPass.setVertexBuffer(0, buffer.buffer.slice());
 
             if (abstractTexture != null) {
-                renderPass.bindTexture("Sampler0", abstractTexture.getTextureView(), abstractTexture.getSampler());
+                renderPass.setUniform("Sampler0", abstractTexture.getTextureView(), abstractTexture.getSampler());
             }
 
             if (buffer.mode == PrimitiveTopology.QUADS) {

@@ -1,12 +1,13 @@
 package org.betterx.betterend.world.features;
 
+import com.mojang.serialization.Codec;
+
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.api.v2.levelgen.structures.templatesystem.DestructionStructureProcessor;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
-import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Direction;
@@ -21,15 +22,17 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
-public abstract class NBTFeature<FC extends NBTFeatureConfig> extends Feature<FC> {
-    public NBTFeature(Codec<FC> codec) {
-        super(codec);
+public abstract class NBTFeature<FC extends NBTFeatureConfig> implements Feature {
+    public final FC config;
+
+    protected NBTFeature(FC config) {
+        this.config = config;
     }
 
     protected static final DestructionStructureProcessor DESTRUCTION = new DestructionStructureProcessor();
@@ -84,11 +87,8 @@ public abstract class NBTFeature<FC extends NBTFeatureConfig> extends Feature<FC
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<FC> context) {
-        FC cfg = context.config();
-        WorldGenLevel world = context.level();
-        RandomSource random = context.random();
-        BlockPos center = context.origin();
+    public boolean place(WorldGenLevel world, ChunkGenerator generator, RandomSource random, BlockPos center) {
+        FC cfg = config;
 
         center = new BlockPos(((center.getX() >> 4) << 4) | 8, 128, ((center.getZ() >> 4) << 4) | 8);
         center = getGround(world, center);
@@ -102,7 +102,7 @@ public abstract class NBTFeature<FC extends NBTFeatureConfig> extends Feature<FC
         Rotation rotation = getRotation(world, center, random);
         Mirror mirror = getMirror(world, center, random);
         BlockPos offset = StructureTemplate.transform(
-                new BlockPos(structure.getSize()),
+                new BlockPos(structure.getSize().getX(), structure.getSize().getY(), structure.getSize().getZ()),
                 mirror,
                 rotation,
                 BlockPos.ZERO

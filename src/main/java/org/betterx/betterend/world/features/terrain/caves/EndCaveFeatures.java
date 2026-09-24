@@ -28,9 +28,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -46,10 +44,10 @@ public abstract class EndCaveFeatures extends DefaultFeature {
     private static final Vec3i[] SPHERE;
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
-        final RandomSource random = featureConfig.random();
-        final BlockPos pos = featureConfig.origin();
-        final WorldGenLevel world = featureConfig.level();
+    public boolean place(WorldGenLevel featureWorld, ChunkGenerator featureGenerator, RandomSource featureRandom, BlockPos featureOrigin) {
+        final RandomSource random = featureRandom;
+        final BlockPos pos = featureOrigin;
+        final WorldGenLevel world = featureWorld;
         if (pos.getX() * pos.getX() + pos.getZ() * pos.getZ() <= 2500) {
             return false;
         }
@@ -69,7 +67,7 @@ public abstract class EndCaveFeatures extends DefaultFeature {
         Set<BlockPos> caveBlocks = generate(world, center, radius, random);
         if (!caveBlocks.isEmpty()) {
             if (biome != null) {
-                ChunkGenerator generator = featureConfig.chunkGenerator();
+                ChunkGenerator generator = featureGenerator;
                 setBiomes(world, biome, caveBlocks);
                 Set<BlockPos> floorPositions = Sets.newConcurrentHashSet();
                 Set<BlockPos> ceilPositions = Sets.newConcurrentHashSet();
@@ -121,7 +119,7 @@ public abstract class EndCaveFeatures extends DefaultFeature {
                 BlocksHelper.setWithoutUpdate(world, pos, surfaceBlock);
             }
             if (density > 0 && random.nextFloat() <= density) {
-                Holder<? extends ConfiguredFeature<?, ?>> feature = biome.getFloorFeature(random);
+                Holder<? extends Feature> feature = biome.getFloorFeature(random);
                 if (feature != null && feature.isBound()) {
                     feature.value().place(world, generator, random, pos.above());
                 }
@@ -143,7 +141,7 @@ public abstract class EndCaveFeatures extends DefaultFeature {
                 BlocksHelper.setWithoutUpdate(world, pos, ceilBlock);
             }
             if (density > 0 && random.nextFloat() <= density) {
-                Holder<? extends ConfiguredFeature<?, ?>> feature = biome.getCeilFeature(random);
+                Holder<? extends Feature> feature = biome.getCeilFeature(random);
                 if (feature != null && feature.isBound()) {
                     feature.value().place(world, generator, random, pos.below());
                 }

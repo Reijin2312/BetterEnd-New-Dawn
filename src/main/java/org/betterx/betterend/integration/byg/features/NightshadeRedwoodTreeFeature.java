@@ -1,5 +1,9 @@
 package org.betterx.betterend.integration.byg.features;
 
+import com.mojang.serialization.Codec;
+
+import com.mojang.serialization.MapCodec;
+
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.sdf.PosInfo;
 import org.betterx.bclib.sdf.SDF;
@@ -20,11 +24,10 @@ import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 import com.google.common.collect.Lists;
 import org.joml.Vector3f;
@@ -33,13 +36,19 @@ import java.util.List;
 import java.util.function.Function;
 
 public class NightshadeRedwoodTreeFeature extends DefaultFeature {
+    public static final MapCodec<NightshadeRedwoodTreeFeature> CODEC = MapCodec.unit(NightshadeRedwoodTreeFeature::new);
+
+    @Override
+    public MapCodec<NightshadeRedwoodTreeFeature> codec() {
+        return CODEC;
+    }
     private static final List<Vector3f> BRANCH;
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
-        final RandomSource random = featureConfig.random();
-        final BlockPos pos = featureConfig.origin();
-        final WorldGenLevel world = featureConfig.level();
+    public boolean place(WorldGenLevel featureWorld, ChunkGenerator featureGenerator, RandomSource featureRandom, BlockPos featureOrigin) {
+        final RandomSource random = featureRandom;
+        final BlockPos pos = featureOrigin;
+        final WorldGenLevel world = featureWorld;
         if (!world.getBlockState(pos.below()).is(CommonBlockTags.END_STONES)) return false;
 
         // height reaches 60 and branches scale up to 15 - well past the 3x3 chunks a feature may touch.

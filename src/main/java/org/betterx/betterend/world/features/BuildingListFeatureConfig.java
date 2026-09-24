@@ -1,6 +1,7 @@
 package org.betterx.betterend.world.features;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.RandomSource;
@@ -9,7 +10,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.List;
 
 public class BuildingListFeatureConfig extends NBTFeatureConfig {
-    public static final Codec<BuildingListFeatureConfig> CODEC = RecordCodecBuilder.create(instance -> instance
+    public static final MapCodec<BuildingListFeatureConfig> CODEC = RecordCodecBuilder.mapCodec(instance -> instance
             .group(
                     ExtraCodecs.nonEmptyList(BuildingListFeature.StructureInfo.CODEC.listOf())
                                .fieldOf("structures")

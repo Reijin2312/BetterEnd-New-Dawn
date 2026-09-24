@@ -9,8 +9,11 @@ import org.betterx.betterend.client.gui.EndStoneSmelterMenu;
 import org.betterx.betterend.registry.EndBlockEntities;
 
 import net.minecraft.core.*;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.WorldlyContainer;
@@ -25,6 +28,7 @@ import net.minecraft.world.inventory.StackedContentsCompatible;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.CookingFuel;
 import net.minecraft.world.item.crafting.BlastingRecipe;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -38,6 +42,10 @@ import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ResolvableInt;
 import net.minecraft.world.phys.Vec3;
 
 import com.google.common.collect.Lists;
@@ -48,6 +56,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -208,7 +217,7 @@ public class EndStoneSmelterBlockEntity extends BaseContainerBlockEntity impleme
             recipeManager.byKey(entry.getKey()).ifPresent((recipe) -> {
                 list.add(recipe);
                 if (recipe.value() instanceof AlloyingRecipe alloying) {
-                    dropExperience(player.level(), player.position(), entry.getIntValue(), alloying.getExperience());
+                    dropExperience(player.level(), player.position(), entry.getIntValue(), alloying.experience());
                 } else {
                     BlastingRecipe blasting = (BlastingRecipe) recipe.value();
                     dropExperience(player.level(), player.position(), entry.getIntValue(), blasting.experience());
@@ -536,9 +545,28 @@ public class EndStoneSmelterBlockEntity extends BaseContainerBlockEntity impleme
     }
 
     private static int getVanillaFuelTime(ItemStack stack, @Nullable Level level) {
-        if (level == null) {
+        if (!(level instanceof ServerLevel serverLevel)) {
             return 0;
         }
-        return stack.getBurnTime(RecipeType.BLASTING, level.fuelValues());
+
+        CookingFuel fuel = stack.get(DataComponents.COOKING_FUEL);
+        if (fuel == null) {
+            return 0;
+        }
+
+        ResolvableInt burnTime = fuel.burnTime();
+        if (burnTime instanceof ResolvableInt.Constant constant) {
+            return constant.value();
+        }
+        if (burnTime instanceof ResolvableInt.Reference reference) {
+            LootParams params = new LootParams.Builder(serverLevel).create(LootContextParamSets.EMPTY);
+            LootContext context = new LootContext.Builder(params).create(Optional.empty());
+            return context.getResolver()
+                          .lookupOrThrow(Registries.CONTEXT_INT_PROVIDER)
+                          .get(reference.key())
+                          .map(holder -> holder.value().getInt(context))
+                          .orElse(0);
+        }
+        return 0;
     }
 }

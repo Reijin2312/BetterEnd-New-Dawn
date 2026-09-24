@@ -1,5 +1,6 @@
 package org.betterx.betterend.world.features.terrain;
 
+import com.mojang.serialization.MapCodec;
 import org.betterx.bclib.sdf.SDF;
 import org.betterx.bclib.sdf.operator.SDFCoordModify;
 import org.betterx.bclib.sdf.operator.SDFScale3D;
@@ -10,25 +11,29 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
-public class OreLayerFeature extends Feature<OreLayerFeatureConfig> {
+public class OreLayerFeature implements Feature {
+    public static final MapCodec<OreLayerFeature> CODEC = OreLayerFeatureConfig.CODEC.xmap(OreLayerFeature::new, f -> f.config);
+    public final OreLayerFeatureConfig config;
     private static final SDFSphere SPHERE;
     private static final SDFCoordModify NOISE;
     private static final SDF FUNCTION;
 
 
-    public OreLayerFeature() {
-        super(OreLayerFeatureConfig.CODEC);
+    public OreLayerFeature(OreLayerFeatureConfig config) {
+        this.config = config;
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<OreLayerFeatureConfig> featureConfig) {
-        final OreLayerFeatureConfig cfg = featureConfig.config();
-        final RandomSource random = featureConfig.random();
-        final BlockPos pos = featureConfig.origin();
-        final WorldGenLevel world = featureConfig.level();
+    public MapCodec<OreLayerFeature> codec() {
+        return CODEC;
+    }
+
+    @Override
+    public boolean place(WorldGenLevel world, ChunkGenerator generator, RandomSource random, BlockPos pos) {
+        final OreLayerFeatureConfig cfg = config;
         float radius = cfg.radius * 0.5F;
         int r = MHelper.floor(radius + 1);
         int posX = MHelper.randRange(Math.max(r - 16, 0), Math.min(31 - r, 15), random) + pos.getX();

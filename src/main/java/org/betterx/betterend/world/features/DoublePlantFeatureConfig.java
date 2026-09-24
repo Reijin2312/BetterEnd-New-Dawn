@@ -1,6 +1,7 @@
 package org.betterx.betterend.world.features;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -8,13 +9,13 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 
 public class DoublePlantFeatureConfig extends ScatterFeatureConfig {
-    public static final Codec<DoublePlantFeatureConfig> CODEC = RecordCodecBuilder.create(instance -> instance
+    public static final MapCodec<DoublePlantFeatureConfig> CODEC = RecordCodecBuilder.mapCodec(instance -> instance
             .group(
-                    BlockStateProvider.CODEC.fieldOf("small_state").forGetter(o -> o.smallPlant),
-                    BlockStateProvider.CODEC.fieldOf("large_state").forGetter(o -> o.largePlant),
+                    BlockStateProvider.DIRECT_CODEC.fieldOf("small_state").forGetter(o -> o.smallPlant),
+                    BlockStateProvider.DIRECT_CODEC.fieldOf("large_state").forGetter(o -> o.largePlant),
                     Codec.INT.fieldOf("radius").forGetter(o -> o.radius)
             )
             .apply(
@@ -26,7 +27,7 @@ public class DoublePlantFeatureConfig extends ScatterFeatureConfig {
     public final BlockStateProvider largePlant;
 
     public DoublePlantFeatureConfig(Block smallPlant, Block largePlant, int radius) {
-        this(SimpleStateProvider.simple(smallPlant), SimpleStateProvider.simple(largePlant), radius);
+        this(BlockStateProvider.of(smallPlant), BlockStateProvider.of(largePlant), radius);
     }
 
     public DoublePlantFeatureConfig(BlockStateProvider smallPlant, BlockStateProvider largePlant, int radius) {

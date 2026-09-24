@@ -1,5 +1,7 @@
 package org.betterx.betterend.blocks;
 
+import com.mojang.serialization.Codec;
+
 import org.betterx.bclib.behaviours.interfaces.BehaviourSand;
 import org.betterx.ui.ColorUtil;
 import org.betterx.wover.block.api.BlockTagProvider;
@@ -33,11 +35,6 @@ public class EndstoneDustBlock extends FallingBlock implements BlockTagProvider,
                 .ofLegacyCopy(Blocks.SAND)
                 .mapColor(Blocks.END_STONE.defaultMapColor())
         );
-    }
-
-    @Override
-    protected MapCodec<? extends FallingBlock> codec() {
-        return CODEC;
     }
 
     @Override

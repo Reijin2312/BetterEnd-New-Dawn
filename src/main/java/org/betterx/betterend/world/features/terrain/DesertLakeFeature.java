@@ -1,5 +1,9 @@
 package org.betterx.betterend.world.features.terrain;
 
+import com.mojang.serialization.Codec;
+
+import com.mojang.serialization.MapCodec;
+
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
@@ -15,24 +19,29 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.material.FluidState;
 
 
 public class DesertLakeFeature extends DefaultFeature {
+    public static final MapCodec<DesertLakeFeature> CODEC = MapCodec.unit(DesertLakeFeature::new);
+
+    @Override
+    public MapCodec<DesertLakeFeature> codec() {
+        return CODEC;
+    }
     private static final BlockState END_STONE = Blocks.END_STONE.defaultBlockState();
     private static final OpenSimplexNoise NOISE = new OpenSimplexNoise(15152);
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
+    public boolean place(WorldGenLevel featureWorld, ChunkGenerator featureGenerator, RandomSource featureRandom, BlockPos featureOrigin) {
         final MutableBlockPos POS = GlobalState.stateForThread().POS;
 
-        final RandomSource random = featureConfig.random();
-        BlockPos blockPos = featureConfig.origin();
-        final WorldGenLevel world = featureConfig.level();
+        final RandomSource random = featureRandom;
+        BlockPos blockPos = featureOrigin;
+        final WorldGenLevel world = featureWorld;
         double radius = MHelper.randRange(8.0, 15.0, random);
         double depth = radius * 0.5 * MHelper.randRange(0.8, 1.2, random);
         int dist = MHelper.floor(radius);

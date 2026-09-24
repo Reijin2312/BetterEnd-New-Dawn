@@ -1,5 +1,9 @@
 package org.betterx.betterend.world.features.terrain;
 
+import com.mojang.serialization.Codec;
+
+import com.mojang.serialization.MapCodec;
+
 
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.sdf.SDF;
@@ -14,17 +18,22 @@ import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 
 import org.joml.Vector3f;
 
 public class BigAuroraCrystalFeature extends DefaultFeature {
+    public static final MapCodec<BigAuroraCrystalFeature> CODEC = MapCodec.unit(BigAuroraCrystalFeature::new);
+
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
-        final RandomSource random = featureConfig.random();
-        BlockPos pos = featureConfig.origin();
-        final WorldGenLevel world = featureConfig.level();
+    public MapCodec<BigAuroraCrystalFeature> codec() {
+        return CODEC;
+    }
+    @Override
+    public boolean place(WorldGenLevel featureWorld, ChunkGenerator featureGenerator, RandomSource featureRandom, BlockPos featureOrigin) {
+        final RandomSource random = featureRandom;
+        BlockPos pos = featureOrigin;
+        final WorldGenLevel world = featureWorld;
         int maxY = pos.getY() + BlocksHelper.upRay(world, pos, 16);
         int minY = pos.getY() - BlocksHelper.downRay(world, pos, 16);
 

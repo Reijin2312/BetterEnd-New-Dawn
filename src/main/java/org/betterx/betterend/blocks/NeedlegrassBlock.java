@@ -21,8 +21,8 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.ApplyExplosionDecay;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -53,12 +53,12 @@ public class NeedlegrassBlock extends EndPlantBlock implements SurvivesOnShadowG
         return LootTable.lootTable().withPool(
                 LootPool.lootPool()
                         .when(provider.hasSilkTouch())
-                        .setRolls(ConstantValue.exactly(1))
+                        .setRolls(ContextIntProviders.exactly(1))
                         .add(LootItem.lootTableItem(this).apply(ApplyExplosionDecay.explosionDecay()))
         ).withPool(
                 LootPool.lootPool()
                         .when(provider.hasSilkTouch())
-                        .setRolls(UniformGenerator.between(0, 2))
+                        .setRolls(ContextIntProviders.between(0, 2))
                         .add(LootItem.lootTableItem(Items.STICK)
                                      .apply(ApplyExplosionDecay.explosionDecay())
                         )

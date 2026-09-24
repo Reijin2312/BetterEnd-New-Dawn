@@ -14,19 +14,16 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.util.KeyDispatchDataCodec;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class JadeCaveBiome extends EndCaveBiome.Config<JadeCaveBiome> {
     public static final MapCodec<Biome> CODEC = EndCaveBiome.simpleCaveBiomeCodec(JadeCaveBiome.Biome::new);
-    public static final KeyDispatchDataCodec<JadeCaveBiome.Biome> KEY_CODEC = KeyDispatchDataCodec.of(CODEC);
     public static final MapCodec<Biome> NETWORK_CODEC = EndCaveBiome.simpleCaveBiomeNetworkCodec(JadeCaveBiome.Biome::new);
-    public static final KeyDispatchDataCodec<JadeCaveBiome.Biome> NETWORK_KEY_CODEC = KeyDispatchDataCodec.of(NETWORK_CODEC);
 
     public static class Biome extends EndCaveBiome {
         private static final OpenSimplexNoise WALL_NOISE = new OpenSimplexNoise("jade_cave".hashCode());
@@ -34,13 +31,11 @@ public class JadeCaveBiome extends EndCaveBiome.Config<JadeCaveBiome> {
         private static final BlockState[] JADE = new BlockState[3];
 
         @Override
-        public KeyDispatchDataCodec<? extends EndCaveBiome> codec() {
-            return JadeCaveBiome.KEY_CODEC;
+        public MapCodec<? extends EndCaveBiome> codec() {
+            return JadeCaveBiome.CODEC;
         }
-
-        @Override
-        public KeyDispatchDataCodec<? extends EndCaveBiome> networkCodec() {
-            return JadeCaveBiome.NETWORK_KEY_CODEC;
+        public MapCodec<? extends EndCaveBiome> networkCodec() {
+            return JadeCaveBiome.NETWORK_CODEC;
         }
 
         protected Biome(
@@ -55,8 +50,8 @@ public class JadeCaveBiome extends EndCaveBiome.Config<JadeCaveBiome> {
                 @Nullable ResourceKey<net.minecraft.world.level.biome.Biome> parent,
                 boolean hasCaves,
                 SurfaceMaterialProvider surface,
-                WeightedList<Holder<ConfiguredFeature<?, ?>>> floorFeatures,
-                WeightedList<Holder<ConfiguredFeature<?, ?>>> ceilFeatures
+                WeightedList<Holder<Feature>> floorFeatures,
+                WeightedList<Holder<Feature>> ceilFeatures
         ) {
             super(
                     fogDensity, biome, generatorData, terrainHeight,

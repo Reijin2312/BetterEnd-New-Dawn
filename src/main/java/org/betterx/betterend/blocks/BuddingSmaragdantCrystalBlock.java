@@ -31,7 +31,7 @@ public class BuddingSmaragdantCrystalBlock extends LitPillarBlock implements Beh
                 .noOcclusion()
                 .sound(SoundType.AMETHYST)
                 .randomTicks()
-                .pushReaction(PushReaction.DESTROY));
+                .pushReaction(PushReaction.POPPED));
     }
 
     @Override

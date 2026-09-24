@@ -13,7 +13,7 @@ public class EndMaterialRecipesProvider extends WoverRecipeProvider {
     }
 
     @Override
-    protected void bootstrap(HolderLookup.Provider provider, RecipeOutput context) {
+    protected void bootstrap(net.minecraft.data.worldgen.BootstrapContextAccess provider, RecipeOutput context) {
         MaterialManager.stream().forEach(m -> m.registerRecipes(context));
     }
 }

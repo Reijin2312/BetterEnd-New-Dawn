@@ -50,7 +50,7 @@ public class EternalCrystalRenderer {
         float rotation = (age + tickDelta) / 25.0F + 6.0F;
         matrices.pushPose();
         matrices.scale(0.6F, 0.6F, 0.6F);
-        matrices.mulPose(Axis.YP.rotation(rotation));
+        matrices.mulPose(new org.joml.Matrix4f().rotation(Axis.YP.rotation(rotation)));
 
         submitNodeCollector.submitModelPart(
                 CORE,
@@ -60,7 +60,7 @@ public class EternalCrystalRenderer {
                 overlay,
                 null,
                 color,
-                null
+                0
         );
 
         for (int i = 0; i < 4; i++) {
@@ -75,7 +75,7 @@ public class EternalCrystalRenderer {
                     overlay,
                     null,
                     color,
-                    null
+                    0
             );
             matrices.popPose();
         }
@@ -137,7 +137,7 @@ public class EternalCrystalRenderer {
     }
 
     static {
-        RENDER_LAYER = RenderTypes.entityTranslucentCullItemTarget(BetterEnd.C.mk("textures/entity/eternal_crystal.png"));
+        RENDER_LAYER = RenderTypes.entityTranslucentCull(BetterEnd.C.mk("textures/entity/eternal_crystal.png"));
         SHARDS = new ModelPart[4];
 
         ModelPart root = getTexturedModelData().bakeRoot();

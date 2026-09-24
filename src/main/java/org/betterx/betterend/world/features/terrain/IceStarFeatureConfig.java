@@ -1,11 +1,12 @@
 package org.betterx.betterend.world.features.terrain;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
-public class IceStarFeatureConfig implements FeatureConfiguration {
-    public static final Codec<IceStarFeatureConfig> CODEC = RecordCodecBuilder.create(instance -> instance
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+
+public class IceStarFeatureConfig {
+    public static final MapCodec<IceStarFeatureConfig> CODEC = RecordCodecBuilder.mapCodec(instance -> instance
             .group(
                     Codec.FLOAT.fieldOf("min_size").forGetter(o -> o.minSize),
                     Codec.FLOAT.fieldOf("max_size").forGetter(o -> o.maxSize),

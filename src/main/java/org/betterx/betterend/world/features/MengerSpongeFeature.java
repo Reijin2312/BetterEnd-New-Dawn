@@ -1,5 +1,6 @@
 package org.betterx.betterend.world.features;
 
+import com.mojang.serialization.MapCodec;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.registry.EndBlocks;
 
@@ -10,8 +11,15 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class MengerSpongeFeature extends UnderwaterPlantScatter<ScatterFeatureConfig> {
-    public MengerSpongeFeature() {
-        super(ScatterFeatureConfig.CODEC);
+    public static final MapCodec<MengerSpongeFeature> CODEC = ScatterFeatureConfig.CODEC.xmap(MengerSpongeFeature::new, f -> f.config);
+
+    public MengerSpongeFeature(ScatterFeatureConfig config) {
+        super(config);
+    }
+
+    @Override
+    public MapCodec<MengerSpongeFeature> codec() {
+        return CODEC;
     }
 
     @Override

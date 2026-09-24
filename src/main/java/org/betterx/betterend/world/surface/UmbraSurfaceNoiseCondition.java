@@ -3,7 +3,7 @@ package org.betterx.betterend.world.surface;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.wover.math.api.MathHelper;
-import org.betterx.wover.surface.api.conditions.SurfaceRulesContext;
+import net.minecraft.world.level.levelgen.material.MaterialRuleContext;
 import org.betterx.wover.surface.api.noise.NumericProvider;
 
 import net.minecraft.util.RandomSource;
@@ -28,8 +28,8 @@ public class UmbraSurfaceNoiseCondition implements NumericProvider {
     private static final int SEED = 0x756D6272;
 
     @Override
-    public int getNumber(SurfaceRulesContext context) {
-        return getDepth(context.getBlockX(), context.getBlockY(), context.getBlockZ());
+    public int getNumber(MaterialRuleContext context) {
+        return getDepth(context.blockX(), context.blockY(), context.blockZ());
     }
 
     /**

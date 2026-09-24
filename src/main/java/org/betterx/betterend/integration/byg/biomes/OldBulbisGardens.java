@@ -18,7 +18,8 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraft.world.level.levelgen.Noises;
-import net.minecraft.world.level.levelgen.SurfaceRules;
+import net.minecraft.world.level.levelgen.material.MaterialRules;
+import net.minecraft.world.level.levelgen.material.rule.MaterialRule;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 import java.util.List;
@@ -48,9 +49,11 @@ public class OldBulbisGardens extends EndBiome.Config {
         if (biome == null) return;
 
         for (MobCategory group : MobCategory.values()) {
-            biome.value().getMobSettings().getMobs(group).unwrap().forEach(entry -> {
+            var spawns = org.betterx.wover.biome.impl.modification.MobSettingsWorker.mobSettingsOf(biome.value()).getMobsInCategory(group);
+            if (spawns == null) continue;
+            spawns.unwrap().forEach(entry -> {
                 var data = entry.value();
-                builder.spawn(data.type(), entry.weight(), data.minCount(), data.maxCount());
+                builder.spawn(data.type(), entry.weight(), data.count().minInclusive(), data.count().maxInclusive());
             });
         }
 
@@ -108,16 +111,16 @@ public class OldBulbisGardens extends EndBiome.Config {
                 return SurfaceRuleBuilder
                         .start()
                         .rule(
-                                SurfaceRules.sequence(SurfaceRules.ifTrue(
+                                MaterialRules.sequence(MaterialRules.ifTrue(
                                                 BYGBiomes.BYG_WATER_CHECK,
-                                                SurfaceRules.ifTrue(
-                                                        SurfaceRules.ON_FLOOR,
-                                                        SurfaceRules.sequence(
-                                                                SurfaceRules.ifTrue(
+                                                MaterialRules.ifTrue(
+                                                        MaterialRules.stoneDepthCheck(0, false, net.minecraft.world.level.levelgen.placement.CaveSurface.FLOOR),
+                                                        MaterialRules.sequence(
+                                                                MaterialRules.ifTrue(
                                                                         Conditions.roughNoise(Noises.NETHERRACK, 0.19),
-                                                                        SurfaceRules.state(getTopMaterial())
+                                                                        MaterialRules.state(getTopMaterial())
                                                                 ),
-                                                                SurfaceRules.state(getAltTopMaterial())
+                                                                MaterialRules.state(getAltTopMaterial())
                                                         )
                                                 )
                                         )

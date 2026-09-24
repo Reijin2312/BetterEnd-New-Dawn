@@ -1,5 +1,9 @@
 package org.betterx.betterend.world.features.trees;
 
+import com.mojang.serialization.Codec;
+
+import com.mojang.serialization.MapCodec;
+
 import org.betterx.betterend.registry.EndBlocks;
 
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
@@ -12,11 +16,11 @@ import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +42,12 @@ import java.util.List;
  * NYLIUM, END_MOSS and END_STONES are all accepted so the tree roots on any island surface.
  */
 public class DragonHelixTreeFeature extends DefaultFeature {
+    public static final MapCodec<DragonHelixTreeFeature> CODEC = MapCodec.unit(DragonHelixTreeFeature::new);
+
+    @Override
+    public MapCodec<DragonHelixTreeFeature> codec() {
+        return CODEC;
+    }
     /** Chance a lowest-ring leaf column sprouts a hanging bulb-vine light strand. */
     private static final float LIGHT_CHANCE = 0.6F;
     /** Radians the tier bulge rotates per vertical block - the "helix" twist of the foliage. */
@@ -46,10 +56,10 @@ public class DragonHelixTreeFeature extends DefaultFeature {
     private static final double HELIX_REACH = 1.8;
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
-        final var random = ctx.random();
-        final BlockPos pos = ctx.origin();
-        final WorldGenLevel world = ctx.level();
+    public boolean place(WorldGenLevel featureWorld, ChunkGenerator featureGenerator, RandomSource featureRandom, BlockPos featureOrigin) {
+        final var random = featureRandom;
+        final BlockPos pos = featureOrigin;
+        final WorldGenLevel world = featureWorld;
         final BlockState below = world.getBlockState(pos.below());
         if (!below.is(BlockTags.NYLIUM)
                 && !below.is(EndBlocks.END_MOSS)

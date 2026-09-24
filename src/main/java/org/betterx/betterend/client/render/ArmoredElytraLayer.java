@@ -87,8 +87,7 @@ public class ArmoredElytraLayer<S extends HumanoidRenderState, M extends EntityM
                 OverlayTexture.NO_OVERLAY,
                 -1,
                 null,
-                state.outlineColor,
-                null
+                state.outlineColor
         );
         poseStack.popPose();
     }

@@ -17,7 +17,7 @@ public class AlloyingRecipesProvider extends WoverRecipeProvider {
         super(modCore, "BetterEnd - Alloying Recipes");
     }
 
-    public void bootstrap(HolderLookup.Provider provider, RecipeOutput context) {
+    protected void bootstrap(net.minecraft.data.worldgen.BootstrapContextAccess provider, RecipeOutput context) {
         BCLRecipeBuilder.alloying(BetterEnd.C.mk("additional_iron_ore"), Items.IRON_INGOT)
                         .setInput(Items.IRON_ORE, Items.IRON_ORE)
                         .outputCount(3)

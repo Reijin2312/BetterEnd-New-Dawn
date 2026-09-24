@@ -1,5 +1,6 @@
 package org.betterx.betterend.world.features.terrain;
 
+import com.mojang.serialization.MapCodec;
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.sdf.SDF;
 import org.betterx.bclib.sdf.operator.SDFCoordModify;
@@ -16,25 +17,29 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public class ThinArchFeature extends Feature<ThinArchFeatureConfig> {
+public class ThinArchFeature implements Feature {
+    public static final MapCodec<ThinArchFeature> CODEC = ThinArchFeatureConfig.CODEC.xmap(ThinArchFeature::new, f -> f.config);
+    public final ThinArchFeatureConfig config;
 
-    public ThinArchFeature() {
-        super(ThinArchFeatureConfig.CODEC);
+    public ThinArchFeature(ThinArchFeatureConfig config) {
+        this.config = config;
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<ThinArchFeatureConfig> featurePlaceContext) {
-        final ThinArchFeatureConfig cfg = featurePlaceContext.config();
-        final WorldGenLevel world = featurePlaceContext.level();
-        BlockPos origin = featurePlaceContext.origin();
-        RandomSource random = featurePlaceContext.random();
+    public MapCodec<ThinArchFeature> codec() {
+        return CODEC;
+    }
+
+    @Override
+    public boolean place(WorldGenLevel world, ChunkGenerator generator, RandomSource random, BlockPos origin) {
+        final ThinArchFeatureConfig cfg = config;
         BlockState state = cfg.block.getState(world, random, origin);
         Block block = state.getBlock();
 

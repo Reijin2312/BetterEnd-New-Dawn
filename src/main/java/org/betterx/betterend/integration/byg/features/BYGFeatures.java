@@ -26,7 +26,7 @@ public class BYGFeatures {
 
     private static boolean registered = false;
 
-    private static void register(RegisterEvent.RegisterHelper<Feature<?>> helper) {
+    private static void register(RegisterEvent.RegisterHelper<Feature> helper) {
         if (registered) return;
         registered = true;
 

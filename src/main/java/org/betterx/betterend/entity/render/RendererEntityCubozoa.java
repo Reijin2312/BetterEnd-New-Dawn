@@ -47,8 +47,7 @@ public class RendererEntityCubozoa extends MobRenderer<CubozoaEntity, RendererEn
                             OverlayTexture.NO_OVERLAY,
                             -1,
                             null,
-                            state.outlineColor,
-                            null
+                            state.outlineColor
                     );
             }
         });

@@ -7,17 +7,18 @@ import org.betterx.betterend.util.GlobalState;
 import org.betterx.wover.feature.api.WriteZone;
 import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
-import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
-public abstract class ScatterFeature<FC extends ScatterFeatureConfig> extends Feature<FC> {
-    public ScatterFeature(Codec<FC> codec) {
-        super(codec);
+public abstract class ScatterFeature<FC extends ScatterFeatureConfig> implements Feature {
+    public final FC config;
+
+    protected ScatterFeature(FC config) {
+        this.config = config;
     }
 
     public abstract boolean canGenerate(
@@ -59,12 +60,10 @@ public abstract class ScatterFeature<FC extends ScatterFeatureConfig> extends Fe
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<FC> featureConfig) {
-        FC cfg = featureConfig.config();
+    public boolean place(WorldGenLevel world, ChunkGenerator generator, RandomSource random, BlockPos origin) {
+        FC cfg = this.config;
         final MutableBlockPos POS = GlobalState.stateForThread().POS;
-        final RandomSource random = featureConfig.random();
-        BlockPos center = featureConfig.origin();
-        final WorldGenLevel world = featureConfig.level();
+        BlockPos center = origin;
         center = getCenterGround(cfg, world, center);
 
         if (!canSpawn(cfg, world, center)) {

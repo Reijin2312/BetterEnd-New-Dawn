@@ -2,7 +2,6 @@ package org.betterx.betterend.world.features;
 
 import org.betterx.betterend.util.GlobalState;
 
-import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.util.RandomSource;
@@ -10,8 +9,8 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 
 public abstract class UnderwaterPlantScatter<FC extends ScatterFeatureConfig> extends ScatterFeature<FC> {
-    public UnderwaterPlantScatter(Codec<FC> codec) {
-        super(codec);
+    protected UnderwaterPlantScatter(FC config) {
+        super(config);
     }
 
     @Override

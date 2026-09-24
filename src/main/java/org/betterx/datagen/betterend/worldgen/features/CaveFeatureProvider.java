@@ -15,7 +15,7 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
-import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 import org.jetbrains.annotations.NotNull;
@@ -33,7 +33,7 @@ public class CaveFeatureProvider extends WoverFeatureProvider {
 
         EndConfiguredCaveFeatures.SMARAGDANT_CRYSTAL_SHARD
                 .bootstrap(context)
-                .configuration(new SimpleBlockConfiguration(SimpleStateProvider.simple(EndBlocks.SMARAGDANT_CRYSTAL_SHARD)))
+                .configuration(new SimpleBlockConfiguration(BlockStateProvider.simple(EndBlocks.SMARAGDANT_CRYSTAL_SHARD)))
                 .register();
 
         EndConfiguredCaveFeatures.BIG_AURORA_CRYSTAL.bootstrap(context).register();
@@ -45,7 +45,7 @@ public class CaveFeatureProvider extends WoverFeatureProvider {
 
         EndConfiguredCaveFeatures.CAVE_GRASS
                 .bootstrap(context)
-                .configuration(new SimpleBlockConfiguration(SimpleStateProvider.simple(EndBlocks.CAVE_GRASS)))
+                .configuration(new SimpleBlockConfiguration(BlockStateProvider.simple(EndBlocks.CAVE_GRASS)))
                 .register();
 
         EndConfiguredCaveFeatures.RUBINEA

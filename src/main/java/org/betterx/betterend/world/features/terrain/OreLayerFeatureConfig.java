@@ -1,14 +1,15 @@
 package org.betterx.betterend.world.features.terrain;
 
+import com.mojang.serialization.Codec;
+
 import org.betterx.betterend.noise.OpenSimplexNoise;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
-public class OreLayerFeatureConfig implements FeatureConfiguration {
-    public static final Codec<OreLayerFeatureConfig> CODEC = RecordCodecBuilder.create(instance -> instance
+public class OreLayerFeatureConfig {
+    public static final MapCodec<OreLayerFeatureConfig> CODEC = RecordCodecBuilder.mapCodec(instance -> instance
             .group(
                     BlockState.CODEC.fieldOf("state").forGetter(o -> o.state),
                     Codec.FLOAT.fieldOf("radius").forGetter(o -> o.radius),

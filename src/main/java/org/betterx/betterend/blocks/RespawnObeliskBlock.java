@@ -44,8 +44,9 @@ import net.minecraft.world.level.storage.LevelData;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.predicates.MatchBlock;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -161,11 +162,11 @@ public class RespawnObeliskBlock extends BaseBlock.Stone implements CustomColorP
                 .lootTable()
                 .withPool(LootPool
                         .lootPool()
-                        .setRolls(ConstantValue.exactly(1.0F))
-                        .when(LootItemBlockStatePropertyCondition
-                                .hasBlockStateProperties(this)
-                                .setProperties(StatePropertiesPredicate.Builder
-                                        .properties()
+                        .setRolls(ContextIntProviders.exactly(1))
+                        .when(MatchBlock.blockMatches(
+                                provider.getProvider().lookupOrThrow(Registries.BLOCK),
+                                this,
+                                StatePropertiesPredicate.Builder.properties()
                                         .hasProperty(SHAPE, TripleShape.BOTTOM)))
                         .add(LootItem.lootTableItem(this)));
     }

@@ -42,8 +42,9 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.predicates.MatchBlock;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -137,10 +138,11 @@ public class SilkMothNestBlock extends BaseBlock implements RenderLayerProvider,
                 .lootTable()
                 .withPool(LootPool
                         .lootPool()
-                        .setRolls(ConstantValue.exactly(1.0F))
-                        .when(LootItemBlockStatePropertyCondition
-                                .hasBlockStateProperties(this)
-                                .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(ACTIVE, true)))
+                        .setRolls(ContextIntProviders.exactly(1))
+                        .when(MatchBlock.blockMatches(
+                                provider.getProvider().lookupOrThrow(Registries.BLOCK),
+                                this,
+                                StatePropertiesPredicate.Builder.properties().hasProperty(ACTIVE, true)))
                         .add(LootItem.lootTableItem(this)));
     }
 

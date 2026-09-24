@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.lighting.LightEngine;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
@@ -34,7 +34,7 @@ public class MossyObsidian extends BaseBlock implements BehaviourObsidian, Block
             @NotNull LootLookupProvider provider,
             @NotNull ResourceKey<LootTable> tableKey
     ) {
-        return provider.dropWithSilkTouch(this, Blocks.OBSIDIAN, ConstantValue.exactly(1.0F));
+        return provider.dropWithSilkTouch(this, Blocks.OBSIDIAN, ContextIntProviders.exactly(1));
     }
 
     @Override

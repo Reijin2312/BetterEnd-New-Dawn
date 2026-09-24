@@ -1,5 +1,6 @@
 package org.betterx.betterend.world.features;
 
+import com.mojang.serialization.MapCodec;
 import org.betterx.betterend.blocks.HydraluxSaplingBlock;
 import org.betterx.betterend.registry.EndBlocks;
 
@@ -8,8 +9,15 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 
 public class HydraluxFeature extends UnderwaterPlantScatter<ScatterFeatureConfig> {
-    public HydraluxFeature() {
-        super(ScatterFeatureConfig.CODEC);
+    public static final MapCodec<HydraluxFeature> CODEC = ScatterFeatureConfig.CODEC.xmap(HydraluxFeature::new, f -> f.config);
+
+    public HydraluxFeature(ScatterFeatureConfig config) {
+        super(config);
+    }
+
+    @Override
+    public MapCodec<HydraluxFeature> codec() {
+        return CODEC;
     }
 
     @Override

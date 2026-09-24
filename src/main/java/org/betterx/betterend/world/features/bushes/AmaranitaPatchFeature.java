@@ -1,5 +1,9 @@
 package org.betterx.betterend.world.features.bushes;
 
+import com.mojang.serialization.Codec;
+
+import com.mojang.serialization.MapCodec;
+
 import org.betterx.betterend.registry.EndBlocks;
 
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
@@ -14,9 +18,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 /**
  * A ground patch of small-to-medium amaranita mushrooms, used to give the {@code flower_islets}
@@ -36,15 +39,21 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
  * top instead of a single flat plane.
  */
 public class AmaranitaPatchFeature extends DefaultFeature {
+    public static final MapCodec<AmaranitaPatchFeature> CODEC = MapCodec.unit(AmaranitaPatchFeature::new);
+
+    @Override
+    public MapCodec<AmaranitaPatchFeature> codec() {
+        return CODEC;
+    }
     private static final int MIN_COUNT = 4;
     private static final int MAX_COUNT = 8;
     private static final int PATCH_RADIUS = 4;
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
-        final RandomSource random = featureConfig.random();
-        final BlockPos origin = featureConfig.origin();
-        final WorldGenLevel world = featureConfig.level();
+    public boolean place(WorldGenLevel featureWorld, ChunkGenerator featureGenerator, RandomSource featureRandom, BlockPos featureOrigin) {
+        final RandomSource random = featureRandom;
+        final BlockPos origin = featureOrigin;
+        final WorldGenLevel world = featureWorld;
 
         if (!isGround(world.getBlockState(origin.below()))) {
             return false;

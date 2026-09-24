@@ -1,6 +1,7 @@
 package org.betterx.betterend.world.features;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -8,12 +9,12 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 
 public class VineFeatureConfig extends ScatterFeatureConfig {
-    public static final Codec<VineFeatureConfig> CODEC = RecordCodecBuilder.create(instance -> instance
+    public static final MapCodec<VineFeatureConfig> CODEC = RecordCodecBuilder.mapCodec(instance -> instance
             .group(
-                    BlockStateProvider.CODEC.fieldOf("state").forGetter(o -> o.plant),
+                    BlockStateProvider.DIRECT_CODEC.fieldOf("state").forGetter(o -> o.plant),
                     Codec.INT.fieldOf("radius").forGetter(o -> o.radius),
                     Codec.INT.fieldOf("max_length").forGetter(o -> o.maxLength)
             )
@@ -27,7 +28,7 @@ public class VineFeatureConfig extends ScatterFeatureConfig {
     public final int maxLength;
 
     public VineFeatureConfig(Block vineBlock, int maxLength) {
-        this(SimpleStateProvider.simple(vineBlock), 6, maxLength);
+        this(BlockStateProvider.of(vineBlock), 6, maxLength);
     }
 
     public VineFeatureConfig(BlockStateProvider plant, int radius, int maxLength) {

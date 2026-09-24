@@ -68,7 +68,7 @@ public abstract class PlayerMixin extends LivingEntity {
         for (Direction dir : horizontal) {
             BlockPos p = pos.relative(dir);
             BlockState state2 = world.getBlockState(p);
-            if (!state2.blocksMotion() && state2.getCollisionShape(world, pos).isEmpty()) {
+            if (!state2.isSolid() && state2.getCollisionShape(world, pos).isEmpty()) {
                 return Optional.of(new ServerPlayer.RespawnPosAngle(Vec3.atLowerCornerOf(p).add(0.5, 0, 0.5), angle, 0.0F));
             }
         }

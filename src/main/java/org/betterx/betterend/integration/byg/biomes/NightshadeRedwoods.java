@@ -14,7 +14,8 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
-import net.minecraft.world.level.levelgen.SurfaceRules;
+import net.minecraft.world.level.levelgen.material.MaterialRules;
+import net.minecraft.world.level.levelgen.material.rule.MaterialRule;
 
 public class NightshadeRedwoods extends EndBiome.Config {
     public NightshadeRedwoods() {
@@ -50,9 +51,11 @@ public class NightshadeRedwoods extends EndBiome.Config {
              });
 
         for (MobCategory group : MobCategory.values()) {
-            biome.value().getMobSettings().getMobs(group).unwrap().forEach(entry -> {
+            var spawns = org.betterx.wover.biome.impl.modification.MobSettingsWorker.mobSettingsOf(biome.value()).getMobsInCategory(group);
+            if (spawns == null) continue;
+            spawns.unwrap().forEach(entry -> {
                 var data = entry.value();
-                builder.spawn(data.type(), entry.weight(), data.minCount(), data.maxCount());
+                builder.spawn(data.type(), entry.weight(), data.count().minInclusive(), data.count().maxInclusive());
             });
         }
     }
@@ -69,11 +72,11 @@ public class NightshadeRedwoods extends EndBiome.Config {
             public SurfaceRuleBuilder surface() {
                 return SurfaceRuleBuilder
                         .start()
-                        .rule(SurfaceRules.sequence(SurfaceRules.ifTrue(
+                        .rule(MaterialRules.sequence(MaterialRules.ifTrue(
                                                 BYGBiomes.BYG_WATER_CHECK,
-                                                SurfaceRules.ifTrue(
-                                                        SurfaceRules.ON_FLOOR,
-                                                        SurfaceRules.state(getTopMaterial())
+                                                MaterialRules.ifTrue(
+                                                        MaterialRules.stoneDepthCheck(0, false, net.minecraft.world.level.levelgen.placement.CaveSurface.FLOOR),
+                                                        MaterialRules.state(getTopMaterial())
                                                 )
                                         )
                                 ), 4

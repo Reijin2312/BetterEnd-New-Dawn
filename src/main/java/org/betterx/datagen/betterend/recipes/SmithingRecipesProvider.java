@@ -19,7 +19,7 @@ public class SmithingRecipesProvider extends WoverRecipeProvider {
     }
 
     @Override
-    protected void bootstrap(HolderLookup.Provider provider, RecipeOutput context) {
+    protected void bootstrap(net.minecraft.data.worldgen.BootstrapContextAccess provider, RecipeOutput context) {
         RecipeBuilder.smithing(BetterEnd.C.mk("aeternium_pickaxe"), EndItems.AETERNIUM_PICKAXE)
                      .template(EndTemplates.LEATHER_HANDLE_ATTACHMENT)
                      .base(EndItems.AETERNIUM_PICKAXE_HEAD)

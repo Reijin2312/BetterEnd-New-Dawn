@@ -40,9 +40,11 @@ import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunct
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.AllOfCondition;
 import net.minecraft.world.level.storage.loot.predicates.InvertedLootItemCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.MatchBlock;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -82,15 +84,14 @@ public class SulphurCrystalBlock extends BaseAttachedBlock.Glass implements Rend
     private LootItemConditionalFunction.@NotNull Builder<?> applyAgeBonus(@NotNull LootLookupProvider provider, int i) {
         return ApplyBonusCount
                 .addUniformBonusCount(provider.fortune(), i)
-                .when(ageCondition(i));
+                .when(ageCondition(provider, i));
     }
 
-    private LootItemBlockStatePropertyCondition.@NotNull Builder ageCondition(int i) {
-        return LootItemBlockStatePropertyCondition
-                .hasBlockStateProperties(this)
-                .setProperties(StatePropertiesPredicate.Builder
-                        .properties()
-                        .hasProperty(AGE, i));
+    private LootItemCondition.@NotNull Builder ageCondition(@NotNull LootLookupProvider provider, int i) {
+        return MatchBlock.blockMatches(
+                provider.getProvider().lookupOrThrow(Registries.BLOCK),
+                this,
+                StatePropertiesPredicate.Builder.properties().hasProperty(AGE, i));
     }
 
     @Override
@@ -104,19 +105,19 @@ public class SulphurCrystalBlock extends BaseAttachedBlock.Glass implements Rend
                 .withPool(
                         LootPool.lootPool()
                                 .when(provider.hasSilkTouch())
-                                .setRolls(ConstantValue.exactly(1))
+                                .setRolls(ContextIntProviders.exactly(1))
                                 .add(LootItem.lootTableItem(this)
                                              .apply(SetItemCountFunction
-                                                     .setCount(UniformGenerator.between(1, 3))
-                                                     .when(ageCondition(3))
+                                                     .setCount(ContextIntProviders.between(1, 3))
+                                                      .when(ageCondition(provider, 3))
                                              )
                                              .apply(SetItemCountFunction
-                                                     .setCount(ConstantValue.exactly(1))
-                                                     .when(InvertedLootItemCondition.invert(ageCondition(3)))
+                                                     .setCount(ContextIntProviders.exactly(1))
+                                                      .when(InvertedLootItemCondition.invert(ageCondition(provider, 3)))
                                              )
                                              .apply(ApplyBonusCount
                                                      .addOreBonusCount(provider.fortune())
-                                                     .when(ageCondition(3))
+                                                      .when(ageCondition(provider, 3))
                                              )
                                              .apply(applyAgeBonus(provider, 2))
                                              .apply(applyAgeBonus(provider, 1))
@@ -125,11 +126,11 @@ public class SulphurCrystalBlock extends BaseAttachedBlock.Glass implements Rend
                 )
                 .withPool(
                         LootPool.lootPool()
-                                .when(AllOfCondition.allOf(InvertedLootItemCondition.invert(provider.hasSilkTouch()), ageCondition(3)))
-                                .setRolls(ConstantValue.exactly(1))
+                                .when(AllOfCondition.allOf(InvertedLootItemCondition.invert(provider.hasSilkTouch()), ageCondition(provider, 3)))
+                                .setRolls(ContextIntProviders.exactly(1))
                                 .add(LootItem.lootTableItem(EndItems.CRYSTALLINE_SULPHUR)
                                              .apply(SetItemCountFunction
-                                                     .setCount(UniformGenerator.between(1, 3))
+                                                     .setCount(ContextIntProviders.between(1, 3))
                                              )
                                              .apply(ApplyExplosionDecay.explosionDecay())
                                 )

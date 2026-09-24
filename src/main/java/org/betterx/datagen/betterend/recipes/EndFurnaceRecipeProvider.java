@@ -18,7 +18,7 @@ public class EndFurnaceRecipeProvider extends WoverRecipeProvider {
     }
 
     @Override
-    protected void bootstrap(HolderLookup.Provider provider, RecipeOutput context) {
+    protected void bootstrap(net.minecraft.data.worldgen.BootstrapContextAccess provider, RecipeOutput context) {
         RecipeBuilder.smelting(BetterEnd.C.mk("end_lily_leaf_dried"), EndItems.END_LILY_LEAF_DRIED)
                      .input(EndItems.END_LILY_LEAF)
                      .build(context);
