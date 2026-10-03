@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:jellyshroom_boat"
+        "recipes": "betterend:jellyshroom_boat"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

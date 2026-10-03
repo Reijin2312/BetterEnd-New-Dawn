@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:virid_jadestone_brick_stair_from_virid_jadestone_brick_stonecutting"
+        "recipes": "betterend:virid_jadestone_brick_stair_from_virid_jadestone_brick_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

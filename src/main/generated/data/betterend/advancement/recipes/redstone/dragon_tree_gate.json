@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:dragon_tree_gate"
+        "recipes": "betterend:dragon_tree_gate"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

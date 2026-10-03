@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:thallasium_shovel_head"
+        "recipes": "betterend:thallasium_shovel_head"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

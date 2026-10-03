@@ -1,9 +1,7 @@
 {
   "feature": {
     "type": "betterend:end_lotus_leaf_feature",
-    "config": {
-      "radius": 20
-    }
+    "radius": 20
   },
   "placement": [
     {

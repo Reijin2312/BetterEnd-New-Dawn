@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:thallasium_ingot_furnace_raw_smelting"
+        "recipes": "betterend:thallasium_ingot_furnace_raw_smelting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -1,6 +1,6 @@
 {
-	"parent": "betterend:block/cube_noshade",
-	"textures": {
-		"texture": "betterend:block/tenanea_leaves"
-	}
+  "parent": "betterend:block/cube_noshade",
+  "textures": {
+    "texture": "betterend:block/tenanea_leaves"
+  }
 }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:thallasium_bars"
+        "recipes": "betterend:thallasium_bars"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:fiber_string"
+        "recipes": "betterend:fiber_string"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -1,17 +1,15 @@
 {
   "feature": {
     "type": "betterend:single_plant_feature",
-    "config": {
-      "chance": 4,
-      "radius": 4,
-      "raw_heightmap": true,
+    "chance": 4,
+    "radius": 4,
+    "raw_heightmap": true,
+    "state": {
+      "type": "minecraft:simple",
       "state": {
-        "type": "minecraft:simple_state_provider",
-        "state": {
-          "Name": "betterend:blossom_berry_seed",
-          "Properties": {
-            "age": "0"
-          }
+        "id": "betterend:blossom_berry_seed",
+        "properties": {
+          "age": "0"
         }
       }
     }

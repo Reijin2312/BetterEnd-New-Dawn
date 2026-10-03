@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:dragon_tree_taburet"
+        "recipes": "betterend:dragon_tree_taburet"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

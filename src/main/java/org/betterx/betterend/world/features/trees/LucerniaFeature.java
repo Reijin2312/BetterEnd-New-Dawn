@@ -1,6 +1,5 @@
 package org.betterx.betterend.world.features.trees;
 
-import com.mojang.serialization.Codec;
 
 import com.mojang.serialization.MapCodec;
 
@@ -264,7 +263,7 @@ public class LucerniaFeature extends DefaultFeature {
             return BlocksHelper.replaceableOrPlant(state);
         };
 
-        IGNORE = EndBlocks.LUCERNIA::isTreeLog;
+        IGNORE = state -> EndBlocks.LUCERNIA.isTreeLog(state);
 
         SPLINE = Lists.newArrayList(
                 new Vector3f(0.00F, 0.00F, 0.00F),

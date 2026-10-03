@@ -1,6 +1,5 @@
 package org.betterx.betterend.world.features;
 
-import com.mojang.serialization.Codec;
 
 import com.mojang.serialization.MapCodec;
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;

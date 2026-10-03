@@ -6,41 +6,31 @@
     "collection": [
       {
         "type": "minecraft:block",
-        "result_state": {
-          "Name": "betterend:flavolite"
-        }
+        "result_state": "betterend:flavolite"
       },
       {
         "type": "minecraft:block",
-        "result_state": {
-          "Name": "betterend:violecite"
-        }
+        "result_state": "betterend:violecite"
       },
       {
         "type": "minecraft:block",
-        "result_state": {
-          "Name": "betterend:virid_jadestone"
-        }
+        "result_state": "betterend:virid_jadestone"
       },
       {
         "type": "minecraft:block",
-        "result_state": {
-          "Name": "betterend:azure_jadestone"
-        }
+        "result_state": "betterend:azure_jadestone"
       },
       {
         "type": "minecraft:block",
-        "result_state": {
-          "Name": "betterend:sandy_jadestone"
-        }
+        "result_state": "betterend:sandy_jadestone"
       }
     ],
     "selector": {
       "type": "betterend:vertical_band",
-      "band_scale": 5.0,
+      "band_scale": 5,
       "noise": "minecraft:clay_bands_offset",
       "offset_scale": 1.5,
-      "xz_scale": 6.0,
+      "xz_scale": 6,
       "y_scale": 1.3
     }
   }

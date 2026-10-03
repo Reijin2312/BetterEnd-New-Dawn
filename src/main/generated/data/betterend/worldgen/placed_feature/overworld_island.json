@@ -1,7 +1,6 @@
 {
   "feature": {
-    "type": "betterend:overworld_island",
-    "config": {}
+    "type": "betterend:overworld_island"
   },
   "placement": []
 }

@@ -1,6 +1,6 @@
 {
-    "parent": "block/button_inventory", 
-    "textures": {
-        "texture": "betterend:block/%parent%"
-    }
+  "parent": "block/button_inventory",
+  "textures": {
+    "texture": "betterend:block/%parent%"
+  }
 }

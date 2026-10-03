@@ -6,8 +6,8 @@
       "predicate": {
         "type": "minecraft:would_survive",
         "state": {
-          "Name": "minecraft:chorus_plant",
-          "Properties": {
+          "id": "minecraft:chorus_plant",
+          "properties": {
             "down": "false",
             "east": "false",
             "north": "false",

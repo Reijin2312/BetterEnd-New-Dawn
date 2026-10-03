@@ -1,6 +1,5 @@
 package org.betterx.betterend.integration.byg.features;
 
-import com.mojang.serialization.Codec;
 
 import com.mojang.serialization.MapCodec;
 

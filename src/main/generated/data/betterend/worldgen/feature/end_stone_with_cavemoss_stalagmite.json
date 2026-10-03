@@ -1,0 +1,35 @@
+{
+  "type": "betterend:stalactite_feature",
+  "allowed_ground": {
+    "type": "minecraft:matching_blocks",
+    "blocks": "minecraft:end_stone"
+  },
+  "ceiling": false,
+  "states": {
+    "type": "minecraft:weighted",
+    "entries": [
+      {
+        "data": {
+          "id": "betterend:end_stone_stalactite",
+          "properties": {
+            "is_floor": "true",
+            "size": "0",
+            "waterlogged": "false"
+          }
+        },
+        "weight": 5
+      },
+      {
+        "data": {
+          "id": "betterend:end_stone_stalactite_cavemoss",
+          "properties": {
+            "is_floor": "true",
+            "size": "0",
+            "waterlogged": "false"
+          }
+        },
+        "weight": 1
+      }
+    ]
+  }
+}

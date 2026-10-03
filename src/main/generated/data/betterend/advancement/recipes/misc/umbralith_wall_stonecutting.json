@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:umbralith_wall_stonecutting"
+        "recipes": "betterend:umbralith_wall_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

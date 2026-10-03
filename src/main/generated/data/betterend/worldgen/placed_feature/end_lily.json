@@ -1,9 +1,7 @@
 {
   "feature": {
     "type": "betterend:end_lily_feature",
-    "config": {
-      "radius": 6
-    }
+    "radius": 6
   },
   "placement": [
     {

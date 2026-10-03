@@ -1,6 +1,6 @@
 {
-    "parent": "block/cube_all", 
-    "textures": {
-        "all": "betterend:block/umbrella_tree_membrane_5"
-    }
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "betterend:block/umbrella_tree_membrane_5"
+  }
 }

@@ -7,15 +7,9 @@
   },
   "has_caves": true,
   "surface": {
-    "alt": {
-      "Name": "betterend:end_moss"
-    },
+    "alt": "betterend:end_moss",
     "floor_rule": true,
-    "top": {
-      "Name": "betterend:end_moss"
-    },
-    "under": {
-      "Name": "minecraft:end_stone"
-    }
+    "top": "betterend:end_moss",
+    "under": "minecraft:end_stone"
   }
 }

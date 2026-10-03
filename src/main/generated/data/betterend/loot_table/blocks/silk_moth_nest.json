@@ -2,22 +2,20 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "conditions": [
-        {
-          "block": "betterend:silk_moth_nest",
-          "condition": "minecraft:block_state_property",
-          "properties": {
-            "active": "true"
-          }
-        }
-      ],
       "entries": [
         {
           "type": "minecraft:item",
           "name": "betterend:silk_moth_nest"
         }
       ],
-      "rolls": 1.0
+      "rolls": 1,
+      "condition": {
+        "type": "minecraft:match_block",
+        "blocks": "betterend:silk_moth_nest",
+        "state": {
+          "active": "true"
+        }
+      }
     }
   ],
   "random_sequence": "betterend:blocks/silk_moth_nest"

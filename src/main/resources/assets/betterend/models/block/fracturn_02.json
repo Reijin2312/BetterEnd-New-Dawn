@@ -1,6 +1,6 @@
 {
-    "parent": "betterend:block/crop_block",
-    "textures": {
-        "texture": "betterend:block/fracturn"
-    }
+  "parent": "betterend:block/crop_block",
+  "textures": {
+    "texture": "betterend:block/fracturn"
+  }
 }

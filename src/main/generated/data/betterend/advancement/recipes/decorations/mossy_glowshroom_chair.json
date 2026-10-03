@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:mossy_glowshroom_chair"
+        "recipes": "betterend:mossy_glowshroom_chair"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

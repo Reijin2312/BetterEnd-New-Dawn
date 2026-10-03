@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:aeternium_boots"
+        "recipes": "betterend:aeternium_boots"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

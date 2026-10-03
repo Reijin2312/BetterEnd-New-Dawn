@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:mossy_glowshroom_composter"
+        "recipes": "betterend:mossy_glowshroom_composter"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -1,6 +1,5 @@
 package org.betterx.betterend.world.features.trees;
 
-import com.mojang.serialization.Codec;
 
 import com.mojang.serialization.MapCodec;
 
@@ -254,7 +253,7 @@ public class LacugroveFeature extends DefaultFeature {
             return BlocksHelper.replaceableOrPlant(state);
         };
 
-        IGNORE = EndBlocks.LACUGROVE::isTreeLog;
+        IGNORE = state -> EndBlocks.LACUGROVE.isTreeLog(state);
 
         POST = (info) -> {
             if (EndBlocks.LACUGROVE.isTreeLog(info.getStateUp()) && EndBlocks.LACUGROVE.isTreeLog(info.getStateDown())) {

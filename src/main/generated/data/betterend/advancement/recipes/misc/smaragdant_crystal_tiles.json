@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:smaragdant_crystal_tiles"
+        "recipes": "betterend:smaragdant_crystal_tiles"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

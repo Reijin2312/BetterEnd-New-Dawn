@@ -33,7 +33,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:silk_moth_hive"
+        "recipes": "betterend:silk_moth_hive"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

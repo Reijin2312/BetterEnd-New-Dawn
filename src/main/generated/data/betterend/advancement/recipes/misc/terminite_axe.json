@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:terminite_axe"
+        "recipes": "betterend:terminite_axe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

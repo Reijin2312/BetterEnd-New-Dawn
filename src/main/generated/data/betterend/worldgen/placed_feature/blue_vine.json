@@ -1,9 +1,7 @@
 {
   "feature": {
     "type": "betterend:blue_vine_feature",
-    "config": {
-      "radius": 5
-    }
+    "radius": 5
   },
   "placement": [
     {

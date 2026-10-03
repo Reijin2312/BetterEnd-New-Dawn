@@ -8,15 +8,9 @@
   },
   "has_caves": false,
   "surface": {
-    "alt": {
-      "Name": "minecraft:end_stone"
-    },
+    "alt": "minecraft:end_stone",
     "floor_rule": true,
-    "top": {
-      "Name": "minecraft:end_stone"
-    },
-    "under": {
-      "Name": "minecraft:end_stone"
-    }
+    "top": "minecraft:end_stone",
+    "under": "minecraft:end_stone"
   }
 }

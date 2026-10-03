@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:end_lotus_fence"
+        "recipes": "betterend:end_lotus_fence"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

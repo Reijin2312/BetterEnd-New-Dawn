@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:amber_block"
+        "recipes": "betterend:amber_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

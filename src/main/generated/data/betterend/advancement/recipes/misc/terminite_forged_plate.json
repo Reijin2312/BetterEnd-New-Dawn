@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:terminite_forged_plate"
+        "recipes": "betterend:terminite_forged_plate"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

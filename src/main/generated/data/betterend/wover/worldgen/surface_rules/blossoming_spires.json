@@ -28,29 +28,23 @@
                 "scale_x": 0.1,
                 "scale_z": 0.1,
                 "seed": 4141,
-                "threshold": 0.0
+                "threshold": 0
               },
               "then_run": {
                 "type": "minecraft:block",
-                "result_state": {
-                  "Name": "betterend:pink_moss"
-                }
+                "result_state": "betterend:pink_moss"
               }
             },
             {
               "type": "minecraft:block",
-              "result_state": {
-                "Name": "betterend:pink_moss"
-              }
+              "result_state": "betterend:pink_moss"
             }
           ]
         }
       },
       {
         "type": "minecraft:block",
-        "result_state": {
-          "Name": "minecraft:end_stone"
-        }
+        "result_state": "minecraft:end_stone"
       }
     ]
   }

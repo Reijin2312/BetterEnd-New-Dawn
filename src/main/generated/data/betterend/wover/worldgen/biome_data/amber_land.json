@@ -1,21 +1,15 @@
 {
   "type": "betterend:biome",
   "biome": "betterend:amber_land",
-  "fogDensity": 2.0,
+  "fogDensity": 2,
   "generation_data": {
     "intended_placement": "wover:is_end/land"
   },
   "has_caves": true,
   "surface": {
-    "alt": {
-      "Name": "betterend:amber_moss"
-    },
+    "alt": "betterend:amber_moss",
     "floor_rule": true,
-    "top": {
-      "Name": "betterend:amber_moss"
-    },
-    "under": {
-      "Name": "minecraft:end_stone"
-    }
+    "top": "betterend:amber_moss",
+    "under": "minecraft:end_stone"
   }
 }

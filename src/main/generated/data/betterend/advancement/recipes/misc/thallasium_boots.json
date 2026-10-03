@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:thallasium_boots"
+        "recipes": "betterend:thallasium_boots"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

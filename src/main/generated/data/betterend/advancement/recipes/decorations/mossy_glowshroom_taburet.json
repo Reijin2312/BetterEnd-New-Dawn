@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:mossy_glowshroom_taburet"
+        "recipes": "betterend:mossy_glowshroom_taburet"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

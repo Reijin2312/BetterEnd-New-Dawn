@@ -1,16 +1,12 @@
 {
   "feature": {
     "type": "betterend:single_plant_feature",
-    "config": {
-      "chance": 3,
-      "radius": 7,
-      "raw_heightmap": false,
-      "state": {
-        "type": "minecraft:simple_state_provider",
-        "state": {
-          "Name": "betterend:inflexia"
-        }
-      }
+    "chance": 3,
+    "radius": 7,
+    "raw_heightmap": false,
+    "state": {
+      "type": "minecraft:simple",
+      "state": "betterend:inflexia"
     }
   },
   "placement": [

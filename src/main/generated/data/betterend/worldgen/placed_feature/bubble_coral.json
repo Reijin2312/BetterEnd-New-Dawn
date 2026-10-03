@@ -1,16 +1,12 @@
 {
   "feature": {
     "type": "betterend:underwater_plant_feature",
-    "config": {
-      "chance": 1,
-      "radius": 6,
-      "raw_heightmap": true,
-      "state": {
-        "type": "minecraft:simple_state_provider",
-        "state": {
-          "Name": "betterend:bubble_coral"
-        }
-      }
+    "chance": 1,
+    "radius": 6,
+    "raw_heightmap": true,
+    "state": {
+      "type": "minecraft:simple",
+      "state": "betterend:bubble_coral"
     }
   },
   "placement": [

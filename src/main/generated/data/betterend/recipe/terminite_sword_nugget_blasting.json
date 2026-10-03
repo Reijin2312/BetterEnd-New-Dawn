@@ -3,5 +3,6 @@
   "ingredient": "betterend:terminite_sword",
   "result": {
     "id": "betterend:terminite_nugget"
-  }
+  },
+  "cookingtime": 100
 }

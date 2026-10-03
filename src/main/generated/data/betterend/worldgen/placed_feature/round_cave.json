@@ -1,7 +1,6 @@
 {
   "feature": {
-    "type": "betterend:round_cave",
-    "config": {}
+    "type": "betterend:round_cave"
   },
   "placement": [
     {

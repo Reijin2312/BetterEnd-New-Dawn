@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:infinity_book"
+        "recipes": "betterend:infinity_book"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

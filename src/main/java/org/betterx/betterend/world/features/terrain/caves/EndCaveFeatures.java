@@ -189,6 +189,19 @@ public abstract class EndCaveFeatures extends DefaultFeature {
     }
 
     protected void setBiome(WorldGenLevel world, BlockPos pos, WoverBiomePicker.PickableBiome biome) {
+        // Biomes are stored at quart resolution (one palette entry covers a 4x4x4 block cell).
+        // A cave reaching the upper part of an island can therefore share its biome cell with the
+        // exposed surface even though the cave block itself is below it.  In 26.3 that makes the
+        // later BiomeFilter see an EndCaveBiome at the surface and reject every surface vegetation
+        // feature.  Keep the cave biome below the surface cell; the cave blocks and decorations are
+        // still generated normally.
+        int surfaceY = world.getHeight(Heightmap.Types.WORLD_SURFACE_WG, pos.getX(), pos.getZ());
+        // BiomeManager applies its fuzzy zoom around (blockY - 2), so a surface lookup can also
+        // select the quart cell immediately below the cell containing the feature position.
+        int lowestSurfaceQuart = (surfaceY - 2) >> 2;
+        if ((pos.getY() >> 2) >= lowestSurfaceQuart) {
+            return;
+        }
         BiomeManager.setBiome(world, pos, biome.biome);
     }
 

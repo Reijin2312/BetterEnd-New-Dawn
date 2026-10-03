@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:sandy_jadestone_bricks_slab"
+        "recipes": "betterend:sandy_jadestone_bricks_slab"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

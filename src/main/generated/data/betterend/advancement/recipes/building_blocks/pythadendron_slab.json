@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:pythadendron_slab"
+        "recipes": "betterend:pythadendron_slab"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

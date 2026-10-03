@@ -1,6 +1,6 @@
 {
-	"parent": "block/cross",
-	"textures": {
-		"cross": "betterend:block/filalux_middle"
-	}
+  "parent": "block/cross",
+  "textures": {
+    "cross": "betterend:block/filalux_middle"
+  }
 }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:shadow_plant_dye"
+        "recipes": "betterend:shadow_plant_dye"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -82,6 +82,8 @@ public class BetterEnd {
         WorldConfig.registerMod(C);
 
         EndNumericProviders.register();
+        // Queue all BetterEnd feature codecs before NeoForge fires the FEATURE_TYPE register event.
+        EndFeatures.register();
         EndPortals.loadPortals();
         EndMenuTypes.ensureStaticallyLoaded();
         // Registrations are handled via RegisterEvent listeners to avoid early registry access

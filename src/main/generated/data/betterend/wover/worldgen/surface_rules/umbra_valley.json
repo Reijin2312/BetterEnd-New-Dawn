@@ -18,33 +18,23 @@
           "collection": [
             {
               "type": "minecraft:block",
-              "result_state": {
-                "Name": "betterend:pallidium_full"
-              }
+              "result_state": "betterend:pallidium_full"
             },
             {
               "type": "minecraft:block",
-              "result_state": {
-                "Name": "betterend:pallidium_heavy"
-              }
+              "result_state": "betterend:pallidium_heavy"
             },
             {
               "type": "minecraft:block",
-              "result_state": {
-                "Name": "betterend:pallidium_thin"
-              }
+              "result_state": "betterend:pallidium_thin"
             },
             {
               "type": "minecraft:block",
-              "result_state": {
-                "Name": "betterend:pallidium_tiny"
-              }
+              "result_state": "betterend:pallidium_tiny"
             },
             {
               "type": "minecraft:block",
-              "result_state": {
-                "Name": "betterend:umbralith"
-              }
+              "result_state": "betterend:umbralith"
             }
           ],
           "selector": {
@@ -55,9 +45,7 @@
       },
       {
         "type": "minecraft:block",
-        "result_state": {
-          "Name": "betterend:umbralith"
-        }
+        "result_state": "betterend:umbralith"
       }
     ]
   }

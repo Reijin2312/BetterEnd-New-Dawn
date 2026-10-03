@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:violecite_lantern"
+        "recipes": "betterend:violecite_lantern"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

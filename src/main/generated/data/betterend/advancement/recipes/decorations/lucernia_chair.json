@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:lucernia_chair"
+        "recipes": "betterend:lucernia_chair"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

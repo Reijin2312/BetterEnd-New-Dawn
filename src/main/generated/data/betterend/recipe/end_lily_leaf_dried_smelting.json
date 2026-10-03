@@ -3,5 +3,6 @@
   "ingredient": "betterend:end_lily_leaf",
   "result": {
     "id": "betterend:end_lily_leaf_dried"
-  }
+  },
+  "cookingtime": 200
 }

@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:smite_book"
+        "recipes": "betterend:smite_book"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

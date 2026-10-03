@@ -1,8 +1,12 @@
 {
-	"variants": {
-		"": [
-			{ "model": "betterend:block/end_lotus_flower" },
-			{ "model": "betterend:block/end_lotus_flower_2" }
-		]
-	}
+  "variants": {
+    "": [
+      {
+        "model": "betterend:block/end_lotus_flower"
+      },
+      {
+        "model": "betterend:block/end_lotus_flower_2"
+      }
+    ]
+  }
 }

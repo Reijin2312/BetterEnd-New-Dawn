@@ -43,7 +43,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:sweet_berry_jelly"
+        "recipes": "betterend:sweet_berry_jelly"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

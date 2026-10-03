@@ -4,5 +4,6 @@
   "ingredient": "betterend:chorus_mushroom_raw",
   "result": {
     "id": "betterend:chorus_mushroom_cooked"
-  }
+  },
+  "cookingtime": 100
 }

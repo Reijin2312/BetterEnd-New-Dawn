@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:umbrella_tree_taburet"
+        "recipes": "betterend:umbrella_tree_taburet"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

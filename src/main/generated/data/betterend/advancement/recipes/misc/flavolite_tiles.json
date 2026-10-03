@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:flavolite_tiles"
+        "recipes": "betterend:flavolite_tiles"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

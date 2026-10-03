@@ -1,6 +1,6 @@
 {
-	"parent": "block/cross",
-	"textures": {
-		"cross": "betterend:block/rubinea"
-	}
+  "parent": "block/cross",
+  "textures": {
+    "cross": "betterend:block/rubinea"
+  }
 }

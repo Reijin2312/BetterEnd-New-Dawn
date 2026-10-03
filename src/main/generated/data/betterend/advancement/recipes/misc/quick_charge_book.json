@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:quick_charge_book"
+        "recipes": "betterend:quick_charge_book"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

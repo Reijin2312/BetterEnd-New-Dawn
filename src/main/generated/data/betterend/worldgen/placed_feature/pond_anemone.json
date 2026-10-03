@@ -1,16 +1,12 @@
 {
   "feature": {
     "type": "betterend:underwater_plant_feature",
-    "config": {
-      "chance": 1,
-      "radius": 6,
-      "raw_heightmap": true,
-      "state": {
-        "type": "minecraft:simple_state_provider",
-        "state": {
-          "Name": "betterend:pond_anemone"
-        }
-      }
+    "chance": 1,
+    "radius": 6,
+    "raw_heightmap": true,
+    "state": {
+      "type": "minecraft:simple",
+      "state": "betterend:pond_anemone"
     }
   },
   "placement": [

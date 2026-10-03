@@ -1,21 +1,15 @@
 {
   "type": "betterend:biome",
   "biome": "betterend:foggy_mushroomland",
-  "fogDensity": 3.0,
+  "fogDensity": 3,
   "generation_data": {
     "intended_placement": "wover:is_end/land"
   },
   "has_caves": true,
   "surface": {
-    "alt": {
-      "Name": "betterend:end_mycelium"
-    },
+    "alt": "betterend:end_mycelium",
     "floor_rule": true,
-    "top": {
-      "Name": "betterend:end_moss"
-    },
-    "under": {
-      "Name": "minecraft:end_stone"
-    }
+    "top": "betterend:end_moss",
+    "under": "minecraft:end_stone"
   }
 }

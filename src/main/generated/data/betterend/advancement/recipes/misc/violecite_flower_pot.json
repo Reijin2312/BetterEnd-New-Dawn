@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:violecite_flower_pot"
+        "recipes": "betterend:violecite_flower_pot"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

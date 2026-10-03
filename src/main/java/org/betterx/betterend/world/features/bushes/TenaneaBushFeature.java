@@ -1,6 +1,5 @@
 package org.betterx.betterend.world.features.bushes;
 
-import com.mojang.serialization.Codec;
 
 import com.mojang.serialization.MapCodec;
 

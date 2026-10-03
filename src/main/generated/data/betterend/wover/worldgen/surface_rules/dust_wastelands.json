@@ -15,9 +15,7 @@
         },
         "then_run": {
           "type": "minecraft:block",
-          "result_state": {
-            "Name": "minecraft:end_stone"
-          }
+          "result_state": "minecraft:end_stone"
         }
       },
       {
@@ -31,9 +29,7 @@
         },
         "then_run": {
           "type": "minecraft:block",
-          "result_state": {
-            "Name": "betterend:endstone_dust"
-          }
+          "result_state": "betterend:endstone_dust"
         }
       },
       {
@@ -60,29 +56,23 @@
                 "scale_x": 0.1,
                 "scale_z": 0.1,
                 "seed": 4141,
-                "threshold": 0.0
+                "threshold": 0
               },
               "then_run": {
                 "type": "minecraft:block",
-                "result_state": {
-                  "Name": "betterend:endstone_dust"
-                }
+                "result_state": "betterend:endstone_dust"
               }
             },
             {
               "type": "minecraft:block",
-              "result_state": {
-                "Name": "betterend:endstone_dust"
-              }
+              "result_state": "betterend:endstone_dust"
             }
           ]
         }
       },
       {
         "type": "minecraft:block",
-        "result_state": {
-          "Name": "minecraft:end_stone"
-        }
+        "result_state": "minecraft:end_stone"
       }
     ]
   }

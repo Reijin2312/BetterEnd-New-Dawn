@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:aeternium_spear"
+        "recipes": "betterend:aeternium_spear"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

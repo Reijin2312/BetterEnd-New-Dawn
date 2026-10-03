@@ -1,5 +1,5 @@
 {
-	"__comment__": "@alpeerkaraca - Better End Turkish Language File",
+  "__comment__": "@alpeerkaraca - Better End Turkish Language File",
   "itemGroup.betterend.end_items": "Better End: Eşyalar",
   "itemGroup.betterend.end_blocks": "Better End: Bloklar",
   "item.betterend.guidebook": "Enayiler için End Rehberi",
@@ -62,7 +62,7 @@
   "item.betterend.aeternium_hammer_head": "Aeternium Demirci Çekici Başı",
   "item.betterend.aeternium_hoe_head": "Aeternium Çapa Başı",
   "item.betterend.aeternium_pickaxe_head": "Aeternium Kazma Başı",
-  "item.betterend.aeternium_shovel_head": "Aeternium Kürek Başı", 
+  "item.betterend.aeternium_shovel_head": "Aeternium Kürek Başı",
   "item.betterend.aeternium_sword_blade": "Aeternium Kılıç Bıçağı",
   "item.betterend.aeternium_sword_handle": "Aeternium Kılıç Sapı",
   "item.betterend.leather_stripe": "Deri Şerit",
@@ -452,8 +452,8 @@
   "block.betterend.charnia_green": "Yeşil Charnia",
   "block.betterend.vent_bubble_column": "Vent Kabarcık Sütunu",
   "block.betterend.respawn_obelisk": "Yeniden Doğuş Obeliski",
-  "message.betterend.set_spawn": "\u00A7b\u00A7lYeniden Doğma Noktası Ayarlandı",
-  "message.betterend.fail_spawn": "\u00A7c\u00A7lYeniden Doğuş Noktanı Ayarlamak İçin 6 Tane Kehribar Mücevheri Tutmalısın",
+  "message.betterend.set_spawn": "§b§lYeniden Doğma Noktası Ayarlandı",
+  "message.betterend.fail_spawn": "§c§lYeniden Doğuş Noktanı Ayarlamak İçin 6 Tane Kehribar Mücevheri Tutmalısın",
   "block.betterend.dragon_tree_composter": "Ejder Ağacı Gübre Varili",
   "block.betterend.end_lotus_composter": "End Lotus Gübre Varili",
   "block.betterend.helix_tree_composter": "Sarmal Ağaç Gübre Varili",
@@ -867,10 +867,10 @@
   "betterend.jei.container.infusion": "İnfüzyon Tarifleri",
   "betterend.jei.alloying.experience_time": "%s XP | %s sn",
   "betterend.jei.container.alloying": "Alaşımlama ve Yüksek Fırın",
-	"jukebox_song.betterend.endseeker": "Firel - Endseeker",
-	"jukebox_song.betterend.eo_dracona": "Firel - Eo Dracona",
-	"jukebox_song.betterend.grasping_at_stars": "Firel - Grasping At Stars",
-	"jukebox_song.betterend.ender_hollow": "noqwww - Ender Hollow",
-	"jukebox_song.betterend.moonlit_undercurrents": "noqwww - Moonlit Undercurrents",
-	"jukebox_song.betterend.strange_and_alien": "Firel - Strange And Alien"
+  "jukebox_song.betterend.endseeker": "Firel - Endseeker",
+  "jukebox_song.betterend.eo_dracona": "Firel - Eo Dracona",
+  "jukebox_song.betterend.grasping_at_stars": "Firel - Grasping At Stars",
+  "jukebox_song.betterend.ender_hollow": "noqwww - Ender Hollow",
+  "jukebox_song.betterend.moonlit_undercurrents": "noqwww - Moonlit Undercurrents",
+  "jukebox_song.betterend.strange_and_alien": "Firel - Strange And Alien"
 }

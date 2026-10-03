@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:dragon_bone_block"
+        "recipes": "betterend:dragon_bone_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

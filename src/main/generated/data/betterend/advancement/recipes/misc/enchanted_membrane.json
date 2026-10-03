@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:enchanted_membrane"
+        "recipes": "betterend:enchanted_membrane"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -4,7 +4,7 @@
       "loop": "betterend:betterend.ambient.caves",
       "mood": {
         "block_search_extent": 8,
-        "offset": 2.0,
+        "offset": 2,
         "sound": "betterend:betterend.ambient.dust_wastelands",
         "tick_delay": 6000
       }

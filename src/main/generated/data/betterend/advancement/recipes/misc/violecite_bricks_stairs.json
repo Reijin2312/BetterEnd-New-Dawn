@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:violecite_bricks_stairs"
+        "recipes": "betterend:violecite_bricks_stairs"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:azure_jadestone_polished_stonecutting"
+        "recipes": "betterend:azure_jadestone_polished_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

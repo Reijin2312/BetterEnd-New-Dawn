@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:terminite_spear_tip"
+        "recipes": "betterend:terminite_spear_tip"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

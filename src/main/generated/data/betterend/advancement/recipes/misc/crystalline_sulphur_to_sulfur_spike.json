@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:crystalline_sulphur_to_sulfur_spike"
+        "recipes": "betterend:crystalline_sulphur_to_sulfur_spike"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

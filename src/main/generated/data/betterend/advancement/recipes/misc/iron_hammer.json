@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:iron_hammer"
+        "recipes": "betterend:iron_hammer"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

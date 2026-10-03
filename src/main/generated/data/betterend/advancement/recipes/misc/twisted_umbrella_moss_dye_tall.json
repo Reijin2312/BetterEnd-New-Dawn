@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:twisted_umbrella_moss_dye_tall"
+        "recipes": "betterend:twisted_umbrella_moss_dye_tall"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

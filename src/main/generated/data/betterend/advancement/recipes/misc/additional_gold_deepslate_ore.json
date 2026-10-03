@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:additional_gold_deepslate_ore"
+        "recipes": "betterend:additional_gold_deepslate_ore"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

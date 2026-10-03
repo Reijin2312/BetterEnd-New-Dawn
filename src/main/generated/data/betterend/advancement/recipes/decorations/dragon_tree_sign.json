@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:dragon_tree_sign"
+        "recipes": "betterend:dragon_tree_sign"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

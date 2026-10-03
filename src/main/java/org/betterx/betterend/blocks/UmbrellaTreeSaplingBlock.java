@@ -4,7 +4,6 @@ import org.betterx.bclib.client.render.BCLRenderLayer;
 import org.betterx.betterend.blocks.basis.PottableFeatureSapling;
 import org.betterx.betterend.interfaces.survives.SurvivesOnJungleMoss;
 import org.betterx.betterend.registry.features.EndConfiguredVegetation;
-import org.betterx.betterend.world.features.trees.UmbrellaTreeFeature;
 
 
 public class UmbrellaTreeSaplingBlock extends PottableFeatureSapling implements SurvivesOnJungleMoss {

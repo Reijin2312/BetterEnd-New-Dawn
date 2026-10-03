@@ -3,5 +3,6 @@
   "ingredient": "betterend:thallasium_helmet",
   "result": {
     "id": "betterend:thallasium_nugget"
-  }
+  },
+  "cookingtime": 100
 }

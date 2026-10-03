@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:tenanea_composter"
+        "recipes": "betterend:tenanea_composter"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

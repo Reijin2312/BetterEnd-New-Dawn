@@ -16,7 +16,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:terminite_slab"
+        "recipes": "betterend:terminite_slab"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

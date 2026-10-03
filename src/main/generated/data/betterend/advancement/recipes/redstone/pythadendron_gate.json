@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:pythadendron_gate"
+        "recipes": "betterend:pythadendron_gate"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

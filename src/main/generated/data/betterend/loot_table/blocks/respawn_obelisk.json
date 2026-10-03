@@ -2,22 +2,20 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "conditions": [
-        {
-          "block": "betterend:respawn_obelisk",
-          "condition": "minecraft:block_state_property",
-          "properties": {
-            "shape": "bottom"
-          }
-        }
-      ],
       "entries": [
         {
           "type": "minecraft:item",
           "name": "betterend:respawn_obelisk"
         }
       ],
-      "rolls": 1.0
+      "rolls": 1,
+      "condition": {
+        "type": "minecraft:match_block",
+        "blocks": "betterend:respawn_obelisk",
+        "state": {
+          "shape": "bottom"
+        }
+      }
     }
   ],
   "random_sequence": "betterend:blocks/respawn_obelisk"

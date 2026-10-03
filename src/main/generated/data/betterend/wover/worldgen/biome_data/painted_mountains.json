@@ -2,21 +2,15 @@
   "type": "betterend:biome",
   "parent": "betterend:dust_wastelands",
   "biome": "betterend:painted_mountains",
-  "fogDensity": 2.0,
+  "fogDensity": 2,
   "generation_data": {
     "intended_placement": "wover:is_end/land"
   },
   "has_caves": true,
   "surface": {
-    "alt": {
-      "Name": "betterend:endstone_dust"
-    },
+    "alt": "betterend:endstone_dust",
     "floor_rule": true,
-    "top": {
-      "Name": "betterend:endstone_dust"
-    },
-    "under": {
-      "Name": "minecraft:end_stone"
-    }
+    "top": "betterend:endstone_dust",
+    "under": "minecraft:end_stone"
   }
 }

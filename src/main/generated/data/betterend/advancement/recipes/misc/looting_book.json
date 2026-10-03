@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:looting_book"
+        "recipes": "betterend:looting_book"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

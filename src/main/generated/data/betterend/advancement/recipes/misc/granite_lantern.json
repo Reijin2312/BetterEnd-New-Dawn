@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:granite_lantern"
+        "recipes": "betterend:granite_lantern"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

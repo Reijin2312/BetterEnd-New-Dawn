@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:flame_book"
+        "recipes": "betterend:flame_book"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

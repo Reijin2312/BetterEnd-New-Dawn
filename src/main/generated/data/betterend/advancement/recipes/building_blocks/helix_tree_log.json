@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:helix_tree_log"
+        "recipes": "betterend:helix_tree_log"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

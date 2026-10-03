@@ -1,5 +1,5 @@
 {
-	"textures": {
-		"particle": "betterend:block/%texture%"
-	}
+  "textures": {
+    "particle": "betterend:block/%texture%"
+  }
 }

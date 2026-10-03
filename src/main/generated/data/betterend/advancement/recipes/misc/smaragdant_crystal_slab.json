@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:smaragdant_crystal_slab"
+        "recipes": "betterend:smaragdant_crystal_slab"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

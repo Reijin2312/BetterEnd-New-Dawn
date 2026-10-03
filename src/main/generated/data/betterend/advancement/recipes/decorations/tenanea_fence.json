@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:tenanea_fence"
+        "recipes": "betterend:tenanea_fence"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

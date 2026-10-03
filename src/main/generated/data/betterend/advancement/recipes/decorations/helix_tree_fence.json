@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:helix_tree_fence"
+        "recipes": "betterend:helix_tree_fence"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

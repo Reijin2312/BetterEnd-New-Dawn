@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:stonecutter_end_stone_brick_weathered_stairs"
+        "recipes": "betterend:stonecutter_end_stone_brick_weathered_stairs"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

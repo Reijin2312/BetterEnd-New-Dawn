@@ -3,5 +3,6 @@
   "ingredient": "betterend:thallasium_leggings",
   "result": {
     "id": "betterend:thallasium_nugget"
-  }
+  },
+  "cookingtime": 200
 }

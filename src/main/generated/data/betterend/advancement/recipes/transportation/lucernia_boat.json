@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:lucernia_boat"
+        "recipes": "betterend:lucernia_boat"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

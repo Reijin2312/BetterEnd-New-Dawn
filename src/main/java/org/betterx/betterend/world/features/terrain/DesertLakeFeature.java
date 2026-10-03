@@ -1,6 +1,5 @@
 package org.betterx.betterend.world.features.terrain;
 
-import com.mojang.serialization.Codec;
 
 import com.mojang.serialization.MapCodec;
 
@@ -43,13 +42,20 @@ public class DesertLakeFeature extends DefaultFeature {
         BlockPos blockPos = featureOrigin;
         final WorldGenLevel world = featureWorld;
         double radius = MHelper.randRange(8.0, 15.0, random);
-        double depth = radius * 0.5 * MHelper.randRange(0.8, 1.2, random);
-        int dist = MHelper.floor(radius);
-        int dist2 = MHelper.floor(radius * 1.5);
-        int bott = MHelper.floor(depth);
+        double depthScale = MHelper.randRange(0.8, 1.2, random);
         blockPos = getPosOnSurfaceWG(world, blockPos);
 
         if (blockPos.getY() < 10) return false;
+
+        final WriteZone zone = WriteZone.of(world);
+        // The shore is 1.5x the bowl radius and BlockFixer needs a one-block neighbour margin.
+        // 26.2 silently read incomplete chunks when this did not fit; 26.3 correctly reports it.
+        radius = Math.min(radius, Math.max(0.0, (zone.headroom(blockPos.getX(), blockPos.getZ()) - 2.0) / 1.5));
+        if (radius < 4.0) return false;
+        double depth = radius * 0.5 * depthScale;
+        int dist = MHelper.floor(radius);
+        int dist2 = MHelper.floor(radius * 1.5);
+        int bott = MHelper.floor(depth);
 
         int waterLevel = blockPos.getY();
 
@@ -78,7 +84,6 @@ public class DesertLakeFeature extends DefaultFeature {
         // removes is the "Detected unsafe terrain read during worldgen" spam and, more importantly, the lake
         // shaping itself reading blocks from chunks that have not been carved - or even filled - yet.
         // See WriteZone.
-        final WriteZone zone = WriteZone.of(world);
         int minX = zone.clampX(blockPos.getX() - dist2);
         int maxX = zone.clampX(blockPos.getX() + dist2);
         int minZ = zone.clampZ(blockPos.getZ() - dist2);
@@ -245,7 +250,8 @@ public class DesertLakeFeature extends DefaultFeature {
         BlockFixer.fixBlocks(
                 world,
                 new BlockPos(zone.clampX(minX - 2), waterLevel - 2, zone.clampZ(minZ - 2)),
-                new BlockPos(zone.clampX(maxX + 2), blockPos.getY() + 20, zone.clampZ(maxZ + 2))
+                new BlockPos(zone.clampX(maxX + 2), blockPos.getY() + 20, zone.clampZ(maxZ + 2)),
+                zone.toBoundingBox()
         );
 
         return true;

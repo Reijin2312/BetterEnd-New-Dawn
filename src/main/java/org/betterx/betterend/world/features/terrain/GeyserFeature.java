@@ -1,6 +1,5 @@
 package org.betterx.betterend.world.features.terrain;
 
-import com.mojang.serialization.Codec;
 
 import com.mojang.serialization.MapCodec;
 
@@ -296,7 +295,7 @@ public class GeyserFeature extends DefaultFeature {
                 pos.getY() + (int) (-halfHeight - 5 + distance),
                 zone.clampZ(pos.getZ() + (int) distance)
         );
-        BlockFixer.fixBlocks(world, start, end);
+        BlockFixer.fixBlocks(world, start, end, zone.toBoundingBox());
 
         // Turn the buried part of the brimstone bowl into the same sulfur/cinnabar deposit the lake bed
         // gets. Deliberately a post-pass over the finished geometry rather than a change to the SDF

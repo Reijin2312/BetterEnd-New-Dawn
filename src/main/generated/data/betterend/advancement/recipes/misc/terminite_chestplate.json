@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:terminite_chestplate"
+        "recipes": "betterend:terminite_chestplate"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

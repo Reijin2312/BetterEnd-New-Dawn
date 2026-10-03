@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:umbrella_tree_stripped_bark"
+        "recipes": "betterend:umbrella_tree_stripped_bark"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

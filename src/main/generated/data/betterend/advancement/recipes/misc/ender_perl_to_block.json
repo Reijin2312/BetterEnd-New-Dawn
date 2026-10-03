@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:ender_perl_to_block"
+        "recipes": "betterend:ender_perl_to_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

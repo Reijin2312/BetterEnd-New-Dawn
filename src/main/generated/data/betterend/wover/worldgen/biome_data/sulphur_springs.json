@@ -7,19 +7,15 @@
   },
   "has_caves": false,
   "surface": {
-    "alt": {
-      "Name": "betterend:sulphuric_rock"
-    },
+    "alt": "betterend:sulphuric_rock",
     "floor_rule": false,
     "top": {
-      "Name": "betterend:brimstone",
-      "Properties": {
+      "id": "betterend:brimstone",
+      "properties": {
         "active": "false"
       }
     },
-    "under": {
-      "Name": "minecraft:end_stone"
-    }
+    "under": "minecraft:end_stone"
   },
-  "terrainHeight": 0.0
+  "terrainHeight": 0
 }

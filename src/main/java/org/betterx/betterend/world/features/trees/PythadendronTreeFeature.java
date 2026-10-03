@@ -1,6 +1,5 @@
 package org.betterx.betterend.world.features.trees;
 
-import com.mojang.serialization.Codec;
 
 import com.mojang.serialization.MapCodec;
 
@@ -253,7 +252,7 @@ public class PythadendronTreeFeature extends DefaultFeature {
             return BlocksHelper.replaceableOrPlant(state);
         };
 
-        IGNORE = EndBlocks.PYTHADENDRON::isTreeLog;
+        IGNORE = state -> EndBlocks.PYTHADENDRON.isTreeLog(state);
 
         POST = (info) -> {
             if (EndBlocks.PYTHADENDRON.isTreeLog(info.getStateUp()) && EndBlocks.PYTHADENDRON.isTreeLog(info.getStateDown())) {

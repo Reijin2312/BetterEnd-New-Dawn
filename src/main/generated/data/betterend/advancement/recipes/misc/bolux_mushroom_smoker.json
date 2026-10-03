@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:bolux_mushroom_smoker"
+        "recipes": "betterend:bolux_mushroom_smoker"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

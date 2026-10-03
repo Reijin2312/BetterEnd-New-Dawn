@@ -4,7 +4,7 @@
       "loop": "betterend:betterend.ambient.umbra_valley",
       "mood": {
         "block_search_extent": 8,
-        "offset": 2.0,
+        "offset": 2,
         "sound": "betterend:betterend.ambient.dust_wastelands",
         "tick_delay": 6000
       }
@@ -22,7 +22,7 @@
         "particle": {
           "type": "betterend:amber_sphere"
         },
-        "probability": 1.0E-4
+        "probability": 0.0001
       }
     ],
     "minecraft:visual/fog_color": "#646464",

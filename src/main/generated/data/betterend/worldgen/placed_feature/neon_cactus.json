@@ -1,7 +1,6 @@
 {
   "feature": {
-    "type": "betterend:neon_cactus",
-    "config": {}
+    "type": "betterend:neon_cactus"
   },
   "placement": [
     {

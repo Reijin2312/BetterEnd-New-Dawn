@@ -6,7 +6,6 @@ import org.betterx.betterend.world.biome.EndBiomeKey;
 
 import net.minecraft.world.level.levelgen.material.MaterialRules;
 import net.minecraft.world.level.levelgen.material.condition.MaterialCondition;
-import net.minecraft.world.level.levelgen.material.rule.MaterialRule;
 
 public class BYGBiomes {
     public static final MaterialCondition BYG_WATER_CHECK = MaterialRules.waterBlockCheck(-1, 0);

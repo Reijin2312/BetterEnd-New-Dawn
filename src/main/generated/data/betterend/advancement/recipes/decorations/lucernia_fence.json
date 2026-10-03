@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:lucernia_fence"
+        "recipes": "betterend:lucernia_fence"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

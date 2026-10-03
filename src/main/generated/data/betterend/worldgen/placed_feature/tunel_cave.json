@@ -1,7 +1,6 @@
 {
   "feature": {
-    "type": "betterend:tunel_cave",
-    "config": {}
+    "type": "betterend:tunel_cave"
   },
   "placement": [
     {

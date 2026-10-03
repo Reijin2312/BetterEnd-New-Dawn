@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:projectile_protection_book"
+        "recipes": "betterend:projectile_protection_book"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

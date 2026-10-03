@@ -4,7 +4,7 @@
       "loop": "betterend:betterend.ambient.glowing_grasslands",
       "mood": {
         "block_search_extent": 8,
-        "offset": 2.0,
+        "offset": 2,
         "sound": "betterend:betterend.ambient.dust_wastelands",
         "tick_delay": 6000
       }
@@ -22,7 +22,7 @@
         "particle": {
           "type": "betterend:firefly"
         },
-        "probability": 7.0E-4
+        "probability": 0.0007
       }
     ],
     "minecraft:visual/fog_color": "#f42e4f",
@@ -77,8 +77,11 @@
     "monster": [
       {
         "type": "minecraft:enderman",
-        "maxCount": 2,
-        "minCount": 1,
+        "count": {
+          "type": "minecraft:uniform",
+          "min_inclusive": 1,
+          "max_inclusive": 2
+        },
         "weight": 1
       }
     ],

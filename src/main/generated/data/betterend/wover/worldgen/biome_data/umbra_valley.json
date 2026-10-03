@@ -6,15 +6,9 @@
   },
   "has_caves": true,
   "surface": {
-    "alt": {
-      "Name": "betterend:pallidium_full"
-    },
+    "alt": "betterend:pallidium_full",
     "floor_rule": false,
-    "top": {
-      "Name": "betterend:umbralith"
-    },
-    "under": {
-      "Name": "betterend:umbralith"
-    }
+    "top": "betterend:umbralith",
+    "under": "betterend:umbralith"
   }
 }

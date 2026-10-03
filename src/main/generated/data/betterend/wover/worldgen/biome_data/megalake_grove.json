@@ -2,22 +2,16 @@
   "type": "betterend:biome",
   "parent": "betterend:megalake",
   "biome": "betterend:megalake_grove",
-  "fogDensity": 2.0,
+  "fogDensity": 2,
   "generation_data": {
     "intended_placement": "wover:is_end/land"
   },
   "has_caves": true,
   "surface": {
-    "alt": {
-      "Name": "betterend:end_moss"
-    },
+    "alt": "betterend:end_moss",
     "floor_rule": true,
-    "top": {
-      "Name": "betterend:end_moss"
-    },
-    "under": {
-      "Name": "minecraft:end_stone"
-    }
+    "top": "betterend:end_moss",
+    "under": "minecraft:end_stone"
   },
-  "terrainHeight": 0.0
+  "terrainHeight": 0
 }

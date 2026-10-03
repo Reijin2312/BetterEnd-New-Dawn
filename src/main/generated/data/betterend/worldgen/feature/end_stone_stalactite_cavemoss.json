@@ -1,0 +1,22 @@
+{
+  "type": "betterend:stalactite_feature",
+  "allowed_ground": {
+    "type": "minecraft:matching_blocks",
+    "blocks": [
+      "minecraft:end_stone",
+      "betterend:cave_moss"
+    ]
+  },
+  "ceiling": true,
+  "states": {
+    "type": "minecraft:simple",
+    "state": {
+      "id": "betterend:end_stone_stalactite_cavemoss",
+      "properties": {
+        "is_floor": "true",
+        "size": "0",
+        "waterlogged": "false"
+      }
+    }
+  }
+}

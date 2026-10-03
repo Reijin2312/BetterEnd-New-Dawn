@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:aqua_affinity_book"
+        "recipes": "betterend:aqua_affinity_book"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

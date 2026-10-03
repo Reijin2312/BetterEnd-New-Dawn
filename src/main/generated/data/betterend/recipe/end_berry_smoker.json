@@ -4,5 +4,6 @@
   "ingredient": "betterend:shadow_berry_raw",
   "result": {
     "id": "betterend:shadow_berry_cooked"
-  }
+  },
+  "cookingtime": 100
 }

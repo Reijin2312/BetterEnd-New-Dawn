@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:copy_tool_assembly"
+        "recipes": "betterend:copy_tool_assembly"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

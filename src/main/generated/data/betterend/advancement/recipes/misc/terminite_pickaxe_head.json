@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:terminite_pickaxe_head"
+        "recipes": "betterend:terminite_pickaxe_head"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

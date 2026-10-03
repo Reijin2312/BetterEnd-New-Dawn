@@ -1,35 +1,33 @@
 {
   "feature": {
     "type": "betterend:bush_with_outer_feature",
-    "config": {
-      "leaves": {
-        "type": "minecraft:simple_state_provider",
-        "state": {
-          "Name": "betterend:lucernia_leaves",
-          "Properties": {
-            "distance": "7",
-            "persistent": "false",
-            "waterlogged": "false"
-          }
+    "leaves": {
+      "type": "minecraft:simple",
+      "state": {
+        "id": "betterend:lucernia_leaves",
+        "properties": {
+          "distance": "7",
+          "persistent": "false",
+          "waterlogged": "false"
         }
-      },
-      "outer_leaves": {
-        "type": "minecraft:simple_state_provider",
-        "state": {
-          "Name": "betterend:lucernia_outer_leaves",
-          "Properties": {
-            "facing": "up",
-            "waterlogged": "false"
-          }
+      }
+    },
+    "outer_leaves": {
+      "type": "minecraft:simple",
+      "state": {
+        "id": "betterend:lucernia_outer_leaves",
+        "properties": {
+          "facing": "up",
+          "waterlogged": "false"
         }
-      },
-      "stem": {
-        "type": "minecraft:simple_state_provider",
-        "state": {
-          "Name": "betterend:lucernia_bark",
-          "Properties": {
-            "axis": "y"
-          }
+      }
+    },
+    "stem": {
+      "type": "minecraft:simple",
+      "state": {
+        "id": "betterend:lucernia_bark",
+        "properties": {
+          "axis": "y"
         }
       }
     }

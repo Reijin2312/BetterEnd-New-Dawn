@@ -26,7 +26,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:sulphuric_rock_lantern"
+        "recipes": "betterend:sulphuric_rock_lantern"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:terminite_bulb_lantern_cyan"
+        "recipes": "betterend:terminite_bulb_lantern_cyan"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -3,5 +3,6 @@
   "ingredient": "betterend:terminite_boots",
   "result": {
     "id": "betterend:terminite_nugget"
-  }
+  },
+  "cookingtime": 100
 }

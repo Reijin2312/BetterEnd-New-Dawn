@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:end_berry_campfire"
+        "recipes": "betterend:end_berry_campfire"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

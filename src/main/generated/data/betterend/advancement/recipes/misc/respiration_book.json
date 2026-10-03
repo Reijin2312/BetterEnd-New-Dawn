@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:respiration_book"
+        "recipes": "betterend:respiration_book"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

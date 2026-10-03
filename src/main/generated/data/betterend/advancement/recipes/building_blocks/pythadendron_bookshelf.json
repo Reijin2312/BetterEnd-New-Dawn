@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:pythadendron_bookshelf"
+        "recipes": "betterend:pythadendron_bookshelf"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

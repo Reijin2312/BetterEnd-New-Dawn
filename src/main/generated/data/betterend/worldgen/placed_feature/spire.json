@@ -1,7 +1,6 @@
 {
   "feature": {
-    "type": "betterend:spire",
-    "config": {}
+    "type": "betterend:spire"
   },
   "placement": [
     {

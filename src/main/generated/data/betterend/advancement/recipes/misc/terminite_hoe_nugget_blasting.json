@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:terminite_hoe_nugget_blasting"
+        "recipes": "betterend:terminite_hoe_nugget_blasting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:efficiency_book"
+        "recipes": "betterend:efficiency_book"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

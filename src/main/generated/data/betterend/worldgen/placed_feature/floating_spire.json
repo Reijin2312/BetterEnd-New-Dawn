@@ -1,7 +1,6 @@
 {
   "feature": {
-    "type": "betterend:floating_spire",
-    "config": {}
+    "type": "betterend:floating_spire"
   },
   "placement": [
     {

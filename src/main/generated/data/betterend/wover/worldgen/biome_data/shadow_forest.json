@@ -7,15 +7,9 @@
   },
   "has_caves": true,
   "surface": {
-    "alt": {
-      "Name": "betterend:shadow_grass"
-    },
+    "alt": "betterend:shadow_grass",
     "floor_rule": true,
-    "top": {
-      "Name": "betterend:shadow_grass"
-    },
-    "under": {
-      "Name": "minecraft:end_stone"
-    }
+    "top": "betterend:shadow_grass",
+    "under": "minecraft:end_stone"
   }
 }

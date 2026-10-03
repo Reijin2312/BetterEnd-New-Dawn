@@ -2,7 +2,7 @@
   "type": "minecraft:blasting",
   "category": "misc",
   "cookingtime": 100,
-  "experience": 0.0,
+  "experience": 0,
   "ingredient": "betterend:terminite_spear",
   "result": {
     "id": "betterend:terminite_nugget"

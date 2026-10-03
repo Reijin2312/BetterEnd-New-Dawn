@@ -7,15 +7,9 @@
   },
   "has_caves": true,
   "surface": {
-    "alt": {
-      "Name": "betterend:chorus_nylium"
-    },
+    "alt": "betterend:chorus_nylium",
     "floor_rule": true,
-    "top": {
-      "Name": "betterend:chorus_nylium"
-    },
-    "under": {
-      "Name": "minecraft:end_stone"
-    }
+    "top": "betterend:chorus_nylium",
+    "under": "minecraft:end_stone"
   }
 }

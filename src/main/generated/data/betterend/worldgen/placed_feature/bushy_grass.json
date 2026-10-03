@@ -1,16 +1,12 @@
 {
   "feature": {
     "type": "betterend:single_plant_feature",
-    "config": {
-      "chance": 1,
-      "radius": 8,
-      "raw_heightmap": false,
-      "state": {
-        "type": "minecraft:simple_state_provider",
-        "state": {
-          "Name": "betterend:bushy_grass"
-        }
-      }
+    "chance": 1,
+    "radius": 8,
+    "raw_heightmap": false,
+    "state": {
+      "type": "minecraft:simple",
+      "state": "betterend:bushy_grass"
     }
   },
   "placement": [

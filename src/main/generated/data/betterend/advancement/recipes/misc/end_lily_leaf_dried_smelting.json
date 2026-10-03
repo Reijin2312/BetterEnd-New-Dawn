@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:end_lily_leaf_dried_smelting"
+        "recipes": "betterend:end_lily_leaf_dried_smelting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

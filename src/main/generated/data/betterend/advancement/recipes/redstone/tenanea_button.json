@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:tenanea_button"
+        "recipes": "betterend:tenanea_button"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:slime_ball_smelting"
+        "recipes": "betterend:slime_ball_smelting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

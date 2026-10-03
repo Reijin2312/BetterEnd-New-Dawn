@@ -15,7 +15,6 @@ import org.betterx.wover.surface.impl.rules.SwitchRuleSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.material.MaterialRules;
-import net.minecraft.world.level.levelgen.material.rule.MaterialRule;
 
 import java.util.List;
 

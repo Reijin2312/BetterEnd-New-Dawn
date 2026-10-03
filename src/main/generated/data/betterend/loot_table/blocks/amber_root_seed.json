@@ -1,10 +1,5 @@
 {
   "type": "minecraft:block",
-  "functions": [
-    {
-      "function": "minecraft:explosion_decay"
-    }
-  ],
   "pools": [
     {
       "entries": [
@@ -13,26 +8,22 @@
           "children": [
             {
               "type": "minecraft:item",
-              "conditions": [
-                {
-                  "block": "betterend:amber_root_seed",
-                  "condition": "minecraft:block_state_property",
-                  "properties": {
-                    "age": "3"
-                  }
+              "name": "betterend:amber_root_raw",
+              "condition": {
+                "type": "minecraft:match_block",
+                "blocks": "betterend:amber_root_seed",
+                "state": {
+                  "age": "3"
                 }
-              ],
-              "functions": [
-                {
-                  "count": {
-                    "type": "minecraft:uniform",
-                    "max": 2.0,
-                    "min": 1.0
-                  },
-                  "function": "minecraft:set_count"
-                }
-              ],
-              "name": "betterend:amber_root_raw"
+              },
+              "modifier": {
+                "count": {
+                  "type": "minecraft:uniform",
+                  "max": 2,
+                  "min": 1
+                },
+                "type": "minecraft:set_count"
+              }
             },
             {
               "type": "minecraft:item",
@@ -41,45 +32,46 @@
           ]
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     },
     {
-      "conditions": [
-        {
-          "block": "betterend:amber_root_seed",
-          "condition": "minecraft:block_state_property",
-          "properties": {
-            "age": "3"
-          }
-        }
-      ],
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "name": "betterend:amber_root_seed",
+          "modifier": [
             {
               "count": {
                 "type": "minecraft:uniform",
-                "max": 3.0,
-                "min": 1.0
+                "max": 3,
+                "min": 1
               },
-              "function": "minecraft:set_count"
+              "type": "minecraft:set_count"
             },
             {
               "enchantment": "minecraft:fortune",
               "formula": "minecraft:binomial_with_bonus_count",
-              "function": "minecraft:apply_bonus",
+              "type": "minecraft:apply_bonus",
               "parameters": {
                 "extra": 3,
                 "probability": 0.571
               }
             }
-          ],
-          "name": "betterend:amber_root_seed"
+          ]
         }
       ],
-      "rolls": 1.0
+      "rolls": 1,
+      "condition": {
+        "type": "minecraft:match_block",
+        "blocks": "betterend:amber_root_seed",
+        "state": {
+          "age": "3"
+        }
+      }
     }
   ],
-  "random_sequence": "betterend:blocks/amber_root_seed"
+  "random_sequence": "betterend:blocks/amber_root_seed",
+  "modifier": {
+    "type": "minecraft:explosion_decay"
+  }
 }

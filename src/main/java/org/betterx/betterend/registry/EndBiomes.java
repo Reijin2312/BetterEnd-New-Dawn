@@ -26,11 +26,11 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.dimension.LevelStem;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public class EndBiomes {
     public static WoverBiomePicker CAVE_BIOMES = null;
@@ -128,7 +128,9 @@ public class EndBiomes {
 
 
         if (CAVE_BIOMES == null || CAVE_BIOMES.biomeRegistry != registry) {
-            CAVE_BIOMES = new WoverBiomePicker(Biomes.END_HIGHLANDS);
+            // A cave picker must never fall back to a surface biome. 26.2 never hit this fallback in
+            // practice because the cave tag was already bound; 26.3 can initialize a little earlier.
+            CAVE_BIOMES = new WoverBiomePicker(EMPTY_END_CAVE.key);
             registry.get(EndTags.IS_END_CAVE)
                     .map(tag -> tag
                             .stream()
@@ -140,6 +142,22 @@ public class EndBiomes {
                     ).ifPresent(
                             list -> list.forEach(data -> CAVE_BIOMES.addBiome(data))
                     );
+
+            // In 26.3 tags can still be unbound when SERVER_LEVEL_READY is emitted. The 26.2 code
+            // happened to see a populated tag here; when the tag is empty the picker silently falls
+            // back to minecraft:end_highlands, which then reaches cave decorators as a non-cave biome.
+            // Populate the same six entries directly as a fallback. WoverBiomePicker is set-backed, so
+            // entries already supplied by the tag are harmless duplicates.
+            Stream.of(
+                    EMPTY_END_CAVE.dataKey,
+                    EMPTY_SMARAGDANT_CAVE.dataKey,
+                    LUSH_SMARAGDANT_CAVE.dataKey,
+                    EMPTY_AURORA_CAVE.dataKey,
+                    LUSH_AURORA_CAVE.dataKey,
+                    JADE_CAVE.dataKey
+            ).map(k -> dataRegistry.getOptional(k).orElse(null))
+             .filter(Objects::nonNull)
+             .forEach(CAVE_BIOMES::addBiome);
 
             CAVE_BIOMES.rebuild();
             caveBiomeMap = null;

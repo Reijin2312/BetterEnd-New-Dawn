@@ -22,7 +22,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:lucernia_planks"
+        "recipes": "betterend:lucernia_planks"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

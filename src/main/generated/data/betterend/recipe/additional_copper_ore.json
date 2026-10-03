@@ -1,6 +1,6 @@
 {
   "type": "bclib:alloying",
-  "experience": 3.0,
+  "experience": 3,
   "ingredients": [
     "minecraft:copper_ore",
     "minecraft:copper_ore"

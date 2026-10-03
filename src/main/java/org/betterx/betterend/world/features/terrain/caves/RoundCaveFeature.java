@@ -1,6 +1,5 @@
 package org.betterx.betterend.world.features.terrain.caves;
 
-import com.mojang.serialization.Codec;
 
 import com.mojang.serialization.MapCodec;
 import org.betterx.bclib.util.BlocksHelper;
@@ -31,7 +30,6 @@ public class RoundCaveFeature extends EndCaveFeatures {
     @Override
     protected Set<BlockPos> generate(WorldGenLevel world, BlockPos center, int radius, RandomSource random) {
         OpenSimplexNoise noise = new OpenSimplexNoise(MHelper.getSeed(534, center.getX(), center.getZ()));
-
         int x1 = center.getX() - radius - 5;
         int z1 = center.getZ() - radius - 5;
         int x2 = center.getX() + radius + 5;

@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:sweeping_book"
+        "recipes": "betterend:sweeping_book"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

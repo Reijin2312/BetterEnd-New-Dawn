@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:chorus_mushroom_campfire"
+        "recipes": "betterend:chorus_mushroom_campfire"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

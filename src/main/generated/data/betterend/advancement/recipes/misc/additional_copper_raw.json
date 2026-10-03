@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:additional_copper_raw"
+        "recipes": "betterend:additional_copper_raw"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:end_berry_smoker"
+        "recipes": "betterend:end_berry_smoker"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

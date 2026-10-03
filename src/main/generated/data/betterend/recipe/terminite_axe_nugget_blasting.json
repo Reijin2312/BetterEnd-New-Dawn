@@ -3,5 +3,6 @@
   "ingredient": "betterend:terminite_axe",
   "result": {
     "id": "betterend:terminite_nugget"
-  }
+  },
+  "cookingtime": 100
 }

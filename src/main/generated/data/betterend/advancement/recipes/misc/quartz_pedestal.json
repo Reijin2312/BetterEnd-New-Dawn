@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:quartz_pedestal"
+        "recipes": "betterend:quartz_pedestal"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

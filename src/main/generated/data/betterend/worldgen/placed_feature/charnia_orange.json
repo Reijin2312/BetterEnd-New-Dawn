@@ -1,16 +1,12 @@
 {
   "feature": {
     "type": "betterend:charnia_feature",
-    "config": {
-      "chance": 1,
-      "radius": 6,
-      "raw_heightmap": true,
-      "state": {
-        "type": "minecraft:simple_state_provider",
-        "state": {
-          "Name": "betterend:charnia_orange"
-        }
-      }
+    "chance": 1,
+    "radius": 6,
+    "raw_heightmap": true,
+    "state": {
+      "type": "minecraft:simple",
+      "state": "betterend:charnia_orange"
     }
   },
   "placement": [

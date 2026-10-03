@@ -18,30 +18,26 @@
           "collection": [
             {
               "type": "minecraft:block",
-              "result_state": {
-                "Name": "betterend:sulphuric_rock"
-              }
+              "result_state": "betterend:sulphuric_rock"
             },
             {
               "type": "minecraft:block",
               "result_state": {
-                "Name": "betterend:brimstone",
-                "Properties": {
+                "id": "betterend:brimstone",
+                "properties": {
                   "active": "false"
                 }
               }
             },
             {
               "type": "minecraft:block",
-              "result_state": {
-                "Name": "betterend:sulphuric_rock"
-              }
+              "result_state": "betterend:sulphuric_rock"
             },
             {
               "type": "minecraft:block",
               "result_state": {
-                "Name": "betterend:brimstone",
-                "Properties": {
+                "id": "betterend:brimstone",
+                "properties": {
                   "active": "false"
                 }
               }
@@ -67,30 +63,26 @@
           "collection": [
             {
               "type": "minecraft:block",
-              "result_state": {
-                "Name": "betterend:sulphuric_rock"
-              }
+              "result_state": "betterend:sulphuric_rock"
             },
             {
               "type": "minecraft:block",
               "result_state": {
-                "Name": "betterend:brimstone",
-                "Properties": {
+                "id": "betterend:brimstone",
+                "properties": {
                   "active": "false"
                 }
               }
             },
             {
               "type": "minecraft:block",
-              "result_state": {
-                "Name": "betterend:sulphuric_rock"
-              }
+              "result_state": "betterend:sulphuric_rock"
             },
             {
               "type": "minecraft:block",
               "result_state": {
-                "Name": "betterend:brimstone",
-                "Properties": {
+                "id": "betterend:brimstone",
+                "properties": {
                   "active": "false"
                 }
               }
@@ -104,9 +96,7 @@
       },
       {
         "type": "minecraft:block",
-        "result_state": {
-          "Name": "minecraft:end_stone"
-        }
+        "result_state": "minecraft:end_stone"
       }
     ]
   }

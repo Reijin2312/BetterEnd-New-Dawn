@@ -2,15 +2,13 @@
   "criteria": {
     "welcome": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "minecraft:location": {}
-            }
-          }
-        ]
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {}
+          },
+          "type": "minecraft:entity_properties"
+        }
       },
       "trigger": "minecraft:location"
     }

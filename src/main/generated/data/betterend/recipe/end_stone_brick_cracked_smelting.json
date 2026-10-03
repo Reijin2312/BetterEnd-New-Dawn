@@ -3,5 +3,6 @@
   "ingredient": "minecraft:end_stone_bricks",
   "result": {
     "id": "betterend:end_stone_brick_cracked"
-  }
+  },
+  "cookingtime": 200
 }

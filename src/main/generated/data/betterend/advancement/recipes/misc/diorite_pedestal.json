@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:diorite_pedestal"
+        "recipes": "betterend:diorite_pedestal"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

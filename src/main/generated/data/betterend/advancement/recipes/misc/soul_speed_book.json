@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:soul_speed_book"
+        "recipes": "betterend:soul_speed_book"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

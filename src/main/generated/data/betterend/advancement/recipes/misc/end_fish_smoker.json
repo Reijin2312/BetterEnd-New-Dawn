@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:end_fish_smoker"
+        "recipes": "betterend:end_fish_smoker"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

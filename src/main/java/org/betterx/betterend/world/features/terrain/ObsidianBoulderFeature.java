@@ -1,6 +1,5 @@
 package org.betterx.betterend.world.features.terrain;
 
-import com.mojang.serialization.Codec;
 
 import com.mojang.serialization.MapCodec;
 
@@ -37,9 +36,12 @@ public class ObsidianBoulderFeature extends DefaultFeature {
         final RandomSource random = featureRandom;
         BlockPos pos = featureOrigin;
         final WorldGenLevel world = featureWorld;
+        final WriteZone zone = WriteZone.of(world);
+        int initialX = zone.clampX(pos.getX() + random.nextInt(16));
+        int initialZ = zone.clampZ(pos.getZ() + random.nextInt(16));
         pos = getPosOnSurface(
                 world,
-                new BlockPos(pos.getX() + random.nextInt(16), pos.getY(), pos.getZ() + random.nextInt(16))
+                new BlockPos(initialX, pos.getY(), initialZ)
         );
         if (!world.getBlockState(pos.below()).is(CommonBlockTags.END_STONES)) {
             return false;
@@ -47,17 +49,19 @@ public class ObsidianBoulderFeature extends DefaultFeature {
 
         int count = MHelper.randRange(1, 5, random);
         for (int i = 0; i < count; i++) {
+            int x = zone.clampX(pos.getX() + random.nextInt(16) - 8);
+            int z = zone.clampZ(pos.getZ() + random.nextInt(16) - 8);
             BlockPos p = getPosOnSurface(
                     world,
-                    new BlockPos(pos.getX() + random.nextInt(16) - 8, pos.getY(), pos.getZ() + random.nextInt(16) - 8)
+                    new BlockPos(x, pos.getY(), z)
             );
-            makeBoulder(world, p, random);
+            makeBoulder(world, p, random, zone);
         }
 
         return true;
     }
 
-    private void makeBoulder(WorldGenLevel world, BlockPos pos, RandomSource random) {
+    private void makeBoulder(WorldGenLevel world, BlockPos pos, RandomSource random, WriteZone zone) {
         if (!world.getBlockState(pos.below()).is(CommonBlockTags.END_STONES)) {
             return;
         }
@@ -83,6 +87,6 @@ public class ObsidianBoulderFeature extends DefaultFeature {
             return state.is(CommonBlockTags.END_STONES) || BlocksHelper.replaceableOrPlant(state);
         // The noise displacement (+/-1.5) can push the flood-fill a little past the sphere's own radius;
         // clip it to the write zone so it can't wander into unloaded neighbour chunks. See WriteZone.
-        }).fillRecursive(world, pos, WriteZone.of(world).toBoundingBox());
+        }).fillRecursive(world, pos, zone.toBoundingBox());
     }
 }

@@ -3,5 +3,6 @@
   "ingredient": "betterend:jellyshroom_cap_purple",
   "result": {
     "id": "minecraft:slime_ball"
-  }
+  },
+  "cookingtime": 200
 }

@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:mending_book"
+        "recipes": "betterend:mending_book"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

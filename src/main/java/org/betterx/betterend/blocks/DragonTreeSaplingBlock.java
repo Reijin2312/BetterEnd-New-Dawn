@@ -3,7 +3,6 @@ package org.betterx.betterend.blocks;
 import org.betterx.betterend.blocks.basis.PottableFeatureSapling;
 import org.betterx.betterend.interfaces.survives.SurvivesOnShadowGrass;
 import org.betterx.betterend.registry.features.EndConfiguredVegetation;
-import org.betterx.betterend.world.features.trees.DragonTreeFeature;
 
 import net.minecraft.world.level.block.Block;
 

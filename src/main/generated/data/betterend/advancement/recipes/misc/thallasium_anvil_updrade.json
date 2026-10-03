@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:thallasium_anvil_updrade"
+        "recipes": "betterend:thallasium_anvil_updrade"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

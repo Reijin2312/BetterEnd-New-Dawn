@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:jellyshroom_fence"
+        "recipes": "betterend:jellyshroom_fence"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

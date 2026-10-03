@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:end_stone_brick_cracked_stairs"
+        "recipes": "betterend:end_stone_brick_cracked_stairs"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

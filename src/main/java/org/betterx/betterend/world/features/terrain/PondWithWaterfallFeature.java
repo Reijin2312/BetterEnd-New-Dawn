@@ -1,6 +1,5 @@
 package org.betterx.betterend.world.features.terrain;
 
-import com.mojang.serialization.Codec;
 
 import com.mojang.serialization.MapCodec;
 
@@ -54,7 +53,6 @@ public class PondWithWaterfallFeature extends DefaultFeature {
         return CODEC;
     }
     private static final BlockState END_STONE = Blocks.END_STONE.defaultBlockState();
-    private static final BlockState END_MOSS = EndBlocks.END_MOSS.defaultBlockState();
     private static final OpenSimplexNoise NOISE = new OpenSimplexNoise(6114);
 
     // The pond is sized to the island: it fills the flat plateau MINUS a DRY_RIM ring of solid ground
@@ -83,6 +81,7 @@ public class PondWithWaterfallFeature extends DefaultFeature {
         final WorldGenLevel world = featureWorld;
         final RandomSource random = featureRandom;
         final BlockPos origin = featureOrigin;
+        final BlockState endMoss = EndBlocks.END_MOSS.defaultBlockState();
 
         // Centre on the chunk (origin + 8). The pond is island-aware and cross-chunk safe, so the old
         // chunk-bound clamps (minX/maxX/minZ/maxZ) are gone.
@@ -161,7 +160,7 @@ public class PondWithWaterfallFeature extends DefaultFeature {
 
                 // Line the bowl floor: END_MOSS lip near the rim, end stone underneath.
                 pos.set(x, floorY, z);
-                BlocksHelper.setWithoutUpdate(world, pos, localDepth == 1 ? END_MOSS : END_STONE);
+                BlocksHelper.setWithoutUpdate(world, pos, localDepth == 1 ? endMoss : END_STONE);
                 pos.set(x, floorY - 1, z);
                 BlocksHelper.setWithoutUpdate(world, pos, END_STONE);
 

@@ -1,6 +1,5 @@
 package org.betterx.betterend.world.features.trees;
 
-import com.mojang.serialization.Codec;
 
 import com.mojang.serialization.MapCodec;
 
@@ -325,7 +324,7 @@ public class DragonTreeFeature extends DefaultFeature {
             return BlocksHelper.replaceableOrPlant(state);
         };
 
-        IGNORE = EndBlocks.DRAGON_TREE::isTreeLog;
+        IGNORE = state -> EndBlocks.DRAGON_TREE.isTreeLog(state);
 
         POST = (info) -> {
             if (EndBlocks.DRAGON_TREE.isTreeLog(info.getStateUp()) && EndBlocks.DRAGON_TREE.isTreeLog(info.getStateDown())) {

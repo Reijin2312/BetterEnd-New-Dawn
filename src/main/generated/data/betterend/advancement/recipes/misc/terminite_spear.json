@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:terminite_spear"
+        "recipes": "betterend:terminite_spear"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

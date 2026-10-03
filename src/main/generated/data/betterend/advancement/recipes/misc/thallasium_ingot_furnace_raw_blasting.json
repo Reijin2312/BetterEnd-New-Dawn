@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:thallasium_ingot_furnace_raw_blasting"
+        "recipes": "betterend:thallasium_ingot_furnace_raw_blasting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

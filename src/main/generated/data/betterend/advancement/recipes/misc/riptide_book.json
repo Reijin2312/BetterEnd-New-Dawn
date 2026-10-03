@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:riptide_book"
+        "recipes": "betterend:riptide_book"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -22,7 +22,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:jellyshroom_planks"
+        "recipes": "betterend:jellyshroom_planks"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -12,9 +12,7 @@
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "betterend:end_stone_brick_weathered"
-          }
+          "output_state": "betterend:end_stone_brick_weathered"
         }
       ]
     }

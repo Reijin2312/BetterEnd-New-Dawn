@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:azure_jadestone_flower_pot"
+        "recipes": "betterend:azure_jadestone_flower_pot"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

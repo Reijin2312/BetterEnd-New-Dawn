@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:jellyshroom_chiseled_bookshelf"
+        "recipes": "betterend:jellyshroom_chiseled_bookshelf"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

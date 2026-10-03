@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:flavolite_pedestal"
+        "recipes": "betterend:flavolite_pedestal"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

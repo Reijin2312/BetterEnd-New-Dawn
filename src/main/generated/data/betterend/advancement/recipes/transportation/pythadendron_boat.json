@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:pythadendron_boat"
+        "recipes": "betterend:pythadendron_boat"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

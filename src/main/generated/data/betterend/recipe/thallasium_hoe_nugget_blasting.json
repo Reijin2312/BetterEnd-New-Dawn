@@ -3,5 +3,6 @@
   "ingredient": "betterend:thallasium_hoe",
   "result": {
     "id": "betterend:thallasium_nugget"
-  }
+  },
+  "cookingtime": 100
 }

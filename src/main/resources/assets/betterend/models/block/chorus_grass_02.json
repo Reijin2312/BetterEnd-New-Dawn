@@ -1,6 +1,6 @@
 {
-    "parent": "block/cross",
-    "textures": {
-        "cross": "betterend:block/chorus_grass_02"
-    }
+  "parent": "block/cross",
+  "textures": {
+    "cross": "betterend:block/chorus_grass_02"
+  }
 }

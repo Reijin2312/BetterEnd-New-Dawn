@@ -1,6 +1,5 @@
 package org.betterx.betterend.world.features.trees;
 
-import com.mojang.serialization.Codec;
 
 import com.mojang.serialization.MapCodec;
 
@@ -230,7 +229,7 @@ public class TenaneaFeature extends DefaultFeature {
             return BlocksHelper.replaceableOrPlant(state);
         };
 
-        IGNORE = EndBlocks.TENANEA::isTreeLog;
+        IGNORE = state -> EndBlocks.TENANEA.isTreeLog(state);
 
         SPLINE = Lists.newArrayList(
                 new Vector3f(0.00F, 0.00F, 0.00F),

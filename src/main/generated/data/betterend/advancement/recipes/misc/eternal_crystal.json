@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:eternal_crystal"
+        "recipes": "betterend:eternal_crystal"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -2,22 +2,16 @@
   "type": "betterend:biome",
   "parent": "betterend:dust_wastelands",
   "biome": "betterend:neon_oasis",
-  "fogDensity": 2.0,
+  "fogDensity": 2,
   "genChance": 0.5,
   "generation_data": {
     "intended_placement": "wover:is_end/land"
   },
   "has_caves": true,
   "surface": {
-    "alt": {
-      "Name": "betterend:end_moss"
-    },
+    "alt": "betterend:end_moss",
     "floor_rule": true,
-    "top": {
-      "Name": "betterend:endstone_dust"
-    },
-    "under": {
-      "Name": "minecraft:end_stone"
-    }
+    "top": "betterend:endstone_dust",
+    "under": "minecraft:end_stone"
   }
 }

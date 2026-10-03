@@ -1,15 +1,13 @@
 {
   "feature": {
     "type": "betterend:wall_plant_feature",
-    "config": {
-      "radius": 6,
+    "radius": 6,
+    "state": {
+      "type": "minecraft:simple",
       "state": {
-        "type": "minecraft:simple_state_provider",
-        "state": {
-          "Name": "betterend:bulb_moss",
-          "Properties": {
-            "facing": "north"
-          }
+        "id": "betterend:bulb_moss",
+        "properties": {
+          "facing": "north"
         }
       }
     }

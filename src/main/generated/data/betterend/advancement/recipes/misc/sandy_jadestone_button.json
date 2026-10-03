@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:sandy_jadestone_button"
+        "recipes": "betterend:sandy_jadestone_button"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:lacugrove_sign"
+        "recipes": "betterend:lacugrove_sign"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

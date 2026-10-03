@@ -2,95 +2,94 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "conditions": [
-        {
-          "condition": "minecraft:any_of",
-          "terms": [
-            {
-              "block": "betterend:lumecorn",
-              "condition": "minecraft:block_state_property",
-              "properties": {
-                "shape": "bottom_big"
-              }
-            },
-            {
-              "block": "betterend:lumecorn",
-              "condition": "minecraft:block_state_property",
-              "properties": {
-                "shape": "bottom_small"
-              }
-            },
-            {
-              "block": "betterend:lumecorn",
-              "condition": "minecraft:block_state_property",
-              "properties": {
-                "shape": "middle"
-              }
-            }
-          ]
-        }
-      ],
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 2.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "betterend:lumecorn_seed"
+          "name": "betterend:lumecorn_seed",
+          "modifier": {
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 2,
+              "min": 1
+            },
+            "type": "minecraft:set_count"
+          }
         }
       ],
-      "rolls": 1.0
+      "rolls": 1,
+      "condition": {
+        "type": "minecraft:any_of",
+        "terms": [
+          {
+            "type": "minecraft:match_block",
+            "blocks": "betterend:lumecorn",
+            "state": {
+              "shape": "bottom_big"
+            }
+          },
+          {
+            "type": "minecraft:match_block",
+            "blocks": "betterend:lumecorn",
+            "state": {
+              "shape": "bottom_small"
+            }
+          },
+          {
+            "type": "minecraft:match_block",
+            "blocks": "betterend:lumecorn",
+            "state": {
+              "shape": "middle"
+            }
+          }
+        ]
+      }
     },
     {
-      "conditions": [
-        {
-          "condition": "minecraft:inverted",
-          "term": {
-            "condition": "minecraft:any_of",
-            "terms": [
-              {
-                "block": "betterend:lumecorn",
-                "condition": "minecraft:block_state_property",
-                "properties": {
-                  "shape": "bottom_big"
-                }
-              },
-              {
-                "block": "betterend:lumecorn",
-                "condition": "minecraft:block_state_property",
-                "properties": {
-                  "shape": "bottom_small"
-                }
-              },
-              {
-                "block": "betterend:lumecorn",
-                "condition": "minecraft:block_state_property",
-                "properties": {
-                  "shape": "middle"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "chance": 0.5,
-          "condition": "minecraft:random_chance"
-        }
-      ],
       "entries": [
         {
           "type": "minecraft:item",
           "name": "betterend:lumecorn_rod"
         }
       ],
-      "rolls": 1.0
+      "rolls": 1,
+      "condition": {
+        "type": "minecraft:all_of",
+        "terms": [
+          {
+            "type": "minecraft:inverted",
+            "term": {
+              "type": "minecraft:any_of",
+              "terms": [
+                {
+                  "type": "minecraft:match_block",
+                  "blocks": "betterend:lumecorn",
+                  "state": {
+                    "shape": "bottom_big"
+                  }
+                },
+                {
+                  "type": "minecraft:match_block",
+                  "blocks": "betterend:lumecorn",
+                  "state": {
+                    "shape": "bottom_small"
+                  }
+                },
+                {
+                  "type": "minecraft:match_block",
+                  "blocks": "betterend:lumecorn",
+                  "state": {
+                    "shape": "middle"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "chance": 0.5,
+            "type": "minecraft:random_chance"
+          }
+        ]
+      }
     }
   ],
   "random_sequence": "betterend:blocks/lumecorn"

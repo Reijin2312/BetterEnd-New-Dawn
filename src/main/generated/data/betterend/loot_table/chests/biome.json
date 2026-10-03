@@ -30,8 +30,8 @@
       ],
       "rolls": {
         "type": "minecraft:uniform",
-        "max": 2.0,
-        "min": 0.0
+        "max": 2,
+        "min": 0
       }
     },
     {
@@ -51,8 +51,8 @@
       ],
       "rolls": {
         "type": "minecraft:uniform",
-        "max": 8.0,
-        "min": 4.0
+        "max": 8,
+        "min": 4
       }
     },
     {
@@ -100,8 +100,8 @@
       ],
       "rolls": {
         "type": "minecraft:uniform",
-        "max": 4.0,
-        "min": 2.0
+        "max": 4,
+        "min": 2
       }
     },
     {
@@ -129,19 +129,11 @@
       ],
       "rolls": {
         "type": "minecraft:uniform",
-        "max": 4.0,
-        "min": 0.0
+        "max": 4,
+        "min": 0
       }
     },
     {
-      "conditions": [
-        {
-          "condition": "minecraft:location_check",
-          "predicate": {
-            "biomes": "betterend:umbrella_jungle"
-          }
-        }
-      ],
       "entries": [
         {
           "type": "minecraft:item",
@@ -158,19 +150,17 @@
       ],
       "rolls": {
         "type": "minecraft:uniform",
-        "max": 8.0,
-        "min": 4.0
+        "max": 8,
+        "min": 4
+      },
+      "condition": {
+        "type": "minecraft:location_check",
+        "predicate": {
+          "biomes": "betterend:umbrella_jungle"
+        }
       }
     },
     {
-      "conditions": [
-        {
-          "condition": "minecraft:location_check",
-          "predicate": {
-            "biomes": "betterend:lantern_woods"
-          }
-        }
-      ],
       "entries": [
         {
           "type": "minecraft:item",
@@ -187,19 +177,17 @@
       ],
       "rolls": {
         "type": "minecraft:uniform",
-        "max": 8.0,
-        "min": 4.0
+        "max": 8,
+        "min": 4
+      },
+      "condition": {
+        "type": "minecraft:location_check",
+        "predicate": {
+          "biomes": "betterend:lantern_woods"
+        }
       }
     },
     {
-      "conditions": [
-        {
-          "condition": "minecraft:location_check",
-          "predicate": {
-            "biomes": "betterend:shadow_forest"
-          }
-        }
-      ],
       "entries": [
         {
           "type": "minecraft:item",
@@ -220,19 +208,17 @@
       ],
       "rolls": {
         "type": "minecraft:uniform",
-        "max": 8.0,
-        "min": 4.0
+        "max": 8,
+        "min": 4
+      },
+      "condition": {
+        "type": "minecraft:location_check",
+        "predicate": {
+          "biomes": "betterend:shadow_forest"
+        }
       }
     },
     {
-      "conditions": [
-        {
-          "condition": "minecraft:location_check",
-          "predicate": {
-            "biomes": "betterend:chorus_forest"
-          }
-        }
-      ],
       "entries": [
         {
           "type": "minecraft:item",
@@ -253,19 +239,17 @@
       ],
       "rolls": {
         "type": "minecraft:uniform",
-        "max": 8.0,
-        "min": 4.0
+        "max": 8,
+        "min": 4
+      },
+      "condition": {
+        "type": "minecraft:location_check",
+        "predicate": {
+          "biomes": "betterend:chorus_forest"
+        }
       }
     },
     {
-      "conditions": [
-        {
-          "condition": "minecraft:location_check",
-          "predicate": {
-            "biomes": "betterend:foggy_mushroomland"
-          }
-        }
-      ],
       "entries": [
         {
           "type": "minecraft:item",
@@ -282,8 +266,14 @@
       ],
       "rolls": {
         "type": "minecraft:uniform",
-        "max": 8.0,
-        "min": 4.0
+        "max": 8,
+        "min": 4
+      },
+      "condition": {
+        "type": "minecraft:location_check",
+        "predicate": {
+          "biomes": "betterend:foggy_mushroomland"
+        }
       }
     }
   ],

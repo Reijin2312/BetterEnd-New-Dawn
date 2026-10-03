@@ -1,6 +1,5 @@
 package org.betterx.betterend.world.features.terrain.caves;
 
-import com.mojang.serialization.Codec;
 
 import com.mojang.serialization.MapCodec;
 import org.betterx.bclib.util.BlocksHelper;

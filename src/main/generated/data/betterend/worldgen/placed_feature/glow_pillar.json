@@ -1,9 +1,7 @@
 {
   "feature": {
     "type": "betterend:glow_pillar_feature",
-    "config": {
-      "radius": 9
-    }
+    "radius": 9
   },
   "placement": [
     {

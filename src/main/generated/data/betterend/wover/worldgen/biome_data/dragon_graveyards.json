@@ -8,15 +8,9 @@
   },
   "has_caves": true,
   "surface": {
-    "alt": {
-      "Name": "betterend:sangnum"
-    },
+    "alt": "betterend:sangnum",
     "floor_rule": true,
-    "top": {
-      "Name": "betterend:sangnum"
-    },
-    "under": {
-      "Name": "minecraft:end_stone"
-    }
+    "top": "betterend:sangnum",
+    "under": "minecraft:end_stone"
   }
 }

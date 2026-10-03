@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:lacugrove_stripped_log"
+        "recipes": "betterend:lacugrove_stripped_log"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

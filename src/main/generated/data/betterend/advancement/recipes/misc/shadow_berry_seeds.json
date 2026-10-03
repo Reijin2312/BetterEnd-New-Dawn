@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:shadow_berry_seeds"
+        "recipes": "betterend:shadow_berry_seeds"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

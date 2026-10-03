@@ -1,7 +1,7 @@
 {
-    "parent": "bclib:block/bar_stool",
-    "textures": {
-      "texture": "betterend:block/lucernia_planks",
-      "cloth": "block/brown_wool"
-    }
+  "parent": "bclib:block/bar_stool",
+  "textures": {
+    "texture": "betterend:block/lucernia_planks",
+    "cloth": "block/brown_wool"
+  }
 }

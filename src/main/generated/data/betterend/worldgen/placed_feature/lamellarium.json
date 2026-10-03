@@ -1,16 +1,12 @@
 {
   "feature": {
     "type": "betterend:single_plant_feature",
-    "config": {
-      "chance": 1,
-      "radius": 5,
-      "raw_heightmap": true,
-      "state": {
-        "type": "minecraft:simple_state_provider",
-        "state": {
-          "Name": "betterend:lamellarium"
-        }
-      }
+    "chance": 1,
+    "radius": 5,
+    "raw_heightmap": true,
+    "state": {
+      "type": "minecraft:simple",
+      "state": "betterend:lamellarium"
     }
   },
   "placement": [

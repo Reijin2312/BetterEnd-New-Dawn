@@ -2,43 +2,39 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "conditions": [
-        {
-          "block": "betterend:cave_pumpkin",
-          "condition": "minecraft:block_state_property",
-          "properties": {
-            "small": "true"
-          }
-        }
-      ],
       "entries": [
         {
           "type": "minecraft:item",
           "name": "betterend:cave_pumpkin_seed"
         }
       ],
-      "rolls": 1.0
+      "rolls": 1,
+      "condition": {
+        "type": "minecraft:match_block",
+        "blocks": "betterend:cave_pumpkin",
+        "state": {
+          "small": "true"
+        }
+      }
     },
     {
-      "conditions": [
-        {
-          "condition": "minecraft:inverted",
-          "term": {
-            "block": "betterend:cave_pumpkin",
-            "condition": "minecraft:block_state_property",
-            "properties": {
-              "small": "true"
-            }
-          }
-        }
-      ],
       "entries": [
         {
           "type": "minecraft:item",
           "name": "betterend:cave_pumpkin"
         }
       ],
-      "rolls": 1.0
+      "rolls": 1,
+      "condition": {
+        "type": "minecraft:inverted",
+        "term": {
+          "type": "minecraft:match_block",
+          "blocks": "betterend:cave_pumpkin",
+          "state": {
+            "small": "true"
+          }
+        }
+      }
     }
   ],
   "random_sequence": "betterend:blocks/cave_pumpkin"

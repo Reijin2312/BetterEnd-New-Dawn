@@ -1,6 +1,5 @@
 package org.betterx.betterend.world.features.trees;
 
-import com.mojang.serialization.Codec;
 
 import com.mojang.serialization.MapCodec;
 
@@ -385,7 +384,7 @@ public class GiganticAmaranitaFeature extends DefaultFeature {
     static {
         REPLACE = BlocksHelper::replaceableOrPlant;
 
-        IGNORE = EndBlocks.DRAGON_TREE::isTreeLog;
+        IGNORE = state -> EndBlocks.DRAGON_TREE.isTreeLog(state);
 
         POST = (info) -> {
             if (!info.getStateUp().is(EndBlocks.AMARANITA_STEM) || !info.getStateDown().is(EndBlocks.AMARANITA_STEM)) {

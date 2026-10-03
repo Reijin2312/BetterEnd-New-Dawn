@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:loyalty_book"
+        "recipes": "betterend:loyalty_book"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

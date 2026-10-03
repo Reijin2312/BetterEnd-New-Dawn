@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:terminite_ingot_from_nuggets"
+        "recipes": "betterend:terminite_ingot_from_nuggets"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

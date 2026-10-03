@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:end_lotus_hanging_sign"
+        "recipes": "betterend:end_lotus_hanging_sign"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -1,7 +1,6 @@
 {
   "feature": {
-    "type": "betterend:desert_lake",
-    "config": {}
+    "type": "betterend:desert_lake"
   },
   "placement": [
     {

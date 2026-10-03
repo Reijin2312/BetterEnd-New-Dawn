@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:smaragdant_crystal_bricks"
+        "recipes": "betterend:smaragdant_crystal_bricks"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:pythadendron_log"
+        "recipes": "betterend:pythadendron_log"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

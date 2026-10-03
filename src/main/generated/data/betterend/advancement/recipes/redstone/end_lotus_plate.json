@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:end_lotus_plate"
+        "recipes": "betterend:end_lotus_plate"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

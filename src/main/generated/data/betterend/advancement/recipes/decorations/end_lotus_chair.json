@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:end_lotus_chair"
+        "recipes": "betterend:end_lotus_chair"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

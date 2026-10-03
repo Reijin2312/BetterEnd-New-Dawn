@@ -3,5 +3,6 @@
   "ingredient": "betterend:menger_sponge_wet",
   "result": {
     "id": "betterend:menger_sponge"
-  }
+  },
+  "cookingtime": 200
 }

@@ -3,6 +3,6 @@
   "description": {
     "translate": "jukebox_song.betterend.moonlit_undercurrents"
   },
-  "length_in_seconds": 231.0,
+  "length_in_seconds": 231,
   "sound_event": "betterend:betterend.record.moonlit_undercurrents"
 }

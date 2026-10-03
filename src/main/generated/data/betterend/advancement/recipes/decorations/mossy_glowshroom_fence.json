@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:mossy_glowshroom_fence"
+        "recipes": "betterend:mossy_glowshroom_fence"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

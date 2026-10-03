@@ -33,7 +33,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:infusion_pedestal"
+        "recipes": "betterend:infusion_pedestal"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

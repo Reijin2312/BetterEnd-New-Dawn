@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:umbrella_tree_planks"
+        "recipes": "betterend:umbrella_tree_planks"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

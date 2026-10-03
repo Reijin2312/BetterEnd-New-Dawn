@@ -7,15 +7,9 @@
   },
   "has_caves": true,
   "surface": {
-    "alt": {
-      "Name": "betterend:jungle_moss"
-    },
+    "alt": "betterend:jungle_moss",
     "floor_rule": true,
-    "top": {
-      "Name": "betterend:jungle_moss"
-    },
-    "under": {
-      "Name": "minecraft:end_stone"
-    }
+    "top": "betterend:jungle_moss",
+    "under": "minecraft:end_stone"
   }
 }

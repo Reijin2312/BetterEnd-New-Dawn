@@ -22,7 +22,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:end_lotus_planks"
+        "recipes": "betterend:end_lotus_planks"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

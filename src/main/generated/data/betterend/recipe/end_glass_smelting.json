@@ -3,5 +3,6 @@
   "ingredient": "betterend:endstone_dust",
   "result": {
     "id": "minecraft:glass"
-  }
+  },
+  "cookingtime": 200
 }
