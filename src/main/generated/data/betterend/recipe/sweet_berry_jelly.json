@@ -5,13 +5,13 @@
     "minecraft:sweet_berries",
     "minecraft:sugar",
     {
-      "neoforge:ingredient_type": "neoforge:components",
+      "fabric:type": "fabric:components",
       "components": {
         "minecraft:potion_contents": {
           "potion": "minecraft:water"
         }
       },
-      "items": "minecraft:potion"
+      "base": "minecraft:potion"
     },
     "betterend:gelatine"
   ],
