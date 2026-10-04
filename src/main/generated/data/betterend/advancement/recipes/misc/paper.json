@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:paper"
+        "recipes": "betterend:paper"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

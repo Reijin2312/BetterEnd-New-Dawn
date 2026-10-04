@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:additional_netherite"
+        "recipes": "betterend:additional_netherite"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

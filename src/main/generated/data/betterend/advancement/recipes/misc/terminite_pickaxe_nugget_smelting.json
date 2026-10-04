@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:terminite_pickaxe_nugget_smelting"
+        "recipes": "betterend:terminite_pickaxe_nugget_smelting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

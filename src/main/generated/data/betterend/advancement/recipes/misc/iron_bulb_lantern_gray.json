@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:iron_bulb_lantern_gray"
+        "recipes": "betterend:iron_bulb_lantern_gray"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

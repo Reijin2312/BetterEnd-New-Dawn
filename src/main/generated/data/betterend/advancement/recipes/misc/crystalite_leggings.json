@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:crystalite_leggings"
+        "recipes": "betterend:crystalite_leggings"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

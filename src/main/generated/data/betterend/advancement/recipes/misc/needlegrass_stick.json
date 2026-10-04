@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:needlegrass_stick"
+        "recipes": "betterend:needlegrass_stick"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

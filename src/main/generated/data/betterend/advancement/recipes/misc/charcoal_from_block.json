@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:charcoal_from_block"
+        "recipes": "betterend:charcoal_from_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

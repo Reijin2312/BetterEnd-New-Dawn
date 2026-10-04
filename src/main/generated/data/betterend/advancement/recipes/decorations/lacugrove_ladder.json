@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:lacugrove_ladder"
+        "recipes": "betterend:lacugrove_ladder"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -1,7 +1,7 @@
 {
-	"parent": "block/chain",
-	"textures": {
-		"particle": "betterend:block/%block%",
-		"all": "betterend:block/%block%"
-	}
+  "parent": "block/chain",
+  "textures": {
+    "particle": "betterend:block/%block%",
+    "all": "betterend:block/%block%"
+  }
 }

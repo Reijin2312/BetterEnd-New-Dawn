@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:azure_jadestone_furnace"
+        "recipes": "betterend:azure_jadestone_furnace"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

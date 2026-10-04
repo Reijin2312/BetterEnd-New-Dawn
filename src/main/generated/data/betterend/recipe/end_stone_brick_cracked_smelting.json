@@ -1,10 +1,8 @@
 {
   "type": "minecraft:smelting",
-  "category": "misc",
-  "cookingtime": 200,
-  "experience": 0.0,
   "ingredient": "minecraft:end_stone_bricks",
   "result": {
     "id": "betterend:end_stone_brick_cracked"
-  }
+  },
+  "cookingtime": 200
 }

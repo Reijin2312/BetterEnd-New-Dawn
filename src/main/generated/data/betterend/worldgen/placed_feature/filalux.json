@@ -1,9 +1,7 @@
 {
   "feature": {
     "type": "betterend:filalux_feature",
-    "config": {
-      "radius": 10
-    }
+    "radius": 10
   },
   "placement": [
     {

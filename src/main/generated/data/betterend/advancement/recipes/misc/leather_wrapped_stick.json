@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:leather_wrapped_stick"
+        "recipes": "betterend:leather_wrapped_stick"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

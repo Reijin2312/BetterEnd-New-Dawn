@@ -50,6 +50,8 @@ public class BetterEnd implements ModInitializer {
         WorldConfig.registerMod(C);
 
         EndNumericProviders.register();
+        // Queue all BetterEnd feature codecs before the loader registers feature types.
+        EndFeatures.register();
         EndPortals.loadPortals();
         EndSounds.register();
         EndEntities.register();
@@ -75,7 +77,6 @@ public class BetterEnd implements ModInitializer {
         InfusionRecipe.register();
         RecipeSynchronization.synchronizeRecipeSerializer(InfusionRecipe.SERIALIZER);
         EndStructures.register();
-        EndCarvers.ensureStaticallyLoaded();
         // TEMP: keep the new vertical cave pipeline dormant until upstream stabilizes it.
         // BiomeDecider.registerDecider(C.mk("cave_biome_decider"), new org.betterx.betterend.world.generator.EndCaveBiomeDecider());
         BonemealPlants.init();

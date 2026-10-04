@@ -4,16 +4,17 @@ import org.betterx.bclib.util.BackgroundInfo;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.BetterEnd;
 
-import com.mojang.blaze3d.buffers.GpuBuffer;
-import com.mojang.blaze3d.buffers.GpuBufferSlice;
-import com.mojang.blaze3d.PrimitiveTopology;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
-import com.mojang.blaze3d.systems.RenderPass;
+import com.mojang.renderpearl.api.buffers.GpuBuffer;
+import com.mojang.renderpearl.api.buffers.GpuBufferSlice;
+import com.mojang.renderpearl.api.commands.RenderPass;
+import com.mojang.renderpearl.api.pipeline.PrimitiveTopology;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.textures.GpuTextureView;
+import com.mojang.renderpearl.api.textures.GpuTextureView;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.AbstractTexture;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
@@ -26,6 +27,8 @@ import org.joml.Vector4f;
 
 import java.util.OptionalDouble;
 import java.util.Optional;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BetterEndSkyRenderer {
     private static final int VERTEX_BUFFER_USAGE = 32;
@@ -76,6 +79,21 @@ public class BetterEndSkyRenderer {
     private Vector3f axis4;
 
     private boolean initialised;
+    private final Map<Identifier, AbstractTexture> textures = new HashMap<>();
+
+    /**
+     * Resolves and uploads the sky textures before vanilla opens its sky render pass.
+     * TextureManager#getTexture may submit upload commands and therefore must not be
+     * called from renderEndSky in 26.3.
+     */
+    public void initialiseResources(TextureManager textureManager) {
+        textures.put(NEBULA_1, textureManager.getTexture(NEBULA_1));
+        textures.put(NEBULA_2, textureManager.getTexture(NEBULA_2));
+        textures.put(HORIZON, textureManager.getTexture(HORIZON));
+        textures.put(STARS, textureManager.getTexture(STARS));
+        textures.put(FOG, textureManager.getTexture(FOG));
+        initialise();
+    }
 
     private void initialise() {
         if (!initialised) {
@@ -99,6 +117,10 @@ public class BetterEndSkyRenderer {
     }
 
     public void renderFallback(PoseStack matrices, float time, Runnable setupFog) {
+        renderFallback(null, matrices, time, setupFog);
+    }
+
+    public void renderFallback(RenderPass activePass, PoseStack matrices, float time, Runnable setupFog) {
         initialise();
 
         float time2 = time * 2;
@@ -110,8 +132,9 @@ public class BetterEndSkyRenderer {
 
         if (blindA > 0) {
             matrices.pushPose();
-            matrices.mulPose(new Quaternionf().rotationXYZ(0, time, 0));
+            matrices.mulPose(new org.joml.Matrix4f().rotation(new Quaternionf().rotationXYZ(0, time, 0)));
             renderBuffer(
+                    activePass,
                     matrices,
                     horizon,
                     HORIZON,
@@ -202,13 +225,14 @@ public class BetterEndSkyRenderer {
 
         if (blindA > 0) {
             matrices.pushPose();
-            matrices.mulPose(new Quaternionf().setAngleAxis(time3, axis1.x, axis1.y, axis1.z));
-            renderBuffer(matrices, stars1, null, false, 1, 1, 1, blind06, setupFog);
+            matrices.mulPose(new org.joml.Matrix4f().rotation(new Quaternionf().setAngleAxis(time3, axis1.x, axis1.y, axis1.z)));
+            renderBuffer(activePass, matrices, stars1, null, false, 1, 1, 1, blind06, setupFog);
             matrices.popPose();
 
             matrices.pushPose();
-            matrices.mulPose(new Quaternionf().setAngleAxis(time2, axis2.x, axis2.y, axis2.z));
+            matrices.mulPose(new org.joml.Matrix4f().rotation(new Quaternionf().setAngleAxis(time2, axis2.x, axis2.y, axis2.z)));
             renderBuffer(
+                    activePass,
                     matrices,
                     stars2,
                     null,
@@ -252,7 +276,26 @@ public class BetterEndSkyRenderer {
         renderFallback(matrices, time, setupFog);
     }
 
+    public void renderSkyboxWithStars(RenderPass activePass, PoseStack matrices, float time, Runnable setupFog) {
+        renderFallback(activePass, matrices, time, setupFog);
+    }
+
     private void renderBuffer(
+            PoseStack matrices,
+            MeshBuffer buffer,
+            Identifier texture,
+            boolean textured,
+            float r,
+            float g,
+            float b,
+            float a,
+            Runnable setupFog
+    ) {
+        renderBuffer(null, matrices, buffer, texture, textured, r, g, b, a, setupFog);
+    }
+
+    private void renderBuffer(
+            RenderPass activePass,
             PoseStack matrices,
             MeshBuffer buffer,
             Identifier texture,
@@ -286,29 +329,42 @@ public class BetterEndSkyRenderer {
         GpuTextureView colorTexture = minecraft.gameRenderer.mainRenderTarget().getColorTextureView();
         GpuTextureView depthTexture = minecraft.gameRenderer.mainRenderTarget().getDepthTextureView();
         RenderPipeline pipeline = textured ? BetterEndRenderPipelines.SKY_TEXTURED : BetterEndRenderPipelines.SKY_STARS;
-        AbstractTexture abstractTexture = null;
-
-        // Texture upload cannot happen while a render pass is open.
-        if (textured && texture != null) {
-            abstractTexture = minecraft.getTextureManager().getTexture(texture);
+        AbstractTexture abstractTexture = textured && texture != null ? textures.get(texture) : null;
+        if (textured && abstractTexture == null) {
+            return;
         }
 
-        try (RenderPass renderPass = RenderSystem.getDevice()
-                                                 .createCommandEncoder()
-                                                 .createRenderPass(
-                                                         () -> "BetterEnd sky",
-                                                         colorTexture,
-                                                         Optional.empty(),
-                                                         depthTexture,
-                                                         OptionalDouble.empty()
-                                                 )) {
-            renderPass.setPipeline(pipeline);
+        if (activePass != null) {
+            drawBuffer(activePass, pipeline, transforms, buffer, abstractTexture);
+        } else {
+            try (RenderPass renderPass = RenderSystem.getDevice()
+                                                     .createCommandEncoder()
+                                                     .createRenderPass(
+                                                             () -> "BetterEnd sky",
+                                                             colorTexture,
+                                                             Optional.empty(),
+                                                             depthTexture,
+                                                             OptionalDouble.empty()
+                                                     )) {
+                drawBuffer(renderPass, pipeline, transforms, buffer, abstractTexture);
+            }
+        }
+    }
+
+    private void drawBuffer(
+            RenderPass renderPass,
+            RenderPipeline pipeline,
+            GpuBufferSlice transforms,
+            MeshBuffer buffer,
+            AbstractTexture abstractTexture
+    ) {
+            renderPass.setPipeline(RenderSystem.getCompiledPipeline(pipeline));
             RenderSystem.bindDefaultUniforms(renderPass);
             renderPass.setUniform("DynamicTransforms", transforms);
             renderPass.setVertexBuffer(0, buffer.buffer.slice());
 
             if (abstractTexture != null) {
-                renderPass.bindTexture("Sampler0", abstractTexture.getTextureView(), abstractTexture.getSampler());
+                renderPass.setUniform("Sampler0", abstractTexture.getTextureView(), abstractTexture.getSampler());
             }
 
             if (buffer.mode == PrimitiveTopology.QUADS) {
@@ -319,7 +375,6 @@ public class BetterEndSkyRenderer {
             } else {
                 renderPass.draw(buffer.vertexCount, 1, 0, 0);
             }
-        }
     }
 
     private void initStars() {

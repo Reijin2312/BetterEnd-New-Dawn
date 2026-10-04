@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:end_lotus_composter"
+        "recipes": "betterend:end_lotus_composter"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

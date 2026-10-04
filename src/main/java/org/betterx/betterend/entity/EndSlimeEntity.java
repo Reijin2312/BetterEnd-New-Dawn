@@ -161,7 +161,7 @@ public class EndSlimeEntity extends Slime {
                 slimeEntity.setSlimeType(type);
                 slimeEntity.setCustomName(text);
                 slimeEntity.setNoAi(bl);
-                slimeEntity.setInvulnerable(this.isInvulnerable());
+                slimeEntity.setPermanentlyInvulnerable(this.isInvulnerable());
                 ((ISlime) slimeEntity).be_setSlimeSize(j, true);
                 slimeEntity.refreshDimensions();
                 slimeEntity.snapTo(
@@ -391,7 +391,7 @@ public class EndSlimeEntity extends Slime {
             EndSlimeEntity.this.lookAt(EndSlimeEntity.this.getTarget(), 10.0F, 10.0F);
             ((EndSlimeMoveControl) EndSlimeEntity.this.getMoveControl()).look(
                     EndSlimeEntity.this.getYRot(),
-                    EndSlimeEntity.this.isDealsDamage()
+                    EndSlimeEntity.this.canDealDamage()
             );
         }
     }

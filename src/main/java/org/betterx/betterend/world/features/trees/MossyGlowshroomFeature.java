@@ -1,6 +1,9 @@
 package org.betterx.betterend.world.features.trees;
 
 
+import com.mojang.serialization.MapCodec;
+
+
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.sdf.SDF;
 import org.betterx.bclib.sdf.operator.*;
@@ -21,9 +24,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 import org.joml.Vector3f;
 
@@ -31,6 +33,12 @@ import java.util.List;
 import java.util.function.Function;
 
 public class MossyGlowshroomFeature extends DefaultFeature {
+    public static final MapCodec<MossyGlowshroomFeature> CODEC = MapCodec.unit(MossyGlowshroomFeature::new);
+
+    @Override
+    public MapCodec<MossyGlowshroomFeature> codec() {
+        return CODEC;
+    }
     private static final Function<BlockState, Boolean> REPLACE;
     private static final Vector3f CENTER = new Vector3f();
     private static final SDFBinary FUNCTION;
@@ -69,10 +77,10 @@ public class MossyGlowshroomFeature extends DefaultFeature {
     private static final float MIN_SCALE = 0.5F;
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
-        final RandomSource random = featureConfig.random();
-        final BlockPos blockPos = featureConfig.origin();
-        final WorldGenLevel world = featureConfig.level();
+    public boolean place(WorldGenLevel featureWorld, ChunkGenerator featureGenerator, RandomSource featureRandom, BlockPos featureOrigin) {
+        final RandomSource random = featureRandom;
+        final BlockPos blockPos = featureOrigin;
+        final WorldGenLevel world = featureWorld;
         BlockState down = world.getBlockState(blockPos.below());
         if (!down.is(EndBlocks.END_MYCELIUM) && !down.is(EndBlocks.END_MOSS)) return false;
 

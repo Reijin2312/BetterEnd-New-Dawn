@@ -1,5 +1,8 @@
 package org.betterx.betterend.world.features;
 
+
+import com.mojang.serialization.MapCodec;
+
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.sdf.SDF;
 import org.betterx.bclib.sdf.operator.SDFDisplacement;
@@ -12,13 +15,19 @@ import org.betterx.betterend.world.biome.EndBiome;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 public class BiomeIslandFeature extends DefaultFeature {
+    public static final MapCodec<BiomeIslandFeature> CODEC = MapCodec.unit(BiomeIslandFeature::new);
+
+    @Override
+    public MapCodec<BiomeIslandFeature> codec() {
+        return CODEC;
+    }
     private static final MutableBlockPos CENTER = new MutableBlockPos();
     private static final SDF ISLAND;
 
@@ -27,9 +36,9 @@ public class BiomeIslandFeature extends DefaultFeature {
     private static BlockState underBlock = Blocks.DIRT.defaultBlockState();
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
-        final BlockPos pos = featureConfig.origin();
-        final WorldGenLevel world = featureConfig.level();
+    public boolean place(WorldGenLevel featureWorld, ChunkGenerator featureGenerator, RandomSource featureRandom, BlockPos featureOrigin) {
+        final BlockPos pos = featureOrigin;
+        final WorldGenLevel world = featureWorld;
         //Holder<Biome> biome = world.getBiome(pos);
         int dist = BlocksHelper.downRay(world, pos, 10) + 1;
         BlockPos surfacePos = new BlockPos(pos.getX(), pos.getY() - dist, pos.getZ());

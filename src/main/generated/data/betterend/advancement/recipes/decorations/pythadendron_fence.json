@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:pythadendron_fence"
+        "recipes": "betterend:pythadendron_fence"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

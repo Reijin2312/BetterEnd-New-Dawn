@@ -1,27 +1,27 @@
-﻿{
+{
   "type": "betterend:lush_aurora_cave_biome",
   "biome": "betterend:lush_aurora_cave",
   "ceil_features": {
     "configured_features": [
       {
         "configured_feature": "betterend:cave_bush",
-        "weight": 1.0
+        "weight": 1
       },
       {
         "configured_feature": "betterend:cave_pumpkin",
-        "weight": 2.0
+        "weight": 2
       },
       {
         "configured_feature": "betterend:rubinea",
-        "weight": 5.0
+        "weight": 5
       },
       {
         "configured_feature": "betterend:magnula",
-        "weight": 6.0
+        "weight": 6
       },
       {
         "configured_feature": "betterend:end_stone_stalactite_cavemoss",
-        "weight": 16.0
+        "weight": 16
       }
     ]
   },
@@ -29,37 +29,31 @@
     "configured_features": [
       {
         "configured_feature": "betterend:big_aurora_crystal",
-        "weight": 1.0
+        "weight": 1
       },
       {
         "configured_feature": "betterend:cave_bush",
-        "weight": 6.0
+        "weight": 6
       },
       {
         "configured_feature": "betterend:cave_grass",
-        "weight": 46.0
+        "weight": 46
       },
       {
         "configured_feature": "betterend:end_stone_stalagmite_cavemoss",
-        "weight": 51.0
+        "weight": 51
       }
     ]
   },
-  "fogDensity": 2.0,
+  "fogDensity": 2,
   "generation_data": {
     "intended_placement": "betterend:is_end_cave"
   },
   "has_caves": false,
   "surface": {
-    "alt": {
-      "Name": "betterend:cave_moss"
-    },
+    "alt": "betterend:cave_moss",
     "floor_rule": true,
-    "top": {
-      "Name": "betterend:cave_moss"
-    },
-    "under": {
-      "Name": "minecraft:end_stone"
-    }
+    "top": "betterend:cave_moss",
+    "under": "minecraft:end_stone"
   }
 }

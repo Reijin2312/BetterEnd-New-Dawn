@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:thallasium_chandelier"
+        "recipes": "betterend:thallasium_chandelier"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

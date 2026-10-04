@@ -1,17 +1,15 @@
 {
   "feature": {
     "type": "betterend:single_plant_feature",
-    "config": {
-      "chance": 5,
-      "radius": 5,
-      "raw_heightmap": true,
+    "chance": 5,
+    "radius": 5,
+    "raw_heightmap": true,
+    "state": {
+      "type": "minecraft:simple",
       "state": {
-        "type": "minecraft:simple_state_provider",
-        "state": {
-          "Name": "betterend:amber_root_seed",
-          "Properties": {
-            "age": "0"
-          }
+        "id": "betterend:amber_root_seed",
+        "properties": {
+          "age": "0"
         }
       }
     }

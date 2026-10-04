@@ -1,5 +1,6 @@
 package org.betterx.betterend.world.features.terrain.caves;
 
+import com.mojang.serialization.MapCodec;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.util.BlockFixer;
 import org.betterx.betterend.world.biome.cave.EndCaveBiome;
@@ -13,27 +14,29 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.google.common.collect.Sets;
 
 import java.util.Set;
 
-public class CaveChunkPopulatorFeature extends Feature<CaveChunkPopulatorFeatureConfig> {
+public class CaveChunkPopulatorFeature implements Feature {
+    public static final MapCodec<CaveChunkPopulatorFeature> CODEC = CaveChunkPopulatorFeatureConfig.CODEC.xmap(CaveChunkPopulatorFeature::new, f -> f.config);
+    public final CaveChunkPopulatorFeatureConfig config;
 
-    public CaveChunkPopulatorFeature() {
-        super(CaveChunkPopulatorFeatureConfig.CODEC);
+    public CaveChunkPopulatorFeature(CaveChunkPopulatorFeatureConfig config) {
+        this.config = config;
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<CaveChunkPopulatorFeatureConfig> featureConfig) {
-        CaveChunkPopulatorFeatureConfig cfg = featureConfig.config();
-        final RandomSource random = featureConfig.random();
-        final BlockPos pos = featureConfig.origin();
-        final WorldGenLevel world = featureConfig.level();
-        final ChunkGenerator chunkGenerator = featureConfig.chunkGenerator();
+    public MapCodec<CaveChunkPopulatorFeature> codec() {
+        return CODEC;
+    }
+
+    @Override
+    public boolean place(WorldGenLevel world, ChunkGenerator chunkGenerator, RandomSource random, BlockPos pos) {
+        CaveChunkPopulatorFeatureConfig cfg = config;
         Set<BlockPos> floorPositions = Sets.newHashSet();
         Set<BlockPos> ceilPositions = Sets.newHashSet();
         int sx = (pos.getX() >> 4) << 4;
@@ -128,7 +131,7 @@ public class CaveChunkPopulatorFeature extends Feature<CaveChunkPopulatorFeature
         floorPositions.forEach((pos) -> {
             BlocksHelper.setWithoutUpdate(world, pos, surfaceBlock);
             if (density > 0 && random.nextFloat() <= density) {
-                ConfiguredFeature<?, ?> feature = biome.getFloorFeature(random).value();
+                Feature feature = biome.getFloorFeature(random).value();
                 if (feature != null) {
                     feature.place(world, generator, random, pos.above());
                 }
@@ -150,7 +153,7 @@ public class CaveChunkPopulatorFeature extends Feature<CaveChunkPopulatorFeature
                 BlocksHelper.setWithoutUpdate(world, pos, ceilBlock);
             }
             if (density > 0 && random.nextFloat() <= density) {
-                ConfiguredFeature<?, ?> feature = biome.getCeilFeature(random).value();
+                Feature feature = biome.getCeilFeature(random).value();
                 if (feature != null) {
                     feature.place(world, generator, random, pos.below());
                 }

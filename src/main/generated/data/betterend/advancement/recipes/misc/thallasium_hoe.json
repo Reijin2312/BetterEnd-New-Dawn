@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:thallasium_hoe"
+        "recipes": "betterend:thallasium_hoe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:tenanea_taburet"
+        "recipes": "betterend:tenanea_taburet"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

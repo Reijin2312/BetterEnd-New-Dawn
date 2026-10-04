@@ -1,7 +1,6 @@
 {
   "feature": {
-    "type": "betterend:pond_with_waterfall",
-    "config": {}
+    "type": "betterend:pond_with_waterfall"
   },
   "placement": [
     {

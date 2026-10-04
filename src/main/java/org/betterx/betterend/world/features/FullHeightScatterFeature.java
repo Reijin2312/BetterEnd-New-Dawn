@@ -9,9 +9,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 public abstract class FullHeightScatterFeature extends DefaultFeature {
     private final int radius;
@@ -31,11 +30,11 @@ public abstract class FullHeightScatterFeature extends DefaultFeature {
     public abstract void generate(WorldGenLevel world, RandomSource random, BlockPos blockPos);
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
+    public boolean place(WorldGenLevel featureWorld, ChunkGenerator featureGenerator, RandomSource featureRandom, BlockPos featureOrigin) {
         final MutableBlockPos POS = GlobalState.stateForThread().POS;
-        final RandomSource random = featureConfig.random();
-        final BlockPos center = featureConfig.origin();
-        final WorldGenLevel world = featureConfig.level();
+        final RandomSource random = featureRandom;
+        final BlockPos center = featureOrigin;
+        final WorldGenLevel world = featureWorld;
         int maxY = world.getHeight(Heightmap.Types.WORLD_SURFACE_WG, center.getX(), center.getZ());
         int minY = BlocksHelper.upRay(world, new BlockPos(center.getX(), 0, center.getZ()), maxY);
         for (int y = maxY; y > minY; y--) {

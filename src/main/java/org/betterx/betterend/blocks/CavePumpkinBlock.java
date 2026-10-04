@@ -20,9 +20,10 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
+import net.minecraft.world.level.storage.loot.predicates.MatchBlock;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -63,20 +64,21 @@ public class CavePumpkinBlock extends BaseBlockNotFull implements RenderLayerPro
             @NotNull LootLookupProvider provider,
             @NotNull ResourceKey<LootTable> tableKey
     ) {
-        final LootItemCondition.Builder small = LootItemBlockStatePropertyCondition
-                .hasBlockStateProperties(this)
-                .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(SMALL, true));
+        final LootItemCondition.Builder small = MatchBlock.blockMatches(
+                provider.getProvider().lookupOrThrow(Registries.BLOCK),
+                this,
+                StatePropertiesPredicate.Builder.properties().hasProperty(SMALL, true));
 
         return LootTable
                 .lootTable()
                 .withPool(LootPool
                         .lootPool()
-                        .setRolls(ConstantValue.exactly(1.0F))
+                        .setRolls(ContextIntProviders.exactly(1))
                         .when(small)
                         .add(LootItem.lootTableItem(EndBlocks.CAVE_PUMPKIN_SEED)))
                 .withPool(LootPool
                         .lootPool()
-                        .setRolls(ConstantValue.exactly(1.0F))
+                        .setRolls(ContextIntProviders.exactly(1))
                         .when(small.invert())
                         .add(LootItem.lootTableItem(this)));
     }

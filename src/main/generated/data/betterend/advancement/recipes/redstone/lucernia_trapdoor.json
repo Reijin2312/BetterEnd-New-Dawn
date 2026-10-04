@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:lucernia_trapdoor"
+        "recipes": "betterend:lucernia_trapdoor"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

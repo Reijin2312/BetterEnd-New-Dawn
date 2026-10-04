@@ -41,15 +41,24 @@ public class BlockFixer {
             return;
         }
         final Set<BlockPos> doubleCheck = Sets.newConcurrentHashSet();
-        final int dx = end.getX() - start.getX() + 1;
-        final int dz = end.getZ() - start.getZ() + 1;
+        // canSurvive() and several special cases below inspect horizontal neighbours. Merely clamping
+        // start/end to the write zone still lets a boundary block read one chunk too far in 26.3.
+        final int startX = writeBounds == null ? start.getX() : Math.max(start.getX(), writeBounds.minX() + 1);
+        final int startZ = writeBounds == null ? start.getZ() : Math.max(start.getZ(), writeBounds.minZ() + 1);
+        final int endX = writeBounds == null ? end.getX() : Math.min(end.getX(), writeBounds.maxX() - 1);
+        final int endZ = writeBounds == null ? end.getZ() : Math.min(end.getZ(), writeBounds.maxZ() - 1);
+        if (startX > endX || startZ > endZ) {
+            return;
+        }
+        final int dx = endX - startX + 1;
+        final int dz = endZ - startZ + 1;
         final int count = dx * dz;
         final int minY = Math.max(start.getY(), level.getMinY());
         final int maxY = Math.min(end.getY(), level.getMaxY());
         IntStream.range(0, count).forEach(index -> {
             MutableBlockPos POS = new MutableBlockPos();
-            POS.setX((index % dx) + start.getX());
-            POS.setZ((index / dx) + start.getZ());
+            POS.setX((index % dx) + startX);
+            POS.setZ((index / dx) + startZ);
             BlockState state;
             for (int y = minY; y <= maxY; y++) {
                 POS.setY(y);

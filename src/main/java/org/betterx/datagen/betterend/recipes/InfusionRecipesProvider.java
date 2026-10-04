@@ -7,7 +7,7 @@ import org.betterx.betterend.registry.EndEnchantments;
 import org.betterx.wover.core.api.ModCore;
 import org.betterx.wover.datagen.api.provider.WoverRecipeProvider;
 
-import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceKey;
@@ -30,13 +30,13 @@ public class InfusionRecipesProvider extends WoverRecipeProvider {
             String id,
             ResourceKey<Enchantment> enchantment,
             int level,
-            HolderLookup.RegistryLookup<Enchantment> lookup
+            HolderGetter<Enchantment> lookup
     ) {
         return InfusionRecipe.create((String) id, enchantment, level, lookup);
     }
 
-    public void bootstrap(HolderLookup.Provider provider, RecipeOutput context) {
-        final HolderLookup.RegistryLookup<Enchantment> enchantments = provider.lookupOrThrow(Registries.ENCHANTMENT);
+    protected void bootstrap(net.minecraft.data.worldgen.BootstrapContextAccess provider, RecipeOutput context) {
+        final var enchantments = provider.lookup(Registries.ENCHANTMENT);
         createInfusion("runed_flavolite", EndBlocks.FLAVOLITE_RUNED)
                       .setPrimaryInput(EndBlocks.FLAVOLITE.polished)
                       .addCatalyst(InfusionRecipe.CatalystSlot.NORTH, EndItems.CRYSTAL_SHARDS)

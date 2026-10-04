@@ -1,11 +1,12 @@
 package org.betterx.betterend.world.features;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
-public class ScatterFeatureConfig implements FeatureConfiguration {
-    public static final Codec<ScatterFeatureConfig> CODEC = RecordCodecBuilder.create(instance -> instance
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+
+public class ScatterFeatureConfig {
+    public static final MapCodec<ScatterFeatureConfig> CODEC = RecordCodecBuilder.mapCodec(instance -> instance
             .group(
                     Codec.INT.fieldOf("radius").forGetter(o -> o.radius)
             )

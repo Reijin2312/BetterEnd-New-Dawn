@@ -3,14 +3,20 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:resonance_2_book"
+        "recipes": "betterend:resonance_2_book"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
-  "requirements": [["has_the_recipe"]],
+  "requirements": [
+    [
+      "has_the_recipe"
+    ]
+  ],
   "rewards": {
-    "recipes": ["betterend:resonance_2_book"]
+    "recipes": [
+      "betterend:resonance_2_book"
+    ]
   },
   "sends_telemetry_event": true
 }

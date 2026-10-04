@@ -1,5 +1,7 @@
 package org.betterx.betterend.world.features;
 
+
+import com.mojang.serialization.MapCodec;
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.bclib.util.StructureErode;
@@ -14,24 +16,30 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 
 
 public class CrashedShipFeature extends NBTFeature<NBTFeatureConfig> {
+    public static final MapCodec<CrashedShipFeature> CODEC = NBTFeatureConfig.CODEC.xmap(CrashedShipFeature::new, f -> f.config);
     private static final StructureProcessor REPLACER;
     private static final String STRUCTURE_PATH = "/data/minecraft/structure/end_city/ship.nbt";
     private StructureTemplate structure;
 
-    public CrashedShipFeature() {
-        super(NBTFeatureConfig.CODEC);
+    public CrashedShipFeature(NBTFeatureConfig config) {
+        super(config);
+    }
+
+    @Override
+    public MapCodec<CrashedShipFeature> codec() {
+        return CODEC;
     }
 
     @Override
@@ -44,7 +52,7 @@ public class CrashedShipFeature extends NBTFeature<NBTFeatureConfig> {
         if (structure == null) {
             structure = world
                     .getLevel()
-                    .getStructureManager()
+                    .getStructureTemplateManager()
                     .getOrCreate(Identifier.withDefaultNamespace("end_city/ship"));
             if (structure == null) {
                 structure = EndStructureHelper.readStructure(STRUCTURE_PATH);
@@ -86,10 +94,7 @@ public class CrashedShipFeature extends NBTFeature<NBTFeatureConfig> {
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<NBTFeatureConfig> featureConfig) {
-        final RandomSource random = featureConfig.random();
-        BlockPos center = featureConfig.origin();
-        final WorldGenLevel world = featureConfig.level();
+    public boolean place(WorldGenLevel world, ChunkGenerator generator, RandomSource random, BlockPos center) {
         center = new BlockPos(((center.getX() >> 4) << 4) | 8, 128, ((center.getZ() >> 4) << 4) | 8);
         center = getGround(world, center);
         BoundingBox bounds = makeBox(center);
@@ -98,11 +103,11 @@ public class CrashedShipFeature extends NBTFeature<NBTFeatureConfig> {
             return false;
         }
 
-        StructureTemplate structure = getStructure(featureConfig.config(), world, center, random);
+        StructureTemplate structure = getStructure(config, world, center, random);
         Rotation rotation = getRotation(world, center, random);
         Mirror mirror = getMirror(world, center, random);
         BlockPos offset = StructureTemplate.transform(
-                new BlockPos(structure.getSize()),
+                new BlockPos(structure.getSize().getX(), structure.getSize().getY(), structure.getSize().getZ()),
                 mirror,
                 rotation,
                 BlockPos.ZERO

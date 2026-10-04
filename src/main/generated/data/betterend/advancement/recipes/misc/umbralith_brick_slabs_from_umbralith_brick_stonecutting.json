@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:umbralith_brick_slabs_from_umbralith_brick_stonecutting"
+        "recipes": "betterend:umbralith_brick_slabs_from_umbralith_brick_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

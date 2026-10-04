@@ -4,7 +4,7 @@
       "loop": "betterend:betterend.ambient.chorus_forest",
       "mood": {
         "block_search_extent": 8,
-        "offset": 2.0,
+        "offset": 2,
         "sound": "betterend:betterend.ambient.dust_wastelands",
         "tick_delay": 6000
       }
@@ -80,14 +80,20 @@
     "monster": [
       {
         "type": "betterend:end_slime",
-        "maxCount": 2,
-        "minCount": 1,
+        "count": {
+          "type": "minecraft:uniform",
+          "min_inclusive": 1,
+          "max_inclusive": 2
+        },
         "weight": 5
       },
       {
         "type": "minecraft:enderman",
-        "maxCount": 4,
-        "minCount": 1,
+        "count": {
+          "type": "minecraft:uniform",
+          "min_inclusive": 1,
+          "max_inclusive": 4
+        },
         "weight": 3
       }
     ],

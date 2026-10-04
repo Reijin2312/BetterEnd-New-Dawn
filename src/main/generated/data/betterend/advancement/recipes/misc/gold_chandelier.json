@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:gold_chandelier"
+        "recipes": "betterend:gold_chandelier"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

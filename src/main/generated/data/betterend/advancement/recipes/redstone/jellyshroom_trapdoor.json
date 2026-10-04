@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:jellyshroom_trapdoor"
+        "recipes": "betterend:jellyshroom_trapdoor"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

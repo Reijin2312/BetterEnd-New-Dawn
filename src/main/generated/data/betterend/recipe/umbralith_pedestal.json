@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "#": "betterend:umbralith_pillar",
     "S": "betterend:umbralith_slab"

@@ -22,7 +22,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:lacugrove_planks"
+        "recipes": "betterend:lacugrove_planks"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

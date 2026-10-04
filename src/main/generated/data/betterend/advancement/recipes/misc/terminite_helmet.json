@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:terminite_helmet"
+        "recipes": "betterend:terminite_helmet"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

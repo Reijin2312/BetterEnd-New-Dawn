@@ -33,7 +33,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:copy_handle_attachment"
+        "recipes": "betterend:copy_handle_attachment"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

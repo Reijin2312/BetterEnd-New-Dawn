@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:jellyshroom_chair"
+        "recipes": "betterend:jellyshroom_chair"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

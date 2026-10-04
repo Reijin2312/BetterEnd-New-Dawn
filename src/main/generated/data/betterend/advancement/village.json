@@ -3,17 +3,15 @@
   "criteria": {
     "end_village": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "structures": "betterend:end_village"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "structures": "betterend:end_village"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       },
       "trigger": "minecraft:location"
     }

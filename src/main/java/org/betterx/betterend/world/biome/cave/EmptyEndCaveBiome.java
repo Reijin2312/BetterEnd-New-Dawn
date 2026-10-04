@@ -14,17 +14,14 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.util.KeyDispatchDataCodec;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class EmptyEndCaveBiome extends EndCaveBiome.Config<EmptyEndCaveBiome> {
     public static final MapCodec<Biome> CODEC = EndCaveBiome.simpleCaveBiomeCodec(EmptyEndCaveBiome.Biome::new);
-    public static final KeyDispatchDataCodec<EmptyEndCaveBiome.Biome> KEY_CODEC = KeyDispatchDataCodec.of(CODEC);
     public static final MapCodec<Biome> NETWORK_CODEC = EndCaveBiome.simpleCaveBiomeNetworkCodec(EmptyEndCaveBiome.Biome::new);
-    public static final KeyDispatchDataCodec<EmptyEndCaveBiome.Biome> NETWORK_KEY_CODEC = KeyDispatchDataCodec.of(NETWORK_CODEC);
 
     public static class Biome extends EndCaveBiome {
         @Override
@@ -34,13 +31,11 @@ public class EmptyEndCaveBiome extends EndCaveBiome.Config<EmptyEndCaveBiome> {
         }
 
         @Override
-        public KeyDispatchDataCodec<? extends EndCaveBiome> codec() {
-            return EmptyEndCaveBiome.KEY_CODEC;
+        public MapCodec<? extends EndCaveBiome> codec() {
+            return EmptyEndCaveBiome.CODEC;
         }
-
-        @Override
-        public KeyDispatchDataCodec<? extends EndCaveBiome> networkCodec() {
-            return EmptyEndCaveBiome.NETWORK_KEY_CODEC;
+        public MapCodec<? extends EndCaveBiome> networkCodec() {
+            return EmptyEndCaveBiome.NETWORK_CODEC;
         }
 
         protected Biome(
@@ -55,8 +50,8 @@ public class EmptyEndCaveBiome extends EndCaveBiome.Config<EmptyEndCaveBiome> {
                 @Nullable ResourceKey<net.minecraft.world.level.biome.Biome> parent,
                 boolean hasCaves,
                 SurfaceMaterialProvider surface,
-                WeightedList<Holder<ConfiguredFeature<?, ?>>> floorFeatures,
-                WeightedList<Holder<ConfiguredFeature<?, ?>>> ceilFeatures
+                WeightedList<Holder<Feature>> floorFeatures,
+                WeightedList<Holder<Feature>> ceilFeatures
         ) {
             super(
                     fogDensity, biome, generatorData, terrainHeight,

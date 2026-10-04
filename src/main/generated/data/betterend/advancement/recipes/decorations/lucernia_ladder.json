@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:lucernia_ladder"
+        "recipes": "betterend:lucernia_ladder"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

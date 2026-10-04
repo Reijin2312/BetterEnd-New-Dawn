@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:silk_touch_book"
+        "recipes": "betterend:silk_touch_book"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

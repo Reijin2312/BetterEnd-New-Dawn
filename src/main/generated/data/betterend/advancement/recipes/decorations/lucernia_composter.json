@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:lucernia_composter"
+        "recipes": "betterend:lucernia_composter"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

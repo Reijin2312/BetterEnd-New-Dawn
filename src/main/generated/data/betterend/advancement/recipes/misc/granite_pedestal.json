@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:granite_pedestal"
+        "recipes": "betterend:granite_pedestal"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

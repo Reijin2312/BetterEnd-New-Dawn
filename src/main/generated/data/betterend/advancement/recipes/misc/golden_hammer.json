@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:golden_hammer"
+        "recipes": "betterend:golden_hammer"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:umbralith_flower_pot"
+        "recipes": "betterend:umbralith_flower_pot"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

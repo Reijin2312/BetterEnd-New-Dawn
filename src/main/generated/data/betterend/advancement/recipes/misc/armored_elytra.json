@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:armored_elytra"
+        "recipes": "betterend:armored_elytra"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

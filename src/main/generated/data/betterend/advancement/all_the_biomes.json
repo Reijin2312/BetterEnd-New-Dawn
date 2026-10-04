@@ -3,433 +3,379 @@
   "criteria": {
     "betterend:amber_land": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "biomes": "betterend:amber_land"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "betterend:amber_land"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       },
       "trigger": "minecraft:location"
     },
     "betterend:blossoming_spires": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "biomes": "betterend:blossoming_spires"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "betterend:blossoming_spires"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       },
       "trigger": "minecraft:location"
     },
     "betterend:chorus_forest": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "biomes": "betterend:chorus_forest"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "betterend:chorus_forest"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       },
       "trigger": "minecraft:location"
     },
     "betterend:crystal_mountains": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "biomes": "betterend:crystal_mountains"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "betterend:crystal_mountains"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       },
       "trigger": "minecraft:location"
     },
     "betterend:dragon_graveyards": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "biomes": "betterend:dragon_graveyards"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "betterend:dragon_graveyards"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       },
       "trigger": "minecraft:location"
     },
     "betterend:dry_shrubland": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "biomes": "betterend:dry_shrubland"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "betterend:dry_shrubland"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       },
       "trigger": "minecraft:location"
     },
     "betterend:dust_wastelands": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "biomes": "betterend:dust_wastelands"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "betterend:dust_wastelands"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       },
       "trigger": "minecraft:location"
     },
     "betterend:empty_aurora_cave": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "biomes": "betterend:empty_aurora_cave"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "betterend:empty_aurora_cave"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       },
       "trigger": "minecraft:location"
     },
     "betterend:empty_end_cave": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "biomes": "betterend:empty_end_cave"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "betterend:empty_end_cave"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       },
       "trigger": "minecraft:location"
     },
     "betterend:empty_smaragdant_cave": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "biomes": "betterend:empty_smaragdant_cave"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "betterend:empty_smaragdant_cave"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       },
       "trigger": "minecraft:location"
     },
     "betterend:flower_islets": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "biomes": "betterend:flower_islets"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "betterend:flower_islets"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       },
       "trigger": "minecraft:location"
     },
     "betterend:foggy_mushroomland": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "biomes": "betterend:foggy_mushroomland"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "betterend:foggy_mushroomland"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       },
       "trigger": "minecraft:location"
     },
     "betterend:glowing_grasslands": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "biomes": "betterend:glowing_grasslands"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "betterend:glowing_grasslands"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       },
       "trigger": "minecraft:location"
     },
     "betterend:ice_starfield": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "biomes": "betterend:ice_starfield"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "betterend:ice_starfield"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       },
       "trigger": "minecraft:location"
     },
     "betterend:jade_cave": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "biomes": "betterend:jade_cave"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "betterend:jade_cave"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       },
       "trigger": "minecraft:location"
     },
     "betterend:lantern_woods": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "biomes": "betterend:lantern_woods"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "betterend:lantern_woods"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       },
       "trigger": "minecraft:location"
     },
     "betterend:lush_aurora_cave": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "biomes": "betterend:lush_aurora_cave"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "betterend:lush_aurora_cave"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       },
       "trigger": "minecraft:location"
     },
     "betterend:lush_smaragdant_cave": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "biomes": "betterend:lush_smaragdant_cave"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "betterend:lush_smaragdant_cave"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       },
       "trigger": "minecraft:location"
     },
     "betterend:megalake": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "biomes": "betterend:megalake"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "betterend:megalake"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       },
       "trigger": "minecraft:location"
     },
     "betterend:megalake_grove": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "biomes": "betterend:megalake_grove"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "betterend:megalake_grove"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       },
       "trigger": "minecraft:location"
     },
     "betterend:neon_oasis": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "biomes": "betterend:neon_oasis"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "betterend:neon_oasis"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       },
       "trigger": "minecraft:location"
     },
     "betterend:painted_mountains": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "biomes": "betterend:painted_mountains"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "betterend:painted_mountains"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       },
       "trigger": "minecraft:location"
     },
     "betterend:shadow_forest": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "biomes": "betterend:shadow_forest"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "betterend:shadow_forest"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       },
       "trigger": "minecraft:location"
     },
     "betterend:sulphur_springs": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "biomes": "betterend:sulphur_springs"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "betterend:sulphur_springs"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       },
       "trigger": "minecraft:location"
     },
     "betterend:umbra_valley": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "biomes": "betterend:umbra_valley"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "betterend:umbra_valley"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       },
       "trigger": "minecraft:location"
     },
     "betterend:umbrella_jungle": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "biomes": "betterend:umbrella_jungle"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "betterend:umbrella_jungle"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       },
       "trigger": "minecraft:location"
     },
     "betterend:waterfall_ponds": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "biomes": "betterend:waterfall_ponds"
-              }
+        "player": {
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "betterend:waterfall_ponds"
             }
-          }
-        ]
+          },
+          "type": "minecraft:entity_properties"
+        }
       },
       "trigger": "minecraft:location"
     }

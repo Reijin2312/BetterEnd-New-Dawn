@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:frost_walker_book"
+        "recipes": "betterend:frost_walker_book"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "group": "end_stone_buttons",
   "ingredients": [
     "betterend:flavolite"

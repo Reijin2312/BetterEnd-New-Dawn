@@ -22,7 +22,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:mossy_glowshroom_planks"
+        "recipes": "betterend:mossy_glowshroom_planks"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

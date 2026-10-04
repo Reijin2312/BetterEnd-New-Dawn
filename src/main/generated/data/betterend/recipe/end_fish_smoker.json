@@ -1,10 +1,9 @@
 {
   "type": "minecraft:smoking",
   "category": "food",
-  "cookingtime": 100,
-  "experience": 0.0,
   "ingredient": "betterend:end_fish_raw",
   "result": {
     "id": "betterend:end_fish_cooked"
-  }
+  },
+  "cookingtime": 100
 }

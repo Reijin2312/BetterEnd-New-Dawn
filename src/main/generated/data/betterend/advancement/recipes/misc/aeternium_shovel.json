@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:aeternium_shovel"
+        "recipes": "betterend:aeternium_shovel"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

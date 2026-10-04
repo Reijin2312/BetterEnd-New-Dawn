@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:hydralux_petal_block_white"
+        "recipes": "betterend:hydralux_petal_block_white"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

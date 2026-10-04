@@ -2,128 +2,103 @@
   "type": "minecraft:chest",
   "pools": [
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 5.0,
-                "min": 2.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
           "name": "betterend:leather_wrapped_stick",
-          "weight": 10
+          "weight": 10,
+          "modifier": {
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 5,
+              "min": 2
+            },
+            "type": "minecraft:set_count"
+          }
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 5.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
           "name": "minecraft:ender_pearl",
-          "weight": 9
+          "weight": 9,
+          "modifier": {
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 5,
+              "min": 1
+            },
+            "type": "minecraft:set_count"
+          }
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 4.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
           "name": "betterend:shadow_berry_cooked",
-          "weight": 8
+          "weight": 8,
+          "modifier": {
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 4,
+              "min": 1
+            },
+            "type": "minecraft:set_count"
+          }
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 4.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
           "name": "betterend:blossom_berry_jelly",
-          "weight": 4
+          "weight": 4,
+          "modifier": {
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 4,
+              "min": 1
+            },
+            "type": "minecraft:set_count"
+          }
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": 1.0,
-              "function": "minecraft:set_count"
-            }
-          ],
           "name": "betterend:thallasium_shovel_head",
-          "weight": 2
+          "weight": 2,
+          "modifier": {
+            "count": 1,
+            "type": "minecraft:set_count"
+          }
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": 1.0,
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:ender_chest"
+          "name": "minecraft:ender_chest",
+          "modifier": {
+            "count": 1,
+            "type": "minecraft:set_count"
+          }
         }
       ],
       "rolls": {
         "type": "minecraft:uniform",
-        "max": 3.0,
-        "min": 1.0
+        "max": 3,
+        "min": 1
       }
     },
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
-          "conditions": [
-            {
-              "chance": 0.7,
-              "condition": "minecraft:random_chance"
-            }
-          ],
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 2.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "betterend:plate_upgrade_smithing_template"
+          "name": "betterend:plate_upgrade_smithing_template",
+          "condition": {
+            "chance": 0.7,
+            "type": "minecraft:random_chance"
+          },
+          "modifier": {
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 2,
+              "min": 1
+            },
+            "type": "minecraft:set_count"
+          }
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     }
   ],
   "random_sequence": "betterend:chests/end_village_loot"

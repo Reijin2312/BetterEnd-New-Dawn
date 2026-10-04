@@ -33,7 +33,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:lucernia_jellyshroom_hanging_sign"
+        "recipes": "betterend:lucernia_jellyshroom_hanging_sign"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

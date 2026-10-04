@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:terminite_anvil_updrade"
+        "recipes": "betterend:terminite_anvil_updrade"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

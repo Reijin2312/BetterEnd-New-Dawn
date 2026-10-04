@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:lacugrove_bookshelf"
+        "recipes": "betterend:lacugrove_bookshelf"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

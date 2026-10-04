@@ -1,5 +1,7 @@
 package org.betterx.betterend.world.features.terrain.caves;
 
+
+import com.mojang.serialization.MapCodec;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.noise.OpenSimplexNoise;
@@ -27,9 +29,7 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -39,6 +39,13 @@ import java.util.Set;
 import java.util.stream.IntStream;
 
 public class TunelCaveFeature extends EndCaveFeatures {
+    public static final MapCodec<TunelCaveFeature> CODEC = MapCodec.unit(TunelCaveFeature::new);
+
+    @Override
+    public MapCodec<TunelCaveFeature> codec() {
+        return CODEC;
+    }
+
     private static int tunnelFloorErrCounter = 0;
     private static int tunnelCeilErrCounter = 0;
     private static int tunnelWallErrCounter = 0;
@@ -126,10 +133,7 @@ public class TunelCaveFeature extends EndCaveFeatures {
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
-        final RandomSource random = featureConfig.random();
-        final BlockPos pos = featureConfig.origin();
-        final WorldGenLevel world = featureConfig.level();
+    public boolean place(WorldGenLevel world, ChunkGenerator generator, RandomSource random, BlockPos pos) {
         if (pos.getX() * pos.getX() + pos.getZ() * pos.getZ() <= 2500) {
             return false;
         }
@@ -143,7 +147,6 @@ public class TunelCaveFeature extends EndCaveFeatures {
             return false;
         }
 
-        final ChunkGenerator generator = featureConfig.chunkGenerator();
         Map<WoverBiomePicker.PickableBiome, Set<BlockPos>> floorSets = Maps.newHashMap();
         Map<WoverBiomePicker.PickableBiome, Set<BlockPos>> ceilSets = Maps.newHashMap();
         MutableBlockPos mut = new MutableBlockPos();
@@ -232,7 +235,7 @@ public class TunelCaveFeature extends EndCaveFeatures {
                 BlocksHelper.setWithoutUpdate(world, pos, surfaceBlock);
             }
             if (density > 0 && random.nextFloat() <= density) {
-                Holder<? extends ConfiguredFeature<?, ?>> feature = biome.getFloorFeature(random);
+                Holder<? extends Feature> feature = biome.getFloorFeature(random);
                 if (feature != null && feature.isBound()) {
                     feature.value().place(world, generator, random, pos.above());
                 }
@@ -255,7 +258,7 @@ public class TunelCaveFeature extends EndCaveFeatures {
                 BlocksHelper.setWithoutUpdate(world, pos, ceilBlock);
             }
             if (density > 0 && random.nextFloat() <= density) {
-                Holder<? extends ConfiguredFeature<?, ?>> feature = biome.getCeilFeature(random);
+                Holder<? extends Feature> feature = biome.getCeilFeature(random);
                 if (feature != null && feature.isBound()) {
                     feature.value().place(world, generator, random, pos.below());
                 }

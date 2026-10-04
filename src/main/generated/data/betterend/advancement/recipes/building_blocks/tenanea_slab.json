@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:tenanea_slab"
+        "recipes": "betterend:tenanea_slab"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

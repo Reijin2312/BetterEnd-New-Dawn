@@ -3,7 +3,6 @@ package org.betterx.betterend.world.generator;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.interfaces.BETargetChecker;
 import org.betterx.betterend.mixin.common.NoiseBasedChunkGeneratorAccessor;
-import org.betterx.betterend.mixin.common.NoiseInterpolatorAccessor;
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.wover.biome.api.BiomeManager;
 import org.betterx.wover.block.api.BlockHelper;
@@ -19,11 +18,13 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.BiomeSource;
-import net.minecraft.world.level.biome.Climate.Sampler;
+import net.minecraft.world.level.biome.BiomeResolver;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.*;
+import net.minecraft.world.level.levelgen.densityfunction.DensityBuffer;
+import net.minecraft.world.level.levelgen.densityfunction.DensityVolume;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -52,13 +53,13 @@ public class TerrainGenerator {
     private static OpenSimplexNoise noise2;
     private static BiomeSource biomeSource;
     public static WoverEndConfig config;
-    private static Sampler sampler;
+    private static BiomeResolver biomeResolver;
 
-    public static void initNoise(long seed, BiomeSource biomeSource, Sampler sampler) {
+    public static void initNoise(long seed, BiomeSource biomeSource, BiomeResolver biomeResolver) {
         TerrainGenerator.config = resolveEndConfig(biomeSource);
         if (config == null) {
             TerrainGenerator.biomeSource = null;
-            TerrainGenerator.sampler = null;
+            TerrainGenerator.biomeResolver = null;
             return;
         }
 
@@ -70,7 +71,7 @@ public class TerrainGenerator {
         noise2 = new OpenSimplexNoise(random.nextInt());
         TERRAIN_BOOL_CACHE_MAP.clear();
         TerrainGenerator.biomeSource = biomeSource;
-        TerrainGenerator.sampler = sampler;
+        TerrainGenerator.biomeResolver = biomeResolver;
 
     }
 
@@ -187,7 +188,7 @@ public class TerrainGenerator {
     }
 
     private static @Nullable WoverBiomeData getBiomeData(BiomeSource biomeSource, int x, int z) {
-        if (BiomeManager.biomeDataForHolder(biomeSource.getNoiseBiome(x, 0, z, sampler)) instanceof WoverBiomeData biome) {
+        if (BiomeManager.biomeDataForHolder(biomeResolver.getNoiseBiome(x, 0, z)) instanceof WoverBiomeData biome) {
             return biome;
         }
         return null;
@@ -301,7 +302,7 @@ public class TerrainGenerator {
             initNoise(
                     seed,
                     chunkGenerator.getBiomeSource(),
-                    level.getChunkSource().randomState().sampler()
+                    chunkGenerator.getBiomeSource().createUncachedResolver(level.getChunkSource().randomState())
             );
         }
     }
@@ -326,27 +327,46 @@ public class TerrainGenerator {
         }
     }
 
-    public static void fillSlice(
-            boolean primarySlice,
-            int x,
-            List<NoiseChunk.NoiseInterpolator> interpolators,
-            int cellCountXZ,
-            int firstCellZ,
-            NoiseSettings noiseSettings
-    ) {
-        final int sizeY = noiseSettings.getCellHeight();
-        final int sizeXZ = noiseSettings.getCellWidth();
-        final int cellSizeXZ = cellCountXZ + 1;
+    public static void fillDensityVolume(DensityBuffer output, DensityVolume volume, NoiseSettings noiseSettings) {
+        final int cellWidth = 4;
+        final int cellHeight = 8;
+        final int cellsX = Math.floorDiv(volume.sizeX() - 1, cellWidth) + 2;
+        final int cellsZ = Math.floorDiv(volume.sizeZ() - 1, cellWidth) + 2;
+        final int cellsY = Math.floorDiv(volume.sizeY() - 1, cellHeight) + 2;
+        final double[][][] lattice = new double[cellsZ][cellsX][cellsY];
 
-        x *= sizeXZ;
-        for (int cellXZ = 0; cellXZ < cellSizeXZ; ++cellXZ) {
-            int z = (firstCellZ + cellXZ) * sizeXZ;
-            for (NoiseChunk.NoiseInterpolator noiseInterpolator : interpolators) {
-                if (noiseInterpolator instanceof NoiseInterpolatorAccessor interpolator) {
-                    final double[] ds = (primarySlice
-                            ? interpolator.be_getSlice0()
-                            : interpolator.be_getSlice1())[cellXZ];
-                    fillTerrainDensity(ds, x, z, sizeXZ, sizeY, noiseSettings.height());
+        for (int cellZ = 0; cellZ < cellsZ; cellZ++) {
+            final int blockZ = volume.minBlockZ() + cellZ * cellWidth;
+            for (int cellX = 0; cellX < cellsX; cellX++) {
+                final int blockX = volume.minBlockX() + cellX * cellWidth;
+                fillTerrainDensity(
+                        lattice[cellZ][cellX],
+                        blockX,
+                        blockZ,
+                        cellWidth,
+                        cellHeight,
+                        noiseSettings.height()
+                );
+            }
+        }
+
+        for (int z = 0; z < volume.sizeZ(); z++) {
+            final int cellZ = z / cellWidth;
+            final double dz = (double) (z % cellWidth) / cellWidth;
+            for (int x = 0; x < volume.sizeX(); x++) {
+                final int cellX = x / cellWidth;
+                final double dx = (double) (x % cellWidth) / cellWidth;
+                for (int y = 0; y < volume.sizeY(); y++) {
+                    final int cellY = y / cellHeight;
+                    final double dy = (double) (y % cellHeight) / cellHeight;
+
+                    final double x00 = Mth.lerp(dx, lattice[cellZ][cellX][cellY], lattice[cellZ][cellX + 1][cellY]);
+                    final double x10 = Mth.lerp(dx, lattice[cellZ + 1][cellX][cellY], lattice[cellZ + 1][cellX + 1][cellY]);
+                    final double x01 = Mth.lerp(dx, lattice[cellZ][cellX][cellY + 1], lattice[cellZ][cellX + 1][cellY + 1]);
+                    final double x11 = Mth.lerp(dx, lattice[cellZ + 1][cellX][cellY + 1], lattice[cellZ + 1][cellX + 1][cellY + 1]);
+                    final double lower = Mth.lerp(dz, x00, x10);
+                    final double upper = Mth.lerp(dz, x01, x11);
+                    output.set(volume.indexUnchecked(x, y, z), (float) Mth.lerp(dy, lower, upper));
                 }
             }
         }

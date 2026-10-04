@@ -1,5 +1,8 @@
 package org.betterx.betterend.world.features.terrain;
 
+
+import com.mojang.serialization.MapCodec;
+
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.sdf.SDF;
 import org.betterx.bclib.sdf.operator.SDFDisplacement;
@@ -26,8 +29,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 import com.google.common.collect.Lists;
 
@@ -35,14 +36,20 @@ import java.util.List;
 import java.util.function.Function;
 
 public class SpireFeature extends DefaultFeature {
+    public static final MapCodec<SpireFeature> CODEC = MapCodec.unit(SpireFeature::new);
+
+    @Override
+    public MapCodec<? extends net.minecraft.world.level.levelgen.feature.Feature> codec() {
+        return CODEC;
+    }
     protected static final Function<BlockState, Boolean> REPLACE;
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
-        final RandomSource random = featureConfig.random();
-        BlockPos pos = featureConfig.origin();
-        final WorldGenLevel world = featureConfig.level();
-        final ChunkGenerator chunkGenerator = featureConfig.chunkGenerator();
+    public boolean place(WorldGenLevel featureWorld, ChunkGenerator featureGenerator, RandomSource featureRandom, BlockPos featureOrigin) {
+        final RandomSource random = featureRandom;
+        BlockPos pos = featureOrigin;
+        final WorldGenLevel world = featureWorld;
+        final ChunkGenerator chunkGenerator = featureGenerator;
         pos = getPosOnSurfaceWG(world, pos);
         if (pos.getY() < 10 || !world.getBlockState(pos.below(3))
                                      .is(CommonBlockTags.END_STONES) || !world.getBlockState(pos.below(6))

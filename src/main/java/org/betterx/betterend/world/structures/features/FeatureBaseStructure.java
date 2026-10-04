@@ -73,7 +73,7 @@ public abstract class FeatureBaseStructure extends Structure {
     }
 
     protected Holder<Biome> getNoiseBiome(ChunkGenerator cg, RandomState rState, int i, int j, int k) {
-        return cg.getBiomeSource().getNoiseBiome(i, j, k, rState.sampler());
+        return cg.getBiomeSource().createUncachedResolver(rState).getNoiseBiome(i, j, k);
     }
 
     protected abstract void generatePieces(

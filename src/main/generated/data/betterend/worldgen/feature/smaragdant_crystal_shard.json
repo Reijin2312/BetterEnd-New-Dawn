@@ -1,0 +1,13 @@
+{
+  "type": "betterend:single_block_feature",
+  "to_place": {
+    "type": "minecraft:simple",
+    "state": {
+      "id": "betterend:smaragdant_crystal_shard",
+      "properties": {
+        "facing": "up",
+        "waterlogged": "true"
+      }
+    }
+  }
+}

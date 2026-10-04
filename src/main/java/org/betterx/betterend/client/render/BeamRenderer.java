@@ -50,7 +50,7 @@ public class BeamRenderer {
         );
 
         matrices.pushPose();
-        matrices.mulPose(Axis.YP.rotation(-rotation));
+        matrices.mulPose(new org.joml.Matrix4f().rotation(Axis.YP.rotation(-rotation)));
 
         submitBeam(
                 matrices,

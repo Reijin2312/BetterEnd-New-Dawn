@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:jellyshroom_plate"
+        "recipes": "betterend:jellyshroom_plate"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

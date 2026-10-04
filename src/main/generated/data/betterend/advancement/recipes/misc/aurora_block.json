@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:aurora_block"
+        "recipes": "betterend:aurora_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

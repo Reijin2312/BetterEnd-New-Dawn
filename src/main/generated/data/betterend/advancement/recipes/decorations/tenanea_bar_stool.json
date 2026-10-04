@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:tenanea_bar_stool"
+        "recipes": "betterend:tenanea_bar_stool"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

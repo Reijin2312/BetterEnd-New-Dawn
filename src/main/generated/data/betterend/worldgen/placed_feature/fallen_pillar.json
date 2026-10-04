@@ -1,7 +1,6 @@
 {
   "feature": {
-    "type": "betterend:fallen_pillar",
-    "config": {}
+    "type": "betterend:fallen_pillar"
   },
   "placement": [
     {

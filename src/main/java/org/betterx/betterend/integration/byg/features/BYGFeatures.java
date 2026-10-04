@@ -6,9 +6,15 @@ import org.betterx.wover.feature.api.placed.PlacedFeatureKey;
 import org.betterx.wover.feature.api.placed.PlacedFeatureManager;
 
 public class BYGFeatures {
-    public static final NightshadeRedwoodTreeFeature NIGHTSHADE_REDWOOD_TREE_FEATURE = EndFeatures.inlineBuild("nightshade_redwood_tree", new NightshadeRedwoodTreeFeature());
-    public static final BigEtherTreeFeature BIG_ETHER_TREE_FEATURE = EndFeatures.inlineBuild("big_ether_tree", new BigEtherTreeFeature());
-    public static final OldBulbisTreeFeature OLD_BULBIS_TREE_FEATURE = EndFeatures.inlineBuild("old_bulbis_tree_feature", new OldBulbisTreeFeature());
+    public static final NightshadeRedwoodTreeFeature NIGHTSHADE_REDWOOD_TREE_FEATURE = EndFeatures.register(
+            "nightshade_redwood_tree", NightshadeRedwoodTreeFeature.CODEC, new NightshadeRedwoodTreeFeature()
+    );
+    public static final BigEtherTreeFeature BIG_ETHER_TREE_FEATURE = EndFeatures.register(
+            "big_ether_tree", BigEtherTreeFeature.CODEC, new BigEtherTreeFeature()
+    );
+    public static final OldBulbisTreeFeature OLD_BULBIS_TREE_FEATURE = EndFeatures.register(
+            "old_bulbis_tree_feature", OldBulbisTreeFeature.CODEC, new OldBulbisTreeFeature()
+    );
 
     public static final PlacedFeatureKey OLD_BULBIS_TREE = PlacedFeatureManager.createKey(BetterEnd.C.mk("old_bulbis_tree"));
     public static final PlacedFeatureKey IVIS_SPROUT = PlacedFeatureManager.createKey(BetterEnd.C.mk("ivis_sprout"));

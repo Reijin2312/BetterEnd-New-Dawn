@@ -13,8 +13,8 @@ import org.betterx.wover.surface.impl.rules.SwitchRuleSource;
 
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.SurfaceRules;
-import net.minecraft.world.level.levelgen.SurfaceRules.RuleSource;
+import net.minecraft.world.level.levelgen.material.MaterialRules;
+import net.minecraft.world.level.levelgen.material.rule.MaterialRule;
 import net.minecraft.world.level.levelgen.placement.CaveSurface;
 
 import java.util.List;
@@ -77,21 +77,21 @@ public class SulphurSpringsBiome extends EndBiome.Config {
 
             @Override
             public SurfaceRuleBuilder surface() {
-                RuleSource surfaceBlockRule = new SwitchRuleSource(
+                MaterialRule surfaceBlockRule = new SwitchRuleSource(
                         new SulphuricSurfaceNoiseCondition(),
                         List.of(
-                                SurfaceRules.state(surfaceMaterial().getAltTopMaterial()),
-                                SurfaceRules.state(surfaceMaterial().getTopMaterial()),
+                                MaterialRules.state(surfaceMaterial().getAltTopMaterial()),
+                                MaterialRules.state(surfaceMaterial().getTopMaterial()),
                                 sulphuricRock(),
                                 brimstone()
                         )
                 );
                 return super
                         .surface()
-                        .rule(SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, surfaceBlockRule), SurfaceRuleBuilder.TOP_SURFACE_PRIORITY)
+                        .rule(MaterialRules.ifTrue(MaterialRules.stoneDepthCheck(0, false, net.minecraft.world.level.levelgen.placement.CaveSurface.FLOOR), surfaceBlockRule), SurfaceRuleBuilder.TOP_SURFACE_PRIORITY)
                         .rule(
-                                SurfaceRules.ifTrue(
-                                        SurfaceRules.stoneDepthCheck(5, false, CaveSurface.FLOOR),
+                                MaterialRules.ifTrue(
+                                        MaterialRules.stoneDepthCheck(5, false, CaveSurface.FLOOR),
                                         surfaceBlockRule
                                 ),
                                 SurfaceRuleBuilder.SUB_SURFACE_PRIORITY

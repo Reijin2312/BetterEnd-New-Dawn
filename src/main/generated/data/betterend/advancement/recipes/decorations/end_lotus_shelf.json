@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:end_lotus_shelf"
+        "recipes": "betterend:end_lotus_shelf"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

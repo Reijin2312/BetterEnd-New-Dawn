@@ -1,6 +1,9 @@
 package org.betterx.betterend.world.features.trees;
 
 
+import com.mojang.serialization.MapCodec;
+
+
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.blocks.BaseAttachedBlock;
 import org.betterx.bclib.sdf.PosInfo;
@@ -20,9 +23,8 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 import org.joml.Vector3f;
 
@@ -30,15 +32,21 @@ import java.util.List;
 import java.util.function.Function;
 
 public class GiganticAmaranitaFeature extends DefaultFeature {
+    public static final MapCodec<GiganticAmaranitaFeature> CODEC = MapCodec.unit(GiganticAmaranitaFeature::new);
+
+    @Override
+    public MapCodec<GiganticAmaranitaFeature> codec() {
+        return CODEC;
+    }
     private static final Function<BlockState, Boolean> REPLACE;
     private static final Function<BlockState, Boolean> IGNORE;
     private static final Function<PosInfo, BlockState> POST;
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
-        final RandomSource random = featureConfig.random();
-        final BlockPos pos = featureConfig.origin();
-        final WorldGenLevel world = featureConfig.level();
+    public boolean place(WorldGenLevel featureWorld, ChunkGenerator featureGenerator, RandomSource featureRandom, BlockPos featureOrigin) {
+        final RandomSource random = featureRandom;
+        final BlockPos pos = featureOrigin;
+        final WorldGenLevel world = featureWorld;
         if (!world.getBlockState(pos.below()).is(BlockTags.NYLIUM)) return false;
 
         // Small tree, but reuses the same unbounded BCLib primitives as the larger ones - clip them to the
@@ -376,7 +384,7 @@ public class GiganticAmaranitaFeature extends DefaultFeature {
     static {
         REPLACE = BlocksHelper::replaceableOrPlant;
 
-        IGNORE = EndBlocks.DRAGON_TREE::isTreeLog;
+        IGNORE = state -> EndBlocks.DRAGON_TREE.isTreeLog(state);
 
         POST = (info) -> {
             if (!info.getStateUp().is(EndBlocks.AMARANITA_STEM) || !info.getStateDown().is(EndBlocks.AMARANITA_STEM)) {

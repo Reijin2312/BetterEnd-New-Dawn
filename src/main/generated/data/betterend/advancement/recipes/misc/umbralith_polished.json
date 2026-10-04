@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:umbralith_polished"
+        "recipes": "betterend:umbralith_polished"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

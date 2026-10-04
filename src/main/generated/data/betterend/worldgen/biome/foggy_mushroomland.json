@@ -4,7 +4,7 @@
       "loop": "betterend:betterend.ambient.foggy_mushroomland",
       "mood": {
         "block_search_extent": 8,
-        "offset": 2.0,
+        "offset": 2,
         "sound": "betterend:betterend.ambient.dust_wastelands",
         "tick_delay": 6000
       }
@@ -77,8 +77,11 @@
     "ambient": [
       {
         "type": "betterend:dragonfly",
-        "maxCount": 5,
-        "minCount": 2,
+        "count": {
+          "type": "minecraft:uniform",
+          "min_inclusive": 2,
+          "max_inclusive": 5
+        },
         "weight": 80
       }
     ],
@@ -88,29 +91,41 @@
     "monster": [
       {
         "type": "betterend:end_slime",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 3
+        "count": {
+          "type": "minecraft:uniform",
+          "min_inclusive": 1,
+          "max_inclusive": 2
+        },
+        "weight": 10
       },
       {
         "type": "minecraft:enderman",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 10
+        "count": {
+          "type": "minecraft:uniform",
+          "min_inclusive": 1,
+          "max_inclusive": 2
+        },
+        "weight": 3
       }
     ],
     "underground_water_creature": [],
     "water_ambient": [
       {
         "type": "betterend:end_fish",
-        "maxCount": 5,
-        "minCount": 2,
+        "count": {
+          "type": "minecraft:uniform",
+          "min_inclusive": 2,
+          "max_inclusive": 5
+        },
         "weight": 20
       },
       {
         "type": "betterend:cubozoa",
-        "maxCount": 8,
-        "minCount": 3,
+        "count": {
+          "type": "minecraft:uniform",
+          "min_inclusive": 3,
+          "max_inclusive": 8
+        },
         "weight": 10
       }
     ],

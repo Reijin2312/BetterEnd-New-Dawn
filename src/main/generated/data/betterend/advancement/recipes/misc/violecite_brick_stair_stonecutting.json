@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:violecite_brick_stair_stonecutting"
+        "recipes": "betterend:violecite_brick_stair_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

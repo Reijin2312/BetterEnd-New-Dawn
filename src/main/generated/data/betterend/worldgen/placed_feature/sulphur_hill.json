@@ -1,7 +1,6 @@
 {
   "feature": {
-    "type": "betterend:sulphur_hill",
-    "config": {}
+    "type": "betterend:sulphur_hill"
   },
   "placement": [
     {

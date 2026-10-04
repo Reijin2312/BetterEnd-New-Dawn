@@ -1,6 +1,9 @@
 package org.betterx.betterend.world.features.trees;
 
 
+import com.mojang.serialization.MapCodec;
+
+
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.sdf.PosInfo;
 import org.betterx.bclib.sdf.SDF;
@@ -22,10 +25,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 import org.joml.Vector3f;
 
@@ -33,6 +35,12 @@ import java.util.List;
 import java.util.function.Function;
 
 public class LacugroveFeature extends DefaultFeature {
+    public static final MapCodec<LacugroveFeature> CODEC = MapCodec.unit(LacugroveFeature::new);
+
+    @Override
+    public MapCodec<LacugroveFeature> codec() {
+        return CODEC;
+    }
     private static final Function<BlockState, Boolean> REPLACE;
     private static final Function<BlockState, Boolean> IGNORE;
     private static final Function<PosInfo, BlockState> POST;
@@ -45,10 +53,10 @@ public class LacugroveFeature extends DefaultFeature {
     private static final float LEAF_BALL_BULGE = 4.5F;
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
-        final RandomSource random = featureConfig.random();
-        final BlockPos pos = featureConfig.origin();
-        final WorldGenLevel world = featureConfig.level();
+    public boolean place(WorldGenLevel featureWorld, ChunkGenerator featureGenerator, RandomSource featureRandom, BlockPos featureOrigin) {
+        final RandomSource random = featureRandom;
+        final BlockPos pos = featureOrigin;
+        final WorldGenLevel world = featureWorld;
         if (!world.getBlockState(pos.below()).is(BlockTags.NYLIUM)) return false;
 
         // size reaches 25, and the trunk/leaf-ball flood-fills and canGenerate probe are otherwise bounded
@@ -245,7 +253,7 @@ public class LacugroveFeature extends DefaultFeature {
             return BlocksHelper.replaceableOrPlant(state);
         };
 
-        IGNORE = EndBlocks.LACUGROVE::isTreeLog;
+        IGNORE = state -> EndBlocks.LACUGROVE.isTreeLog(state);
 
         POST = (info) -> {
             if (EndBlocks.LACUGROVE.isTreeLog(info.getStateUp()) && EndBlocks.LACUGROVE.isTreeLog(info.getStateDown())) {

@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:iron_chandelier"
+        "recipes": "betterend:iron_chandelier"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

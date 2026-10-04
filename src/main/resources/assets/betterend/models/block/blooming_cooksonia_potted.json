@@ -1,6 +1,6 @@
 {
-    "parent": "block/cross",
-    "textures": {
-        "cross": "betterend:block/blooming_cooksonia_potted"
-    }
+  "parent": "block/cross",
+  "textures": {
+    "cross": "betterend:block/blooming_cooksonia_potted"
+  }
 }

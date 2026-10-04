@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:thallasium_ingot_alloy_raw"
+        "recipes": "betterend:thallasium_ingot_alloy_raw"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

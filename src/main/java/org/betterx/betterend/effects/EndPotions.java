@@ -4,11 +4,11 @@ import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndItems;
 import org.betterx.wover.potions.api.PotionManager;
+import org.betterx.wover.potions.api.BrewingBuilder;
 
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.PotionBrewing;
 import net.minecraft.world.item.alchemy.Potions;
 
 import org.jetbrains.annotations.ApiStatus;
@@ -23,7 +23,7 @@ public class EndPotions {
         PotionManager.BOOTSTRAP_POTIONS.subscribe(EndPotions::bootstrap);
     }
 
-    private static void bootstrap(PotionBrewing.Builder builder) {
+    private static void bootstrap(BrewingBuilder builder) {
         builder.addMix(Potions.AWKWARD, EndItems.ENDER_DUST, END_VEIL);
         builder.addMix(END_VEIL, Items.REDSTONE, LONG_END_VEIL);
         builder.addMix(Potions.AWKWARD, EndBlocks.MURKWEED.asItem(), Potions.NIGHT_VISION);

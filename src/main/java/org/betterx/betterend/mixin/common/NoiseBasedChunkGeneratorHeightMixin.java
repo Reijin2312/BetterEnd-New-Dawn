@@ -72,8 +72,8 @@ public abstract class NoiseBasedChunkGeneratorHeightMixin {
         return TerrainGenerator.getSurfaceHeight(
                 x,
                 z,
-                noise.getCellWidth(),
-                noise.getCellHeight(),
+                4,
+                8,
                 noise.height(),
                 noise.minY()
         );

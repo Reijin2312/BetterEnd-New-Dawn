@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:flavolite_brick_wall_from_flavolite_brick_stonecutting"
+        "recipes": "betterend:flavolite_brick_wall_from_flavolite_brick_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

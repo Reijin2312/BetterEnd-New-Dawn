@@ -119,7 +119,7 @@ public class SilkMothEntity extends Animal {
         FlyingPathNavigation birdNavigation = new FlyingPathNavigation(this, world) {
             public boolean isStableDestination(BlockPos pos) {
                 BlockState state = this.level.getBlockState(pos);
-                return state.isAir() || !state.blocksMotion();
+                return state.isAir() || !state.isSolid();
             }
 
             public void tick() {

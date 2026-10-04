@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:end_stone_lantern"
+        "recipes": "betterend:end_stone_lantern"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

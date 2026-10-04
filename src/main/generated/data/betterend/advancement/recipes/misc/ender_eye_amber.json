@@ -33,7 +33,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:ender_eye_amber"
+        "recipes": "betterend:ender_eye_amber"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

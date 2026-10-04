@@ -1,7 +1,6 @@
 {
   "feature": {
-    "type": "betterend:surface_vent",
-    "config": {}
+    "type": "betterend:surface_vent"
   },
   "placement": [
     {

@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:unbreaking_book"
+        "recipes": "betterend:unbreaking_book"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

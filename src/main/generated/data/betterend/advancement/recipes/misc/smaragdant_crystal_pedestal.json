@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:smaragdant_crystal_pedestal"
+        "recipes": "betterend:smaragdant_crystal_pedestal"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

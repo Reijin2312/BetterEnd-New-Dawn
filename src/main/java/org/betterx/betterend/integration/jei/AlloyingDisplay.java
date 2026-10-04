@@ -25,7 +25,7 @@ public class AlloyingDisplay {
     }
 
     public static AlloyingDisplay fromAlloying(RecipeHolder<AlloyingRecipe> recipe) {
-        return new AlloyingDisplay(recipe, recipe.value().getExperience(), recipe.value().getSmeltTime());
+        return new AlloyingDisplay(recipe, recipe.value().experience(), recipe.value().getSmeltTime());
     }
 
     public static AlloyingDisplay fromBlasting(RecipeHolder<BlastingRecipe> recipe) {
@@ -42,7 +42,7 @@ public class AlloyingDisplay {
 
     public List<Ingredient> getIngredients() {
         if (recipe.value() instanceof AlloyingRecipe alloyingRecipe) {
-            return alloyingRecipe.getIngredients();
+            return alloyingRecipe.getIngredients().stream().flatMap(java.util.Optional::stream).toList();
         }
         if (recipe.value() instanceof BlastingRecipe blastingRecipe) {
             return List.of(blastingRecipe.input());

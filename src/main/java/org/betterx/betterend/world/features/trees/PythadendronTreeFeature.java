@@ -1,6 +1,9 @@
 package org.betterx.betterend.world.features.trees;
 
 
+import com.mojang.serialization.MapCodec;
+
+
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.sdf.PosInfo;
 import org.betterx.bclib.sdf.SDF;
@@ -21,10 +24,9 @@ import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 import org.joml.Vector3f;
@@ -33,6 +35,12 @@ import java.util.List;
 import java.util.function.Function;
 
 public class PythadendronTreeFeature extends DefaultFeature {
+    public static final MapCodec<PythadendronTreeFeature> CODEC = MapCodec.unit(PythadendronTreeFeature::new);
+
+    @Override
+    public MapCodec<PythadendronTreeFeature> codec() {
+        return CODEC;
+    }
     private static final Function<BlockState, Boolean> REPLACE;
     private static final Function<BlockState, Boolean> IGNORE;
     private static final Function<PosInfo, BlockState> POST;
@@ -45,10 +53,10 @@ public class PythadendronTreeFeature extends DefaultFeature {
     private static final float LEAF_BALL_BULGE = 4.5F;
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
-        final RandomSource random = featureConfig.random();
-        final BlockPos pos = featureConfig.origin();
-        final WorldGenLevel world = featureConfig.level();
+    public boolean place(WorldGenLevel featureWorld, ChunkGenerator featureGenerator, RandomSource featureRandom, BlockPos featureOrigin) {
+        final RandomSource random = featureRandom;
+        final BlockPos pos = featureOrigin;
+        final WorldGenLevel world = featureWorld;
         if (world.getBlockState(pos.below()).getBlock() != EndBlocks.CHORUS_NYLIUM) {
             return false;
         }
@@ -244,7 +252,7 @@ public class PythadendronTreeFeature extends DefaultFeature {
             return BlocksHelper.replaceableOrPlant(state);
         };
 
-        IGNORE = EndBlocks.PYTHADENDRON::isTreeLog;
+        IGNORE = state -> EndBlocks.PYTHADENDRON.isTreeLog(state);
 
         POST = (info) -> {
             if (EndBlocks.PYTHADENDRON.isTreeLog(info.getStateUp()) && EndBlocks.PYTHADENDRON.isTreeLog(info.getStateDown())) {

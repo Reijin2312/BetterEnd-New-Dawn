@@ -61,6 +61,19 @@ sourceSets {
             // used by the legacy integration. JEI remains the supported recipe viewer.
             exclude 'org/betterx/betterend/integration/emi/**'
             exclude 'org/betterx/betterend/integration/rei/**'
+            // 26.3 removed the configured-feature/carver APIs used only by the old generators.
+            // Runtime uses the checked-in generated data and BetterEnd's feature-based caves.
+            exclude 'org/betterx/datagen/betterend/worldgen/**'
+            exclude 'org/betterx/datagen/betterend/tags/**'
+            exclude 'org/betterx/datagen/betterend/advancement/**'
+            exclude 'org/betterx/datagen/betterend/BetterEndDatagen.java'
+            exclude 'org/betterx/datagen/betterend/EndModelProvider.java'
+            exclude 'org/betterx/datagen/betterend/EndEquipmentAssetProvider.java'
+            exclude 'org/betterx/datagen/betterend/EndRegistrySupplier.java'
+            exclude 'org/betterx/datagen/betterend/recipes/EndChestLootTableProvider.java'
+            exclude 'org/betterx/datagen/betterend/recipes/EndBlockLootTableProvider.java'
+            exclude 'org/betterx/betterend/world/carvers/**'
+            exclude 'org/betterx/betterend/registry/EndCarvers.java'
         }
         // Add the datagenned files into the jar.
         resources {
@@ -201,7 +214,7 @@ artifacts {
     dev jar
 }
 
-def modrinthModsDir = file(findProperty("modrinth_mods_dir") ?: "C:/Users/Redmi/AppData/Roaming/ModrinthApp/profiles/Fabric 26.2/mods")
+def modrinthModsDir = file(findProperty("modrinth_mods_dir") ?: "C:/Users/Redmi/AppData/Roaming/ModrinthApp/profiles/Fabric 26.3/mods")
 def fabricRuntimeProjects = [project]
 if (local_bclib) fabricRuntimeProjects.add(project(":BCLib"))
 if (local_wover) fabricRuntimeProjects.add(project(":WorldWeaver"))

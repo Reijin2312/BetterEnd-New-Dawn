@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:charnia_green_dye"
+        "recipes": "betterend:charnia_green_dye"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

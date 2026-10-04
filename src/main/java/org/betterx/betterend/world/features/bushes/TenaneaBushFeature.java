@@ -1,6 +1,9 @@
 package org.betterx.betterend.world.features.bushes;
 
 
+import com.mojang.serialization.MapCodec;
+
+
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.wover.block.api.BlockProperties;
 import org.betterx.wover.block.api.BlockProperties.TripleShape;
@@ -24,10 +27,9 @@ import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 import com.google.common.collect.Lists;
 
@@ -35,6 +37,12 @@ import java.util.List;
 import java.util.function.Function;
 
 public class TenaneaBushFeature extends DefaultFeature {
+    public static final MapCodec<TenaneaBushFeature> CODEC = MapCodec.unit(TenaneaBushFeature::new);
+
+    @Override
+    public MapCodec<TenaneaBushFeature> codec() {
+        return CODEC;
+    }
     private static final Function<BlockState, Boolean> REPLACE;
     private static final Direction[] DIRECTIONS = Direction.values();
 
@@ -42,10 +50,10 @@ public class TenaneaBushFeature extends DefaultFeature {
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
-        final RandomSource random = featureConfig.random();
-        final BlockPos pos = featureConfig.origin();
-        final WorldGenLevel world = featureConfig.level();
+    public boolean place(WorldGenLevel featureWorld, ChunkGenerator featureGenerator, RandomSource featureRandom, BlockPos featureOrigin) {
+        final RandomSource random = featureRandom;
+        final BlockPos pos = featureOrigin;
+        final WorldGenLevel world = featureWorld;
         if (!world.getBlockState(pos.below()).is(CommonBlockTags.END_STONES)) return false;
         // Don't grow a bush whose base sits in water (e.g. on the lake floor).
         if (!world.getFluidState(pos).isEmpty()) return false;

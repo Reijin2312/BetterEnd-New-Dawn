@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:quartz_lantern"
+        "recipes": "betterend:quartz_lantern"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

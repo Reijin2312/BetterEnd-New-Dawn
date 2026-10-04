@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:thallasium_chestplate_nugget_blasting"
+        "recipes": "betterend:thallasium_chestplate_nugget_blasting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

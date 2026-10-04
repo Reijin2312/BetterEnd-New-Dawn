@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:power_book"
+        "recipes": "betterend:power_book"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

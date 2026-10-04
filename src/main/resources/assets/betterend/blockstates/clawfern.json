@@ -1,8 +1,12 @@
 {
-	"variants": {
-		"": [
-			{ "model": "betterend:block/clawfern_01" },
-			{ "model": "betterend:block/clawfern_02" }
-		]
-	}
+  "variants": {
+    "": [
+      {
+        "model": "betterend:block/clawfern_01"
+      },
+      {
+        "model": "betterend:block/clawfern_02"
+      }
+    ]
+  }
 }

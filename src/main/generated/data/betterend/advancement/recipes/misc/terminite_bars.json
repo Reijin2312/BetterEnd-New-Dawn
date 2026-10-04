@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:terminite_bars"
+        "recipes": "betterend:terminite_bars"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

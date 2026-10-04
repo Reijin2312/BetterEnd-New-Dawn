@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:sandy_jadestone_wall_stonecutting"
+        "recipes": "betterend:sandy_jadestone_wall_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

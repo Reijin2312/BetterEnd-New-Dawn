@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:flavolite_slab_stonecutting"
+        "recipes": "betterend:flavolite_slab_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

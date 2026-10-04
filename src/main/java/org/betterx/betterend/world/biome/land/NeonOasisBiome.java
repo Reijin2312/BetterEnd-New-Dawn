@@ -18,8 +18,8 @@ import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.SurfaceRules;
-import net.minecraft.world.level.levelgen.SurfaceRules.RuleSource;
+import net.minecraft.world.level.levelgen.material.MaterialRules;
+import net.minecraft.world.level.levelgen.material.rule.MaterialRule;
 import net.minecraft.world.level.levelgen.placement.CaveSurface;
 
 import java.util.List;
@@ -66,27 +66,22 @@ public class NeonOasisBiome extends EndBiome.Config {
             }
 
             @Override
-            public boolean generateFloorRule() {
-                return false;
-            }
-
-            @Override
             public SurfaceRuleBuilder surface() {
-                RuleSource surfaceBlockRule = new SwitchRuleSource(
+                MaterialRule surfaceBlockRule = new SwitchRuleSource(
                         new SplitNoiseCondition(),
                         List.of(
-                                SurfaceRules.state(EndBlocks.ENDSTONE_DUST.defaultBlockState()),
-                                SurfaceRules.state(EndBlocks.END_MOSS.defaultBlockState())
+                                MaterialRules.state(EndBlocks.ENDSTONE_DUST.defaultBlockState()),
+                                MaterialRules.state(EndBlocks.END_MOSS.defaultBlockState())
                         )
                 );
                 return super
                         .surface()
                         .ceil(Blocks.END_STONE.defaultBlockState())
-                        .rule(SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, surfaceBlockRule), SurfaceRuleBuilder.TOP_SURFACE_PRIORITY)
-                        .rule(SurfaceRules.ifTrue(
-                                SurfaceRules.stoneDepthCheck(2, true, CaveSurface.FLOOR),
-                                SurfaceRules.state(EndBlocks.ENDSTONE_DUST.defaultBlockState())
-                        ), SurfaceRuleBuilder.BELOW_FLOOR_PRIORITY);
+                        .rule(MaterialRules.ifTrue(MaterialRules.stoneDepthCheck(0, false, net.minecraft.world.level.levelgen.placement.CaveSurface.FLOOR), surfaceBlockRule), SurfaceRuleBuilder.TOP_SURFACE_PRIORITY)
+                        .rule(MaterialRules.ifTrue(
+                                MaterialRules.stoneDepthCheck(2, true, CaveSurface.FLOOR),
+                                MaterialRules.state(EndBlocks.ENDSTONE_DUST.defaultBlockState())
+                        ), 4);
             }
         };
     }

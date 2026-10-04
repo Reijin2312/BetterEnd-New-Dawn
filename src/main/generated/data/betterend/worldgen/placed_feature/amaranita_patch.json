@@ -1,7 +1,6 @@
 {
   "feature": {
-    "type": "betterend:amaranita_patch",
-    "config": {}
+    "type": "betterend:amaranita_patch"
   },
   "placement": [
     {

@@ -1,8 +1,12 @@
 {
-	"variants": {
-		"": [
-			{ "model": "betterend:block/lutebus_01" },
-			{ "model": "betterend:block/lutebus_02" }
-		]
-	}
+  "variants": {
+    "": [
+      {
+        "model": "betterend:block/lutebus_01"
+      },
+      {
+        "model": "betterend:block/lutebus_02"
+      }
+    ]
+  }
 }

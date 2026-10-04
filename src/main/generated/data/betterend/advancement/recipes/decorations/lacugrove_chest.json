@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:lacugrove_chest"
+        "recipes": "betterend:lacugrove_chest"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

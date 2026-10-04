@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:petal_block"
+        "recipes": "betterend:petal_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:luck_of_sea_book"
+        "recipes": "betterend:luck_of_sea_book"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

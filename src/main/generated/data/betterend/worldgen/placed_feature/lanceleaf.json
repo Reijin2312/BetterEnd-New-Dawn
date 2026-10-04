@@ -1,9 +1,7 @@
 {
   "feature": {
     "type": "betterend:lanceleaf_feature",
-    "config": {
-      "radius": 7
-    }
+    "radius": 7
   },
   "placement": [
     {

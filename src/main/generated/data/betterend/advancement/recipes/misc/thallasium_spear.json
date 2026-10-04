@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:thallasium_spear"
+        "recipes": "betterend:thallasium_spear"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

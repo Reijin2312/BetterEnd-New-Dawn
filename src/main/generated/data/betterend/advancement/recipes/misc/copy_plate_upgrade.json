@@ -33,7 +33,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:copy_plate_upgrade"
+        "recipes": "betterend:copy_plate_upgrade"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

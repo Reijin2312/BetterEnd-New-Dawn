@@ -18,15 +18,11 @@
           "collection": [
             {
               "type": "minecraft:block",
-              "result_state": {
-                "Name": "betterend:endstone_dust"
-              }
+              "result_state": "betterend:endstone_dust"
             },
             {
               "type": "minecraft:block",
-              "result_state": {
-                "Name": "betterend:end_moss"
-              }
+              "result_state": "betterend:end_moss"
             }
           ],
           "selector": {
@@ -46,9 +42,7 @@
         },
         "then_run": {
           "type": "minecraft:block",
-          "result_state": {
-            "Name": "minecraft:end_stone"
-          }
+          "result_state": "minecraft:end_stone"
         }
       },
       {
@@ -62,16 +56,12 @@
         },
         "then_run": {
           "type": "minecraft:block",
-          "result_state": {
-            "Name": "betterend:endstone_dust"
-          }
+          "result_state": "betterend:endstone_dust"
         }
       },
       {
         "type": "minecraft:block",
-        "result_state": {
-          "Name": "minecraft:end_stone"
-        }
+        "result_state": "minecraft:end_stone"
       }
     ]
   }

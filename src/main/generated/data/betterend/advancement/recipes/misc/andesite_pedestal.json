@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:andesite_pedestal"
+        "recipes": "betterend:andesite_pedestal"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

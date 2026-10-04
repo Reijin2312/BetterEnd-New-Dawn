@@ -1,5 +1,7 @@
 package org.betterx.betterend.world.features.terrain;
 
+
+import com.mojang.serialization.MapCodec;
 import org.betterx.bclib.sdf.SDF;
 import org.betterx.bclib.sdf.operator.SDFDisplacement;
 import org.betterx.bclib.sdf.primitive.SDFSphere;
@@ -18,20 +20,21 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 import com.google.common.collect.Lists;
 
 import java.util.List;
 
 public class FloatingSpireFeature extends SpireFeature {
+    public static final MapCodec<FloatingSpireFeature> CODEC = MapCodec.unit(FloatingSpireFeature::new);
+
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
-        final RandomSource random = featureConfig.random();
-        BlockPos pos = featureConfig.origin();
-        final WorldGenLevel world = featureConfig.level();
-        final ChunkGenerator chunkGenerator = featureConfig.chunkGenerator();
+    public MapCodec<FloatingSpireFeature> codec() {
+        return CODEC;
+    }
+
+    @Override
+    public boolean place(WorldGenLevel world, ChunkGenerator chunkGenerator, RandomSource random, BlockPos pos) {
         int minY = getYOnSurface(world, pos.getX(), pos.getZ());
         int y = minY > 57 ? MHelper.floor(MHelper.randRange(minY, minY * 2, random) * 0.5F + 32) : MHelper.randRange(
                 64,

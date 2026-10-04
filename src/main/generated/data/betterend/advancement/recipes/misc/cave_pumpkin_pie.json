@@ -36,7 +36,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:cave_pumpkin_pie"
+        "recipes": "betterend:cave_pumpkin_pie"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

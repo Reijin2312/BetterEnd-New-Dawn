@@ -28,9 +28,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -46,10 +44,10 @@ public abstract class EndCaveFeatures extends DefaultFeature {
     private static final Vec3i[] SPHERE;
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
-        final RandomSource random = featureConfig.random();
-        final BlockPos pos = featureConfig.origin();
-        final WorldGenLevel world = featureConfig.level();
+    public boolean place(WorldGenLevel featureWorld, ChunkGenerator featureGenerator, RandomSource featureRandom, BlockPos featureOrigin) {
+        final RandomSource random = featureRandom;
+        final BlockPos pos = featureOrigin;
+        final WorldGenLevel world = featureWorld;
         if (pos.getX() * pos.getX() + pos.getZ() * pos.getZ() <= 2500) {
             return false;
         }
@@ -69,7 +67,7 @@ public abstract class EndCaveFeatures extends DefaultFeature {
         Set<BlockPos> caveBlocks = generate(world, center, radius, random);
         if (!caveBlocks.isEmpty()) {
             if (biome != null) {
-                ChunkGenerator generator = featureConfig.chunkGenerator();
+                ChunkGenerator generator = featureGenerator;
                 setBiomes(world, biome, caveBlocks);
                 Set<BlockPos> floorPositions = Sets.newConcurrentHashSet();
                 Set<BlockPos> ceilPositions = Sets.newConcurrentHashSet();
@@ -121,7 +119,7 @@ public abstract class EndCaveFeatures extends DefaultFeature {
                 BlocksHelper.setWithoutUpdate(world, pos, surfaceBlock);
             }
             if (density > 0 && random.nextFloat() <= density) {
-                Holder<? extends ConfiguredFeature<?, ?>> feature = biome.getFloorFeature(random);
+                Holder<? extends Feature> feature = biome.getFloorFeature(random);
                 if (feature != null && feature.isBound()) {
                     feature.value().place(world, generator, random, pos.above());
                 }
@@ -143,7 +141,7 @@ public abstract class EndCaveFeatures extends DefaultFeature {
                 BlocksHelper.setWithoutUpdate(world, pos, ceilBlock);
             }
             if (density > 0 && random.nextFloat() <= density) {
-                Holder<? extends ConfiguredFeature<?, ?>> feature = biome.getCeilFeature(random);
+                Holder<? extends Feature> feature = biome.getCeilFeature(random);
                 if (feature != null && feature.isBound()) {
                     feature.value().place(world, generator, random, pos.below());
                 }
@@ -191,6 +189,19 @@ public abstract class EndCaveFeatures extends DefaultFeature {
     }
 
     protected void setBiome(WorldGenLevel world, BlockPos pos, WoverBiomePicker.PickableBiome biome) {
+        // Biomes are stored at quart resolution (one palette entry covers a 4x4x4 block cell).
+        // A cave reaching the upper part of an island can therefore share its biome cell with the
+        // exposed surface even though the cave block itself is below it.  In 26.3 that makes the
+        // later BiomeFilter see an EndCaveBiome at the surface and reject every surface vegetation
+        // feature.  Keep the cave biome below the surface cell; the cave blocks and decorations are
+        // still generated normally.
+        int surfaceY = world.getHeight(Heightmap.Types.WORLD_SURFACE_WG, pos.getX(), pos.getZ());
+        // BiomeManager applies its fuzzy zoom around (blockY - 2), so a surface lookup can also
+        // select the quart cell immediately below the cell containing the feature position.
+        int lowestSurfaceQuart = (surfaceY - 2) >> 2;
+        if ((pos.getY() >> 2) >= lowestSurfaceQuart) {
+            return;
+        }
         BiomeManager.setBiome(world, pos, biome.biome);
     }
 

@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:diamond_hammer"
+        "recipes": "betterend:diamond_hammer"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

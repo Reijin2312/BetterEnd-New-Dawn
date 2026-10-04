@@ -1,14 +1,10 @@
 {
   "feature": {
     "type": "betterend:ore_layer",
-    "config": {
-      "max_y": 128,
-      "min_y": 16,
-      "radius": 12.0,
-      "state": {
-        "Name": "betterend:flavolite"
-      }
-    }
+    "max_y": 128,
+    "min_y": 16,
+    "radius": 12,
+    "state": "betterend:flavolite"
   },
   "placement": [
     {

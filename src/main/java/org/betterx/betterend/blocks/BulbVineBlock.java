@@ -20,9 +20,10 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.BonusLevelTableCondition;
 import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
+import net.minecraft.world.level.storage.loot.predicates.MatchBlock;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -62,10 +63,10 @@ public class BulbVineBlock extends BaseVineBlock implements BlockLootProvider {
             @NotNull LootLookupProvider provider,
             @NotNull ResourceKey<LootTable> tableKey
     ) {
-        var bottom = LootItemBlockStatePropertyCondition
-                .hasBlockStateProperties(this)
-                .setProperties(StatePropertiesPredicate.Builder
-                        .properties()
+        var bottom = MatchBlock.blockMatches(
+                provider.getProvider().lookupOrThrow(Registries.BLOCK),
+                this,
+                StatePropertiesPredicate.Builder.properties()
                         .hasProperty(SHAPE, BlockProperties.TripleShape.BOTTOM));
         final LootItemCondition.Builder shearsOrHoeOrSilk = provider.shearsOrHoeSilkTouchCondition();
 
@@ -74,9 +75,9 @@ public class BulbVineBlock extends BaseVineBlock implements BlockLootProvider {
                 .withPool(
                         LootPool
                                 .lootPool()
-                                .setRolls(ConstantValue.exactly(1.0F))
+                                .setRolls(ContextIntProviders.exactly(1))
                                 .add(LootItem.lootTableItem(EndItems.GLOWING_BULB.asItem())
-                                             .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1)))
+                                             .apply(SetItemCountFunction.setCount(ContextIntProviders.exactly(1)))
                                 )
                                 .when(shearsOrHoeOrSilk)
                                 .when(bottom)
@@ -84,9 +85,9 @@ public class BulbVineBlock extends BaseVineBlock implements BlockLootProvider {
                 .withPool(
                         LootPool
                                 .lootPool()
-                                .setRolls(ConstantValue.exactly(1.0F))
+                                .setRolls(ContextIntProviders.exactly(1))
                                 .add(LootItem.lootTableItem(EndBlocks.BULB_VINE_SEED.asItem())
-                                             .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1)))
+                                             .apply(SetItemCountFunction.setCount(ContextIntProviders.exactly(1)))
                                              .when(ExplosionCondition.survivesExplosion())
                                              .when(BonusLevelTableCondition.bonusLevelFlatChance(provider.fortune(), LootLookupProvider.VANILLA_LEAVES_SAPLING_CHANCES))
                                 )

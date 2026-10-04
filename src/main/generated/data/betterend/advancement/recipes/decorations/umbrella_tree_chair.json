@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:umbrella_tree_chair"
+        "recipes": "betterend:umbrella_tree_chair"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

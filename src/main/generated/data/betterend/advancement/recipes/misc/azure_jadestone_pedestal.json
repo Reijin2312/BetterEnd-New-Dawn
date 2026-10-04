@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:azure_jadestone_pedestal"
+        "recipes": "betterend:azure_jadestone_pedestal"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

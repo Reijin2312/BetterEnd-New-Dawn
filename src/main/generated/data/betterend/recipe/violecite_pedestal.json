@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "#": "betterend:violecite_pillar",
     "S": "betterend:violecite_slab"

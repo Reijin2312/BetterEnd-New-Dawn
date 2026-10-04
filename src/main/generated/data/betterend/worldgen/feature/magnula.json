@@ -1,0 +1,14 @@
+{
+  "type": "betterend:vine_feature",
+  "max_length": 8,
+  "radius": 6,
+  "state": {
+    "type": "minecraft:simple",
+    "state": {
+      "id": "betterend:magnula",
+      "properties": {
+        "shape": "bottom"
+      }
+    }
+  }
+}

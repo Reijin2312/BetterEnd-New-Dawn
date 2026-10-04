@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:helix_tree_ladder"
+        "recipes": "betterend:helix_tree_ladder"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

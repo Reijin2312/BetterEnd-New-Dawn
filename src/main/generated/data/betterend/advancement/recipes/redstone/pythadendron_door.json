@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:pythadendron_door"
+        "recipes": "betterend:pythadendron_door"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

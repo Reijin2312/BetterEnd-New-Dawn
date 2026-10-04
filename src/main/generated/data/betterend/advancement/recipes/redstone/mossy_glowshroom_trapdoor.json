@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:mossy_glowshroom_trapdoor"
+        "recipes": "betterend:mossy_glowshroom_trapdoor"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -1,13 +1,11 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "group": "chest_boat",
   "ingredients": [
     "#c:chests",
     "betterend:mossy_glowshroom_boat"
   ],
   "result": {
-    "count": 1,
     "id": "betterend:mossy_glowshroom_chest_boat"
   }
 }

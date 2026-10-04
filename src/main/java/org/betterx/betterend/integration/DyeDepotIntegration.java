@@ -6,7 +6,6 @@ import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.wover.recipe.api.RecipeBuilder;
 
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Items;
@@ -24,7 +23,7 @@ public class DyeDepotIntegration extends ModIntegration {
         RecipeBuilder.BOOTSTRAP_RECIPES.subscribe(this::registerRecipes);
     }
 
-    private void registerRecipes(RecipeOutput context) {
+    private void registerRecipes(RecipeBuilder.Context context) {
         for (DyeColor color : DyeColor.values()) {
             if (color.getId() < 16) {
                 continue;
@@ -77,7 +76,7 @@ public class DyeDepotIntegration extends ModIntegration {
     }
 
     private void registerColoredRecipe(
-            RecipeOutput context,
+            RecipeBuilder.Context context,
             String baseName,
             ItemLike source,
             DyeColor color,

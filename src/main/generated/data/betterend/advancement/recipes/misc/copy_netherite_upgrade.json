@@ -33,7 +33,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:copy_netherite_upgrade"
+        "recipes": "betterend:copy_netherite_upgrade"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

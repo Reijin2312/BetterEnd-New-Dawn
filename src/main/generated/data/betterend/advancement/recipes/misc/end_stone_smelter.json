@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:end_stone_smelter"
+        "recipes": "betterend:end_stone_smelter"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

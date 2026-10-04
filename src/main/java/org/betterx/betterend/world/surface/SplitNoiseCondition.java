@@ -3,7 +3,7 @@ package org.betterx.betterend.world.surface;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.wover.math.api.MathHelper;
-import org.betterx.wover.surface.api.conditions.SurfaceRulesContext;
+import net.minecraft.world.level.levelgen.material.MaterialRuleContext;
 import org.betterx.wover.surface.api.noise.NumericProvider;
 
 import net.minecraft.util.RandomSource;
@@ -28,9 +28,9 @@ public class SplitNoiseCondition implements NumericProvider {
     private static final int SEED = 0x73706C74;
 
     @Override
-    public int getNumber(SurfaceRulesContext context) {
-        final int x = context.getBlockX();
-        final int z = context.getBlockZ();
+    public int getNumber(MaterialRuleContext context) {
+        final int x = context.blockX();
+        final int z = context.blockZ();
         // The jitter below used to be drawn from MHelper.RANDOM_SOURCE, which is a ThreadLocalRandomSource:
         // it has no seed, cannot be given one, and hands a different stream to every thread and every JVM
         // start, so the split it selected could never be rebuilt from the same world seed. Seeding from the
@@ -38,7 +38,7 @@ public class SplitNoiseCondition implements NumericProvider {
         final RandomSource random = RandomSource.create(MathHelper.getSeed(
                 SEED,
                 x,
-                context.getBlockY(),
+                context.blockY(),
                 z
         ));
         float noise = (float) NOISE.eval(x * 0.1, z * 0.1) + MHelper.randRange(-0.4F, 0.4F, random);

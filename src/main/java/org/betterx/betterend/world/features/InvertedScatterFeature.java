@@ -5,20 +5,19 @@ import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.util.GlobalState;
 import org.betterx.wover.feature.api.WriteZone;
 
-import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
-public abstract class InvertedScatterFeature<FC extends ScatterFeatureConfig> extends Feature<FC> {
+public abstract class InvertedScatterFeature<FC extends ScatterFeatureConfig> implements Feature {
+    public final FC config;
 
-
-    public InvertedScatterFeature(Codec<FC> codec) {
-        super(codec);
+    protected InvertedScatterFeature(FC config) {
+        this.config = config;
     }
 
     public abstract boolean canGenerate(
@@ -33,12 +32,9 @@ public abstract class InvertedScatterFeature<FC extends ScatterFeatureConfig> ex
     public abstract void generate(FC cfg, WorldGenLevel world, RandomSource random, BlockPos blockPos);
 
     @Override
-    public boolean place(FeaturePlaceContext<FC> featureConfig) {
-        FC cfg = featureConfig.config();
+    public boolean place(WorldGenLevel world, ChunkGenerator generator, RandomSource random, BlockPos center) {
+        FC cfg = config;
         final MutableBlockPos POS = GlobalState.stateForThread().POS;
-        final RandomSource random = featureConfig.random();
-        final BlockPos center = featureConfig.origin();
-        final WorldGenLevel world = featureConfig.level();
         int maxY = world.getHeight(Heightmap.Types.WORLD_SURFACE, center.getX(), center.getZ());
         int minY = BlocksHelper.upRay(world, new BlockPos(center.getX(), 0, center.getZ()), maxY);
         // Scatter points land up to cfg.radius from center, past the 3x3 chunks a feature may touch on an

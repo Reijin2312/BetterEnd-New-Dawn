@@ -10,8 +10,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 
 public abstract class SkyScatterFeature extends ScatterFeature<ScatterFeatureConfig> {
-    public SkyScatterFeature() {
-        super(ScatterFeatureConfig.CODEC);
+    protected SkyScatterFeature(ScatterFeatureConfig config) {
+        super(config);
     }
 
     @Override

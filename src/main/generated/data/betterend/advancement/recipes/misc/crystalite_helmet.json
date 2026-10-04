@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:crystalite_helmet"
+        "recipes": "betterend:crystalite_helmet"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:lotus_block"
+        "recipes": "betterend:lotus_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -1,10 +1,8 @@
 {
   "type": "minecraft:smelting",
-  "category": "misc",
-  "cookingtime": 200,
-  "experience": 0.0,
   "ingredient": "betterend:end_lily_leaf",
   "result": {
     "id": "betterend:end_lily_leaf_dried"
-  }
+  },
+  "cookingtime": 200
 }

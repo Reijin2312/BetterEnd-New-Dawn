@@ -9,7 +9,6 @@ import org.betterx.wover.datagen.api.provider.WoverRecipeProvider;
 import org.betterx.wover.recipe.api.CraftingRecipeBuilder;
 import org.betterx.wover.recipe.api.RecipeBuilder;
 
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.world.item.Item;
@@ -27,7 +26,7 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
     }
 
     @Override
-    protected void bootstrap(HolderLookup.Provider provider, RecipeOutput context) {
+    protected void bootstrap(net.minecraft.data.worldgen.BootstrapContextAccess provider, RecipeOutput context) {
         CraftingRecipeBuilder craftingRecipeBuilder62 = RecipeBuilder.crafting(BetterEnd.C.mk("ender_perl_to_block"), EndBlocks.ENDER_BLOCK);
         craftingRecipeBuilder62.shape("OO", "OO")
                                .addMaterial('O', Items.ENDER_PEARL)

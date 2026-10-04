@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:violecite_button"
+        "recipes": "betterend:violecite_button"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

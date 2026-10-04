@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(GameRenderer.class)
 public class GameRendererMixin {
-    @Inject(method = "bobHurt", at = @At("RETURN"))
+    @Inject(method = "bobHurt", at = @At("RETURN"), remap = false)
     private void betterend_wobbleForBuildHint(
             CameraRenderState cameraRenderState,
             PoseStack poseStack,
@@ -26,7 +26,8 @@ public class GameRendererMixin {
         float[] wobble = InfusionHint.wobble(partialTick);
         if (wobble == null) wobble = EternalHint.wobble(partialTick);
         if (wobble == null) return;
-        poseStack.mulPose(Axis.ZP.rotationDegrees(wobble[0]));
-        poseStack.mulPose(Axis.XP.rotationDegrees(wobble[1]));
+
+        poseStack.mulPose(new org.joml.Matrix4f().rotation(Axis.ZP.rotationDegrees(wobble[0])));
+        poseStack.mulPose(new org.joml.Matrix4f().rotation(Axis.XP.rotationDegrees(wobble[1])));
     }
 }

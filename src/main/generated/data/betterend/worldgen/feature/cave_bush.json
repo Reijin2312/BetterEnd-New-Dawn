@@ -1,0 +1,11 @@
+{
+  "type": "betterend:bush_feature",
+  "leaves": {
+    "type": "minecraft:simple",
+    "state": "betterend:cave_bush"
+  },
+  "stem": {
+    "type": "minecraft:simple",
+    "state": "betterend:cave_bush"
+  }
+}

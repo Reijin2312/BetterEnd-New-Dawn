@@ -33,7 +33,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:respawn_obelisk"
+        "recipes": "betterend:respawn_obelisk"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

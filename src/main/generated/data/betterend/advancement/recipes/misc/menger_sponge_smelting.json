@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:menger_sponge_smelting"
+        "recipes": "betterend:menger_sponge_smelting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

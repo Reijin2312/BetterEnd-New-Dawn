@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:lacugrove_chair"
+        "recipes": "betterend:lacugrove_chair"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

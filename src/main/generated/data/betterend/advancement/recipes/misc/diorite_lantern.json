@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:diorite_lantern"
+        "recipes": "betterend:diorite_lantern"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

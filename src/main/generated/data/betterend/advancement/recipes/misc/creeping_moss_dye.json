@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:creeping_moss_dye"
+        "recipes": "betterend:creeping_moss_dye"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

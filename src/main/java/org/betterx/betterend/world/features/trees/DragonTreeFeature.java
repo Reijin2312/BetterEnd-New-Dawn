@@ -1,6 +1,9 @@
 package org.betterx.betterend.world.features.trees;
 
 
+import com.mojang.serialization.MapCodec;
+
+
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.sdf.PosInfo;
 import org.betterx.bclib.sdf.SDF;
@@ -20,10 +23,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 import com.google.common.collect.Lists;
@@ -33,6 +35,12 @@ import java.util.List;
 import java.util.function.Function;
 
 public class DragonTreeFeature extends DefaultFeature {
+    public static final MapCodec<DragonTreeFeature> CODEC = MapCodec.unit(DragonTreeFeature::new);
+
+    @Override
+    public MapCodec<DragonTreeFeature> codec() {
+        return CODEC;
+    }
     private static final Function<BlockState, Boolean> REPLACE;
     private static final Function<BlockState, Boolean> IGNORE;
     private static final Function<PosInfo, BlockState> POST;
@@ -65,10 +73,10 @@ public class DragonTreeFeature extends DefaultFeature {
     private static final float LEAF_BALL_BULGE = 1.5F;
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
-        final RandomSource random = featureConfig.random();
-        final BlockPos pos = featureConfig.origin();
-        final WorldGenLevel world = featureConfig.level();
+    public boolean place(WorldGenLevel featureWorld, ChunkGenerator featureGenerator, RandomSource featureRandom, BlockPos featureOrigin) {
+        final RandomSource random = featureRandom;
+        final BlockPos pos = featureOrigin;
+        final WorldGenLevel world = featureWorld;
         if (!world.getBlockState(pos.below()).is(BlockTags.NYLIUM)) return false;
 
         // The cap/root branches below fan out to `radius` (up to ~17.5) in any direction via
@@ -316,7 +324,7 @@ public class DragonTreeFeature extends DefaultFeature {
             return BlocksHelper.replaceableOrPlant(state);
         };
 
-        IGNORE = EndBlocks.DRAGON_TREE::isTreeLog;
+        IGNORE = state -> EndBlocks.DRAGON_TREE.isTreeLog(state);
 
         POST = (info) -> {
             if (EndBlocks.DRAGON_TREE.isTreeLog(info.getStateUp()) && EndBlocks.DRAGON_TREE.isTreeLog(info.getStateDown())) {

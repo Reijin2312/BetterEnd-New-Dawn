@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:andesite_lantern"
+        "recipes": "betterend:andesite_lantern"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

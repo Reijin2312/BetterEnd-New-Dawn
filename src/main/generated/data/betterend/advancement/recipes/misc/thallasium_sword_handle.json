@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:thallasium_sword_handle"
+        "recipes": "betterend:thallasium_sword_handle"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

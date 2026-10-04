@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:tined_glass_from_smaragdant"
+        "recipes": "betterend:tined_glass_from_smaragdant"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

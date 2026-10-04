@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:aeternium_block_to_ingot"
+        "recipes": "betterend:aeternium_block_to_ingot"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

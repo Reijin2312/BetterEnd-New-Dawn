@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:terminite_ingot"
+        "recipes": "betterend:terminite_ingot"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

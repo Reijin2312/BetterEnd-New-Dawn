@@ -1,7 +1,6 @@
 {
   "feature": {
-    "type": "betterend:silk_moth_nest",
-    "config": {}
+    "type": "betterend:silk_moth_nest"
   },
   "placement": [
     {

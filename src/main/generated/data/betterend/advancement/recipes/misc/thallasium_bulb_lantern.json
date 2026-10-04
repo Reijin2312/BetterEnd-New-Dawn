@@ -33,7 +33,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:thallasium_bulb_lantern"
+        "recipes": "betterend:thallasium_bulb_lantern"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

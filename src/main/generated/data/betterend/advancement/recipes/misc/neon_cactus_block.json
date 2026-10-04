@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:neon_cactus_block"
+        "recipes": "betterend:neon_cactus_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

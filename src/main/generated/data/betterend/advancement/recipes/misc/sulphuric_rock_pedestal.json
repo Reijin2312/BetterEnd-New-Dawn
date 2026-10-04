@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:sulphuric_rock_pedestal"
+        "recipes": "betterend:sulphuric_rock_pedestal"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

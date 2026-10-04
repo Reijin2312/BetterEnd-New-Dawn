@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:azure_jadestone_brick_slab_stonecutting"
+        "recipes": "betterend:azure_jadestone_brick_slab_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -43,7 +43,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:shadow_berry_jelly_potion"
+        "recipes": "betterend:shadow_berry_jelly_potion"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

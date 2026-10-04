@@ -4,7 +4,7 @@
       "loop": "betterend:betterend.ambient.dust_wastelands",
       "mood": {
         "block_search_extent": 8,
-        "offset": 2.0,
+        "offset": 2,
         "sound": "betterend:betterend.ambient.dust_wastelands",
         "tick_delay": 6000
       }
@@ -75,8 +75,11 @@
     "monster": [
       {
         "type": "minecraft:enderman",
-        "maxCount": 2,
-        "minCount": 1,
+        "count": {
+          "type": "minecraft:uniform",
+          "min_inclusive": 1,
+          "max_inclusive": 2
+        },
         "weight": 50
       }
     ],

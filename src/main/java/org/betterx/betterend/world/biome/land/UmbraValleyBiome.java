@@ -14,7 +14,7 @@ import org.betterx.wover.surface.impl.rules.SwitchRuleSource;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.SurfaceRules;
+import net.minecraft.world.level.levelgen.material.MaterialRules;
 
 import java.util.List;
 
@@ -72,16 +72,16 @@ public class UmbraValleyBiome extends EndBiome.Config {
             @Override
             public SurfaceRuleBuilder surface() {
                 return super.surface()
-                            .rule(SurfaceRules.ifTrue(
-                                    SurfaceRules.ON_FLOOR,
+                            .rule(MaterialRules.ifTrue(
+                                    MaterialRules.stoneDepthCheck(0, false, net.minecraft.world.level.levelgen.placement.CaveSurface.FLOOR),
                                     new SwitchRuleSource(
                                             new UmbraSurfaceNoiseCondition(),
                                             List.of(
-                                                    SurfaceRules.state(surfaceMaterial().getAltTopMaterial()),
+                                                    MaterialRules.state(surfaceMaterial().getAltTopMaterial()),
                                                     pallidiumHeavy(),
                                                     pallidiumThin(),
                                                     pallidiumTiny(),
-                                                    SurfaceRules.state(surfaceMaterial().getTopMaterial())
+                                                    MaterialRules.state(surfaceMaterial().getTopMaterial())
                                             )
                                     )
                             ), SurfaceRuleBuilder.FLOOR_PRIORITY);

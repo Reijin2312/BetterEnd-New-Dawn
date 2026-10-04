@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:thallasium_nuggets_from_ingot"
+        "recipes": "betterend:thallasium_nuggets_from_ingot"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

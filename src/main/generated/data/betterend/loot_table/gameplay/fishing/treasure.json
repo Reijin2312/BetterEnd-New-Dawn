@@ -2,7 +2,6 @@
   "type": "minecraft:chest",
   "pools": [
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
@@ -18,57 +17,53 @@
         },
         {
           "type": "minecraft:item",
-          "functions": [
+          "name": "minecraft:bow",
+          "modifier": [
             {
-              "add": false,
               "damage": {
                 "type": "minecraft:uniform",
                 "max": 0.25,
-                "min": 0.0
+                "min": 0
               },
-              "function": "minecraft:set_damage"
+              "type": "minecraft:set_damage"
             },
             {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 30.0,
+              "type": "minecraft:enchant_with_levels",
+              "levels": 30,
               "options": "#minecraft:on_random_loot"
             }
-          ],
-          "name": "minecraft:bow"
+          ]
         },
         {
           "type": "minecraft:item",
-          "functions": [
+          "name": "minecraft:fishing_rod",
+          "modifier": [
             {
-              "add": false,
               "damage": {
                 "type": "minecraft:uniform",
                 "max": 0.25,
-                "min": 0.0
+                "min": 0
               },
-              "function": "minecraft:set_damage"
+              "type": "minecraft:set_damage"
             },
             {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 30.0,
+              "type": "minecraft:enchant_with_levels",
+              "levels": 30,
               "options": "#minecraft:on_random_loot"
             }
-          ],
-          "name": "minecraft:fishing_rod"
+          ]
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 30.0,
-              "options": "#minecraft:on_random_loot"
-            }
-          ],
-          "name": "minecraft:book"
+          "name": "minecraft:book",
+          "modifier": {
+            "type": "minecraft:enchant_with_levels",
+            "levels": 30,
+            "options": "#minecraft:on_random_loot"
+          }
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     }
   ],
   "random_sequence": "betterend:gameplay/fishing/treasure"

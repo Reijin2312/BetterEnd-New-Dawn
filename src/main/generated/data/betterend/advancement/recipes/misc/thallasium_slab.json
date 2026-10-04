@@ -16,7 +16,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:thallasium_slab"
+        "recipes": "betterend:thallasium_slab"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

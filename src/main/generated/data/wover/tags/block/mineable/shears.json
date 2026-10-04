@@ -1,8 +1,6 @@
 {
   "values": [
-    "betterend:amaranita_fur",
     "betterend:blue_vine",
-    "betterend:blue_vine_fur",
     "betterend:bubble_coral",
     "betterend:bulb_vine",
     "betterend:cave_bush",
@@ -12,7 +10,6 @@
     "betterend:end_lily",
     "betterend:filalux",
     "betterend:flamaea",
-    "betterend:glowing_pillar_leaves",
     "betterend:glowing_pillar_luminophor",
     "betterend:glowing_pillar_roots",
     "betterend:glowing_pillar_seed",
@@ -21,16 +18,13 @@
     "betterend:jungle_vine",
     "betterend:lacugrove_leaves",
     "betterend:lucernia_leaves",
-    "betterend:lucernia_outer_leaves",
     "betterend:magnula",
-    "betterend:mossy_glowshroom_fur",
     "betterend:pond_anemone",
     "betterend:pythadendron_leaves",
     "betterend:rubinea",
     "betterend:silk_moth_nest",
     "betterend:tenanea_flowers",
     "betterend:tenanea_leaves",
-    "betterend:tenanea_outer_leaves",
     "betterend:twisted_vine",
     "betterend:umbrella_tree_membrane"
   ]

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:end_lotus_slab"
+        "recipes": "betterend:end_lotus_slab"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

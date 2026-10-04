@@ -1,7 +1,6 @@
 {
   "feature": {
-    "type": "betterend:geyser",
-    "config": {}
+    "type": "betterend:geyser"
   },
   "placement": [
     {

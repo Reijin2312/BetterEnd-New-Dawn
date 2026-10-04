@@ -1,16 +1,12 @@
 {
   "feature": {
     "type": "betterend:single_plant_feature",
-    "config": {
-      "chance": 2,
-      "radius": 5,
-      "raw_heightmap": true,
-      "state": {
-        "type": "minecraft:simple_state_provider",
-        "state": {
-          "Name": "betterend:lutebus"
-        }
-      }
+    "chance": 2,
+    "radius": 5,
+    "raw_heightmap": true,
+    "state": {
+      "type": "minecraft:simple",
+      "state": "betterend:lutebus"
     }
   },
   "placement": [

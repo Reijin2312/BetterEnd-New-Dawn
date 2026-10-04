@@ -23,6 +23,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BonemealSource;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -86,18 +87,18 @@ public class SmallJellyshroomBlock extends BaseAttachedBlock implements RenderLa
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader world, BlockPos pos, BlockState state) {
+    public boolean isValidBonemealTarget(LevelReader world, BlockPos pos, BlockState state, BonemealSource bonemealSource) {
         return state.getValue(FACING) == Direction.UP && world.getBlockState(pos.below())
                                                               .is(CommonBlockTags.END_STONES);
     }
 
     @Override
-    public boolean isBonemealSuccess(Level world, RandomSource random, BlockPos pos, BlockState state) {
+    public boolean isBonemealSuccess(Level world, RandomSource random, BlockPos pos, BlockState state, BonemealSource bonemealSource) {
         return random.nextInt(16) == 0;
     }
 
     @Override
-    public void performBonemeal(ServerLevel world, RandomSource random, BlockPos pos, BlockState state) {
+    public void performBonemeal(ServerLevel world, RandomSource random, BlockPos pos, BlockState state, BonemealSource bonemealSource) {
         BlocksHelper.setWithUpdate(world, pos, Blocks.AIR);
         EndConfiguredVegetation
                 .JELLYSHROOM.placeInWorld(world, pos, random);

@@ -4,7 +4,7 @@
       "loop": "betterend:betterend.ambient.sulphur_springs",
       "mood": {
         "block_search_extent": 8,
-        "offset": 2.0,
+        "offset": 2,
         "sound": "betterend:betterend.ambient.dust_wastelands",
         "tick_delay": 6000
       }
@@ -74,8 +74,11 @@
     "monster": [
       {
         "type": "minecraft:enderman",
-        "maxCount": 4,
-        "minCount": 1,
+        "count": {
+          "type": "minecraft:uniform",
+          "min_inclusive": 1,
+          "max_inclusive": 4
+        },
         "weight": 1
       }
     ],
@@ -83,14 +86,20 @@
     "water_ambient": [
       {
         "type": "betterend:end_fish",
-        "maxCount": 8,
-        "minCount": 3,
+        "count": {
+          "type": "minecraft:uniform",
+          "min_inclusive": 3,
+          "max_inclusive": 8
+        },
         "weight": 50
       },
       {
         "type": "betterend:cubozoa",
-        "maxCount": 8,
-        "minCount": 3,
+        "count": {
+          "type": "minecraft:uniform",
+          "min_inclusive": 3,
+          "max_inclusive": 8
+        },
         "weight": 50
       }
     ],

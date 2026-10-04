@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:bane_of_arthropods_book"
+        "recipes": "betterend:bane_of_arthropods_book"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

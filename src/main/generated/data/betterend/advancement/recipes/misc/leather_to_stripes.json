@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:leather_to_stripes"
+        "recipes": "betterend:leather_to_stripes"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

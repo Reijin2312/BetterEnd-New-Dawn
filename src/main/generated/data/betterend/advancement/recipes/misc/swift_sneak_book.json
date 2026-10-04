@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:swift_sneak_book"
+        "recipes": "betterend:swift_sneak_book"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

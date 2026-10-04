@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:umbralith_lantern"
+        "recipes": "betterend:umbralith_lantern"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

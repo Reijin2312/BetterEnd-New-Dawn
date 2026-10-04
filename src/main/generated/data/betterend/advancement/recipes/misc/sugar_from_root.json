@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:sugar_from_root"
+        "recipes": "betterend:sugar_from_root"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

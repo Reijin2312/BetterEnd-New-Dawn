@@ -1,0 +1,7 @@
+{
+  "type": "betterend:single_block_feature",
+  "to_place": {
+    "type": "minecraft:simple",
+    "state": "betterend:cave_grass"
+  }
+}

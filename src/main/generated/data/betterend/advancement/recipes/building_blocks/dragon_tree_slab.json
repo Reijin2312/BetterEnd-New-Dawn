@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:dragon_tree_slab"
+        "recipes": "betterend:dragon_tree_slab"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

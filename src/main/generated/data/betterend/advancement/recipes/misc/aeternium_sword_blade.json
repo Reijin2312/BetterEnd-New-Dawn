@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:aeternium_sword_blade"
+        "recipes": "betterend:aeternium_sword_blade"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

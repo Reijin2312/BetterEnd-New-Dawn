@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:helix_tree_taburet"
+        "recipes": "betterend:helix_tree_taburet"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

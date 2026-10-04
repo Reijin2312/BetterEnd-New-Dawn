@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:dragon_tree_button"
+        "recipes": "betterend:dragon_tree_button"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

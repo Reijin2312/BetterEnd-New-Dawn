@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:aeternium_spear_tip"
+        "recipes": "betterend:aeternium_spear_tip"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

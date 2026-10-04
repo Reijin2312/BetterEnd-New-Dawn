@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:stonecutter_end_stone_brick_cracked_slab"
+        "recipes": "betterend:stonecutter_end_stone_brick_cracked_slab"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:aeternium_helmet"
+        "recipes": "betterend:aeternium_helmet"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

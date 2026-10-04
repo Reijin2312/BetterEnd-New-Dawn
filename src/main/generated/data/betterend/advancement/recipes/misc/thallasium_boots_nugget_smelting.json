@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:thallasium_boots_nugget_smelting"
+        "recipes": "betterend:thallasium_boots_nugget_smelting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

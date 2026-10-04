@@ -7,6 +7,7 @@ import org.betterx.betterend.events.ItemTooltipCallback;
 import org.betterx.betterend.interfaces.MultiModelItem;
 import org.betterx.betterend.item.CrystaliteArmor;
 import org.betterx.betterend.network.RitualUpdate;
+import org.betterx.betterend.client.render.BetterEndRenderPipelines;
 import org.betterx.betterend.registry.*;
 import org.betterx.betterend.rituals.EternalRitual;
 
@@ -21,6 +22,7 @@ import net.fabricmc.api.ClientModInitializer;
 public class BetterEndClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
+        BetterEndRenderPipelines.register();
         RitualUpdate.registerClientProcessor((center, axis, active, willActivate, client) ->
                 EternalRitual.updateActiveStateOnPedestals(
                         center, axis, active, willActivate, ((Minecraft) client).level, null

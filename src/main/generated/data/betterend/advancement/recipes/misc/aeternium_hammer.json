@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:aeternium_hammer"
+        "recipes": "betterend:aeternium_hammer"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

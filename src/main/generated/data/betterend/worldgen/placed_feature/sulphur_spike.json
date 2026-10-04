@@ -1,26 +1,24 @@
 {
   "feature": {
     "type": "minecraft:speleothem",
-    "config": {
-      "base_block": {
-        "Name": "betterend:brimstone",
-        "Properties": {
-          "active": "false"
-        }
-      },
-      "pointed_block": {
-        "Name": "minecraft:sulfur_spike",
-        "Properties": {
-          "thickness": "tip",
-          "vertical_direction": "up",
-          "waterlogged": "false"
-        }
-      },
-      "replaceable_blocks": [
-        "betterend:brimstone",
-        "betterend:sulphuric_rock"
-      ]
-    }
+    "base_block": {
+      "id": "betterend:brimstone",
+      "properties": {
+        "active": "false"
+      }
+    },
+    "pointed_block": {
+      "id": "minecraft:sulfur_spike",
+      "properties": {
+        "thickness": "tip",
+        "vertical_direction": "up",
+        "waterlogged": "false"
+      }
+    },
+    "replaceable_blocks": [
+      "betterend:brimstone",
+      "betterend:sulphuric_rock"
+    ]
   },
   "placement": [
     {
@@ -35,13 +33,18 @@
       "count": 28
     },
     {
-      "type": "minecraft:random_offset",
-      "xz_spread": {
+      "type": "minecraft:offset",
+      "x": {
         "type": "minecraft:uniform",
         "max_inclusive": 5,
         "min_inclusive": -5
       },
-      "y_spread": 0
+      "y": 0,
+      "z": {
+        "type": "minecraft:uniform",
+        "max_inclusive": 5,
+        "min_inclusive": -5
+      }
     },
     {
       "type": "wover:every_layer"

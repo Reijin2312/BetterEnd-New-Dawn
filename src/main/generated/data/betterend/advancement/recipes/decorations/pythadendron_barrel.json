@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:pythadendron_barrel"
+        "recipes": "betterend:pythadendron_barrel"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

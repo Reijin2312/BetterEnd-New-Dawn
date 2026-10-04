@@ -22,8 +22,7 @@ import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.predicates.LocationCheck;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 
@@ -52,13 +51,13 @@ public class LootTableUtil {
 
             if (BuiltInLootTables.END_CITY_TREASURE.equals(id)) {
                 LootPool.Builder builder = LootPool.lootPool();
-                builder.setRolls(ConstantValue.exactly(1));
+                builder.setRolls(ContextIntProviders.exactly(1));
                 builder.when(LootItemRandomChanceCondition.randomChance(0.2f));
                 builder.add(LootItem.lootTableItem(Items.GHAST_TEAR));
                 tableBuilder.withPool(builder);
 
                 builder = LootPool.lootPool();
-                builder.setRolls(UniformGenerator.between(0, 3));
+                builder.setRolls(ContextIntProviders.between(0, 3));
                 builder.add(LootItem.lootTableItem(EndItems.MUSIC_DISC_STRANGE_AND_ALIEN));
                 builder.add(LootItem.lootTableItem(EndItems.MUSIC_DISC_GRASPING_AT_STARS));
                 builder.add(LootItem.lootTableItem(EndItems.MUSIC_DISC_ENDSEEKER));
@@ -69,7 +68,7 @@ public class LootTableUtil {
 
                 tableBuilder.withPool(LootPool
                         .lootPool()
-                        .setRolls(UniformGenerator.between(2, 4))
+                        .setRolls(ContextIntProviders.between(2, 4))
                         .add(EmptyLootItem.emptyItem().setWeight(12))
                         .add(LootItem.lootTableItem(EndTemplates.NETHERITE_UPGRADE).setWeight(3))
                         .add(LootItem.lootTableItem(EndTemplates.HANDLE_ATTACHMENT).setWeight(2))
@@ -81,14 +80,15 @@ public class LootTableUtil {
                 );
             } else if (BuiltInLootTables.FISHING.equals(id)) {
                 tableBuilder.modifyPools((modifier) -> modifier.when(IN_END.invert()));
-                tableBuilder.withPool(LootPool.lootPool().when(IN_END).setRolls(ConstantValue.exactly(1.0F))
-                                              .add(NestedLootTable.lootTableReference(FISHING_FISH)
+                final var lootTables = registries.lookupOrThrow(net.minecraft.core.registries.Registries.LOOT_TABLE);
+                tableBuilder.withPool(LootPool.lootPool().when(IN_END).setRolls(ContextIntProviders.exactly(1))
+                                              .add(NestedLootTable.lootTableReference(lootTables.getOrThrow(FISHING_FISH))
                                                                   .setWeight(85)
                                                                   .setQuality(-1))
-                                              .add(NestedLootTable.lootTableReference(FISHING_TREASURE)
+                                              .add(NestedLootTable.lootTableReference(lootTables.getOrThrow(FISHING_TREASURE))
                                                                   .setWeight(5)
                                                                   .setQuality(2))
-                                              .add(NestedLootTable.lootTableReference(FISHING_JUNK)
+                                              .add(NestedLootTable.lootTableReference(lootTables.getOrThrow(FISHING_JUNK))
                                                                   .setWeight(10)
                                                                   .setQuality(-2)));
             }

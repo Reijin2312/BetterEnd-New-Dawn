@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:lucernia_bookshelf"
+        "recipes": "betterend:lucernia_bookshelf"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

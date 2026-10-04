@@ -170,7 +170,7 @@ public class PedestalItemRenderer<T extends PedestalBlockEntity> implements Bloc
             );
         } else {
             float rotation = state.animationTime / 25.0F + 6.0F;
-            matrices.mulPose(Axis.YP.rotation(rotation));
+            matrices.mulPose(new org.joml.Matrix4f().rotation(Axis.YP.rotation(rotation)));
             state.itemRenderState.submit(matrices, submitNodeCollector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
         }
 

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:dragon_tree_shelf"
+        "recipes": "betterend:dragon_tree_shelf"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

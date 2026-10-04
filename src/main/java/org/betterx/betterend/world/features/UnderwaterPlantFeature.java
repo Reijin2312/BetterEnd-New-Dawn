@@ -1,5 +1,6 @@
 package org.betterx.betterend.world.features;
 
+import com.mojang.serialization.MapCodec;
 import org.betterx.bclib.blocks.BaseDoublePlantBlock;
 import org.betterx.bclib.util.BlocksHelper;
 
@@ -11,9 +12,15 @@ import net.minecraft.world.level.block.state.BlockState;
 public class UnderwaterPlantFeature extends UnderwaterPlantScatter<SinglePlantFeatureConfig> {
     private BlockState plant;
 
-    public UnderwaterPlantFeature() {
-        super(SinglePlantFeatureConfig.CODEC);
+    public static final MapCodec<UnderwaterPlantFeature> CODEC = SinglePlantFeatureConfig.CODEC.xmap(UnderwaterPlantFeature::new, f -> f.config);
 
+    public UnderwaterPlantFeature(SinglePlantFeatureConfig config) {
+        super(config);
+    }
+
+    @Override
+    public MapCodec<? extends UnderwaterPlantFeature> codec() {
+        return CODEC;
     }
 
     @Override

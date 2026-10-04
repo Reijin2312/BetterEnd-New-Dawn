@@ -109,7 +109,7 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
             String id,
             ResourceKey<Enchantment> enchantment,
             int level,
-            HolderLookup.RegistryLookup<Enchantment> lookup
+            net.minecraft.core.HolderGetter<Enchantment> lookup
     ) {
         return create(BetterEnd.C.mk(id), enchantment, level, lookup);
     }
@@ -118,7 +118,7 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
             Identifier id,
             ResourceKey<Enchantment> enchantment,
             int level,
-            HolderLookup.RegistryLookup<Enchantment> lookup
+            net.minecraft.core.HolderGetter<Enchantment> lookup
     ) {
         return create(id, createEnchantedBookTemplate(enchantment, level, lookup));
     }
@@ -126,7 +126,7 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
     public static ItemStack createEnchantedBook(
             ResourceKey<Enchantment> enchantment,
             int level,
-            HolderLookup.RegistryLookup<Enchantment> lookup
+            net.minecraft.core.HolderGetter<Enchantment> lookup
     ) {
         return createEnchantedBookTemplate(enchantment, level, lookup).create();
     }
@@ -134,7 +134,7 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
     private static ItemStackTemplate createEnchantedBookTemplate(
             ResourceKey<Enchantment> enchantment,
             int level,
-            HolderLookup.RegistryLookup<Enchantment> lookup
+            net.minecraft.core.HolderGetter<Enchantment> lookup
     ) {
         final Holder<Enchantment> holder = EnchantmentUtils.getEnchantment(lookup, enchantment);
         if (holder != null) {
@@ -268,7 +268,7 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
         }
 
         protected BuilderImpl(Identifier id, ItemStackTemplate output) {
-            super(id, output, false);
+            super(id, output.create(), false);
             this.catalysts = emptyCatalysts();
             this.time = 1;
         }
@@ -312,10 +312,10 @@ public class InfusionRecipe implements Recipe<InfusionRitual.InfusionInput>, Unk
         }
 
         @Override
-        protected InfusionRecipe createRecipe(Identifier id) {
+        protected InfusionRecipe createRecipe(org.betterx.wover.recipe.api.RecipeBuilder.Context context) {
             return new InfusionRecipe(
-                    this.primaryInput,
-                    this.outputTemplate(),
+                    this.primaryInput.createIngredient(context),
+                    this.output(),
                     this.catalysts,
                     this.time,
                     this.group

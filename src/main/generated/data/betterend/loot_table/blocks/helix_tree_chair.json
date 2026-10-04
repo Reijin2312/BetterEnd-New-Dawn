@@ -2,23 +2,20 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "block": "betterend:helix_tree_chair",
-          "condition": "minecraft:block_state_property",
-          "properties": {
-            "top": "false"
-          }
-        }
-      ],
       "entries": [
         {
           "type": "minecraft:item",
           "name": "betterend:helix_tree_chair"
         }
       ],
-      "rolls": 1.0
+      "rolls": 1,
+      "condition": {
+        "type": "minecraft:match_block",
+        "blocks": "betterend:helix_tree_chair",
+        "state": {
+          "top": "false"
+        }
+      }
     }
   ],
   "random_sequence": "betterend:blocks/helix_tree_chair"

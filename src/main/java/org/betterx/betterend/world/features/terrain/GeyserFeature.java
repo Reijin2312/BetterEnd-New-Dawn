@@ -1,6 +1,9 @@
 package org.betterx.betterend.world.features.terrain;
 
 
+import com.mojang.serialization.MapCodec;
+
+
 import org.betterx.betterend.blocks.EndBlockProperties;
 
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
@@ -31,23 +34,27 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 import java.util.function.Function;
 
 public class GeyserFeature extends DefaultFeature {
+    public static final MapCodec<GeyserFeature> CODEC = MapCodec.unit(GeyserFeature::new);
+
+    @Override
+    public MapCodec<GeyserFeature> codec() {
+        return CODEC;
+    }
     protected static final Function<BlockState, Boolean> REPLACE1;
     protected static final Function<BlockState, Boolean> REPLACE2;
     private static final Function<BlockState, Boolean> IGNORE;
     private static final Direction[] HORIZONTAL = BlocksHelper.makeHorizontal();
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
-        final RandomSource random = featureConfig.random();
-        final WorldGenLevel world = featureConfig.level();
-        final BlockPos pos = getPosOnSurfaceWG(world, featureConfig.origin());
-        final ChunkGenerator chunkGenerator = featureConfig.chunkGenerator();
+    public boolean place(WorldGenLevel featureWorld, ChunkGenerator featureGenerator, RandomSource featureRandom, BlockPos featureOrigin) {
+        final RandomSource random = featureRandom;
+        final WorldGenLevel world = featureWorld;
+        final BlockPos pos = getPosOnSurfaceWG(world, featureOrigin);
+        final ChunkGenerator chunkGenerator = featureGenerator;
         // The SDF sculpting below (cones/bowls/caves up to radius1 ~= halfHeight * 0.5, halfHeight up to 20)
         // and the closing BlockFixer box are otherwise bounded only by their own shapes/radii, not by the
         // chunks a feature may touch. Clipping both to the write zone is behaviour-neutral (writes out there
@@ -288,7 +295,7 @@ public class GeyserFeature extends DefaultFeature {
                 pos.getY() + (int) (-halfHeight - 5 + distance),
                 zone.clampZ(pos.getZ() + (int) distance)
         );
-        BlockFixer.fixBlocks(world, start, end);
+        BlockFixer.fixBlocks(world, start, end, zone.toBoundingBox());
 
         // Turn the buried part of the brimstone bowl into the same sulfur/cinnabar deposit the lake bed
         // gets. Deliberately a post-pass over the finished geometry rather than a change to the SDF

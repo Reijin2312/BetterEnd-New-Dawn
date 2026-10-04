@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:aeternium_sword"
+        "recipes": "betterend:aeternium_sword"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

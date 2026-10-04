@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:sulphuric_rock_button"
+        "recipes": "betterend:sulphuric_rock_button"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

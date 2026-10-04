@@ -1,18 +1,16 @@
 {
   "feature": {
     "type": "minecraft:multiface_growth",
-    "config": {
-      "block": "betterend:crystal_moss_cover",
-      "can_be_placed_on": [
-        "betterend:crystal_moss",
-        "minecraft:end_stone"
-      ],
-      "can_place_on_ceiling": true,
-      "can_place_on_floor": true,
-      "can_place_on_wall": true,
-      "chance_of_spreading": 0.6,
-      "search_range": 6
-    }
+    "block": "betterend:crystal_moss_cover",
+    "can_be_placed_on": [
+      "betterend:crystal_moss",
+      "minecraft:end_stone"
+    ],
+    "can_place_on_ceiling": true,
+    "can_place_on_floor": true,
+    "can_place_on_wall": true,
+    "chance_of_spreading": 0.6,
+    "search_range": 6
   },
   "placement": [
     {

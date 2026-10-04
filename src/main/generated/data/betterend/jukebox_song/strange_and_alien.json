@@ -3,6 +3,6 @@
   "description": {
     "translate": "jukebox_song.betterend.strange_and_alien"
   },
-  "length_in_seconds": 266.0,
+  "length_in_seconds": 266,
   "sound_event": "betterend:betterend.record.strange_and_alien"
 }

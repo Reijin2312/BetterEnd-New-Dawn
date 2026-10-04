@@ -2,160 +2,126 @@
   "type": "minecraft:chest",
   "pools": [
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
-          "conditions": [
-            {
-              "chance": 0.75,
-              "condition": "minecraft:random_chance"
-            }
-          ],
-          "functions": [
-            {
-              "add": false,
-              "count": 1.0,
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "betterend:leather_handle_attachment_smithing_template"
+          "name": "betterend:leather_handle_attachment_smithing_template",
+          "condition": {
+            "chance": 0.75,
+            "type": "minecraft:random_chance"
+          },
+          "modifier": {
+            "count": 1,
+            "type": "minecraft:set_count"
+          }
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     },
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
-          "conditions": [
-            {
-              "chance": 0.7,
-              "condition": "minecraft:random_chance"
-            }
-          ],
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 2.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "betterend:plate_upgrade_smithing_template"
+          "name": "betterend:plate_upgrade_smithing_template",
+          "condition": {
+            "chance": 0.7,
+            "type": "minecraft:random_chance"
+          },
+          "modifier": {
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 2,
+              "min": 1
+            },
+            "type": "minecraft:set_count"
+          }
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     },
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 4.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
           "name": "betterend:aeternium_ingot",
-          "weight": 8
+          "weight": 8,
+          "modifier": {
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 4,
+              "min": 1
+            },
+            "type": "minecraft:set_count"
+          }
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": 1.0,
-              "function": "minecraft:set_count"
-            }
-          ],
           "name": "betterend:flavolite_runed",
-          "weight": 4
+          "weight": 4,
+          "modifier": {
+            "count": 1,
+            "type": "minecraft:set_count"
+          }
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": 1.0,
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "betterend:eternal_crystal"
+          "name": "betterend:eternal_crystal",
+          "modifier": {
+            "count": 1,
+            "type": "minecraft:set_count"
+          }
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 4.0,
-                "min": 2.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:shulker_shell"
+          "name": "minecraft:shulker_shell",
+          "modifier": {
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 4,
+              "min": 2
+            },
+            "type": "minecraft:set_count"
+          }
         }
       ],
       "rolls": {
         "type": "minecraft:uniform",
-        "max": 2.0,
-        "min": 1.0
+        "max": 2,
+        "min": 1
       }
     },
     {
-      "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "chance": 0.2,
-          "condition": "minecraft:random_chance"
-        }
-      ],
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": 1.0,
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:elytra"
+          "name": "minecraft:elytra",
+          "modifier": {
+            "count": 1,
+            "type": "minecraft:set_count"
+          }
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 8.0,
-                "min": 4.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
           "name": "minecraft:firework_rocket",
-          "weight": 8
+          "weight": 8,
+          "modifier": {
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 8,
+              "min": 4
+            },
+            "type": "minecraft:set_count"
+          }
         }
       ],
       "rolls": {
         "type": "minecraft:uniform",
-        "max": 3.0,
-        "min": 1.0
+        "max": 3,
+        "min": 1
+      },
+      "condition": {
+        "chance": 0.2,
+        "type": "minecraft:random_chance"
       }
     }
   ],

@@ -1,7 +1,6 @@
 {
   "feature": {
-    "type": "betterend:obsidian_pillar_basement",
-    "config": {}
+    "type": "betterend:obsidian_pillar_basement"
   },
   "placement": [
     {

@@ -4,21 +4,21 @@ import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.wover.feature.api.WriteZone;
 
-import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
-public abstract class WallScatterFeature<FC extends ScatterFeatureConfig> extends Feature<FC> {
+public abstract class WallScatterFeature<FC extends ScatterFeatureConfig> implements Feature {
     private static final Direction[] DIR = BlocksHelper.makeHorizontal();
+    public final FC config;
 
-    public WallScatterFeature(Codec<FC> codec) {
-        super(codec);
+    protected WallScatterFeature(FC config) {
+        this.config = config;
     }
 
     public abstract boolean canGenerate(FC cfg, WorldGenLevel world, RandomSource random, BlockPos pos, Direction dir);
@@ -26,11 +26,8 @@ public abstract class WallScatterFeature<FC extends ScatterFeatureConfig> extend
     public abstract void generate(FC cfg, WorldGenLevel world, RandomSource random, BlockPos pos, Direction dir);
 
     @Override
-    public boolean place(FeaturePlaceContext<FC> featureConfig) {
-        FC cfg = featureConfig.config();
-        final RandomSource random = featureConfig.random();
-        final BlockPos center = featureConfig.origin();
-        final WorldGenLevel world = featureConfig.level();
+    public boolean place(WorldGenLevel world, ChunkGenerator generator, RandomSource random, BlockPos center) {
+        FC cfg = config;
         int maxY = world.getHeight(Heightmap.Types.WORLD_SURFACE, center.getX(), center.getZ());
         int minY = BlocksHelper.upRay(world, new BlockPos(center.getX(), 0, center.getZ()), maxY);
         if (maxY < 10 || maxY < minY) {

@@ -26,7 +26,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:terminite_anvil"
+        "recipes": "betterend:terminite_anvil"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

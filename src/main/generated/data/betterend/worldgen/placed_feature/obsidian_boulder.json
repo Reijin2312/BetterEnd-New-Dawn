@@ -1,7 +1,6 @@
 {
   "feature": {
-    "type": "betterend:obsidian_boulder",
-    "config": {}
+    "type": "betterend:obsidian_boulder"
   },
   "placement": [
     {

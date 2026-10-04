@@ -2,14 +2,13 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "name": "betterend:umbrella_tree_fence"
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     }
   ],
   "random_sequence": "betterend:blocks/umbrella_tree_fence"

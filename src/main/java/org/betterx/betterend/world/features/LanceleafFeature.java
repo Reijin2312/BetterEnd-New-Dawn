@@ -1,5 +1,7 @@
 package org.betterx.betterend.world.features;
 
+import com.mojang.serialization.MapCodec;
+
 import org.betterx.betterend.blocks.basis.EndPlantWithAgeBlock;
 import org.betterx.betterend.registry.EndBlocks;
 
@@ -8,8 +10,14 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 
 public class LanceleafFeature extends ScatterFeature<ScatterFeatureConfig> {
-    public LanceleafFeature() {
-        super(ScatterFeatureConfig.CODEC);
+    public static final MapCodec<LanceleafFeature> CODEC = ScatterFeatureConfig.CODEC.xmap(LanceleafFeature::new, f -> f.config);
+
+    @Override
+    public MapCodec<LanceleafFeature> codec() {
+        return CODEC;
+    }
+    public LanceleafFeature(ScatterFeatureConfig config) {
+        super(config);
     }
 
     @Override

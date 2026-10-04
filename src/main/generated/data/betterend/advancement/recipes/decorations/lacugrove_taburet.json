@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:lacugrove_taburet"
+        "recipes": "betterend:lacugrove_taburet"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

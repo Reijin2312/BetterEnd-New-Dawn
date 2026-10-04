@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:mossy_glowshroom_wall"
+        "recipes": "betterend:mossy_glowshroom_wall"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

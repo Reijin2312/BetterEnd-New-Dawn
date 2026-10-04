@@ -1,161 +1,184 @@
 package org.betterx.betterend.registry;
 
+import com.mojang.serialization.MapCodec;
+import org.betterx.wover.feature.api.FeatureManager;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.features.EndOreFeatures;
 import org.betterx.betterend.registry.features.EndTerrainFeatures;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
-import org.betterx.betterend.world.features.*;
-import org.betterx.betterend.world.features.bushes.*;
-import org.betterx.betterend.world.features.terrain.*;
+import org.betterx.betterend.world.features.BiomeIslandFeature;
+import org.betterx.betterend.world.features.BlueVineFeature;
+import org.betterx.betterend.world.features.BuildingListFeature;
+import org.betterx.betterend.world.features.CavePumpkinFeature;
+import org.betterx.betterend.world.features.CharniaFeature;
+import org.betterx.betterend.world.features.CrashedShipFeature;
+import org.betterx.betterend.world.features.DoublePlantFeature;
+import org.betterx.betterend.world.features.EndLilyFeature;
+import org.betterx.betterend.world.features.EndLotusFeature;
+import org.betterx.betterend.world.features.EndLotusLeafFeature;
+import org.betterx.betterend.world.features.FilaluxFeature;
+import org.betterx.betterend.world.features.GlowPillarFeature;
+import org.betterx.betterend.world.features.HydraluxFeature;
+import org.betterx.betterend.world.features.LanceleafFeature;
+import org.betterx.betterend.world.features.MengerSpongeFeature;
+import org.betterx.betterend.world.features.NeonCactusFeature;
+import org.betterx.betterend.world.features.SilkMothNestFeature;
+import org.betterx.betterend.world.features.SingleInvertedScatterFeature;
+import org.betterx.betterend.world.features.SinglePlantFeature;
+import org.betterx.betterend.world.features.UnderwaterPlantFeature;
+import org.betterx.betterend.world.features.VineFeature;
+import org.betterx.betterend.world.features.WallPlantFeature;
+import org.betterx.betterend.world.features.WallPlantOnLogFeature;
+import org.betterx.betterend.world.features.bushes.AmaranitaPatchFeature;
+import org.betterx.betterend.world.features.bushes.BushFeature;
+import org.betterx.betterend.world.features.bushes.BushWithOuterFeature;
+import org.betterx.betterend.world.features.bushes.LargeAmaranitaFeature;
+import org.betterx.betterend.world.features.bushes.Lumecorn;
+import org.betterx.betterend.world.features.bushes.TenaneaBushFeature;
+import org.betterx.betterend.world.features.terrain.ArchFeature;
+import org.betterx.betterend.world.features.terrain.BigAuroraCrystalFeature;
+import org.betterx.betterend.world.features.terrain.DesertLakeFeature;
+import org.betterx.betterend.world.features.terrain.FallenPillarFeature;
+import org.betterx.betterend.world.features.terrain.FloatingSpireFeature;
+import org.betterx.betterend.world.features.terrain.GeyserFeature;
+import org.betterx.betterend.world.features.terrain.IceStarFeature;
+import org.betterx.betterend.world.features.terrain.ObsidianBoulderFeature;
+import org.betterx.betterend.world.features.terrain.ObsidianPillarBasementFeature;
+import org.betterx.betterend.world.features.terrain.OreLayerFeature;
+import org.betterx.betterend.world.features.terrain.PondWithWaterfallFeature;
+import org.betterx.betterend.world.features.terrain.SingleBlockFeature;
+import org.betterx.betterend.world.features.terrain.SmaragdantCrystalFeature;
+import org.betterx.betterend.world.features.terrain.SpireFeature;
+import org.betterx.betterend.world.features.terrain.StalactiteFeature;
+import org.betterx.betterend.world.features.terrain.SulphurHillFeature;
+import org.betterx.betterend.world.features.terrain.SulphuricLakeFeature;
+import org.betterx.betterend.world.features.terrain.SurfaceVentFeature;
+import org.betterx.betterend.world.features.terrain.ThinArchFeature;
 import org.betterx.betterend.world.features.terrain.caves.CaveChunkPopulatorFeature;
 import org.betterx.betterend.world.features.terrain.caves.RoundCaveFeature;
 import org.betterx.betterend.world.features.terrain.caves.StalactiteClusterFeature;
 import org.betterx.betterend.world.features.terrain.caves.TunelCaveFeature;
-import org.betterx.betterend.world.features.trees.*;
-import org.betterx.wover.feature.api.FeatureManager;
-import org.betterx.wover.state.api.WorldState;
-
-import net.minecraft.core.Registry;
-import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
-import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import org.betterx.betterend.world.features.trees.DragonHelixTreeFeature;
+import org.betterx.betterend.world.features.trees.DragonTreeFeature;
+import org.betterx.betterend.world.features.trees.GiganticAmaranitaFeature;
+import org.betterx.betterend.world.features.trees.HelixTreeFeature;
+import org.betterx.betterend.world.features.trees.JellyshroomFeature;
+import org.betterx.betterend.world.features.trees.LacugroveFeature;
+import org.betterx.betterend.world.features.trees.LucerniaFeature;
+import org.betterx.betterend.world.features.trees.MossyGlowshroomFeature;
+import org.betterx.betterend.world.features.trees.PythadendronTreeFeature;
+import org.betterx.betterend.world.features.trees.TenaneaFeature;
+import org.betterx.betterend.world.features.trees.UmbrellaTreeFeature;
 
 public class EndFeatures {
-    public static final StalactiteClusterFeature STALACTITE_CLUSTER = inlineBuild("stalactite_cluster", new StalactiteClusterFeature());
-    public static final StalactiteFeature STALACTITE_FEATURE = inlineBuild("stalactite_feature", new StalactiteFeature());
-    public static final BuildingListFeature BUILDING_LIST_FEATURE = inlineBuild("building_list_feature", new BuildingListFeature());
-    public static final VineFeature VINE_FEATURE = inlineBuild("vine_feature", new VineFeature());
-    public static final WallPlantFeature WALL_PLANT_FEATURE = inlineBuild("wall_plant_feature", new WallPlantFeature());
-    public static final WallPlantOnLogFeature WALL_PLANT_ON_LOG_FEATURE = inlineBuild("wall_plant_on_log_feature", new WallPlantOnLogFeature());
-    public static final GlowPillarFeature GLOW_PILLAR_FEATURE = inlineBuild("glow_pillar_feature", new GlowPillarFeature());
-    public static final HydraluxFeature HYDRALUX_FEATURE = inlineBuild("hydralux_feature", new HydraluxFeature());
-    public static final LanceleafFeature LANCELEAF_FEATURE = inlineBuild("lanceleaf_feature", new LanceleafFeature());
-    public static final MengerSpongeFeature MENGER_SPONGE_FEATURE = inlineBuild("menger_sponge_feature", new MengerSpongeFeature());
-    public static final CaveChunkPopulatorFeature CAVE_CHUNK_POPULATOR = inlineBuild("cave_chunk_populator", new CaveChunkPopulatorFeature());
-    public static final SinglePlantFeature SINGLE_PLANT_FEATURE = inlineBuild("single_plant_feature", new SinglePlantFeature());
-    public static final SingleInvertedScatterFeature SINGLE_INVERTED_SCATTER_FEATURE = inlineBuild("single_inverted_scatter_feature", new SingleInvertedScatterFeature());
-    public static final DoublePlantFeature DOUBLE_PLANT_FEATURE = inlineBuild("double_plant_feature", new DoublePlantFeature());
-    public static final UnderwaterPlantFeature UNDERWATER_PLANT_FEATURE = inlineBuild("underwater_plant_feature", new UnderwaterPlantFeature());
-    public static final ArchFeature ARCH_FEATURE = inlineBuild("arch_feature", new ArchFeature());
-    public static final ThinArchFeature THIN_ARCH_FEATURE = inlineBuild("thin_arch_feature", new ThinArchFeature());
-    public static final CharniaFeature CHARNIA_FEATURE = inlineBuild("charnia_feature", new CharniaFeature());
-    public static final BlueVineFeature BLUE_VINE_FEATURE = inlineBuild("blue_vine_feature", new BlueVineFeature());
-    public static final FilaluxFeature FILALUX_FEATURE = inlineBuild("filalux_feature", new FilaluxFeature());
-    public static final EndLilyFeature END_LILY_FEATURE = inlineBuild("end_lily_feature", new EndLilyFeature());
-    public static final EndLotusFeature END_LOTUS_FEATURE = inlineBuild("end_lotus_feature", new EndLotusFeature());
-    public static final EndLotusLeafFeature END_LOTUS_LEAF_FEATURE = inlineBuild("end_lotus_leaf_feature", new EndLotusLeafFeature());
-    public static final BushFeature BUSH_FEATURE = inlineBuild("bush_feature", new BushFeature());
-    public static final SingleBlockFeature SINGLE_BLOCK_FEATURE = inlineBuild("single_block_feature", new SingleBlockFeature());
-    public static final BushWithOuterFeature BUSH_WITH_OUTER_FEATURE = inlineBuild("bush_with_outer_feature", new BushWithOuterFeature());
-    public static final MossyGlowshroomFeature MOSSY_GLOWSHROOM_FEATURE = inlineBuild("mossy_glowshroom", new MossyGlowshroomFeature());
-    public static final PythadendronTreeFeature PYTHADENDRON_TREE_FEATURE = inlineBuild("pythadendron_tree", new PythadendronTreeFeature());
-    public static final LacugroveFeature LACUGROVE_FEATURE = inlineBuild("lacugrove", new LacugroveFeature());
-    public static final DragonTreeFeature DRAGON_TREE_FEATURE = inlineBuild("dragon_tree", new DragonTreeFeature());
-    public static final TenaneaFeature TENANEA_FEATURE = inlineBuild("tenanea", new TenaneaFeature());
-    public static final HelixTreeFeature HELIX_TREE_FEATURE = inlineBuild("helix_tree", new HelixTreeFeature());
-    public static final DragonHelixTreeFeature DRAGON_HELIX_TREE_FEATURE = inlineBuild("dragon_helix_tree", new DragonHelixTreeFeature());
-    public static final UmbrellaTreeFeature UMBRELLA_TREE_FEATURE = inlineBuild("umbrella_tree", new UmbrellaTreeFeature());
-    public static final JellyshroomFeature JELLYSHROOM_FEATURE = inlineBuild("jellyshroom", new JellyshroomFeature());
-    public static final GiganticAmaranitaFeature GIGANTIC_AMARANITA_FEATURE = inlineBuild("gigantic_amaranita", new GiganticAmaranitaFeature());
-    public static final LucerniaFeature LUCERNIA_FEATURE = inlineBuild("lucernia", new LucerniaFeature());
-    public static final TenaneaBushFeature TENANEA_BUSH_FEATURE = inlineBuild("tenanea_bush", new TenaneaBushFeature());
-    public static final Lumecorn LUMECORN_FEATURE = inlineBuild("lumecorn", new Lumecorn());
-    public static final LargeAmaranitaFeature LARGE_AMARANITA_FEATURE = inlineBuild("large_amaranita", new LargeAmaranitaFeature());
-    public static final AmaranitaPatchFeature AMARANITA_PATCH_FEATURE = inlineBuild("amaranita_patch", new AmaranitaPatchFeature());
-    public static final NeonCactusFeature NEON_CACTUS_FEATURE = inlineBuild("neon_cactus", new NeonCactusFeature());
+   public static final MapCodec<StalactiteFeature> STALACTITE_FEATURE = registerType("stalactite_feature", StalactiteFeature.CODEC);
+   public static final MapCodec<BuildingListFeature> BUILDING_LIST_FEATURE = registerType("building_list_feature", BuildingListFeature.CODEC);
+   public static final MapCodec<VineFeature> VINE_FEATURE = registerType("vine_feature", VineFeature.CODEC);
+   public static final MapCodec<WallPlantFeature> WALL_PLANT_FEATURE = registerType("wall_plant_feature", WallPlantFeature.CODEC);
+   public static final MapCodec<WallPlantOnLogFeature> WALL_PLANT_ON_LOG_FEATURE = registerType("wall_plant_on_log_feature", WallPlantOnLogFeature.CODEC);
+   public static final MapCodec<GlowPillarFeature> GLOW_PILLAR_FEATURE = registerType("glow_pillar_feature", GlowPillarFeature.CODEC);
+   public static final MapCodec<HydraluxFeature> HYDRALUX_FEATURE = registerType("hydralux_feature", HydraluxFeature.CODEC);
+   public static final MapCodec<LanceleafFeature> LANCELEAF_FEATURE = registerType("lanceleaf_feature", LanceleafFeature.CODEC);
+   public static final MapCodec<MengerSpongeFeature> MENGER_SPONGE_FEATURE = registerType("menger_sponge_feature", MengerSpongeFeature.CODEC);
+   public static final MapCodec<SinglePlantFeature> SINGLE_PLANT_FEATURE = registerType("single_plant_feature", SinglePlantFeature.CODEC);
+   public static final MapCodec<SingleInvertedScatterFeature> SINGLE_INVERTED_SCATTER_FEATURE = registerType(
+      "single_inverted_scatter_feature", SingleInvertedScatterFeature.CODEC
+   );
+   public static final MapCodec<DoublePlantFeature> DOUBLE_PLANT_FEATURE = registerType("double_plant_feature", DoublePlantFeature.CODEC);
+   public static final MapCodec<UnderwaterPlantFeature> UNDERWATER_PLANT_FEATURE = registerType("underwater_plant_feature", UnderwaterPlantFeature.CODEC);
+   public static final MapCodec<ArchFeature> ARCH_FEATURE = registerType("arch_feature", ArchFeature.CODEC);
+   public static final MapCodec<ThinArchFeature> THIN_ARCH_FEATURE = registerType("thin_arch_feature", ThinArchFeature.CODEC);
+   public static final MapCodec<CharniaFeature> CHARNIA_FEATURE = registerType("charnia_feature", CharniaFeature.CODEC);
+   public static final MapCodec<BlueVineFeature> BLUE_VINE_FEATURE = registerType("blue_vine_feature", BlueVineFeature.CODEC);
+   public static final MapCodec<FilaluxFeature> FILALUX_FEATURE = registerType("filalux_feature", FilaluxFeature.CODEC);
+   public static final MapCodec<EndLilyFeature> END_LILY_FEATURE = registerType("end_lily_feature", EndLilyFeature.CODEC);
+   public static final MapCodec<EndLotusFeature> END_LOTUS_FEATURE = registerType("end_lotus_feature", EndLotusFeature.CODEC);
+   public static final MapCodec<EndLotusLeafFeature> END_LOTUS_LEAF_FEATURE = registerType("end_lotus_leaf_feature", EndLotusLeafFeature.CODEC);
+   public static final MapCodec<BushFeature> BUSH_FEATURE = registerType("bush_feature", BushFeature.CODEC);
+   public static final MapCodec<SingleBlockFeature> SINGLE_BLOCK_FEATURE = registerType("single_block_feature", SingleBlockFeature.CODEC);
+   public static final MapCodec<BushWithOuterFeature> BUSH_WITH_OUTER_FEATURE = registerType("bush_with_outer_feature", BushWithOuterFeature.CODEC);
+   public static final MapCodec<StalactiteClusterFeature> STALACTITE_CLUSTER = registerType("stalactite_cluster", StalactiteClusterFeature.CODEC);
+   public static final MapCodec<CaveChunkPopulatorFeature> CAVE_CHUNK_POPULATOR = registerType(
+      "cave_chunk_populator", CaveChunkPopulatorFeature.CODEC
+   );
+   public static final MapCodec<OreLayerFeature> LAYERED_ORE_FEATURE = registerType("ore_layer", OreLayerFeature.CODEC);
+   public static final MapCodec<IceStarFeature> ICE_STAR_FEATURE = registerType("ice_star", IceStarFeature.CODEC);
+   public static final MapCodec<CrashedShipFeature> CRASHED_SHIP_FEATURE = registerType("crashed_ship", CrashedShipFeature.CODEC);
+   public static final MossyGlowshroomFeature MOSSY_GLOWSHROOM_FEATURE = register(
+      "mossy_glowshroom", MossyGlowshroomFeature.CODEC, new MossyGlowshroomFeature()
+   );
+   public static final PythadendronTreeFeature PYTHADENDRON_TREE_FEATURE = register(
+      "pythadendron_tree", PythadendronTreeFeature.CODEC, new PythadendronTreeFeature()
+   );
+   public static final LacugroveFeature LACUGROVE_FEATURE = register("lacugrove", LacugroveFeature.CODEC, new LacugroveFeature());
+   public static final DragonTreeFeature DRAGON_TREE_FEATURE = register("dragon_tree", DragonTreeFeature.CODEC, new DragonTreeFeature());
+   public static final TenaneaFeature TENANEA_FEATURE = register("tenanea", TenaneaFeature.CODEC, new TenaneaFeature());
+   public static final HelixTreeFeature HELIX_TREE_FEATURE = register("helix_tree", HelixTreeFeature.CODEC, new HelixTreeFeature());
+   public static final DragonHelixTreeFeature DRAGON_HELIX_TREE_FEATURE = register(
+      "dragon_helix_tree", DragonHelixTreeFeature.CODEC, new DragonHelixTreeFeature()
+   );
+   public static final UmbrellaTreeFeature UMBRELLA_TREE_FEATURE = register("umbrella_tree", UmbrellaTreeFeature.CODEC, new UmbrellaTreeFeature());
+   public static final JellyshroomFeature JELLYSHROOM_FEATURE = register("jellyshroom", JellyshroomFeature.CODEC, new JellyshroomFeature());
+   public static final GiganticAmaranitaFeature GIGANTIC_AMARANITA_FEATURE = register(
+      "gigantic_amaranita", GiganticAmaranitaFeature.CODEC, new GiganticAmaranitaFeature()
+   );
+   public static final LucerniaFeature LUCERNIA_FEATURE = register("lucernia", LucerniaFeature.CODEC, new LucerniaFeature());
+   public static final TenaneaBushFeature TENANEA_BUSH_FEATURE = register("tenanea_bush", TenaneaBushFeature.CODEC, new TenaneaBushFeature());
+   public static final Lumecorn LUMECORN_FEATURE = register("lumecorn", Lumecorn.CODEC, new Lumecorn());
+   public static final LargeAmaranitaFeature LARGE_AMARANITA_FEATURE = register("large_amaranita", LargeAmaranitaFeature.CODEC, new LargeAmaranitaFeature());
+   public static final AmaranitaPatchFeature AMARANITA_PATCH_FEATURE = register("amaranita_patch", AmaranitaPatchFeature.CODEC, new AmaranitaPatchFeature());
+   public static final NeonCactusFeature NEON_CACTUS_FEATURE = register("neon_cactus", NeonCactusFeature.CODEC, new NeonCactusFeature());
+   public static final DesertLakeFeature DESERT_LAKE_FEATURE = register("desert_lake", DesertLakeFeature.CODEC, new DesertLakeFeature());
+   public static final SulphuricLakeFeature SULPHURIC_LAKE_FEATURE = register("sulphuric_lake", SulphuricLakeFeature.CODEC, new SulphuricLakeFeature());
+   public static final SurfaceVentFeature SURFACE_VENT_FEATURE = register("surface_vent", SurfaceVentFeature.CODEC, new SurfaceVentFeature());
+   public static final SulphurHillFeature SULPHUR_HILL_FEATURE = register("sulphur_hill", SulphurHillFeature.CODEC, new SulphurHillFeature());
+   public static final ObsidianPillarBasementFeature OBSIDIAN_PILLAR_FEATURE = register(
+      "obsidian_pillar_basement", ObsidianPillarBasementFeature.CODEC, new ObsidianPillarBasementFeature()
+   );
+   public static final ObsidianBoulderFeature OBSIDIAN_BOULDER_FEATURE = register(
+      "obsidian_boulder", ObsidianBoulderFeature.CODEC, new ObsidianBoulderFeature()
+   );
+   public static final FallenPillarFeature FALLEN_PILLAR_FEATURE = register("fallen_pillar", FallenPillarFeature.CODEC, new FallenPillarFeature());
+   public static final SilkMothNestFeature SILK_MOTH_NEST_FEATURE = register("silk_moth_nest", SilkMothNestFeature.CODEC, new SilkMothNestFeature());
+   public static final SpireFeature SPIRE_FEATURE = register("spire", SpireFeature.CODEC, new SpireFeature());
+   public static final FloatingSpireFeature FLOATING_SPIRE_FEATURE = register("floating_spire", FloatingSpireFeature.CODEC, new FloatingSpireFeature());
+   public static final GeyserFeature GEYSER_FEATURE = register("geyser", GeyserFeature.CODEC, new GeyserFeature());
+   public static final PondWithWaterfallFeature POND_WITH_WATERFALL_FEATURE = register(
+      "pond_with_waterfall", PondWithWaterfallFeature.CODEC, new PondWithWaterfallFeature()
+   );
+   public static final BiomeIslandFeature OVERWORLD_ISLAND = register("overworld_island", BiomeIslandFeature.CODEC, new BiomeIslandFeature());
+   public static final SmaragdantCrystalFeature SMARAGDANT_CRYSTAL_FEATURE = register(
+      "smaragdant_crystal", SmaragdantCrystalFeature.CODEC, new SmaragdantCrystalFeature()
+   );
+   public static final BigAuroraCrystalFeature BIG_AURORA_CRYSTAL_FEATURE = register(
+      "big_aurora_crystal", BigAuroraCrystalFeature.CODEC, new BigAuroraCrystalFeature()
+   );
+   public static final CavePumpkinFeature CAVE_PUMPKIN_FEATURE = register("cave_pumpkin", CavePumpkinFeature.CODEC, new CavePumpkinFeature());
+   public static final RoundCaveFeature ROUND_CAVE_FEATURE = register("round_cave", RoundCaveFeature.CODEC, new RoundCaveFeature());
+   public static final TunelCaveFeature TUNEL_CAVE_FEATURE = register("tunel_cave", TunelCaveFeature.CODEC, new TunelCaveFeature());
 
-    //Ores
-    public static final OreLayerFeature LAYERED_ORE_FEATURE = inlineBuild("ore_layer", new OreLayerFeature());
+   public static <F extends Feature> MapCodec<F> registerType(String name, MapCodec<F> codec) {
+      Identifier l = BetterEnd.C.mk(name);
+      return FeatureManager.register(l, codec);
+   }
 
-    //Lakes
-    // Regular End lakes are registered as per-chunk structures in EndStructures.
-    public static final DesertLakeFeature DESERT_LAKE_FEATURE = inlineBuild("desert_lake", new DesertLakeFeature());
-    public static final SulphuricLakeFeature SULPHURIC_LAKE_FEATURE = inlineBuild("sulphuric_lake", new SulphuricLakeFeature());
+   public static <F extends Feature> F register(String name, MapCodec<F> codec, F feature) {
+      registerType(name, codec);
+      return feature;
+   }
 
-    //Terrain
-    public static final SurfaceVentFeature SURFACE_VENT_FEATURE = inlineBuild("surface_vent", new SurfaceVentFeature());
-    public static final SulphurHillFeature SULPHUR_HILL_FEATURE = inlineBuild("sulphur_hill", new SulphurHillFeature());
-    public static final ObsidianPillarBasementFeature OBSIDIAN_PILLAR_FEATURE = inlineBuild("obsidian_pillar_basement", new ObsidianPillarBasementFeature());
-    public static final ObsidianBoulderFeature OBSIDIAN_BOULDER_FEATURE = inlineBuild("obsidian_boulder", new ObsidianBoulderFeature());
-    public static final FallenPillarFeature FALLEN_PILLAR_FEATURE = inlineBuild("fallen_pillar", new FallenPillarFeature());
-    public static final CrashedShipFeature CRASHED_SHIP_FEATURE = inlineBuild("crashed_ship", new CrashedShipFeature());
-    public static final SilkMothNestFeature SILK_MOTH_NEST_FEATURE = inlineBuild("silk_moth_nest", new SilkMothNestFeature());
-    public static final IceStarFeature ICE_STAR_FEATURE = inlineBuild("ice_star", new IceStarFeature());
-    public static final RoundCaveFeature ROUND_CAVE_FEATURE = inlineBuild("round_cave", new RoundCaveFeature());
-    public static final SpireFeature SPIRE_FEATURE = inlineBuild("spire", new SpireFeature());
-    public static final FloatingSpireFeature FLOATING_SPIRE_FEATURE = inlineBuild("floating_spire", new FloatingSpireFeature());
-    public static final GeyserFeature GEYSER_FEATURE = inlineBuild("geyser", new GeyserFeature());
-    public static final PondWithWaterfallFeature POND_WITH_WATERFALL_FEATURE = inlineBuild("pond_with_waterfall", new PondWithWaterfallFeature());
-    public static final BiomeIslandFeature OVERWORLD_ISLAND = inlineBuild("overworld_island", new BiomeIslandFeature());
+   public static void addDefaultFeatures(EndBiomeBuilder builder, boolean hasCaves) {
+      builder.feature(EndOreFeatures.THALLASIUM_ORE);
+      builder.feature(EndOreFeatures.ENDER_ORE);
+      builder.feature(EndTerrainFeatures.CRASHED_SHIP);
+      if (hasCaves) {
+         builder.feature(EndTerrainFeatures.ROUND_CAVE);
+         builder.feature(EndTerrainFeatures.TUNEL_CAVE);
+      }
+   }
 
-    // Caves
-    public static final TunelCaveFeature TUNEL_CAVE_FEATURE = inlineBuild("tunel_cave", new TunelCaveFeature());
-    public static final SmaragdantCrystalFeature SMARAGDANT_CRYSTAL_FEATURE = inlineBuild("smaragdant_crystal", new SmaragdantCrystalFeature());
-    public static final BigAuroraCrystalFeature BIG_AURORA_CRYSTAL_FEATURE = inlineBuild("big_aurora_crystal", new BigAuroraCrystalFeature());
-    public static final CavePumpkinFeature CAVE_PUMPKIN_FEATURE = inlineBuild("cave_pumpkin", new CavePumpkinFeature());
-
-    public static <F extends Feature<FC>, FC extends FeatureConfiguration> F inlineBuild(String name, F feature) {
-        Identifier l = BetterEnd.C.mk(name);
-
-        final Registry<Feature<?>> features;
-        if (WorldState.registryAccess() != null) {
-            features = WorldState.allStageRegistryAccess().lookupOrThrow(Registries.FEATURE);
-        } else {
-            features = BuiltInRegistries.FEATURE;
-        }
-
-        if (features.containsKey(l)) {
-            return (F) features.get(l).map(Holder.Reference::value).orElse(null);
-        }
-
-
-        return FeatureManager.register(l, feature);
-    }
-
-//    public static void addBiomeFeatures(Identifier id, Holder<Biome> biome) {
-//        if (!BetterEnd.MOD_ID.equals(id.getNamespace())) {
-//            BiomeAPI.addBiomeFeature(biome, EndOreFeatures.FLAVOLITE_LAYER);
-//            BiomeAPI.addBiomeFeature(biome, EndOreFeatures.THALLASIUM_ORE);
-//            BiomeAPI.addBiomeFeature(biome, EndOreFeatures.ENDER_ORE);
-//            BiomeAPI.addBiomeFeature(biome, EndTerrainFeatures.CRASHED_SHIP);
-//            BCLBiome bclbiome = BiomeAPI.getBiome(id);
-//            if (!BCLBiomeRegistry.isEmptyBiome(bclbiome)) {
-//                BCLFeature<BuildingListFeature, BuildingListFeatureConfig> feature = getBiomeStructures(bclbiome.getID());
-//                if (feature != null) {
-//                    BiomeAPI.addBiomeFeature(biome, feature);
-//                }
-//            }
-//
-//            boolean hasCaves = !(bclbiome instanceof EndCaveBiome);
-//            if (!(bclbiome instanceof EndCaveBiome) && bclbiome instanceof EndBiome endBiome) {
-//                hasCaves = endBiome.hasCaves();
-//            }
-//            if (hasCaves && !BiomeAPI.wasRegisteredAsEndVoidBiome(id) /*!BiomeAPI.END_VOID_BIOME_PICKER.containsImmutable(id)*/) {
-//                if (Configs.BIOME_CONFIG.getBoolean(id, "hasCaves", true)) {
-//                    BiomeAPI.addBiomeFeature(biome, EndTerrainFeatures.ROUND_CAVE);
-//                    BiomeAPI.addBiomeFeature(biome, EndTerrainFeatures.TUNEL_CAVE);
-//                }
-//            }
-//        }
-//    }
-
-
-    public static void addDefaultFeatures(
-            EndBiomeBuilder builder, boolean hasCaves
-    ) {
-        builder.feature(EndOreFeatures.THALLASIUM_ORE);
-        builder.feature(EndOreFeatures.ENDER_ORE);
-        builder.feature(EndTerrainFeatures.CRASHED_SHIP);
-
-        if (hasCaves) {
-            builder.feature(EndTerrainFeatures.ROUND_CAVE);
-            builder.feature(EndTerrainFeatures.TUNEL_CAVE);
-        }
-    }
-
-    public static void register() {
-    }
+   public static void register() {
+   }
 }

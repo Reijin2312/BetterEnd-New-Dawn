@@ -36,7 +36,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:sulphur_gunpowder"
+        "recipes": "betterend:sulphur_gunpowder"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

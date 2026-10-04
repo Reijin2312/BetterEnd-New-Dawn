@@ -1,6 +1,6 @@
 {
-	"parent": "betterend:block/chest_item",
-	"textures": {
-		"texture": "betterend:block/chest/%texture%"
-	}
+  "parent": "betterend:block/chest_item",
+  "textures": {
+    "texture": "betterend:block/chest/%texture%"
+  }
 }

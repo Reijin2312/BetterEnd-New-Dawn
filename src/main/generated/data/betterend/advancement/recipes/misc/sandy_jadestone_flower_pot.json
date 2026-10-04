@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "betterend:sandy_jadestone_flower_pot"
+        "recipes": "betterend:sandy_jadestone_flower_pot"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

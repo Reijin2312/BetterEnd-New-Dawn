@@ -3,21 +3,20 @@ package org.betterx.betterend.world.features.terrain;
 import org.betterx.betterend.world.biome.land.UmbraValleyBiome;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
 
 import java.util.function.Function;
 
-public class ArchFeatureConfig implements FeatureConfiguration {
-    public static final Codec<ArchFeatureConfig> CODEC = RecordCodecBuilder.create(instance -> instance
+public class ArchFeatureConfig {
+    public static final MapCodec<ArchFeatureConfig> CODEC = RecordCodecBuilder.mapCodec(instance -> instance
             .group(
-                    BlockStateProvider.CODEC.fieldOf("states").forGetter(o -> o.block),
+                    BlockStateProvider.DIRECT_CODEC.fieldOf("states").forGetter(o -> o.block),
                     SurfaceFunction.CODEC.fieldOf("surface_function").forGetter(o -> o.surfaceFunction)
             )
             .apply(instance, ArchFeatureConfig::new));
@@ -27,7 +26,7 @@ public class ArchFeatureConfig implements FeatureConfiguration {
     public final SurfaceFunction surfaceFunction;
 
     public ArchFeatureConfig(Block block, SurfaceFunction surfaceFunction) {
-        this(SimpleStateProvider.simple(block), surfaceFunction);
+        this(BlockStateProvider.of(block), surfaceFunction);
     }
 
     public ArchFeatureConfig(BlockStateProvider block, SurfaceFunction surfaceFunction) {

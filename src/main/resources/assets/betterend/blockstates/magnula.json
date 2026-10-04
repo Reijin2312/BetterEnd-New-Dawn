@@ -1,7 +1,13 @@
 {
-	"variants": {
-		"shape=top": { "model": "betterend:block/magnula_middle" },
-		"shape=middle": { "model": "betterend:block/magnula_middle" },
-		"shape=bottom": { "model": "betterend:block/magnula_bottom" }
-	}
+  "variants": {
+    "shape=top": {
+      "model": "betterend:block/magnula_middle"
+    },
+    "shape=middle": {
+      "model": "betterend:block/magnula_middle"
+    },
+    "shape=bottom": {
+      "model": "betterend:block/magnula_bottom"
+    }
+  }
 }
