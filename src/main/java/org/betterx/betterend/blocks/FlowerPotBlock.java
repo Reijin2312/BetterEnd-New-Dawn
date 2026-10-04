@@ -217,6 +217,13 @@ public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvi
         Map<String, Integer> reservedPlantsIDs = defaultPottableIds(DEFAULT_PLANT_IDS);
         Map<String, Integer> reservedSoilIDs = defaultPottableIds(DEFAULT_SOIL_IDS);
 
+        // The numeric block-state IDs are part of the legacy flower-pot format and
+        // must not depend on when BlockRegistry's local list happens to be queried.
+        // In 26.3 that list can still be incomplete during post-init even though the
+        // blocks are already present in Minecraft's built-in registry.
+        seedDefaultBlocks(plants, DEFAULT_PLANT_IDS);
+        seedDefaultBlocks(soils, DEFAULT_SOIL_IDS);
+
         JsonObject obj = JsonFactory.getJsonObject(new File(
                 FabricLoader.getInstance().getConfigDir().toFile(),
                 BetterEnd.MOD_ID + "/blocks.json"
@@ -288,6 +295,16 @@ public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvi
         return ids;
     }
 
+    private static void seedDefaultBlocks(Block[] target, String[] blockIds) {
+        for (int i = 0; i < blockIds.length; i++) {
+            Identifier id = BetterEnd.C.mk(blockIds[i]);
+            Block block = BuiltInRegistries.BLOCK.getValue(id);
+            if (block != null && id.equals(BuiltInRegistries.BLOCK.getKey(block))) {
+                target[i] = block;
+            }
+        }
+    }
+
     private static void processBlock(Block[] target, Block block, String path, Map<String, Integer> idMap) {
         Identifier location = BuiltInRegistries.BLOCK.getKey(block);
         if (location == null) {
@@ -356,7 +373,9 @@ public class FlowerPotBlock extends BaseBlockNotFull implements RenderLayerProvi
                     0.6F,
                     1
             );
-            return InteractionResult.FAIL;
+            // FAIL no longer stops BlockItem.useOn in 26.3. Consume the click so an
+            // unsupported block cannot be placed in the space above the flower pot.
+            return InteractionResult.CONSUME;
         }
 
         int plantID = state.getValue(PLANT_ID);
