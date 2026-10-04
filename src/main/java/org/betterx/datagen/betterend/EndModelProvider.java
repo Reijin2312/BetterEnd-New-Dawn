@@ -44,8 +44,10 @@ import net.minecraft.world.level.block.SaplingBlock;
 
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -58,6 +60,9 @@ import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 
 public class EndModelProvider extends WoverModelProvider {
+    private static final Identifier POTTED_CROSS_PARENT = BetterEnd.C.mk("block/potted_cross");
+    private static final Identifier POTTED_TINTED_CROSS_PARENT = BetterEnd.C.mk("block/potted_tinted_cross");
+    private static final double POTTED_PLANT_MIN_Y = 7.5D;
     private final Set<Identifier> generatedModels = new HashSet<>();
     private final Map<Identifier, String> resourceCache = new HashMap<>();
 
@@ -629,6 +634,10 @@ public class EndModelProvider extends WoverModelProvider {
             if (crossModel != null) {
                 return crossModel;
             }
+            Identifier shiftedModel = createPottedModelFromModel(generator, pottedModelId, stateModel);
+            if (shiftedModel != null) {
+                return shiftedModel;
+            }
             return stateModel;
         }
 
@@ -738,11 +747,92 @@ public class EndModelProvider extends WoverModelProvider {
         if (modelExists(modelId)) {
             return modelId;
         }
-        TextureMapping mapping = new TextureMapping().put(TextureSlot.PLANT, texture);
-        Identifier created = (tinted ? ModelTemplates.TINTED_FLOWER_POT_CROSS : ModelTemplates.FLOWER_POT_CROSS)
-                .create(modelId, mapping, generator.modelOutput());
-        markGenerated(created);
-        return created;
+        JsonObject modelJson = new JsonObject();
+        modelJson.addProperty("parent", (tinted ? POTTED_TINTED_CROSS_PARENT : POTTED_CROSS_PARENT).toString());
+        JsonObject textures = new JsonObject();
+        textures.addProperty("plant", texture.sprite().toString());
+        modelJson.add("textures", textures);
+        generator.acceptModelOutput(modelId, () -> modelJson);
+        markGenerated(modelId);
+        return modelId;
+    }
+
+    private Identifier createPottedModelFromModel(
+            WoverBlockModelGenerators generator,
+            Identifier pottedModelId,
+            Identifier sourceModelId
+    ) {
+        if (modelExists(pottedModelId)) {
+            return pottedModelId;
+        }
+        JsonObject modelJson = readModelJson(sourceModelId);
+        if (modelJson == null || !modelJson.has("elements") || !modelJson.get("elements").isJsonArray()) {
+            return null;
+        }
+        JsonArray elements = modelJson.getAsJsonArray("elements");
+        if (elements.isEmpty()) {
+            return null;
+        }
+
+        double minY = findMinElementY(elements);
+        if (!Double.isFinite(minY)) {
+            return null;
+        }
+
+        JsonObject pottedJson = modelJson.deepCopy();
+        shiftElementsY(pottedJson.getAsJsonArray("elements"), POTTED_PLANT_MIN_Y - minY);
+        generator.acceptModelOutput(pottedModelId, () -> pottedJson);
+        markGenerated(pottedModelId);
+        return pottedModelId;
+    }
+
+    private double findMinElementY(JsonArray elements) {
+        double minY = Double.POSITIVE_INFINITY;
+        for (JsonElement element : elements) {
+            if (!element.isJsonObject()) {
+                continue;
+            }
+            JsonObject obj = element.getAsJsonObject();
+            minY = minCoordinateY(minY, obj.get("from"));
+            minY = minCoordinateY(minY, obj.get("to"));
+        }
+        return minY;
+    }
+
+    private double minCoordinateY(double minY, JsonElement coordinates) {
+        if (coordinates == null || !coordinates.isJsonArray()) {
+            return minY;
+        }
+        JsonArray array = coordinates.getAsJsonArray();
+        if (array.size() < 2) {
+            return minY;
+        }
+        return Math.min(minY, array.get(1).getAsDouble());
+    }
+
+    private void shiftElementsY(JsonArray elements, double offset) {
+        for (JsonElement element : elements) {
+            if (!element.isJsonObject()) {
+                continue;
+            }
+            JsonObject obj = element.getAsJsonObject();
+            shiftCoordinateY(obj, "from", offset);
+            shiftCoordinateY(obj, "to", offset);
+            if (obj.has("rotation") && obj.get("rotation").isJsonObject()) {
+                shiftCoordinateY(obj.getAsJsonObject("rotation"), "origin", offset);
+            }
+        }
+    }
+
+    private void shiftCoordinateY(JsonObject obj, String key, double offset) {
+        if (!obj.has(key) || !obj.get(key).isJsonArray()) {
+            return;
+        }
+        JsonArray coordinates = obj.getAsJsonArray(key);
+        if (coordinates.size() < 2) {
+            return;
+        }
+        coordinates.set(1, new JsonPrimitive(coordinates.get(1).getAsDouble() + offset));
     }
 
     private Identifier getModelTexture(JsonObject modelJson, String key) {
