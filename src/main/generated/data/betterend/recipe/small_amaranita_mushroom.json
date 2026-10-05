@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "betterend:amaranita_hymenophore"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "id": "betterend:small_amaranita_mushroom"
+  }
+}
