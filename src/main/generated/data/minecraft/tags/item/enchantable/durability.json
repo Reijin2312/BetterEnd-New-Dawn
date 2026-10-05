@@ -4,19 +4,26 @@
     "betterend:aeternium_chestplate",
     "betterend:aeternium_helmet",
     "betterend:aeternium_leggings",
+    "betterend:aeternium_hammer",
+    "betterend:diamond_hammer",
     "betterend:crystalite_boots",
     "betterend:crystalite_chestplate",
     "betterend:crystalite_helmet",
     "betterend:crystalite_leggings",
     "betterend:elytra_armored",
     "betterend:elytra_crystalite",
+    "betterend:golden_hammer",
+    "betterend:iron_hammer",
+    "betterend:netherite_hammer",
     "betterend:thallasium_boots",
     "betterend:thallasium_chestplate",
     "betterend:thallasium_helmet",
     "betterend:thallasium_leggings",
+    "betterend:thallasium_hammer",
     "betterend:terminite_boots",
     "betterend:terminite_chestplate",
     "betterend:terminite_helmet",
-    "betterend:terminite_leggings"
+    "betterend:terminite_leggings",
+    "betterend:terminite_hammer"
   ]
 }
