@@ -94,10 +94,9 @@ public class PedestalBlockEntity extends BlockEntity implements Container {
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
         super.loadAdditional(tag, provider);
-        if (tag.contains("active_item")) {
-            CompoundTag itemTag = tag.getCompound("active_item");
-            activeItem = ItemStack.parse(provider, itemTag).orElse(ItemStack.EMPTY);
-        }
+        activeItem = tag.contains("active_item")
+                ? ItemStack.parse(provider, tag.getCompound("active_item")).orElse(ItemStack.EMPTY)
+                : ItemStack.EMPTY;
     }
 
     @Override
