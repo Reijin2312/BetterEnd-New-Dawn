@@ -116,6 +116,9 @@ public class PedestalBlock extends BaseBlockNotFull implements EntityBlock, Bloc
         if (!state.is(this) || !isPlaceable(state)) {
             return InteractionResult.TRY_WITH_EMPTY_HAND;
         }
+        if (level.isClientSide()) {
+            return InteractionResult.SUCCESS;
+        }
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof PedestalBlockEntity pedestal) {
             if (pedestal.isEmpty()) {
@@ -125,7 +128,7 @@ public class PedestalBlock extends BaseBlockNotFull implements EntityBlock, Bloc
                 checkRitual(level, player, pos);
                 return level.isClientSide() ? InteractionResult.SUCCESS : InteractionResult.SUCCESS_SERVER;
             } else {
-                ItemStack stack = pedestal.getItem(0);
+                ItemStack stack = pedestal.getItem(0).copy();
                 if (player.addItem(stack)) {
                     pedestal.removeItemNoUpdate(0);
                     level.blockEntityChanged(pos);
