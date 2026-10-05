@@ -9,6 +9,7 @@ import org.betterx.wover.tag.api.predefined.MineableTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -85,6 +86,10 @@ public class EndHammerItem extends Item implements ItemModelProvider, ItemTagPro
 
     @Override
     public void registerItemTags(Identifier location, ItemTagBootstrapContext context) {
-        context.add(this, CommonItemTags.HAMMERS);
+        context.add(this,
+                CommonItemTags.HAMMERS,
+                ItemTags.MINING_ENCHANTABLE,
+                ItemTags.MINING_LOOT_ENCHANTABLE,
+                ItemTags.DURABILITY_ENCHANTABLE);
     }
 }
