@@ -142,6 +142,40 @@ public class RespawnObeliskBlock extends BaseBlock.Stone implements CustomColorP
     }
 
     @Override
+    protected void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        if (!newState.is(this) && world instanceof ServerLevel serverLevel) {
+            clearRespawnPoints(serverLevel, getBottomPos(pos, state.getValue(SHAPE)));
+        }
+        super.onRemove(state, world, pos, newState, movedByPiston);
+    }
+
+    private static BlockPos getBottomPos(BlockPos pos, TripleShape shape) {
+        return switch (shape) {
+            case BOTTOM -> pos;
+            case MIDDLE -> pos.below();
+            case TOP -> pos.below(2);
+        };
+    }
+
+    private static boolean belongsToObelisk(BlockPos respawnPos, BlockPos bottomPos) {
+        return respawnPos.getX() == bottomPos.getX()
+                && respawnPos.getZ() == bottomPos.getZ()
+                && respawnPos.getY() >= bottomPos.getY()
+                && respawnPos.getY() <= bottomPos.getY() + 2;
+    }
+
+    private static void clearRespawnPoints(ServerLevel world, BlockPos bottomPos) {
+        for (ServerPlayer player : world.getServer().getPlayerList().getPlayers()) {
+            BlockPos respawnPos = player.getRespawnPosition();
+            if (respawnPos != null
+                    && player.getRespawnDimension().equals(world.dimension())
+                    && belongsToObelisk(respawnPos, bottomPos)) {
+                player.setRespawnPosition(null, null, 0.0F, false, false);
+            }
+        }
+    }
+
+    @Override
     public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
         if (state.getValue(SHAPE) == TripleShape.BOTTOM) {
             return Lists.newArrayList(new ItemStack(this));
