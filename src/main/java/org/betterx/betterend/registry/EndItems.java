@@ -5,6 +5,7 @@ import org.betterx.bclib.api.v2.ComposterAPI;
 import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.bclib.items.BaseArmorItem;
 import org.betterx.bclib.items.BaseDiscItem;
+import org.betterx.bclib.items.BaseDrinkItem;
 import org.betterx.bclib.items.BaseSpawnEggItem;
 import org.betterx.bclib.items.ModelProviderItem;
 import org.betterx.bclib.items.tool.BaseAxeItem;
@@ -354,7 +355,7 @@ public class EndItems {
     }
 
     public static Item registerEndDrink(String name, int hunger, float saturation) {
-        return getItemRegistry().registerDrink(name, ModelProviderItem::new, hunger, saturation);
+        return getItemRegistry().registerDrink(name, BaseDrinkItem::new, hunger, saturation);
     }
 
     public static Item.Properties makeEndItemSettings() {
