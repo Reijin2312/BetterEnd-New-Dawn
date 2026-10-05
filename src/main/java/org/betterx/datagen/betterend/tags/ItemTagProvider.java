@@ -39,6 +39,24 @@ public class ItemTagProvider extends WoverTagProvider.ForItems {
         context.add(EndTags.ALLOYING_COPPER, Items.COPPER_ORE, Items.DEEPSLATE_COPPER_ORE, Items.RAW_COPPER);
 
         context.add(ItemTags.FISHES, EndItems.END_FISH_RAW, EndItems.END_FISH_COOKED);
+        context.add(ItemTags.ARMOR_ENCHANTABLE,
+                EndItems.AETERNIUM_HELMET, EndItems.AETERNIUM_CHESTPLATE, EndItems.AETERNIUM_LEGGINGS, EndItems.AETERNIUM_BOOTS,
+                EndItems.CRYSTALITE_HELMET, EndItems.CRYSTALITE_CHESTPLATE, EndItems.CRYSTALITE_LEGGINGS, EndItems.CRYSTALITE_BOOTS,
+                EndBlocks.THALLASIUM.helmet, EndBlocks.THALLASIUM.chestplate, EndBlocks.THALLASIUM.leggings, EndBlocks.THALLASIUM.boots,
+                EndBlocks.TERMINITE.helmet, EndBlocks.TERMINITE.chestplate, EndBlocks.TERMINITE.leggings, EndBlocks.TERMINITE.boots);
+        context.add(ItemTags.DURABILITY_ENCHANTABLE,
+                EndItems.AETERNIUM_HELMET, EndItems.AETERNIUM_CHESTPLATE, EndItems.AETERNIUM_LEGGINGS, EndItems.AETERNIUM_BOOTS,
+                EndItems.CRYSTALITE_HELMET, EndItems.CRYSTALITE_CHESTPLATE, EndItems.CRYSTALITE_LEGGINGS, EndItems.CRYSTALITE_BOOTS,
+                EndBlocks.THALLASIUM.helmet, EndBlocks.THALLASIUM.chestplate, EndBlocks.THALLASIUM.leggings, EndBlocks.THALLASIUM.boots,
+                EndBlocks.TERMINITE.helmet, EndBlocks.TERMINITE.chestplate, EndBlocks.TERMINITE.leggings, EndBlocks.TERMINITE.boots);
+        context.add(ItemTags.HEAD_ARMOR_ENCHANTABLE,
+                EndItems.AETERNIUM_HELMET, EndItems.CRYSTALITE_HELMET, EndBlocks.THALLASIUM.helmet, EndBlocks.TERMINITE.helmet);
+        context.add(ItemTags.CHEST_ARMOR_ENCHANTABLE,
+                EndItems.AETERNIUM_CHESTPLATE, EndItems.CRYSTALITE_CHESTPLATE, EndBlocks.THALLASIUM.chestplate, EndBlocks.TERMINITE.chestplate);
+        context.add(ItemTags.LEG_ARMOR_ENCHANTABLE,
+                EndItems.AETERNIUM_LEGGINGS, EndItems.CRYSTALITE_LEGGINGS, EndBlocks.THALLASIUM.leggings, EndBlocks.TERMINITE.leggings);
+        context.add(ItemTags.FOOT_ARMOR_ENCHANTABLE,
+                EndItems.AETERNIUM_BOOTS, EndItems.CRYSTALITE_BOOTS, EndBlocks.THALLASIUM.boots, EndBlocks.TERMINITE.boots);
 
 /*
 TERMINITE = DIAMOND
