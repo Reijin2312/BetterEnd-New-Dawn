@@ -64,6 +64,7 @@ public class BlockTagProvider extends WoverTagProvider.ForBlocks {
         context.add(CommonBlockTags.END_STONES, EndBlocks.BRIMSTONE);
         context.add(BlockTags.ANVIL, EndBlocks.AETERNIUM_ANVIL);
         context.add(BlockTags.BEACON_BASE_BLOCKS, EndBlocks.AETERNIUM_BLOCK);
+        context.add(BlockTags.MINEABLE_WITH_AXE, EndBlocks.AMARANITA_STEM, EndBlocks.AMARANITA_HYPHAE);
         context.add(
                 BlockTags.DRAGON_IMMUNE,
                 EndBlocks.ENDER_ORE,
