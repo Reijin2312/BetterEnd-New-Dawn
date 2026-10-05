@@ -14,6 +14,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -27,7 +28,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class AncientEmeraldIceBlock extends BaseBlock implements BehaviourIce, BlockLootProvider {
     public AncientEmeraldIceBlock() {
-        super(FabricBlockSettings.copyOf(Blocks.BLUE_ICE).randomTicks());
+        super(FabricBlockSettings.copyOf(Blocks.BLUE_ICE)
+                .randomTicks()
+                .isValidSpawn((state, world, pos, entityType) -> entityType.is(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES)));
     }
 
     @Override
