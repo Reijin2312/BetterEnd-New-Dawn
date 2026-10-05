@@ -5,6 +5,7 @@ import org.betterx.bclib.behaviours.interfaces.BehaviourPlant;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.blocks.basis.EndPlantBlock;
 import org.betterx.betterend.interfaces.survives.SurvivesOnEndBone;
+import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.features.EndConfiguredVegetation;
 
 import net.minecraft.core.BlockPos;
@@ -87,6 +88,6 @@ public class SmallAmaranitaBlock extends EndPlantBlock implements SurvivesOnEndB
 
     @Override
     public boolean isTerrain(BlockState state) {
-        return SurvivesOnEndBone.super.isTerrain(state);
+        return SurvivesOnEndBone.super.isTerrain(state) || state.is(EndBlocks.END_MOSS);
     }
 }
