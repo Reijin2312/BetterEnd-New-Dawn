@@ -1,7 +1,5 @@
 package org.betterx.betterend.client.render;
 
-import org.betterx.betterend.BetterEnd;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.mojang.math.Constants;
@@ -19,9 +17,9 @@ import net.minecraft.resources.Identifier;
 import org.joml.Quaternionf;
 
 public class EndCrystalRenderer {
-    private static final Identifier CRYSTAL_TEXTURE = BetterEnd.C.mk(
+    private static final Identifier CRYSTAL_TEXTURE = Identifier.withDefaultNamespace(
             "textures/entity/end_crystal/end_crystal.png");
-    private static final Identifier CRYSTAL_BEAM_TEXTURE = BetterEnd.C.mk(
+    private static final Identifier CRYSTAL_BEAM_TEXTURE = Identifier.withDefaultNamespace(
             "textures/entity/end_crystal/end_crystal_beam.png");
     private static final RenderType END_CRYSTAL;
     private static final ModelPart CORE;
