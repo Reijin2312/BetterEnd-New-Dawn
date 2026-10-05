@@ -40,6 +40,11 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
         craftingRecipeBuilder27.outputCount(4)
                                .shapeless()
                                .build(context);
+        RecipeBuilder.crafting(BetterEnd.C.mk("small_amaranita_mushroom"), EndBlocks.SMALL_AMARANITA_MUSHROOM)
+                     .outputCount(4)
+                     .shapeless()
+                     .addMaterial('#', EndBlocks.AMARANITA_HYMENOPHORE)
+                     .build(context);
 
         CraftingRecipeBuilder craftingRecipeBuilder61 = RecipeBuilder.crafting(BetterEnd.C.mk("end_stone_smelter"), EndBlocks.END_STONE_SMELTER);
         craftingRecipeBuilder61.shape("T#T", "V V", "T#T")
