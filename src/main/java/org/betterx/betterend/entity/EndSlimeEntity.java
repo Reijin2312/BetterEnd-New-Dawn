@@ -177,18 +177,7 @@ public class EndSlimeEntity extends Slime {
 
     @Override
     protected void dropFromLootTable(DamageSource source, boolean causedByPlayer) {
-        int maxCount = this.getSize();
-        int minCount = maxCount >> 1;
-        if (minCount < 1) {
-            minCount = 1;
-        }
-        if (causedByPlayer && this.lastHurtByPlayer != null) {
-            int looting = EnchantmentUtils.getItemEnchantmentLevel(this.lastHurtByPlayer.level(), Enchantments.LOOTING, this.lastHurtByPlayer);
-            minCount += looting;
-        }
-        int count = minCount < maxCount ? MHelper.randRange(minCount, maxCount, random) : maxCount;
-        ItemEntity drop = new ItemEntity(level(), getX(), getY(), getZ(), new ItemStack(Items.SLIME_BALL, count));
-        this.level().addFreshEntity(drop);
+        super.dropFromLootTable(source, causedByPlayer);
     }
 
     public int getSlimeType() {

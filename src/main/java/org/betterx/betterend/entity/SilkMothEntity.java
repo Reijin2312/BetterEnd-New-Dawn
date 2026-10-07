@@ -164,19 +164,7 @@ public class SilkMothEntity extends Animal implements FlyingAnimal {
 
     @Override
     protected void dropFromLootTable(DamageSource source, boolean causedByPlayer) {
-        int minCount = 0;
-        int maxCount = 1;
-        if (causedByPlayer && this.lastHurtByPlayer != null) {
-            int looting = EnchantmentUtils.getItemEnchantmentLevel(this.lastHurtByPlayer.level(), Enchantments.LOOTING, this.lastHurtByPlayer);
-            minCount += looting;
-            maxCount += looting;
-            if (maxCount > 2) {
-                maxCount = 2;
-            }
-        }
-        int count = minCount < maxCount ? MHelper.randRange(minCount, maxCount, random) : maxCount;
-        ItemEntity drop = new ItemEntity(level(), getX(), getY(), getZ(), new ItemStack(EndItems.SILK_FIBER, count));
-        this.level().addFreshEntity(drop);
+        super.dropFromLootTable(source, causedByPlayer);
     }
 
     class MothLookControl extends LookControl {

@@ -165,18 +165,6 @@ public class EndFishEntity extends AbstractSchoolingFish {
 
     @Override
     protected void dropFromLootTable(DamageSource source, boolean causedByPlayer) {
-        Item item = source.is(DamageTypeTags.IS_FIRE) ? EndItems.END_FISH_COOKED : EndItems.END_FISH_RAW;
-        if (causedByPlayer && source.getEntity() instanceof Player player) {
-            ItemStack handItem = player.getItemInHand(InteractionHand.MAIN_HAND);
-            if (EnchantmentUtils.getItemEnchantmentLevel(
-                        player.level(),
-                    Enchantments.FIRE_ASPECT,
-                    handItem
-            ) > 0) {
-                item = EndItems.END_FISH_COOKED;
-            }
-        }
-        ItemEntity drop = new ItemEntity(level(), getX(), getY(), getZ(), new ItemStack(item));
-        this.level().addFreshEntity(drop);
+        super.dropFromLootTable(source, causedByPlayer);
     }
 }
