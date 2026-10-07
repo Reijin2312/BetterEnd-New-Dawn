@@ -129,12 +129,7 @@ public class CubozoaEntity extends AbstractSchoolingFish {
 
     @Override
     protected void dropFromLootTable(ServerLevel serverLevel, DamageSource source, boolean causedByPlayer) {
-        int count = random.nextInt(3);
-        if (count > 0) {
-            final var pos = this.position();
-            ItemEntity drop = new ItemEntity(serverLevel, pos.x, pos.y, pos.z, new ItemStack(EndItems.GELATINE, count));
-            serverLevel.addFreshEntity(drop);
-        }
+        super.dropFromLootTable(serverLevel, source, causedByPlayer);
     }
 
     @Override
