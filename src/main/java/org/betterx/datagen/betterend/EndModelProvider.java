@@ -252,7 +252,7 @@ public class EndModelProvider extends WoverModelProvider {
                              .override(EndBlocks.ORANGO, generator::createFlatItem)
                              .override(EndBlocks.FRACTURN, generator::createFlatItem)
                              .override(EndBlocks.GLOBULAGUS, generator::createFlatItem)
-                             .override(EndBlocks.FLAMMALIX, generator::createFlatItem)
+                             .override(EndBlocks.FLAMMALIX, b -> generator.createFlatItem(b, BetterEnd.C.mk("item/flammalix")))
                              .override(EndBlocks.AMBER_GRASS, generator::createFlatItem)
                              .override(EndBlocks.BLOOMING_COOKSONIA, generator::createFlatItem)
                              .override(EndBlocks.BLUE_VINE, generator::createFlatItem)
