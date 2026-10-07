@@ -1,5 +1,7 @@
 package org.betterx.betterend.blocks.basis;
 
+import org.betterx.bclib.behaviours.interfaces.BehaviourCompostable;
+
 import org.betterx.bclib.blocks.BaseAttachedBlock;
 import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.bclib.client.render.BCLRenderLayer;
@@ -34,7 +36,7 @@ import org.jetbrains.annotations.NotNull;
 import net.minecraft.world.level.material.MapColor;
 
 @SuppressWarnings("deprecation")
-public class FurBlock extends BaseAttachedBlock implements SimpleWaterloggedBlock, RenderLayerProvider {
+public class FurBlock extends BaseAttachedBlock implements SimpleWaterloggedBlock, RenderLayerProvider, BehaviourCompostable {
     private static final EnumMap<Direction, VoxelShape> BOUNDING_SHAPES = Maps.newEnumMap(Direction.class);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 

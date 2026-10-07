@@ -1,5 +1,7 @@
 package org.betterx.betterend.blocks;
 
+import org.betterx.bclib.behaviours.interfaces.BehaviourCompostable;
+
 import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.betterend.blocks.basis.EndPlantBlock;
 import org.betterx.betterend.interfaces.survives.SurvivesOnShadowGrass;
@@ -26,7 +28,7 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class NeedlegrassBlock extends EndPlantBlock implements SurvivesOnShadowGrass, BlockLootProvider {
+public class NeedlegrassBlock extends EndPlantBlock implements SurvivesOnShadowGrass, BlockLootProvider, BehaviourCompostable {
     public NeedlegrassBlock() {
         super(BehaviourBuilders
                 .createGrass(MapColor.COLOR_BLACK)

@@ -1,5 +1,7 @@
 package org.betterx.betterend.blocks;
 
+import org.betterx.bclib.behaviours.interfaces.BehaviourCompostable;
+
 import org.betterx.bclib.client.models.ModelsHelper;
 import org.betterx.bclib.client.render.BCLRenderLayer;
 import org.betterx.bclib.interfaces.BlockColorProvider;
@@ -36,7 +38,7 @@ import java.util.List;
 import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
 
-public class JellyshroomCapBlock extends SlimeBlock implements RenderLayerProvider, RuntimeBlockModelProvider, CustomColorProvider {
+public class JellyshroomCapBlock extends SlimeBlock implements RenderLayerProvider, RuntimeBlockModelProvider, CustomColorProvider, BehaviourCompostable {
     public static final IntegerProperty COLOR = EndBlockProperties.COLOR;
     private static final OpenSimplexNoise NOISE = new OpenSimplexNoise(0);
     private final Vec3i colorStart;
