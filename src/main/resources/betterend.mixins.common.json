@@ -4,6 +4,7 @@
   "package": "org.betterx.betterend.mixin.common",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "CarvedPumpkinBlockMixin",
     "CauldronFluidContentMixin",
     "ChorusFlowerBlockMixin",
     "ChorusPlantBlockMixin",
