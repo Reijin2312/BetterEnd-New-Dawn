@@ -1,5 +1,7 @@
 package org.betterx.betterend.blocks;
 
+import org.betterx.bclib.behaviours.interfaces.BehaviourCompostable;
+
 import org.betterx.bclib.behaviours.BehaviourBuilders;
 import org.betterx.bclib.behaviours.interfaces.BehaviourWood;
 import org.betterx.bclib.blocks.BaseBlock;
@@ -12,7 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
-public class MossyGlowshroomCapBlock extends BaseBlock implements BehaviourWood {
+public class MossyGlowshroomCapBlock extends BaseBlock implements BehaviourWood, BehaviourCompostable {
     public static final BooleanProperty TRANSITION = EndBlockProperties.TRANSITION;
 
     public MossyGlowshroomCapBlock() {
