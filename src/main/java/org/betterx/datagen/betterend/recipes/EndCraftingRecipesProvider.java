@@ -42,6 +42,15 @@ public class EndCraftingRecipesProvider extends WoverRecipeProvider {
                      .shapeless()
                      .addMaterial('#', EndBlocks.AMARANITA_HYMENOPHORE)
                      .build(context);
+        RecipeBuilder.crafting(BetterEnd.C.mk("dense_snow"), EndBlocks.DENSE_SNOW)
+                     .shape("##", "##")
+                     .addMaterial('#', Blocks.SNOW_BLOCK)
+                     .build(context);
+        RecipeBuilder.crafting(BetterEnd.C.mk("dense_snow_to_snowballs"), Items.SNOWBALL)
+                     .outputCount(16)
+                     .shapeless()
+                     .addMaterial('#', EndBlocks.DENSE_SNOW)
+                     .build(context);
 
         CraftingRecipeBuilder craftingRecipeBuilder61 = RecipeBuilder.crafting(BetterEnd.C.mk("end_stone_smelter"), EndBlocks.END_STONE_SMELTER);
         craftingRecipeBuilder61.shape("T#T", "V V", "T#T")
