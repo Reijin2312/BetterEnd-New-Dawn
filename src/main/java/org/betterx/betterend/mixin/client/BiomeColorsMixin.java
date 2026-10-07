@@ -41,8 +41,8 @@ public class BiomeColorsMixin {
                         return;
                     }
                 }
-            } catch (MissingPaletteEntryException ignored) {
-                // Avoid crashing on render-thread palette races (e.g., Sodium)
+            } catch (MissingPaletteEntryException | UnsupportedOperationException ignored) {
+                // Avoid palette races and tint-only views that cannot expose block states (e.g., DH/Sodium)
             }
         }
     }
