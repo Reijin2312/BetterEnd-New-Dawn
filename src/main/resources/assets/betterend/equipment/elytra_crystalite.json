@@ -1,9 +1,18 @@
 {
   "layers": {
+    "humanoid": [
+      {
+        "texture": "betterend:elytra_crystalite"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "betterend:crystalite"
+      }
+    ],
     "wings": [
       {
-        "texture": "betterend:elytra_crystalite",
-        "use_player_texture": true
+        "texture": "betterend:elytra_crystalite"
       }
     ]
   }

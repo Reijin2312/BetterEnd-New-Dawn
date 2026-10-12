@@ -1,11 +1,9 @@
 package org.betterx.betterend.entity;
 
 import org.betterx.bclib.util.BlocksHelper;
-import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.interfaces.ISlime;
 import org.betterx.betterend.registry.EndBiomes;
 import org.betterx.betterend.util.GlobalState;
-import org.betterx.wover.enchantment.api.EnchantmentUtils;
 import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
@@ -33,12 +31,8 @@ import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.golem.IronGolem;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
