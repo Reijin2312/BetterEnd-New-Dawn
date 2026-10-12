@@ -26,7 +26,33 @@
     ],
     "minecraft:visual/fog_color": "#e0f5fe",
     "minecraft:visual/sky_color": "#000000",
-    "minecraft:visual/water_fog_color": "#050533"
+    "minecraft:visual/water_fog_color": "#050533",
+    "minecraft:gameplay/natural_mob_spawns": {
+      "argument": {
+        "spawn_costs": {},
+        "spawns_by_category": {
+          "ambient": [],
+          "axolotls": [],
+          "creature": [],
+          "misc": [],
+          "monster": [
+            {
+              "type": "minecraft:enderman",
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 4
+              },
+              "weight": 3
+            }
+          ],
+          "underground_water_creature": [],
+          "water_ambient": [],
+          "water_creature": []
+        }
+      },
+      "modifier": "overlay"
+    }
   },
   "carvers": [],
   "downfall": 0.5,
@@ -53,26 +79,5 @@
     ]
   ],
   "has_precipitation": false,
-  "spawn_costs": {},
-  "spawners": {
-    "ambient": [],
-    "axolotls": [],
-    "creature": [],
-    "misc": [],
-    "monster": [
-      {
-        "type": "minecraft:enderman",
-        "count": {
-          "type": "minecraft:uniform",
-          "min_inclusive": 1,
-          "max_inclusive": 4
-        },
-        "weight": 3
-      }
-    ],
-    "underground_water_creature": [],
-    "water_ambient": [],
-    "water_creature": []
-  },
   "temperature": 0
 }

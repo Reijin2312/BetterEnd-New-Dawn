@@ -1,0 +1,45 @@
+{
+  "feature_position": "prepend",
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [
+      "betterend:flavolite_layer",
+      "betterend:thallasium_ore",
+      "betterend:ender_ore"
+    ]
+  ],
+  "predicate": {
+    "type": "wover:and",
+    "predicates": [
+      {
+        "type": "wover:not",
+        "predicate": {
+          "type": "wover:is_namespace",
+          "namespace": "betterend"
+        }
+      },
+      {
+        "type": "wover:or",
+        "predicates": [
+          {
+            "type": "wover:has_tag",
+            "biome_tag": "wover:is_end/barrens"
+          },
+          {
+            "type": "wover:has_tag",
+            "biome_tag": "wover:is_end/midland"
+          },
+          {
+            "type": "wover:has_tag",
+            "biome_tag": "wover:is_end/highland"
+          }
+        ]
+      }
+    ]
+  }
+}

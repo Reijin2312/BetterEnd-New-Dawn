@@ -214,7 +214,7 @@ public class PedestalItemRenderer<T extends PedestalBlockEntity> implements Bloc
 
     private static void submitHints(PedestalRenderState state, PoseStack matrices, SubmitNodeCollector collector) {
         for (HintOutline outline : state.outlines) {
-            collector.submitCustomGeometry(matrices, RenderTypes.linesTranslucent(),
+            collector.submitCustomGeometry(matrices, RenderTypes.lines(),
                     (pose, vertices) -> renderShapeOutline(pose, vertices, outline));
         }
         if (state.crystalGhostAlpha <= 0.0F) return;
