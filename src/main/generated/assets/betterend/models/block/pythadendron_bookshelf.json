@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/cube_column",
+  "parent": "betterend:block/template/bookshelf",
   "textures": {
     "end": "betterend:block/pythadendron_planks",
     "side": "betterend:block/pythadendron_bookshelf"

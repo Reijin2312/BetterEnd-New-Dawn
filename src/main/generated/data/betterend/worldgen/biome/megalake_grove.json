@@ -27,7 +27,71 @@
     ],
     "minecraft:visual/fog_color": "#b2d1f8",
     "minecraft:visual/sky_color": "#000000",
-    "minecraft:visual/water_fog_color": "#60a3ff"
+    "minecraft:visual/water_fog_color": "#60a3ff",
+    "minecraft:gameplay/natural_mob_spawns": {
+      "argument": {
+        "spawn_costs": {},
+        "spawns_by_category": {
+          "ambient": [
+            {
+              "type": "betterend:dragonfly",
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 3
+              },
+              "weight": 20
+            }
+          ],
+          "axolotls": [],
+          "creature": [],
+          "misc": [],
+          "monster": [
+            {
+              "type": "betterend:end_slime",
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "weight": 5
+            },
+            {
+              "type": "minecraft:enderman",
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "weight": 3
+            }
+          ],
+          "underground_water_creature": [],
+          "water_creature": [],
+          "water_ambient": [
+            {
+              "type": "betterend:end_fish",
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 3,
+                "max_inclusive": 8
+              },
+              "weight": 20
+            },
+            {
+              "type": "betterend:cubozoa",
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 3,
+                "max_inclusive": 8
+              },
+              "weight": 50
+            }
+          ]
+        }
+      },
+      "modifier": "overlay"
+    }
   },
   "carvers": [],
   "downfall": 0.5,
@@ -70,64 +134,5 @@
     ]
   ],
   "has_precipitation": false,
-  "spawn_costs": {},
-  "spawners": {
-    "ambient": [
-      {
-        "type": "betterend:dragonfly",
-        "count": {
-          "type": "minecraft:uniform",
-          "min_inclusive": 1,
-          "max_inclusive": 3
-        },
-        "weight": 20
-      }
-    ],
-    "axolotls": [],
-    "creature": [],
-    "misc": [],
-    "monster": [
-      {
-        "type": "betterend:end_slime",
-        "count": {
-          "type": "minecraft:uniform",
-          "min_inclusive": 1,
-          "max_inclusive": 2
-        },
-        "weight": 5
-      },
-      {
-        "type": "minecraft:enderman",
-        "count": {
-          "type": "minecraft:uniform",
-          "min_inclusive": 1,
-          "max_inclusive": 2
-        },
-        "weight": 3
-      }
-    ],
-    "underground_water_creature": [],
-    "water_ambient": [
-      {
-        "type": "betterend:end_fish",
-        "count": {
-          "type": "minecraft:uniform",
-          "min_inclusive": 3,
-          "max_inclusive": 8
-        },
-        "weight": 20
-      },
-      {
-        "type": "betterend:cubozoa",
-        "count": {
-          "type": "minecraft:uniform",
-          "min_inclusive": 3,
-          "max_inclusive": 8
-        },
-        "weight": 50
-      }
-    ],
-    "water_creature": []
-  },
   "temperature": 0.5
 }

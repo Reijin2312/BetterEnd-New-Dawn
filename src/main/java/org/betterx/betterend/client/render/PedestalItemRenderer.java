@@ -237,7 +237,7 @@ public class PedestalItemRenderer<T extends PedestalBlockEntity> implements Bloc
         for (HintOutline outline : state.outlines) {
             submitNodeCollector.submitCustomGeometry(
                     matrices,
-                    RenderTypes.linesTranslucent(),
+                    RenderTypes.lines(),
                     (pose, vertexConsumer) -> renderShapeOutline(pose, vertexConsumer, outline)
             );
         }

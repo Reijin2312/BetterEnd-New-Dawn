@@ -23,6 +23,22 @@ public class EndBiomeModificationProvider extends WoverRegistryContentProvider<B
     @Override
     protected void bootstrap(BootstrapContext<BiomeModification> context) {
         BiomeModification
+                .build(context, BetterEnd.C.id("default_ores"))
+                .allOf(
+                        BiomePredicate.not(BiomePredicate.inNamespace(BetterEnd.C)),
+                        BiomePredicate.anyOf(
+                                BiomePredicate.hasTag(CommonBiomeTags.IS_END_BARRENS),
+                                BiomePredicate.hasTag(CommonBiomeTags.IS_END_MIDLAND),
+                                BiomePredicate.hasTag(CommonBiomeTags.IS_END_HIGHLAND)
+                        )
+                )
+                .prependFeatures()
+                .addFeature(EndOreFeatures.FLAVOLITE_LAYER)
+                .addFeature(EndOreFeatures.THALLASIUM_ORE)
+                .addFeature(EndOreFeatures.ENDER_ORE)
+                .register();
+
+        BiomeModification
                 .build(context, BetterEnd.C.id("defaults"))
                 .allOf(
                         BiomePredicate.not(BiomePredicate.inNamespace(BetterEnd.C)),
@@ -32,9 +48,6 @@ public class EndBiomeModificationProvider extends WoverRegistryContentProvider<B
                                 BiomePredicate.hasTag(CommonBiomeTags.IS_END_HIGHLAND)
                         )
                 )
-                .addFeature(EndOreFeatures.FLAVOLITE_LAYER)
-                .addFeature(EndOreFeatures.THALLASIUM_ORE)
-                .addFeature(EndOreFeatures.ENDER_ORE)
                 .addFeature(EndTerrainFeatures.CRASHED_SHIP)
                 .register();
 

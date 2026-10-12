@@ -30,7 +30,9 @@ public class AncientEmeraldIceBlock extends BaseBlock implements BehaviourIce, B
     public AncientEmeraldIceBlock() {
         super(BlockBehaviour.Properties.ofLegacyCopy(Blocks.BLUE_ICE)
                 .randomTicks()
-                .isValidSpawn((state, world, pos, entityType) -> entityType.is(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES)));
+                .isValidSpawn((state, world, pos, entityType) -> entityType
+                        .builtInRegistryHolder()
+                        .is(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES)));
     }
 
     @Override
