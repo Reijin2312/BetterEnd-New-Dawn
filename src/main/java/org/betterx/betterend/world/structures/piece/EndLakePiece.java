@@ -252,7 +252,7 @@ public class EndLakePiece extends BasePiece {
         final BlockState state = chunk.getBlockState(mut);
         if (!state.getFluidState().isEmpty()) return;
         if (!state.isAir() && !BlocksHelper.replaceableOrPlant(state)) return;
-        chunk.setBlockState(mut, shoreMaterial(random, borderMaterial(world)), 3);
+        setChunkBlock(chunk, mut, shoreMaterial(random, borderMaterial(world)));
         fillDownToGround(chunk, mut, target - 1);
     }
 
@@ -291,7 +291,7 @@ public class EndLakePiece extends BasePiece {
         }
         for (int y = from; y >= groundY; y--) {
             mut.setY(y);
-            chunk.setBlockState(mut, END_STONE, 3);
+            setChunkBlock(chunk, mut, END_STONE);
         }
         mut.setY(origY);
     }
@@ -310,7 +310,7 @@ public class EndLakePiece extends BasePiece {
             final BlockState state = chunk.getBlockState(mut);
             if (!state.getFluidState().isEmpty()) break;
             if (!state.isAir() && !BlocksHelper.replaceableOrPlant(state)) break;
-            chunk.setBlockState(mut, END_STONE, 3);
+            setChunkBlock(chunk, mut, END_STONE);
         }
     }
 
@@ -408,16 +408,16 @@ public class EndLakePiece extends BasePiece {
                             state = chunk.getBlockState(POS);
                             sampleSurface(state);
                             if (state.is(CommonBlockTags.END_STONES)) {
-                                chunk.setBlockState(POS, AIR, 3);
+                                setChunkBlock(chunk, POS, AIR);
                             }
                             BlockPos below = POS.below();
                             BlockState belowState = chunk.getBlockState(below);
                             sampleSurface(belowState);
                             if (belowState.is(CommonBlockTags.END_STONES)) {
-                                chunk.setBlockState(
+                                setChunkBlock(
+                                        chunk,
                                         below,
-                                        shoreMaterial(random, borderMaterial(world)),
-                                        3
+                                        shoreMaterial(random, borderMaterial(world))
                                 );
                             }
                         }
@@ -459,11 +459,11 @@ public class EndLakePiece extends BasePiece {
                         if (canReplace(state)) {
                             state = chunk.getBlockState(POS.above());
                             state = canReplace(state) ? (y < waterLevel ? WATER : AIR) : state;
-                            chunk.setBlockState(POS, state, 3);
+                            setChunkBlock(chunk, POS, state);
                         }
                         BlockPos below = POS.below();
                         if (chunk.getBlockState(below).is(CommonBlockTags.END_STONES)) {
-                            chunk.setBlockState(below, EndBlocks.ENDSTONE_DUST.defaultBlockState(), 3);
+                            setChunkBlock(chunk, below, EndBlocks.ENDSTONE_DUST.defaultBlockState());
                         }
                         MutableBlockPos up = POS.above().mutable();
                         while (true) {
@@ -475,9 +475,9 @@ public class EndLakePiece extends BasePiece {
                                 // Submerged waterloggable block (e.g. leaves from a neighbouring chunk's
                                 // tree that this lake floods): flood it instead of leaving a dry pocket
                                 // (air bubbles). Keep walking up the column past it.
-                                chunk.setBlockState(up, state.setValue(BlockStateProperties.WATERLOGGED, true), 3);
+                                setChunkBlock(chunk, up, state.setValue(BlockStateProperties.WATERLOGGED, true));
                             } else if (canReplace(state) && !state.isAir() && state.getFluidState().isEmpty()) {
-                                chunk.setBlockState(up, belowWater ? WATER : AIR, 3);
+                                setChunkBlock(chunk, up, belowWater ? WATER : AIR);
                             } else {
                                 break;
                             }
@@ -486,8 +486,8 @@ public class EndLakePiece extends BasePiece {
                     }
                     // Border
                     else if (y < waterLevel && y2 + x2 + z2 <= rb) {
-                        chunk.setBlockState(POS, shoreMaterial(random, borderMaterial(world)), 3);
-                        chunk.setBlockState(POS.below(), END_STONE, 3);
+                        setChunkBlock(chunk, POS, shoreMaterial(random, borderMaterial(world)));
+                        setChunkBlock(chunk, POS.below(), END_STONE);
                     }
                 }
             }
