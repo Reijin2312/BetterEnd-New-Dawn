@@ -5,12 +5,12 @@ import org.betterx.wover.block.api.BlockProperties.TripleShape;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.betterend.blocks.EndLotusLeafBlock;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.wover.feature.api.WriteZone;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
+import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -22,9 +22,9 @@ public class EndLotusLeafFeature extends ScatterFeature<ScatterFeatureConfig> {
 
     @Override
     public void generate(ScatterFeatureConfig cfg, WorldGenLevel world, RandomSource random, BlockPos blockPos) {
-        final WriteZone zone = WriteZone.of(world);
-        if (!zone.contains(blockPos.getX() - 1, blockPos.getZ() - 1)
-                || !zone.contains(blockPos.getX() + 1, blockPos.getZ() + 1)) {
+        if (world instanceof WorldGenRegion region
+                && (!region.hasChunk((blockPos.getX() - 1) >> 4, (blockPos.getZ() - 1) >> 4)
+                || !region.hasChunk((blockPos.getX() + 1) >> 4, (blockPos.getZ() + 1) >> 4))) {
             return;
         }
         if (canGenerate(world, blockPos)) {
