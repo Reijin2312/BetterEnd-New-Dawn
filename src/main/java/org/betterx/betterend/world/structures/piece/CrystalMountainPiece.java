@@ -111,7 +111,6 @@ public class CrystalMountainPiece extends MountainPiece {
         Heightmap map = chunk.getOrCreateHeightmapUnprimed(Types.WORLD_SURFACE);
         int sx = chunkPos.getMinBlockX();
         int sz = chunkPos.getMinBlockZ();
-        Heightmap map2 = chunk.getOrCreateHeightmapUnprimed(Types.WORLD_SURFACE_WG);
         for (int x = 0; x < 16; x++) {
             int px = x + sx;
             int px2 = px - center.getX();
@@ -137,7 +136,7 @@ public class CrystalMountainPiece extends MountainPiece {
                         pos.setY(pos.getY() - 1);
                     }
                     minY = pos.getY();
-                    minY = Math.max(minY, map2.getFirstAvailable(x, z));
+                    minY = Math.max(minY, getWorldgenSurface(world, px, pz));
                     if (minY > center.getY() - 8) {
                         float maxY = dist * height * getHeightClamp(world, 12, px, pz);
                         if (maxY > 0) {
@@ -154,9 +153,9 @@ public class CrystalMountainPiece extends MountainPiece {
                             for (int y = minY - 1; y < maxYI; y++) {
                                 pos.setY(y);
                                 if (needCover && y == cover) {
-                                    chunk.setBlockState(pos, top, false);
+                                    setChunkBlock(chunk, pos, top);
                                 } else {
-                                    chunk.setBlockState(pos, Blocks.END_STONE.defaultBlockState(), false);
+                                    setChunkBlock(chunk, pos, Blocks.END_STONE.defaultBlockState());
                                 }
 //                                mossPos = pos.above();
 //                                if (needSurroundCover && chunk.getBlockState(mossPos).is(Blocks.AIR)) {
@@ -208,7 +207,7 @@ public class CrystalMountainPiece extends MountainPiece {
                             int h = coefX * x + coefZ * z + height;
                             for (int y = minY; y < h; y++) {
                                 mut.setY(y);
-                                chunk.setBlockState(mut, EndBlocks.AURORA_CRYSTAL.defaultBlockState(), false);
+                                setChunkBlock(chunk, mut, EndBlocks.AURORA_CRYSTAL.defaultBlockState());
                             }
                         }
                     }
