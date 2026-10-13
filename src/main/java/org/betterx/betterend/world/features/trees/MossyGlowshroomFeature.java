@@ -17,6 +17,7 @@ import org.betterx.betterend.blocks.MossyGlowshroomCapBlock;
 import org.betterx.betterend.blocks.basis.FurBlock;
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.betterend.registry.EndBlocks;
+import org.betterx.betterend.registry.EndTags;
 import org.betterx.wover.feature.api.WriteZone;
 
 import net.minecraft.core.BlockPos;
@@ -82,7 +83,13 @@ public class MossyGlowshroomFeature extends DefaultFeature {
         final BlockPos blockPos = featureOrigin;
         final WorldGenLevel world = featureWorld;
         BlockState down = world.getBlockState(blockPos.below());
-        if (!down.is(EndBlocks.END_MYCELIUM) && !down.is(EndBlocks.END_MOSS)) return false;
+        if (!down.is(EndBlocks.END_MYCELIUM)
+                && !down.is(EndBlocks.END_MOSS)
+                && !down.is(EndBlocks.SANGNUM)
+                && !down.is(EndBlocks.PALLIDIUM_FULL)
+                && !down.is(EndBlocks.PALLIDIUM_HEAVY)
+                && !down.is(EndBlocks.PALLIDIUM_THIN)
+                && !down.is(EndBlocks.PALLIDIUM_TINY)) return false;
 
         // height reaches 25 and the cap's wave/roots geometry adds further spread - both the canGenerate
         // probe and the final flood-fill are otherwise bounded only by their own shape, past the 3x3 chunks

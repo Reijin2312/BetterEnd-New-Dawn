@@ -32,7 +32,7 @@ public abstract class InvertedScatterFeature<FC extends ScatterFeatureConfig> im
     public abstract void generate(FC cfg, WorldGenLevel world, RandomSource random, BlockPos blockPos);
 
     @Override
-    public boolean place(WorldGenLevel world, ChunkGenerator generator, RandomSource random, BlockPos center) {
+    public synchronized boolean place(WorldGenLevel world, ChunkGenerator generator, RandomSource random, BlockPos center) {
         FC cfg = config;
         final MutableBlockPos POS = GlobalState.stateForThread().POS;
         int maxY = world.getHeight(Heightmap.Types.WORLD_SURFACE, center.getX(), center.getZ());

@@ -36,14 +36,13 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.ApplyExplosionDecay;
-import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.AllOfCondition;
+import net.minecraft.world.level.storage.loot.predicates.AnyOfCondition;
 import net.minecraft.world.level.storage.loot.predicates.InvertedLootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.MatchBlock;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -58,7 +57,8 @@ import org.jetbrains.annotations.Nullable;
 @SuppressWarnings("deprecation")
 public class SulphurCrystalBlock extends BaseAttachedBlock.Glass implements RenderLayerProvider, SimpleWaterloggedBlock, LiquidBlockContainer, SurvivesOnBrimstone, BlockLootProvider {
     private static final EnumMap<Direction, VoxelShape> BOUNDING_SHAPES = Maps.newEnumMap(Direction.class);
-    public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 2);
+    public static final int MAX_AGE = 2;
+    public static final IntegerProperty AGE = IntegerProperty.create("age", 0, MAX_AGE);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public SulphurCrystalBlock() {
@@ -67,6 +67,13 @@ public class SulphurCrystalBlock extends BaseAttachedBlock.Glass implements Rend
                         .sound(SoundType.GLASS)
                         .requiresCorrectToolForDrops()
                         .noCollision());
+        registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false).setValue(AGE, 0));
+    }
+
+    public static BlockState naturalState(BlockState crystal, BlockState replaced, Direction facing, int age) {
+        return crystal.setValue(WATERLOGGED, replaced.getFluidState().getType() == Fluids.WATER)
+                      .setValue(FACING, facing)
+                      .setValue(AGE, age);
     }
 
 
@@ -79,12 +86,6 @@ public class SulphurCrystalBlock extends BaseAttachedBlock.Glass implements Rend
     @Override
     public BCLRenderLayer getRenderLayer() {
         return BCLRenderLayer.CUTOUT;
-    }
-
-    private LootItemConditionalFunction.@NotNull Builder<?> applyAgeBonus(@NotNull LootLookupProvider provider, int i) {
-        return ApplyBonusCount
-                .addUniformBonusCount(provider.fortune(), i)
-                .when(ageCondition(provider, i));
     }
 
     private LootItemCondition.@NotNull Builder ageCondition(@NotNull LootLookupProvider provider, int i) {
@@ -104,29 +105,27 @@ public class SulphurCrystalBlock extends BaseAttachedBlock.Glass implements Rend
                 .lootTable()
                 .withPool(
                         LootPool.lootPool()
-                                .when(provider.hasSilkTouch())
+                                .when(AnyOfCondition.anyOf(provider.hasSilkTouch(), ageCondition(provider, 0), ageCondition(provider, 1)))
                                 .setRolls(ContextIntProviders.exactly(1))
                                 .add(LootItem.lootTableItem(this)
                                              .apply(SetItemCountFunction
                                                      .setCount(ContextIntProviders.between(1, 3))
-                                                      .when(ageCondition(provider, 3))
+                                                      .when(ageCondition(provider, MAX_AGE))
                                              )
                                              .apply(SetItemCountFunction
                                                      .setCount(ContextIntProviders.exactly(1))
-                                                      .when(InvertedLootItemCondition.invert(ageCondition(provider, 3)))
+                                                      .when(InvertedLootItemCondition.invert(ageCondition(provider, MAX_AGE)))
                                              )
                                              .apply(ApplyBonusCount
                                                      .addOreBonusCount(provider.fortune())
-                                                      .when(ageCondition(provider, 3))
+                                                      .when(ageCondition(provider, MAX_AGE))
                                              )
-                                             .apply(applyAgeBonus(provider, 2))
-                                             .apply(applyAgeBonus(provider, 1))
                                              .apply(ApplyExplosionDecay.explosionDecay())
                                 )
                 )
                 .withPool(
                         LootPool.lootPool()
-                                .when(AllOfCondition.allOf(InvertedLootItemCondition.invert(provider.hasSilkTouch()), ageCondition(provider, 3)))
+                                .when(AllOfCondition.allOf(InvertedLootItemCondition.invert(provider.hasSilkTouch()), ageCondition(provider, MAX_AGE)))
                                 .setRolls(ContextIntProviders.exactly(1))
                                 .add(LootItem.lootTableItem(EndItems.CRYSTALLINE_SULPHUR)
                                              .apply(SetItemCountFunction
