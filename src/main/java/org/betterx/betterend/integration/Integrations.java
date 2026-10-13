@@ -3,6 +3,7 @@ package org.betterx.betterend.integration;
 import org.betterx.bclib.api.v2.ModIntegrationAPI;
 import org.betterx.bclib.integration.ModIntegration;
 import org.betterx.betterend.BetterEnd;
+import org.betterx.betterend.config.Configs;
 import org.betterx.betterend.events.PlayerAdvancementsCallback;
 
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -22,7 +23,7 @@ public class Integrations {
             Identifier advId = Identifier.withDefaultNamespace("end/enter_end_gateway");
 
             PlayerAdvancementsCallback.register((player, advancement, criterionName) -> {
-                if (advId.equals(advancement.id())) {
+                if (advId.equals(advancement.id()) && Configs.GENERATOR_CONFIG.giveGuideBook.get()) {
                     Item guideBook = BuiltInRegistries.ITEM.getValue(GUIDEBOOK_ID);
                     if (guideBook != Items.AIR) {
                         player.addItem(new ItemStack(guideBook));

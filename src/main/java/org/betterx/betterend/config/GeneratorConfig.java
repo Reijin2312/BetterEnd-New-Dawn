@@ -103,6 +103,12 @@ public class GeneratorConfig extends ConfigFile {
             false
     ).setGroup(MainConfig.ENTITY_GROUP).hideInUI();
 
+    public final BooleanValue giveGuideBook = new BooleanValue(
+            MainConfig.ENTITY_GROUP.title(),
+            "give_guide_book",
+            true
+    ).setGroup(MainConfig.ENTITY_GROUP);
+
     public final BlockPosValue spawn = new BlockPosValue(
             MainConfig.ENTITY_GROUP.title() + ".spawn",
             "point",
