@@ -246,7 +246,7 @@ public class RespawnObeliskBlock extends BaseBlock.Stone implements CustomColorP
                 ((ServerLevel) world).sendParticles(particle, px, py1, pz, 20, 0.14, 0.5, 0.14, 0.1);
                 ((ServerLevel) world).sendParticles(particle, px, py2, pz, 20, 0.14, 0.3, 0.14, 0.1);
             }
-            world.playSound(null, px, py, py, SoundEvents.RESPAWN_ANCHOR_SET_SPAWN, SoundSource.BLOCKS, 1F, 1F);
+            world.playSound(null, px, py, pz, SoundEvents.RESPAWN_ANCHOR_SET_SPAWN, SoundSource.BLOCKS, 1F, 1F);
             if (!player.isCreative()) {
                 itemStack.shrink(6);
             }

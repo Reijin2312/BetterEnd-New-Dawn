@@ -52,7 +52,7 @@ public class HydrothermalVentBlock extends BaseBlockNotFull.Stone implements Ent
                 .noCollission()
                 .requiresCorrectToolForDrops()
         );
-        this.registerDefaultState(defaultBlockState().setValue(WATERLOGGED, true).setValue(ACTIVATED, false));
+        this.registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false).setValue(ACTIVATED, false));
     }
 
     @Override

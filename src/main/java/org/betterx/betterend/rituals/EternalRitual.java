@@ -511,7 +511,7 @@ public class EternalRitual {
 
     public void fromTag(CompoundTag tag) {
         axis = Direction.Axis.byName(tag.getString("axis"));
-        center = NbtUtils.readBlockPos(tag, "center").orElse(BlockPos.ZERO);
+        center = NbtUtils.readBlockPos(tag, "center").orElse(null);
         active = tag.getBoolean("active");
         if (tag.contains("exit")) {
             exit = NbtUtils.readBlockPos(tag, "exit").orElse(BlockPos.ZERO);

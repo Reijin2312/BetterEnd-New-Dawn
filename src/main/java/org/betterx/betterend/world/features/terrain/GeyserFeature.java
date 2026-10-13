@@ -26,6 +26,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
@@ -213,7 +214,9 @@ public class GeyserFeature extends DefaultFeature {
                         mut.setY(mut.getY() + 1);
                     }
                     state = EndBlocks.HYDROTHERMAL_VENT.defaultBlockState()
-                                                       .setValue(HydrothermalVentBlock.ACTIVATED, distRaw < 2);
+                                                       .setValue(HydrothermalVentBlock.ACTIVATED, distRaw < 2)
+                                                       .setValue(HydrothermalVentBlock.WATERLOGGED,
+                                                               world.getFluidState(mut).getType() == Fluids.WATER);
                     BlocksHelper.setWithoutUpdate(world, mut, state);
                     mut.setY(mut.getY() + 1);
                     state = world.getBlockState(mut);
@@ -247,7 +250,9 @@ public class GeyserFeature extends DefaultFeature {
                         mut.setY(mut.getY() + 1);
                     }
                     state = EndBlocks.HYDROTHERMAL_VENT.defaultBlockState()
-                                                       .setValue(HydrothermalVentBlock.ACTIVATED, distRaw < 2);
+                                                       .setValue(HydrothermalVentBlock.ACTIVATED, distRaw < 2)
+                                                       .setValue(HydrothermalVentBlock.WATERLOGGED,
+                                                               world.getFluidState(mut).getType() == Fluids.WATER);
                     BlocksHelper.setWithoutUpdate(world, mut, state);
                     mut.setY(mut.getY() + 1);
                     state = world.getBlockState(mut);

@@ -120,30 +120,30 @@ public class EndBlocks {
     // Roads //
     public static final Block END_MYCELIUM_PATH = registerBlock(
             "end_mycelium_path",
-            new BasePathBlock.Stone(END_MYCELIUM)
+            new EndPathBlock(END_MYCELIUM)
     );
-    public static final Block END_MOSS_PATH = registerBlock("end_moss_path", new BasePathBlock.Stone(END_MOSS));
+    public static final Block END_MOSS_PATH = registerBlock("end_moss_path", new EndPathBlock(END_MOSS));
     public static final Block CHORUS_NYLIUM_PATH = registerBlock(
             "chorus_nylium_path",
-            new BasePathBlock.Stone(CHORUS_NYLIUM)
+            new EndPathBlock(CHORUS_NYLIUM)
     );
-    public static final Block CAVE_MOSS_PATH = registerBlock("cave_moss_path", new BasePathBlock.Stone(CAVE_MOSS));
+    public static final Block CAVE_MOSS_PATH = registerBlock("cave_moss_path", new EndPathBlock(CAVE_MOSS));
     public static final Block CRYSTAL_MOSS_PATH = registerBlock(
             "crystal_moss_path",
-            new BasePathBlock.Stone(CRYSTAL_MOSS)
+            new EndPathBlock(CRYSTAL_MOSS)
     );
     public static final Block SHADOW_GRASS_PATH = registerBlock(
             "shadow_grass_path",
-            new BasePathBlock.Stone(SHADOW_GRASS)
+            new EndPathBlock(SHADOW_GRASS)
     );
-    public static final Block PINK_MOSS_PATH = registerBlock("pink_moss_path", new BasePathBlock.Stone(PINK_MOSS));
-    public static final Block AMBER_MOSS_PATH = registerBlock("amber_moss_path", new BasePathBlock.Stone(AMBER_MOSS));
+    public static final Block PINK_MOSS_PATH = registerBlock("pink_moss_path", new EndPathBlock(PINK_MOSS));
+    public static final Block AMBER_MOSS_PATH = registerBlock("amber_moss_path", new EndPathBlock(AMBER_MOSS));
     public static final Block JUNGLE_MOSS_PATH = registerBlock(
             "jungle_moss_path",
-            new BasePathBlock.Stone(JUNGLE_MOSS)
+            new EndPathBlock(JUNGLE_MOSS)
     );
-    public static final Block SANGNUM_PATH = registerBlock("sangnum_path", new BasePathBlock.Stone(SANGNUM));
-    public static final Block RUTISCUS_PATH = registerBlock("rutiscus_path", new BasePathBlock.Stone(RUTISCUS));
+    public static final Block SANGNUM_PATH = registerBlock("sangnum_path", new EndPathBlock(SANGNUM));
+    public static final Block RUTISCUS_PATH = registerBlock("rutiscus_path", new EndPathBlock(RUTISCUS));
 
     public static final Block MOSSY_OBSIDIAN = registerBlock(
             "mossy_obsidian",

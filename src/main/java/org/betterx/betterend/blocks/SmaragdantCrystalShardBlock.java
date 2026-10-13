@@ -46,6 +46,7 @@ public class SmaragdantCrystalShardBlock extends BaseAttachedBlock implements Ad
                                .requiresCorrectToolForDrops()
                                .noCollission()
         );
+        registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
     }
 
     @Override

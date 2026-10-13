@@ -47,7 +47,13 @@ public class MossyGlowshroomFeature extends DefaultFeature {
         BlockState state = world.getBlockState(blockPos);
         if (!state.getFluidState().isEmpty()) return false;
         BlockState down = world.getBlockState(blockPos.below());
-        if (!down.is(EndBlocks.END_MYCELIUM) && !down.is(EndBlocks.END_MOSS)) return false;
+        if (!down.is(EndBlocks.END_MYCELIUM)
+                && !down.is(EndBlocks.END_MOSS)
+                && !down.is(EndBlocks.SANGNUM)
+                && !down.is(EndBlocks.PALLIDIUM_FULL)
+                && !down.is(EndBlocks.PALLIDIUM_HEAVY)
+                && !down.is(EndBlocks.PALLIDIUM_THIN)
+                && !down.is(EndBlocks.PALLIDIUM_TINY)) return false;
 
         CONE1.setBlock(EndBlocks.MOSSY_GLOWSHROOM_CAP);
         CONE2.setBlock(EndBlocks.MOSSY_GLOWSHROOM_CAP);

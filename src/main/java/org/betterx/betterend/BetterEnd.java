@@ -49,6 +49,8 @@ public class BetterEnd implements ModInitializer {
         EndNumericProviders.register();
         EndPortals.loadPortals();
         EndSounds.register();
+        EndBlocks.ensureStaticallyLoaded();
+        EndItems.ensureStaticallyLoaded();
         EndMenuTypes.ensureStaticallyLoaded();
         EndBlockEntities.register();
         EndPoiTypes.register();
@@ -56,8 +58,6 @@ public class BetterEnd implements ModInitializer {
         EndEntities.register();
         EndBiomes.register();
         EndTags.register();
-        EndBlocks.ensureStaticallyLoaded();
-        EndItems.ensureStaticallyLoaded();
         EndItems.registerCompostableFoods();
         EndTemplates.ensureStaticallyLoaded();
         EndEnchantments.ensureStaticallyLoaded();
