@@ -16,6 +16,7 @@ import org.betterx.bclib.util.MHelper;
 import org.betterx.bclib.util.SplineHelper;
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.betterend.registry.EndBlocks;
+import org.betterx.betterend.registry.EndTags;
 import org.betterx.wover.feature.api.WriteZone;
 import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
@@ -57,7 +58,8 @@ public class LacugroveFeature extends DefaultFeature {
         final RandomSource random = featureRandom;
         final BlockPos pos = featureOrigin;
         final WorldGenLevel world = featureWorld;
-        if (!world.getBlockState(pos.below()).is(BlockTags.NYLIUM)) return false;
+        BlockState ground = world.getBlockState(pos.below());
+        if (!ground.is(BlockTags.NYLIUM) && !ground.is(EndBlocks.ENDSTONE_DUST)) return false;
 
         // size reaches 25, and the trunk/leaf-ball flood-fills and canGenerate probe are otherwise bounded
         // only by their own shape - past the 3x3 chunks a feature may touch. Clip every one to the write

@@ -23,6 +23,8 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Locale;
+
 public class EndBiomeBuilder extends WoverBiomeBuilder.AbstractWoverBiomeBuilder<EndBiomeBuilder> {
     protected boolean hasCave = false;
     protected SurfaceMaterialProvider surface;
@@ -72,7 +74,7 @@ public class EndBiomeBuilder extends WoverBiomeBuilder.AbstractWoverBiomeBuilder
             @NotNull String name
     ) {
         return new EndBiomeKey<>(
-                BetterEnd.C.id(name.replace(' ', '_').toLowerCase()),
+                BetterEnd.C.id(name.replace(' ', '_').toLowerCase(Locale.ROOT)),
                 null
         );
     }
@@ -83,7 +85,7 @@ public class EndBiomeBuilder extends WoverBiomeBuilder.AbstractWoverBiomeBuilder
             @Nullable EndBiomeKey<PC, ?> parentOrNull
     ) {
         return new EndBiomeKey<>(
-                BetterEnd.C.id(name.replace(' ', '_').toLowerCase()),
+                BetterEnd.C.id(name.replace(' ', '_').toLowerCase(Locale.ROOT)),
                 parentOrNull
         );
     }
