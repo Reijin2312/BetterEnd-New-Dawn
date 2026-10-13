@@ -6,6 +6,7 @@ import org.betterx.bclib.util.StructureErode;
 import org.betterx.bclib.util.StructureHelper;
 import org.betterx.betterend.util.EndStructureHelper;
 import org.betterx.betterend.util.BlockFixer;
+import org.betterx.wover.feature.api.WriteZone;
 import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
@@ -120,7 +121,8 @@ public class CrashedShipFeature extends NBTFeature<NBTFeatureConfig> {
         BlockFixer.fixBlocks(
                 world,
                 new BlockPos(bounds.minX(), bounds.minY(), bounds.minZ()),
-                new BlockPos(bounds.maxX(), bounds.maxY(), bounds.maxZ())
+                new BlockPos(bounds.maxX(), bounds.maxY(), bounds.maxZ()),
+                WriteZone.of(world).toBoundingBox()
         );
 
         return true;
