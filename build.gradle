@@ -61,6 +61,33 @@ sourceSets {
             ]
         }
     }
+    testmod {
+        compileClasspath += main.output + main.compileClasspath
+        // Keep compile-only integration APIs out of the dedicated-server runtime.
+        runtimeClasspath += output + main.runtimeClasspath
+    }
+}
+
+loom {
+    runs {
+        gametest {
+            server()
+            name "GameTest"
+            runDir "build/gametest"
+            vmArg "-Dfabric-api.gametest"
+            vmArg "-Dfabric-api.gametest.report-file=${file("build/gametest/report.xml")}"
+            source sourceSets.testmod
+            ideConfigGenerated true
+        }
+    }
+    mods {
+        betterend {
+            sourceSet sourceSets.main
+        }
+        betterend_testmod {
+            sourceSet sourceSets.testmod
+        }
+    }
 }
 
 tasks.register("generateBetterEndResources") {
@@ -111,6 +138,11 @@ dependencies {
 
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    testmodImplementation sourceSets.main.output
+    // GameTest is a development-only Fabric API module and is not bundled in the aggregate API jar.
+    // Loom 1.7 only remaps mod dependencies from its main mod configurations.
+    // This is a development-only runtime dependency and is not bundled into the release jar.
+    modImplementation "net.fabricmc.fabric-api:fabric-gametest-api-v1:2.0.4+6fc22b996a"
 
     // https://mvnrepository.com/artifact/javax.annotation/jsr305
     compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'

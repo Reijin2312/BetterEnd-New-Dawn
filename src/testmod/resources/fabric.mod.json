@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "betterend_testmod",
+  "version": "1.0.0",
+  "name": "BetterEnd regression tests",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-gametest": [
+      "org.betterx.betterend.gametest.BetterEndGameTests"
+    ]
+  },
+  "depends": {
+    "fabricloader": "*",
+    "fabric-gametest-api-v1": "*",
+    "betterend": "*"
+  }
+}
