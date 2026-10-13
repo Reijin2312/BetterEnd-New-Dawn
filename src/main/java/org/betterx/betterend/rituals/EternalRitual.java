@@ -510,7 +510,7 @@ public class EternalRitual {
 
     public void fromTag(CompoundTag tag) {
         axis = Direction.Axis.byName(tag.getStringOr("axis", Direction.Axis.X.getName()));
-        center = tag.read("center", BlockPos.CODEC).orElse(BlockPos.ZERO);
+        center = tag.read("center", BlockPos.CODEC).orElse(null);
         active = tag.getBooleanOr("active", false);
         if (tag.contains("exit")) {
             exit = tag.read("exit", BlockPos.CODEC).orElse(BlockPos.ZERO);

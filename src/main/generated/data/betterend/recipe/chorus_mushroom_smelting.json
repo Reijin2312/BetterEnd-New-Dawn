@@ -1,0 +1,10 @@
+{
+    "type":  "minecraft:smelting",
+    "category":  "food",
+    "cookingtime":  200,
+    "experience":  0.0,
+    "ingredient":  "betterend:chorus_mushroom_raw",
+    "result":  {
+                   "id":  "betterend:chorus_mushroom_cooked"
+               }
+}
