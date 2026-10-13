@@ -1118,6 +1118,7 @@
   "title.config.betterend.client.rendering.custom_sky": "Custom Sky",
   "title.config.betterend.client.rendering.sulfur_water_color": "Tint Sulfur Water",
   "title.config.betterend.generator.cosmetic.change_chorus_plant": "Change Chorus Plant",
+  "title.config.betterend.generator.entity.give_guide_book": "Give Guidebook on entering an End Gateway",
   "title.config.betterend.generator.entity.has_dragon_fights": "Allow Dragon Fights",
   "title.config.betterend.generator.entity.spawn.has_spawn": "Override default spawn",
   "title.config.betterend.generator.generator.use_new_generator": "Use improved generation rules",
