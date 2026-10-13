@@ -32,6 +32,14 @@ def local_bclib = findProject(':BCLib') != null
 def local_wunderlib = findProject(':wunderlib') != null
 def local_wover = findProject(':WorldWeaver') != null
 
+sourceSets {
+    testmod {
+        compileClasspath += main.output + main.compileClasspath
+        // Keep compile-only integration APIs out of the dedicated-server runtime.
+        runtimeClasspath += output + main.runtimeClasspath
+    }
+}
+
 loom {
     accessWidenerPath = file("src/main/resources/betterend.accesswidener")
     runs {
@@ -46,6 +54,24 @@ loom {
             vmArg "-Dbetterend.static-resources-dir=${file("src/main/resources")}"
 
             runDir "build/datagen"
+        }
+        gametest {
+            server()
+            name "GameTest"
+            runDir "build/gametest"
+            vmArg "-Dfabric-api.gametest"
+            vmArg "-Dfabric-api.gametest.report-file=${file("build/gametest/report.xml")}"
+            source sourceSets.testmod
+            ideConfigGenerated true
+        }
+    }
+
+    mods {
+        betterend {
+            sourceSet sourceSets.main
+        }
+        betterend_testmod {
+            sourceSet sourceSets.testmod
         }
     }
 
@@ -93,6 +119,8 @@ dependencies {
 
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    modImplementation fabricApi.module("fabric-gametest-api-v1", project.fabric_version)
+    testmodImplementation sourceSets.main.output
 
     // https://mvnrepository.com/artifact/javax.annotation/jsr305
     compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
