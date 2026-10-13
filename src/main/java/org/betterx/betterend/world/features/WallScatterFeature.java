@@ -26,7 +26,7 @@ public abstract class WallScatterFeature<FC extends ScatterFeatureConfig> extend
     public abstract void generate(FC cfg, WorldGenLevel world, RandomSource random, BlockPos pos, Direction dir);
 
     @Override
-    public boolean place(FeaturePlaceContext<FC> featureConfig) {
+    public synchronized boolean place(FeaturePlaceContext<FC> featureConfig) {
         FC cfg = featureConfig.config();
         final RandomSource random = featureConfig.random();
         final BlockPos center = featureConfig.origin();
@@ -46,6 +46,7 @@ public abstract class WallScatterFeature<FC extends ScatterFeatureConfig> extend
         int minZ = zone.clampZ(center.getZ() - cfg.radius);
         int maxZ = zone.clampZ(center.getZ() + cfg.radius);
 
+        final Direction[] dirs = DIR.clone();
         MutableBlockPos mut = new MutableBlockPos();
         for (int x = minX; x <= maxX; x++) {
             mut.setX(x);
@@ -54,8 +55,8 @@ public abstract class WallScatterFeature<FC extends ScatterFeatureConfig> extend
                 for (int z = minZ; z <= maxZ; z++) {
                     mut.setZ(z);
                     if (random.nextInt(4) == 0 && world.isEmptyBlock(mut) && !overLakeWater(world, mut)) {
-                        shuffle(random);
-                        for (Direction dir : DIR) {
+                        shuffle(random, dirs);
+                        for (Direction dir : dirs) {
                             if (canGenerate(cfg, world, random, mut, dir)) {
                                 generate(cfg, world, random, mut, dir);
                                 break;
@@ -80,12 +81,12 @@ public abstract class WallScatterFeature<FC extends ScatterFeatureConfig> extend
         return false;
     }
 
-    private void shuffle(RandomSource random) {
+    private static void shuffle(RandomSource random, Direction[] dirs) {
         for (int i = 0; i < 4; i++) {
             int j = random.nextInt(4);
-            Direction d = DIR[i];
-            DIR[i] = DIR[j];
-            DIR[j] = d;
+            Direction d = dirs[i];
+            dirs[i] = dirs[j];
+            dirs[j] = d;
         }
     }
 }

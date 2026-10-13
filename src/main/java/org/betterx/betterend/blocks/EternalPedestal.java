@@ -98,13 +98,17 @@ public class EternalPedestal extends PedestalBlock implements BehaviourStone, Bl
                             pos,
                             updatedState.setValue(ACTIVATED, true).setValue(HAS_LIGHT, true)
                     );
-                    if (pedestal.hasRitual()) {
+                    if (pedestal.hasRitual() && pedestal.getRitual().getCenter() != null) {
                         if (pedestal.getRitual().getWorld() == null) pedestal.getRitual().setWorld(sourceLevel);
                         pedestal.getRitual().checkStructure(player);
                     } else {
                         EternalRitual ritual = new EternalRitual(sourceLevel, pos);
-                        pedestal.linkRitual(ritual);
-                        ritual.checkStructure(player);
+                        if (ritual.getCenter() != null) {
+                            pedestal.linkRitual(ritual);
+                            ritual.checkStructure(player);
+                        } else {
+                            pedestal.linkRitual(null);
+                        }
                     }
                 }
             }
