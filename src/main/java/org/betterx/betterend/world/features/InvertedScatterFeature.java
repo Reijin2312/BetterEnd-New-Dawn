@@ -32,7 +32,7 @@ public abstract class InvertedScatterFeature<FC extends ScatterFeatureConfig> ex
     public abstract void generate(FC cfg, WorldGenLevel world, RandomSource random, BlockPos blockPos);
 
     @Override
-    public boolean place(FeaturePlaceContext<FC> featureConfig) {
+    public synchronized boolean place(FeaturePlaceContext<FC> featureConfig) {
         FC cfg = featureConfig.config();
         final MutableBlockPos POS = GlobalState.stateForThread().POS;
         final RandomSource random = featureConfig.random();
