@@ -53,6 +53,14 @@ java {
     withSourcesJar()
 }
 
+sourceSets {
+    gametest {
+        java.srcDir 'src/gametest/java'
+        compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
+        runtimeClasspath += output + compileClasspath + sourceSets.main.runtimeClasspath
+    }
+}
+
 neoForge {
     version = project.neoforge_version
     accessTransformers = files("src/main/resources/META-INF/accesstransformer.cfg")
@@ -62,6 +70,10 @@ neoForge {
         }
         server {
             server()
+        }
+        gameTestServer {
+            type = "gameTestServer"
+            systemProperty 'neoforge.enabledGameTestNamespaces', modId
         }
         data {
             data()
@@ -76,6 +88,7 @@ neoForge {
     mods {
         "${modId}" {
             sourceSet sourceSets.main
+            sourceSet sourceSets.gametest
         }
     }
 }
@@ -433,6 +446,10 @@ tasks.register("fixMixinRefmap") {
 
 tasks.named("compileJava") {
     finalizedBy(tasks.named("fixMixinRefmap"))
+}
+
+tasks.named("compileGametestJava") {
+    dependsOn(tasks.named("fixMixinRefmap"))
 }
 
 tasks.matching { it.name == "runData" }.configureEach {

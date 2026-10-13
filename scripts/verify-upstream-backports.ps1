@@ -1,4 +1,4 @@
-param()
+param([switch]$Only1211)
 
 $ErrorActionPreference = 'Stop'
 $workspace = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
@@ -9,6 +9,7 @@ $repos = @(
     'BetterEnd-26.2', 'BetterEnd-Fabric-26.2',
     'BetterEnd-26.3', 'BetterEnd-Fabric-26.3'
 )
+if ($Only1211) { $repos = @('BetterEnd', 'BetterEnd-Fabric-1.21.1') }
 $failures = [System.Collections.Generic.List[string]]::new()
 $checks = 0
 
@@ -150,8 +151,9 @@ foreach ($repo in $repos) {
     Assert-Match $ship 'BlockFixer\.fixBlocks\(.*(WriteZone\.of\(world\)\.toBoundingBox\(\)|bounds)' $repo 'crashed-ship block fixer is bounded'
     $lotus = Read-Relative $root 'src/main/java/org/betterx/betterend/world/features/EndLotusLeafFeature.java'
     Assert-Match $lotus '(WriteZone.*contains|WorldGenRegion.*hasChunk)' $repo 'End Lotus avoids reading outside generated chunks'
+    $geyser = Read-Relative $root 'src/main/java/org/betterx/betterend/world/features/terrain/GeyserFeature.java'
+    Assert-Match $geyser 'HYDROTHERMAL_VENT\.defaultBlockState\(\).*?WATERLOGGED.*?getFluidState' $repo 'Geyser vents preserve their actual fluid state'
     if ($hasFullWriteZone) {
-        $geyser = Read-Relative $root 'src/main/java/org/betterx/betterend/world/features/terrain/GeyserFeature.java'
         Assert-Match $geyser 'WriteZone' $repo 'Geyser generation is clipped to its write zone'
     }
 
@@ -159,6 +161,16 @@ foreach ($repo in $repos) {
     $integration = Read-Relative $root 'src/main/java/org/betterx/betterend/integration/Integrations.java'
     Assert-Match $config 'giveGuideBook' $repo 'guidebook reward config option'
     Assert-Match $integration 'giveGuideBook' $repo 'guidebook reward respects config option'
+
+    $obelisk = Read-Relative $root 'src/main/java/org/betterx/betterend/blocks/RespawnObeliskBlock.java'
+    Assert-Match $obelisk 'playSound\(null,\s*px,\s*py,\s*pz,' $repo 'respawn-obelisk sound uses the obelisk Z coordinate'
+    Assert-NoMatch $obelisk 'playSound\(null,\s*px,\s*py,\s*py,' $repo 'respawn-obelisk sound must not use Y as Z'
+
+    $lang = Assert-Json $root 'src/main/resources/assets/betterend/lang/en_us.json' $repo
+    Assert-Match $lang 'biome\.betterend\.flower_islets' $repo 'Flower Islets translation'
+    Assert-Match $lang 'biome\.betterend\.waterfall_ponds' $repo 'Waterfall Ponds translation'
+    Assert-Match $lang 'look at Endermen' $repo 'End Veil plural translation'
+    Assert-Match $lang 'give_guide_book' $repo 'guidebook configuration translation'
 }
 
 if ($failures.Count) {
