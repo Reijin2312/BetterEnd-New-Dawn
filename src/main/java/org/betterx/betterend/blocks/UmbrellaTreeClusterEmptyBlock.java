@@ -35,7 +35,7 @@ public class UmbrellaTreeClusterEmptyBlock extends BaseBlock {
 
     @Override
     @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
+    public void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
         if (state.getValue(NATURAL) && random.nextInt(16) == 0) {
             BlocksHelper.setWithUpdate(
                     world,

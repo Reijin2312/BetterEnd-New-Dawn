@@ -3,6 +3,7 @@ package org.betterx.betterend.world.structures.piece;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.blocks.EndBlockProperties;
+import org.betterx.betterend.blocks.HydrothermalVentBlock;
 import org.betterx.betterend.blocks.SulphurCrystalBlock;
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.betterend.registry.EndBlocks;
@@ -23,6 +24,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -264,7 +266,7 @@ public class SulphuricCavePiece extends BasePiece {
             }
             mut.setY(mut.getY() + 1);
         }
-        chunk.setBlockState(mut, EndBlocks.HYDROTHERMAL_VENT.defaultBlockState(), false);
+        chunk.setBlockState(mut, EndBlocks.HYDROTHERMAL_VENT.defaultBlockState().setValue(HydrothermalVentBlock.WATERLOGGED, chunk.getFluidState(mut).getType() == Fluids.WATER), false);
         mut.setY(mut.getY() + 1);
         state = chunk.getBlockState(mut);
         while (state.is(Blocks.WATER)) {
