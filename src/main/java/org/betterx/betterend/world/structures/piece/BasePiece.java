@@ -5,7 +5,6 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -40,7 +39,7 @@ public abstract class BasePiece extends StructurePiece {
     }
 
     protected static void setChunkBlock(ChunkAccess chunk, BlockPos pos, BlockState state) {
-        final BlockState old = chunk.setBlockState(pos, state, Block.UPDATE_ALL);
+        final BlockState old = chunk.setBlockState(pos, state, false);
         if (old != null && old.hasBlockEntity() && !old.is(state.getBlock())) {
             chunk.removeBlockEntity(new BlockPos(
                     chunk.getPos().getBlockX(pos.getX() & 15),
