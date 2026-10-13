@@ -3,6 +3,7 @@ package org.betterx.betterend.integration;
 import org.betterx.bclib.api.v2.ModIntegrationAPI;
 import org.betterx.bclib.integration.ModIntegration;
 import org.betterx.betterend.BetterEnd;
+import org.betterx.betterend.config.Configs;
 import org.betterx.betterend.events.PlayerAdvancementsCallback;
 import org.betterx.betterend.integration.byg.BYGIntegration;
 import org.betterx.betterend.item.GuideBookItem;
@@ -20,7 +21,7 @@ public class Integrations {
             ResourceLocation advId = ResourceLocation.withDefaultNamespace("end/enter_end_gateway");
 
             PlayerAdvancementsCallback.PLAYER_ADVANCEMENT_COMPLETE.register((player, advancement, criterionName) -> {
-                if (advId.equals(advancement.id())) {
+                if (advId.equals(advancement.id()) && Configs.GENERATOR_CONFIG.giveGuideBook.get()) {
                     player.addItem(new ItemStack(GuideBookItem.GUIDE_BOOK));
                 }
             });
