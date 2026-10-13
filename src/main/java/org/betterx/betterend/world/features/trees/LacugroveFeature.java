@@ -12,6 +12,7 @@ import org.betterx.bclib.util.MHelper;
 import org.betterx.bclib.util.SplineHelper;
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.betterend.registry.EndBlocks;
+import org.betterx.betterend.registry.EndTags;
 import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
@@ -36,7 +37,8 @@ public class LacugroveFeature extends DefaultFeature {
         final RandomSource random = featureConfig.random();
         final BlockPos pos = featureConfig.origin();
         final WorldGenLevel world = featureConfig.level();
-        if (!world.getBlockState(pos.below()).is(BlockTags.NYLIUM)) return false;
+        BlockState ground = world.getBlockState(pos.below());
+        if (!ground.is(BlockTags.NYLIUM) && !ground.is(EndBlocks.ENDSTONE_DUST)) return false;
 
         float size = MHelper.randRange(15, 25, random);
         List<Vector3f> spline = SplineHelper.makeSpline(0, 0, 0, 0, size, 0, 6);
