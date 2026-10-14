@@ -13,7 +13,6 @@ import org.betterx.betterend.blocks.MossyGlowshroomCapBlock;
 import org.betterx.betterend.blocks.basis.FurBlock;
 import org.betterx.betterend.noise.OpenSimplexNoise;
 import org.betterx.betterend.registry.EndBlocks;
-import org.betterx.betterend.registry.EndTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

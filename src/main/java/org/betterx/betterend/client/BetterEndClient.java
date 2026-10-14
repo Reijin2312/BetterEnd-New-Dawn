@@ -21,14 +21,16 @@ import net.fabricmc.api.ClientModInitializer;
 public class BetterEndClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        RitualUpdate.registerClientProcessor((center, axis, active, willActivate, client) ->
+        RitualUpdate.registerClientProcessor((center, axis, active, willActivate, clientKeyItem, pedestalItemMask, client) ->
                 EternalRitual.updateActiveStateOnPedestals(
                         center,
                         axis,
                         active,
                         willActivate,
                         ((Minecraft) client).level,
-                        null
+                        null,
+                        clientKeyItem,
+                        pedestalItemMask
                 )
         );
         EndBlockEntityRenders.register();
