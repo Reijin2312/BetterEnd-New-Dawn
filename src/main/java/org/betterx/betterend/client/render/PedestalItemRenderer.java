@@ -78,12 +78,11 @@ public class PedestalItemRenderer<T extends PedestalBlockEntity> implements Bloc
         state.partialTick = partialTick;
         state.animationTime = state.age + partialTick;
 
-        if (blockEntity.isEmpty()) {
-            return;
-        }
-
         BlockState blockState = blockEntity.getBlockState();
         if (!(blockState.getBlock() instanceof PedestalBlock pedestal)) {
+            return;
+        }
+        if (!blockState.getValue(PedestalBlock.HAS_ITEM) || blockEntity.isEmpty()) {
             return;
         }
 
