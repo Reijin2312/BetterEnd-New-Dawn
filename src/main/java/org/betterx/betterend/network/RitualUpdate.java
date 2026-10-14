@@ -9,10 +9,12 @@ import org.betterx.betterend.rituals.EternalRitual;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.Item;
 
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -33,6 +35,8 @@ public class RitualUpdate extends ClientBoundPacketHandler<RitualUpdate.Payload>
         byte flags;
         BlockPos center;
         Direction.Axis axis;
+        ResourceLocation keyItemId;
+        int pedestalItemMask;
 
         public Payload(EternalRitual ritual) {
             super(INSTANCE);
@@ -45,6 +49,11 @@ public class RitualUpdate extends ClientBoundPacketHandler<RitualUpdate.Payload>
             if (ritual.willActivate()) {
                 this.flags |= WILL_ACTIVATE_FLAG;
             }
+            Item keyItem = ritual.getKeyItem();
+            if (keyItem != null) {
+                this.keyItemId = BuiltInRegistries.ITEM.getKey(keyItem);
+            }
+            this.pedestalItemMask = ritual.getPedestalItemMask();
         }
 
         public Payload(RegistryFriendlyByteBuf buf) {
@@ -52,6 +61,8 @@ public class RitualUpdate extends ClientBoundPacketHandler<RitualUpdate.Payload>
             center = buf.readBlockPos();
             axis = Direction.Axis.byName(BaseDataHandler.readString(buf));
             flags = buf.readByte();
+            keyItemId = buf.readBoolean() ? buf.readResourceLocation() : null;
+            pedestalItemMask = buf.readUnsignedByte();
         }
 
 
@@ -60,6 +71,11 @@ public class RitualUpdate extends ClientBoundPacketHandler<RitualUpdate.Payload>
             buf.writeBlockPos(center);
             BaseDataHandler.writeString(buf, axis.getName());
             buf.writeByte(flags);
+            buf.writeBoolean(keyItemId != null);
+            if (keyItemId != null) {
+                buf.writeResourceLocation(keyItemId);
+            }
+            buf.writeByte(pedestalItemMask);
         }
 
         @Override
@@ -81,7 +97,9 @@ public class RitualUpdate extends ClientBoundPacketHandler<RitualUpdate.Payload>
                     (flags & ACTIVE_FLAG) != 0,
                     (flags & WILL_ACTIVATE_FLAG) != 0,
                     client.level,
-                    null
+                    null,
+                    keyItemId == null ? null : BuiltInRegistries.ITEM.get(keyItemId),
+                    pedestalItemMask
             );
         }
     }

@@ -31,6 +31,7 @@ import net.minecraft.data.models.model.ModelTemplate;
 import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
@@ -61,6 +62,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class EternalPedestal extends PedestalBlock implements BehaviourStone, BlockModelProvider {
     public static final BooleanProperty ACTIVATED = EndBlockProperties.ACTIVE;
+    private static final java.util.Map<Level, java.util.Map<BlockPos, Long>> CHARGE_PARTICLE_TICKS =
+            new java.util.WeakHashMap<>();
 
     public EternalPedestal() {
         super(EndBlocks.FLAVOLITE_RUNED_ETERNAL);
@@ -75,6 +78,9 @@ public class EternalPedestal extends PedestalBlock implements BehaviourStone, Bl
             if (pedestal.isEmpty()) {
                 if (pedestal.hasRitual()) {
                     EternalRitual ritual = pedestal.getRitual();
+                    if (ritual.willActivate()) {
+                        ritual.cancelActivation();
+                    }
                     if (ritual.isActive()) {
                         if (ritual.getWorld() == null) ritual.setWorld(sourceLevel);
                         ResourceLocation targetWorld = ritual.getTargetWorldId();
@@ -110,6 +116,13 @@ public class EternalPedestal extends PedestalBlock implements BehaviourStone, Bl
                     }
                 }
             }
+        }
+    }
+
+    @Override
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (level.getBlockEntity(pos) instanceof EternalPedestalEntity pedestal && pedestal.hasRitual()) {
+            pedestal.getRitual().finishActivation();
         }
     }
 
@@ -212,6 +225,32 @@ public class EternalPedestal extends PedestalBlock implements BehaviourStone, Bl
     }
 
     @OnlyIn(Dist.CLIENT)
+    private void dispatchChargingParticles(Level level, BlockPos blockPos, RandomSource random) {
+        if (!(level.getBlockEntity(blockPos) instanceof EternalPedestalEntity source) || !source.hasRitual()) return;
+        EternalRitual ritual = source.getRitual();
+        if (ritual == null || ritual.getCenter() == null || !ritual.willActivate()) return;
+        BlockPos center = ritual.getCenter();
+        if (level.getBlockState(center).is(EndBlocks.END_PORTAL_BLOCK)) return;
+
+        long gameTime = level.getGameTime();
+        java.util.Map<BlockPos, Long> levelTicks = CHARGE_PARTICLE_TICKS.computeIfAbsent(
+                level,
+                ignored -> new java.util.HashMap<>()
+        );
+        Long lastTick = levelTicks.put(center.immutable(), gameTime);
+        if (lastTick != null && lastTick.longValue() == gameTime) return;
+
+        Direction moveX = ritual.getAxis() == Direction.Axis.X ? Direction.EAST : Direction.SOUTH;
+        Direction moveY = ritual.getAxis() == Direction.Axis.X ? Direction.NORTH : Direction.EAST;
+        for (java.awt.Point offset : EternalRitual.pedestalOffsets()) {
+            BlockPos pedestalPos = center.relative(moveX, offset.x).relative(moveY, offset.y);
+            if (level.getBlockEntity(pedestalPos) instanceof EternalPedestalEntity pedestal) {
+                pedestal.linkRitual(ritual);
+                dispatchParticles(level, pedestalPos, random);
+            }
+        }
+    }
+
     private void dispatchParticles(Level level, BlockPos blockPos, RandomSource random) {
         if (level instanceof ClientLevelAccess clientLevel) {
             if (level.getBlockEntity(blockPos) instanceof EternalPedestalEntity pedestal
@@ -222,7 +261,8 @@ public class EternalPedestal extends PedestalBlock implements BehaviourStone, Bl
                     EternalRitual ritual = pedestal.getRitual();
                     if (ritual != null
                             && ritual.getCenter() != null
-                            && (ritual.isActive() || ritual.willActivate())
+                            && ritual.willActivate()
+                            && !level.getBlockState(ritual.getCenter()).is(EndBlocks.END_PORTAL_BLOCK)
                     ) {
                         final boolean powerUp = ritual.willActivate();
                         final boolean inX = ritual.getAxis() == Direction.Axis.X;
@@ -298,7 +338,7 @@ public class EternalPedestal extends PedestalBlock implements BehaviourStone, Bl
             @NotNull RandomSource randomSource
     ) {
         super.animateTick(blockState, level, blockPos, randomSource);
-        dispatchParticles(level, blockPos, randomSource);
+        dispatchChargingParticles(level, blockPos, randomSource);
         ClientHooks.tickVision(level, blockPos, randomSource);
     }
 

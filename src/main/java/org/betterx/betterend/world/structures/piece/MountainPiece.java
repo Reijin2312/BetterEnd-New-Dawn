@@ -130,6 +130,7 @@ public abstract class MountainPiece extends BasePiece {
 
     protected float getHeightClamp(WorldGenLevel world, int radius, int posX, int posZ) {
         MutableBlockPos mut = new MutableBlockPos();
+        mut.setY(center.getY());
         float height = 0;
         float max = 0;
         for (int x = -radius; x <= radius; x++) {
