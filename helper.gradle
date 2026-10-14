@@ -71,11 +71,12 @@ try {
 
 def getDependencyInfo = { dep ->
     def info = modDependencies[dep]
-    if (info == null) return null
+    if (info == null) return [projectId: dep, fileId: null, modrinthId: dep, curseforgeSlug: dep]
     return [
             projectId: info.projectId,
             fileId   : info.fileId,
-            modrinthId: info.modrinthId
+            modrinthId: info.modrinthId,
+            curseforgeSlug: dep
     ]
 }
 
@@ -133,13 +134,13 @@ if (curseforgeProjectId) {
                 requiredDependencies.each { dep ->
                     def info = getDependencyInfo(dep)
                     if (info?.projectId != null) {
-                        requiredDependency(dep)
+                        requiredDependency(info.curseforgeSlug ?: dep)
                     }
                 }
                 optionalDependencies.each { dep ->
                     def info = getDependencyInfo(dep)
                     if (info?.projectId != null) {
-                        optionalDependency(dep)
+                        optionalDependency(info.curseforgeSlug ?: dep)
                     }
                 }
             }
