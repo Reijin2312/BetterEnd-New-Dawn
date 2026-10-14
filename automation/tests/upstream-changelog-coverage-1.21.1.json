@@ -1,0 +1,43 @@
+{
+  "minecraft": "1.21.1",
+  "scope": "Complete semantic diff of upstream fixes backported to BetterEnd and BetterNether",
+  "projects": {
+    "BetterEnd": [
+      { "id": "eternal-portal-bounded-search", "coverage": ["static", "dedicated-server"] },
+      { "id": "plant-scatter-thread-safety", "coverage": ["static", "dedicated-server"] },
+      { "id": "eternal-ritual-null-center", "coverage": ["gametest", "static"] },
+      { "id": "eternal-portal-id-bounds", "coverage": ["gametest", "static"] },
+      { "id": "locale-stable-registry-ids", "coverage": ["static"] },
+      { "id": "end-path-restores-original-terrain", "coverage": ["gametest", "static"] },
+      { "id": "late-pedestal-block-entity", "coverage": ["gametest", "static"] },
+      { "id": "lacugrove-endstone-dust-soil", "coverage": ["gametest", "static"] },
+      { "id": "mossy-glowshroom-pallidium-sangnum-soils", "coverage": ["static"] },
+      { "id": "umbrella-cluster-natural-refill", "coverage": ["gametest", "static"] },
+      { "id": "sulphur-crystal-all-age-drops", "coverage": ["gametest", "static"] },
+      { "id": "waterlogged-worldgen-blocks", "coverage": ["gametest", "static"] },
+      { "id": "food-furnace-recipes", "coverage": ["gametest", "static"] },
+      { "id": "menger-sponge-properties", "coverage": ["gametest"] },
+      { "id": "structure-piece-reload-stability", "coverage": ["static", "dedicated-server"] },
+      { "id": "structure-replacement-removes-stale-block-entities", "coverage": ["static", "dedicated-server"] },
+      { "id": "bounded-crashed-ship-lotus-geyser-reads", "coverage": ["static", "dedicated-server"] },
+      { "id": "respawn-obelisk-sound-position", "coverage": ["static"] },
+      { "id": "configurable-guidebook-reward", "coverage": ["static"] },
+      { "id": "terminite-thallasium-bars-and-chains-tags", "coverage": ["static"] },
+      { "id": "backport-translations", "coverage": ["static"] }
+    ],
+    "BetterNether": [
+      { "id": "corrected-block-loot-tables", "coverage": ["gametest", "static"] },
+      { "id": "corrected-vanilla-and-mod-tags", "coverage": ["gametest", "static"] },
+      { "id": "vanilla-like-sapling-bonemeal", "coverage": ["static"] },
+      { "id": "support-sensitive-plants", "coverage": ["gametest", "static"] },
+      { "id": "pig-statue-respawn", "coverage": ["static"] },
+      { "id": "rubeus-leaf-decay", "coverage": ["gametest", "static"] },
+      { "id": "legacy-firefly-color-migration", "coverage": ["static"] },
+      { "id": "ruby-fire-missing-holder", "coverage": ["static"] },
+      { "id": "feather-fern-models", "coverage": ["static"] },
+      { "id": "nether-city-structure-conflicts", "coverage": ["static", "dedicated-server"] },
+      { "id": "features-and-large-trees-avoid-cities", "coverage": ["static", "dedicated-server"] },
+      { "id": "backport-translations", "coverage": ["static"] }
+    ]
+  }
+}
