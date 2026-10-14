@@ -44,9 +44,10 @@ public class BetterEndClient {
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
-            RitualUpdate.registerClientProcessor((center, axis, active, willActivate, client) ->
+            RitualUpdate.registerClientProcessor((center, axis, active, willActivate, clientKeyItem, pedestalItemMask, client) ->
                     EternalRitual.updateActiveStateOnPedestals(
-                            center, axis, active, willActivate, ((Minecraft) client).level, null
+                            center, axis, active, willActivate, ((Minecraft) client).level, null,
+                            clientKeyItem, pedestalItemMask
                     )
             );
             EndModelProviders.register();
