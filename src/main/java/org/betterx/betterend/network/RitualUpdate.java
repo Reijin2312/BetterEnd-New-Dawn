@@ -8,21 +8,32 @@ import org.betterx.betterend.rituals.EternalRitual;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.Item;
 
 import de.ambertation.wunderlib.network.PacketSender;
 
 public class RitualUpdate extends ClientBoundPacketHandler<RitualUpdate.Payload> {
     public static final Identifier CHANNEL = BetterEnd.C.mk("ritual_update");
     public static final RitualUpdate INSTANCE = new RitualUpdate();
-    private static ClientProcessor clientProcessor = (center, axis, active, willActivate, client) -> {};
+    private static ClientProcessor clientProcessor =
+            (center, axis, active, willActivate, clientKeyItem, pedestalItemMask, client) -> {};
 
     @FunctionalInterface
     public interface ClientProcessor {
-        void process(BlockPos center, Direction.Axis axis, boolean active, boolean willActivate, Object client);
+        void process(
+                BlockPos center,
+                Direction.Axis axis,
+                boolean active,
+                boolean willActivate,
+                Item clientKeyItem,
+                int pedestalItemMask,
+                Object client
+        );
     }
 
     public static void registerClientProcessor(ClientProcessor processor) {
@@ -40,6 +51,8 @@ public class RitualUpdate extends ClientBoundPacketHandler<RitualUpdate.Payload>
         byte flags;
         BlockPos center;
         Direction.Axis axis;
+        Identifier keyItemId;
+        int pedestalItemMask;
 
         public Payload(EternalRitual ritual) {
             super(INSTANCE);
@@ -52,6 +65,11 @@ public class RitualUpdate extends ClientBoundPacketHandler<RitualUpdate.Payload>
             if (ritual.willActivate()) {
                 this.flags |= WILL_ACTIVATE_FLAG;
             }
+            Item keyItem = ritual.getKeyItem();
+            if (keyItem != null) {
+                this.keyItemId = BuiltInRegistries.ITEM.getKey(keyItem);
+            }
+            this.pedestalItemMask = ritual.getPedestalItemMask();
         }
 
         public Payload(RegistryFriendlyByteBuf buf) {
@@ -59,6 +77,8 @@ public class RitualUpdate extends ClientBoundPacketHandler<RitualUpdate.Payload>
             center = buf.readBlockPos();
             axis = Direction.Axis.byName(BaseDataHandler.readString(buf));
             flags = buf.readByte();
+            keyItemId = buf.readBoolean() ? buf.readIdentifier() : null;
+            pedestalItemMask = buf.readUnsignedByte();
         }
 
 
@@ -67,6 +87,11 @@ public class RitualUpdate extends ClientBoundPacketHandler<RitualUpdate.Payload>
             buf.writeBlockPos(center);
             BaseDataHandler.writeString(buf, axis.getName());
             buf.writeByte(flags);
+            buf.writeBoolean(keyItemId != null);
+            if (keyItemId != null) {
+                buf.writeIdentifier(keyItemId);
+            }
+            buf.writeByte(pedestalItemMask);
         }
 
         @Override
@@ -86,6 +111,8 @@ public class RitualUpdate extends ClientBoundPacketHandler<RitualUpdate.Payload>
                     axis,
                     (flags & ACTIVE_FLAG) != 0,
                     (flags & WILL_ACTIVATE_FLAG) != 0,
+                    keyItemId == null ? null : BuiltInRegistries.ITEM.getValue(keyItemId),
+                    pedestalItemMask,
                     client
             );
         }
