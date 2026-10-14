@@ -274,4 +274,3 @@ public final class BetterEndGameTests {
         return Identifier.fromNamespaceAndPath("betterend", path);
     }
 }
-
