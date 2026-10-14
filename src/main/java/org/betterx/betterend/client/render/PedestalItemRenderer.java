@@ -68,10 +68,9 @@ public class PedestalItemRenderer<T extends PedestalBlockEntity> implements Bloc
         renderInfusionHint(world, blockEntity.getBlockPos(), tickDelta, matrices, vertexConsumers);
         renderEternalHint(world, blockEntity, tickDelta, matrices, vertexConsumers, light);
 
-        if (blockEntity.isEmpty()) return;
-
         BlockState state = world.getBlockState(blockEntity.getBlockPos());
         if (!(state.getBlock() instanceof PedestalBlock)) return;
+        if (!state.getValue(PedestalBlock.HAS_ITEM) || blockEntity.isEmpty()) return;
 
         ItemStack activeItem = blockEntity.getItem(0);
 

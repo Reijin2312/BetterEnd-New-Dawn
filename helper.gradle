@@ -94,7 +94,7 @@ modrinth {
     def slurper = new groovy.json.JsonSlurper()
     token = modrinth_token
     //modrinth_id
-    projectId = findProperty('modrinth_id') ?: project.archives_base_name
+    projectId = findProperty('modrinth_project_id') ?: findProperty('modrinth_id') ?: project.archives_base_name
     versionNumber = project.mod_version
     versionType = project.release_channel
     uploadFile = remapJar
