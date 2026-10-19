@@ -124,8 +124,15 @@ public class ColoredMaterial implements MaterialManager.Material {
         return colors.get(color);
     }
 
+    private static final DyeColor[] VANILLA_COLORS = {
+            DyeColor.WHITE, DyeColor.ORANGE, DyeColor.MAGENTA, DyeColor.LIGHT_BLUE,
+            DyeColor.YELLOW, DyeColor.LIME, DyeColor.PINK, DyeColor.GRAY,
+            DyeColor.LIGHT_GRAY, DyeColor.CYAN, DyeColor.PURPLE, DyeColor.BLUE,
+            DyeColor.BROWN, DyeColor.GREEN, DyeColor.RED, DyeColor.BLACK
+    };
+
     static {
-        for (DyeColor color : DyeColor.values()) {
+        for (DyeColor color : VANILLA_COLORS) {
             int colorId = color.getId();
             COLORS.put(colorId, color.getName());
             DYES.put(colorId, resolveDyeItem(color));

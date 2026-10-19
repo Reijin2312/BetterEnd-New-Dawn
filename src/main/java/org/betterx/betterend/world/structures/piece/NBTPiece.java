@@ -93,7 +93,7 @@ public class NBTPiece extends BasePiece {
                 blockBox.minX(),
                 this.boundingBox.minY(),
                 blockBox.minZ()
-        ), new Vec3i(blockBox.maxX(), this.boundingBox.maxX(), blockBox.maxZ()));
+        ), new Vec3i(blockBox.maxX(), this.boundingBox.maxY(), blockBox.maxZ()));
         StructurePlaceSettings placementData = new StructurePlaceSettings().setRotation(rotation)
                                                                            .setMirror(mirror)
                                                                            .setBoundingBox(bounds);

@@ -112,6 +112,7 @@ public class LucerniaFeature extends DefaultFeature {
                                              .setValue(BlockProperties.TRIPLE_SHAPE, TripleShape.BOTTOM);
         BlockState outer = EndBlocks.LUCERNIA_OUTER_LEAVES.defaultBlockState();
 
+        final Direction[] directions = DIRECTIONS.clone();
         List<BlockPos> support = Lists.newArrayList();
         sphere.addPostProcess((info) -> {
             if (natural && random.nextInt(6) == 0 && info.getStateDown().isAir()) {
@@ -128,8 +129,8 @@ public class LucerniaFeature extends DefaultFeature {
                 info.setState(EndBlocks.LUCERNIA.getBark().defaultBlockState());
             }
 
-            MHelper.shuffle(DIRECTIONS, random);
-            for (Direction d : DIRECTIONS) {
+            MHelper.shuffle(directions, random);
+            for (Direction d : directions) {
                 if (info.getState(d).isAir()) {
                     info.setBlockPos(info.getPos().relative(d), outer.setValue(FurBlock.FACING, d));
                 }

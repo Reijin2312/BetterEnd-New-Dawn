@@ -177,6 +177,7 @@ public class GeyserFeature extends DefaultFeature {
             mut.setY(mut.getY() + 1);
         }
 
+        final Direction[] horizontal = HORIZONTAL.clone();
         for (int i = 0; i < 150; i++) {
             mut.set(pos)
                .move(
@@ -196,8 +197,8 @@ public class GeyserFeature extends DefaultFeature {
                                                                   .is(EndBlocks.HYDROTHERMAL_VENT)) {
                     for (int j = 0; j <= dist; j++) {
                         BlocksHelper.setWithoutUpdate(world, mut, EndBlocks.SULPHURIC_ROCK.stone);
-                        MHelper.shuffle(HORIZONTAL, random);
-                        for (Direction dir : HORIZONTAL) {
+                        MHelper.shuffle(horizontal, random);
+                        for (Direction dir : horizontal) {
                             BlockPos p = mut.relative(dir);
                             if (random.nextBoolean() && world.getBlockState(p).is(Blocks.WATER)) {
                                 BlocksHelper.setWithoutUpdate(
