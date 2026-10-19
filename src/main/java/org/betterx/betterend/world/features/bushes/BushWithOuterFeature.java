@@ -53,6 +53,7 @@ public class BushWithOuterFeature extends Feature<BushWithOuterFeatureConfig> {
         // overhangs the water still generates and gets its submerged leaves waterlogged.
         if (!world.getFluidState(pos).isEmpty()) return false;
 
+        final Direction[] directions = DIRECTIONS.clone();
         float radius = MHelper.randRange(1.8F, 3.5F, random);
         OpenSimplexNoise noise = new OpenSimplexNoise(random.nextInt());
         SDF sphere = new SDFSphere().setRadius(radius).setBlock(leaves);
@@ -78,8 +79,8 @@ public class BushWithOuterFeature extends Feature<BushWithOuterFeatureConfig> {
             return info.getState();
         }).addPostProcess((info) -> {
             if (info.getState().getBlock() instanceof LeavesBlock) {
-                MHelper.shuffle(DIRECTIONS, random);
-                for (Direction dir : DIRECTIONS) {
+                MHelper.shuffle(directions, random);
+                for (Direction dir : directions) {
                     if (info.getState(dir).isAir()) {
                         info.setBlockPos(
                                 info.getPos().relative(dir),

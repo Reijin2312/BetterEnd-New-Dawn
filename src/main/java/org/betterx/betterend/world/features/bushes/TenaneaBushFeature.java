@@ -64,6 +64,7 @@ public class TenaneaBushFeature extends DefaultFeature {
         sphere = new SDFSubtraction().setSourceA(sphere)
                                      .setSourceB(new SDFTranslate().setTranslate(0, -radius, 0).setSource(sphere));
         sphere.setReplaceFunction(REPLACE);
+        final Direction[] directions = DIRECTIONS.clone();
         List<BlockPos> support = Lists.newArrayList();
         sphere.addPostProcess((info) -> {
             if (info.getState().getBlock() instanceof LeavesBlock) {
@@ -74,8 +75,8 @@ public class TenaneaBushFeature extends DefaultFeature {
                         support.add(d);
                     }
 
-                    MHelper.shuffle(DIRECTIONS, random);
-                    for (Direction d : DIRECTIONS) {
+                    MHelper.shuffle(directions, random);
+                    for (Direction d : directions) {
                         if (info.getState(d).isAir()) {
                             info.setBlockPos(
                                     info.getPos().relative(d),
