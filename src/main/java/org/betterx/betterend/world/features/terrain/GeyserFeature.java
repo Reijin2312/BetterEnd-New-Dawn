@@ -194,6 +194,7 @@ public class GeyserFeature extends DefaultFeature {
         // unlike the SDF sculpting above, nothing here was clamped to the write zone. distRaw/dist are
         // computed from the true (unclamped) offset so the cluster's own math stays unchanged; only the
         // actual world-touching position is clamped, same behaviour-neutral approach as the SDF calls.
+        final Direction[] horizontal = HORIZONTAL.clone();
         for (int i = 0; i < 150; i++) {
             int dx = MHelper.floor(random.nextGaussian() * 4 + 0.5);
             int dz = MHelper.floor(random.nextGaussian() * 4 + 0.5);
@@ -210,8 +211,8 @@ public class GeyserFeature extends DefaultFeature {
                                                                   .is(EndBlocks.HYDROTHERMAL_VENT)) {
                     for (int j = 0; j <= dist; j++) {
                         BlocksHelper.setWithoutUpdate(world, mut, EndBlocks.SULPHURIC_ROCK.stone);
-                        MHelper.shuffle(HORIZONTAL, random);
-                        for (Direction dir : HORIZONTAL) {
+                        MHelper.shuffle(horizontal, random);
+                        for (Direction dir : horizontal) {
                             // mut's x/z is already zone-clamped, but a further 1-block relative(dir)
                             // peek can still step past the zone right at its edge - clamp this too.
                             BlockPos p = new BlockPos(
