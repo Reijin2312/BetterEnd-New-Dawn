@@ -256,10 +256,11 @@ public class SulphuricCavePiece extends BasePiece {
             return;
         }
 
+        final Direction[] horizontal = HORIZONTAL.clone();
         for (int j = 0; j <= dist; j++) {
             chunk.setBlockState(mut, EndBlocks.SULPHURIC_ROCK.stone.defaultBlockState(), 3);
-            MHelper.shuffle(HORIZONTAL, random);
-            for (Direction dir : HORIZONTAL) {
+            MHelper.shuffle(horizontal, random);
+            for (Direction dir : horizontal) {
                 BlockPos p = mut.relative(dir);
                 if (random.nextBoolean() && chunk.getBlockState(p).is(Blocks.WATER)) {
                     chunk.setBlockState(

@@ -137,6 +137,7 @@ public class TenaneaFeature extends DefaultFeature {
                                                      .setValue(BlockProperties.TRIPLE_SHAPE, TripleShape.BOTTOM);
         BlockState outer = EndBlocks.TENANEA_OUTER_LEAVES.defaultBlockState();
 
+        final Direction[] directions = DIRECTIONS.clone();
         List<BlockPos> support = Lists.newArrayList();
         sphere.addPostProcess((info) -> {
             if (random.nextInt(6) == 0 && info.getStateDown().isAir()) {
@@ -153,8 +154,8 @@ public class TenaneaFeature extends DefaultFeature {
                 info.setState(EndBlocks.TENANEA.getBark().defaultBlockState());
             }
 
-            MHelper.shuffle(DIRECTIONS, random);
-            for (Direction d : DIRECTIONS) {
+            MHelper.shuffle(directions, random);
+            for (Direction d : directions) {
                 if (info.getState(d).isAir()) {
                     info.setBlockPos(info.getPos().relative(d), outer.setValue(FurBlock.FACING, d));
                 }
