@@ -55,7 +55,7 @@ public class CrashedShipFeature extends NBTFeature<NBTFeatureConfig> {
     @Override
     protected boolean canSpawn(WorldGenLevel world, BlockPos pos, RandomSource random) {
         long x = pos.getX() >> 4;
-        long z = pos.getX() >> 4;
+        long z = pos.getZ() >> 4;
         if (x * x + z * z < 3600) {
             return false;
         }
