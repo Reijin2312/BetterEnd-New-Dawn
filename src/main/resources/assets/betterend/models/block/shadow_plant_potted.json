@@ -1,6 +1,6 @@
 {
-    "parent": "block/cross",
+    "parent": "betterend:block/potted_cross",
     "textures": {
-        "cross": "betterend:block/shadow_plant_potted"
+        "plant": "betterend:block/shadow_plant_potted"
     }
 }
