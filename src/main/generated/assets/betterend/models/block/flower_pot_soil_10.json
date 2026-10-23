@@ -1,0 +1,33 @@
+{
+  "__comment": "Designed by Paulevs with Cubik Studio - https://cubik.studio",
+  "elements": [
+    {
+      "__comment": "PlaneY1",
+      "faces": {
+        "up": {
+          "texture": "#texture",
+          "uv": [
+            5,
+            5,
+            11,
+            11
+          ]
+        }
+      },
+      "from": [
+        5,
+        7.5,
+        5
+      ],
+      "to": [
+        11,
+        7.501,
+        11
+      ]
+    }
+  ],
+  "textures": {
+    "particle": "betterend:block/cave_moss_top",
+    "texture": "betterend:block/cave_moss_top"
+  }
+}
