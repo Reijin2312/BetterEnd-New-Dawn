@@ -5,7 +5,7 @@
 		"stem": "betterend:block/%stem%",
 		"leaves": "betterend:block/%leaves%"
 	},
-	"elements": [ 	 
+	"elements": [
 		{
 			"__comment": "Box1",
 			"from": [ 3, 9.5, 3 ],
