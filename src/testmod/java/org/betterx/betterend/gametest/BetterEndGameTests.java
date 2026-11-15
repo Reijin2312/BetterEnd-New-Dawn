@@ -23,12 +23,40 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 import java.util.List;
 
 public final class BetterEndGameTests {
+    @GameTest
+    public void armorKeepsConfiguredDurability(GameTestHelper helper) {
+        assertMaxDamage(helper, EndBlocks.THALLASIUM.helmet, 165);
+        assertMaxDamage(helper, EndBlocks.THALLASIUM.chestplate, 240);
+        assertMaxDamage(helper, EndBlocks.THALLASIUM.leggings, 225);
+        assertMaxDamage(helper, EndBlocks.THALLASIUM.boots, 195);
+
+        assertMaxDamage(helper, EndBlocks.TERMINITE.helmet, 363);
+        assertMaxDamage(helper, EndBlocks.TERMINITE.chestplate, 528);
+        assertMaxDamage(helper, EndBlocks.TERMINITE.leggings, 495);
+        assertMaxDamage(helper, EndBlocks.TERMINITE.boots, 429);
+
+        assertMaxDamage(helper, EndItems.CRYSTALITE_HELMET, 418);
+        assertMaxDamage(helper, EndItems.CRYSTALITE_CHESTPLATE, 608);
+        assertMaxDamage(helper, EndItems.CRYSTALITE_LEGGINGS, 570);
+        assertMaxDamage(helper, EndItems.CRYSTALITE_BOOTS, 494);
+
+        assertMaxDamage(helper, EndItems.AETERNIUM_HELMET, 440);
+        assertMaxDamage(helper, EndItems.AETERNIUM_CHESTPLATE, 640);
+        assertMaxDamage(helper, EndItems.AETERNIUM_LEGGINGS, 600);
+        assertMaxDamage(helper, EndItems.AETERNIUM_BOOTS, 520);
+
+        assertMaxDamage(helper, EndItems.ARMORED_ELYTRA, 900);
+        assertMaxDamage(helper, EndItems.CRYSTALITE_ELYTRA, 650);
+        helper.succeed();
+    }
+
     @GameTest
     public void pathsRestoreTheirEndTerrain(GameTestHelper helper) {
         BlockPos pos = new BlockPos(1, 1, 1);
@@ -167,6 +195,14 @@ public final class BetterEndGameTests {
         helper.assertTrue(state.getSoundType() == Blocks.SPONGE.defaultBlockState().getSoundType(),
                 "Menger Sponge does not use sponge sounds");
         helper.succeed();
+    }
+
+    private static void assertMaxDamage(GameTestHelper helper, Item item, int expected) {
+        int actual = new ItemStack(item).getMaxDamage();
+        helper.assertTrue(
+                actual == expected,
+                BuiltInRegistries.ITEM.getKey(item) + " has max damage " + actual + ", expected " + expected
+        );
     }
 
     private static void assertSurvivesOn(GameTestHelper helper, String saplingId, String soilId, BlockPos pos) {
