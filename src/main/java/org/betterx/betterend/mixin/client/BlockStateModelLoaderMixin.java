@@ -33,7 +33,7 @@ public abstract class BlockStateModelLoaderMixin {
      * but substitute BetterEnd's resource stack before definitions are parsed.
      */
     @Redirect(
-            method = {"lambda$loadBlockStates$0", "lambda$loadBlockStates$1"},
+            method = {"lambda$loadBlockStates$0", "lambda$loadBlockStates$1", "method_65717"},
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/resources/FileToIdConverter;listMatchingResourceStacks(Lnet/minecraft/server/packs/resources/ResourceManager;)Ljava/util/Map;"
