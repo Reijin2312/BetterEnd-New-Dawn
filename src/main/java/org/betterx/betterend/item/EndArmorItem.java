@@ -5,21 +5,28 @@ import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndItems;
 import org.betterx.wover.complex.api.equipment.ArmorSlot;
 import org.betterx.wover.complex.api.equipment.ArmorTier;
+import org.betterx.wover.item.api.ItemTagProvider;
+import org.betterx.wover.tag.api.event.context.ItemTagBootstrapContext;
 
 import net.minecraft.resources.Identifier;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.equipment.ArmorMaterial;
+import net.minecraft.world.item.equipment.ArmorType;
 
-public class EndArmorItem extends Item implements ItemModelProvider {
+public class EndArmorItem extends Item implements ItemModelProvider, ItemTagProvider {
     public static final Identifier BASE_BLINDNESS_RESISTANCE = BetterEnd.C.mk("base_blindness_resistance");
     public static final Identifier BASE_KNOCKBACK_RESISTANCE = BetterEnd.C.mk("base_knockback_resistance");
     public static final Identifier MAX_HEALTH_BOOST = BetterEnd.C.mk("max_health_boost");
     public static final Identifier TOUGHNESS_BOOST = BetterEnd.C.mk("toughness_boost");
     public static final Identifier ARMOR_BOOST = BetterEnd.C.mk("armor_boost");
+    private final ArmorType armorType;
 
     public static Properties createDefaultEndArmorSettings(ArmorSlot slot, ArmorTier tier) {
         var values = tier.getValues(slot);
@@ -129,6 +136,59 @@ public class EndArmorItem extends Item implements ItemModelProvider {
     }
 
     public EndArmorItem(ArmorTier tier, ArmorSlot slot, Properties settings) {
-        super(settings.humanoidArmor(tier.armorMaterial, slot.armorType));
+        this(tier, slot, settings, null);
+    }
+
+    protected EndArmorItem(
+            ArmorTier tier,
+            ArmorSlot slot,
+            Properties settings,
+            ItemAttributeModifiers customAttributes
+    ) {
+        this(
+                tier.armorMaterial,
+                slot.armorType,
+                settings,
+                slot.armorType.getDurability(tier.getValues(slot).durability()),
+                customAttributes
+        );
+    }
+
+    protected EndArmorItem(
+            ArmorMaterial material,
+            ArmorType type,
+            Properties settings,
+            int durability,
+            ItemAttributeModifiers customAttributes
+    ) {
+        super(applyArmorSettings(settings, material, type, durability, customAttributes));
+        this.armorType = type;
+    }
+
+    private static Properties applyArmorSettings(
+            Properties settings,
+            ArmorMaterial material,
+            ArmorType type,
+            int durability,
+            ItemAttributeModifiers customAttributes
+    ) {
+        settings.humanoidArmor(material, type).durability(durability);
+        if (customAttributes != null) {
+            settings.attributes(customAttributes);
+        }
+        return settings;
+    }
+
+    @Override
+    public void registerItemTags(Identifier location, ItemTagBootstrapContext context) {
+        if (armorType.getSlot() == EquipmentSlot.HEAD) {
+            context.add(this, ItemTags.HEAD_ARMOR);
+        } else if (armorType.getSlot() == EquipmentSlot.CHEST) {
+            context.add(this, ItemTags.CHEST_ARMOR);
+        } else if (armorType.getSlot() == EquipmentSlot.LEGS) {
+            context.add(this, ItemTags.LEG_ARMOR);
+        } else if (armorType.getSlot() == EquipmentSlot.FEET) {
+            context.add(this, ItemTags.FOOT_ARMOR);
+        }
     }
 }
