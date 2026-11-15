@@ -1,6 +1,5 @@
 package org.betterx.betterend.item;
 
-import org.betterx.bclib.items.BaseArmorItem;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.interfaces.BetterEndElytra;
 import org.betterx.betterend.interfaces.MultiModelItem;
@@ -18,13 +17,14 @@ import net.minecraft.util.Unit;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.EquipmentAsset;
 import net.minecraft.world.item.equipment.EquipmentAssets;
 import net.minecraft.world.item.equipment.ArmorType;
 
 
-public class ArmoredElytra extends BaseArmorItem implements MultiModelItem, BetterEndElytra, ItemTagProvider {
+public class ArmoredElytra extends EndArmorItem implements MultiModelItem, BetterEndElytra, ItemTagProvider {
     private final Identifier wingTexture;
     private final Item repairItem;
     private final double movementFactor;
@@ -49,12 +49,10 @@ public class ArmoredElytra extends BaseArmorItem implements MultiModelItem, Bett
         );
     }
 
-    private static Properties defaultSettings(
+    private static ItemAttributeModifiers defaultAttributes(
             ArmorTier material,
-            int durability,
             float defenseDivider,
-            float toughnessDivider,
-            boolean fireproof
+            float toughnessDivider
     ) {
         final float defense = material.armorMaterial
                 .defense()
@@ -63,16 +61,26 @@ public class ArmoredElytra extends BaseArmorItem implements MultiModelItem, Bett
         final float toughness = material.armorMaterial
                 .toughness() / toughnessDivider;
 
+        return EndArmorItem.startAttributeBuilder(
+                ArmorSlot.CHESTPLATE_SLOT,
+                material,
+                defense,
+                toughness,
+                0.5f
+        ).build();
+    }
+
+    private static Properties defaultSettings(
+            ArmorTier material,
+            int durability,
+            ItemAttributeModifiers attributes,
+            boolean fireproof
+    ) {
         final Properties props = EndArmorItem.createDefaultEndArmorSettings(
-                                                     ArmorSlot.CHESTPLATE_SLOT, material,
-                                                     EndArmorItem.startAttributeBuilder(
-                                                     ArmorSlot.CHESTPLATE_SLOT,
-                                                     material,
-                                                     defense, toughness, 0.5f
-                                             ).build()
-                                     ).rarity(Rarity.EPIC)
-                                     .durability(durability)
-                                     .component(DataComponents.GLIDER, Unit.INSTANCE);
+                                                     ArmorSlot.CHESTPLATE_SLOT, material, attributes
+                                             ).rarity(Rarity.EPIC)
+                                              .durability(durability)
+                                              .component(DataComponents.GLIDER, Unit.INSTANCE);
         if (fireproof) {
             props.fireResistant();
         }
@@ -89,10 +97,36 @@ public class ArmoredElytra extends BaseArmorItem implements MultiModelItem, Bett
             float toughnessDivider,
             boolean fireproof
     ) {
+        this(
+                name,
+                material,
+                repairItem,
+                durability,
+                movementFactor,
+                defenseDivider,
+                toughnessDivider,
+                fireproof,
+                defaultAttributes(material, defenseDivider, toughnessDivider)
+        );
+    }
+
+    private ArmoredElytra(
+            String name,
+            ArmorTier material,
+            Item repairItem,
+            int durability,
+            double movementFactor,
+            float defenseDivider,
+            float toughnessDivider,
+            boolean fireproof,
+            ItemAttributeModifiers attributes
+    ) {
         super(
                 getElytraArmorMaterial(material, name),
                 ArmorType.CHESTPLATE,
-                defaultSettings(material, durability, defenseDivider, toughnessDivider, fireproof)
+                defaultSettings(material, durability, attributes, fireproof),
+                durability,
+                attributes
         );
         this.wingTexture = BetterEnd.C.mk("textures/entity/" + name + ".png");
         this.repairItem = repairItem;
