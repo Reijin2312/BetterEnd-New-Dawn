@@ -49,7 +49,9 @@ public class SmaragdantCrystalFeature extends DefaultFeature {
                 }
                 if (state.is(CommonBlockTags.END_STONES) && world.getBlockState(mut.above()).isAir()) {
                     for (int j = 0; j <= dist; j++) {
-                        if (random.nextInt(8) == 0) {
+                        // Budding crystal belongs only at the base of a column. A 1/3 chance per
+                        // column preserves roughly the old overall amount without misplaced blocks.
+                        if (j == 0 && random.nextInt(3) == 0) {
                             BlocksHelper.setWithoutUpdate(world, mut, buddingCrystal);
                             for (Direction k : BlocksHelper.HORIZONTAL) {
                                 BlockPos sidePos = mut.relative(k);

@@ -31,6 +31,38 @@ import java.util.List;
 
 public final class BetterEndGameTests {
     @GameTest
+    public void novemberStructuresAndWorldgenTuningAreLoaded(GameTestHelper helper) {
+        var structures = helper.getLevel().registryAccess().lookupOrThrow(Registries.STRUCTURE);
+        var structureSets = helper.getLevel().registryAccess().lookupOrThrow(Registries.STRUCTURE_SET);
+        for (String path : List.of(
+                "crashed_ship", "blossoming_spires_house", "blossoming_spires_ruins",
+                "chorus_forest_fallen_tree", "chorus_forest_ruins", "chorus_forest_stump",
+                "foggy_mushroomland_tree_house", "lantern_woods_cabin",
+                "shadow_forest_small_mansion", "umbrella_jungle_house_1"
+        )) {
+            Identifier id = id(path);
+            helper.assertTrue(
+                    structures.get(ResourceKey.create(Registries.STRUCTURE, id)).isPresent(),
+                    "Missing runtime structure betterend:" + path
+            );
+            helper.assertTrue(
+                    structureSets.get(ResourceKey.create(Registries.STRUCTURE_SET, id)).isPresent(),
+                    "Missing runtime structure set betterend:" + path
+            );
+        }
+        try {
+            var rarity = org.betterx.betterend.world.features.terrain.BigAuroraCrystalFeature.class
+                    .getDeclaredField("RARITY_DIVISOR");
+            rarity.setAccessible(true);
+            helper.assertTrue(rarity.getInt(null) == 7, "Aurora crystal rarity is not the upstream 1-in-7 value");
+        } catch (ReflectiveOperationException exception) {
+            helper.fail("Could not verify Aurora crystal rarity: " + exception);
+            return;
+        }
+        helper.succeed();
+    }
+
+    @GameTest
     public void armorKeepsConfiguredDurability(GameTestHelper helper) {
         assertMaxDamage(helper, EndBlocks.THALLASIUM.helmet, 165);
         assertMaxDamage(helper, EndBlocks.THALLASIUM.chestplate, 240);
