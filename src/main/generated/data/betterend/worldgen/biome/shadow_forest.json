@@ -1,107 +1,135 @@
 {
-  "attributes": {
-    "minecraft:audio/ambient_sounds": {
-      "loop": "betterend:betterend.ambient.chorus_forest",
-      "mood": {
-        "block_search_extent": 8,
-        "offset": 2.0,
-        "sound": "betterend:betterend.ambient.dust_wastelands",
-        "tick_delay": 6000
-      }
-    },
-    "minecraft:audio/background_music": {
-      "default": {
-        "max_delay": 2400,
-        "min_delay": 600,
-        "replace_current_music": true,
-        "sound": "betterend:betterend.music.ender_hollow"
-      }
-    },
-    "minecraft:visual/ambient_particles": [
-      {
-        "particle": {
-          "type": "minecraft:mycelium"
-        },
-        "probability": 0.01
-      }
-    ],
-    "minecraft:visual/fog_color": "#000000",
-    "minecraft:visual/sky_color": "#000000",
-    "minecraft:visual/water_fog_color": "#2a2d50"
-  },
-  "carvers": [],
-  "downfall": 0.5,
-  "effects": {
-    "foliage_color": "#2d2d2d",
-    "grass_color": "#2d2d2d",
-    "water_color": "#2a2d50"
-  },
-  "features": [
-    [
-      "betterend:round_cave",
-      "betterend:tunel_cave"
-    ],
-    [],
-    [],
-    [],
-    [
-      "minecraft:end_gateway_return",
-      "betterend:crashed_ship",
-      "betterend:shadow_forest_structures"
-    ],
-    [],
-    [
-      "betterend:violecite_layer",
-      "betterend:thallasium_ore",
-      "betterend:ender_ore"
-    ],
-    [],
-    [],
-    [
-      "betterend:dragon_tree",
-      "betterend:dragon_tree_bush",
-      "betterend:shadow_plant",
-      "betterend:murkweed",
-      "betterend:needlegrass",
-      "betterend:shadow_berry",
-      "betterend:twisted_vine",
-      "betterend:purple_polypore",
-      "betterend:tail_moss",
-      "betterend:tail_moss_wood",
-      "betterend:charnia_purple",
-      "betterend:charnia_red_rare"
-    ]
-  ],
-  "has_precipitation": false,
-  "spawn_costs": {},
-  "spawners": {
-    "ambient": [],
-    "axolotls": [],
-    "creature": [],
-    "misc": [],
-    "monster": [
-      {
-        "type": "betterend:shadow_walker",
-        "maxCount": 4,
-        "minCount": 2,
-        "weight": 80
-      },
-      {
-        "type": "minecraft:enderman",
-        "maxCount": 4,
-        "minCount": 1,
-        "weight": 3
-      },
-      {
-        "type": "minecraft:phantom",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 1
-      }
-    ],
-    "underground_water_creature": [],
-    "water_ambient": [],
-    "water_creature": []
-  },
-  "temperature": 0.5
+    "attributes":  {
+                       "minecraft:audio/ambient_sounds":  {
+                                                              "loop":  "betterend:betterend.ambient.chorus_forest",
+                                                              "mood":  {
+                                                                           "block_search_extent":  8,
+                                                                           "offset":  2.0,
+                                                                           "sound":  "betterend:betterend.ambient.dust_wastelands",
+                                                                           "tick_delay":  6000
+                                                                       }
+                                                          },
+                       "minecraft:audio/background_music":  {
+                                                                "default":  {
+                                                                                "max_delay":  2400,
+                                                                                "min_delay":  600,
+                                                                                "replace_current_music":  true,
+                                                                                "sound":  "betterend:betterend.music.ender_hollow"
+                                                                            }
+                                                            },
+                       "minecraft:visual/ambient_particles":  [
+                                                                  {
+                                                                      "particle":  {
+                                                                                       "type":  "minecraft:mycelium"
+                                                                                   },
+                                                                      "probability":  0.01
+                                                                  }
+                                                              ],
+                       "minecraft:visual/fog_color":  "#000000",
+                       "minecraft:visual/sky_color":  "#000000",
+                       "minecraft:visual/water_fog_color":  "#2a2d50"
+                   },
+    "carvers":  [
+
+                ],
+    "downfall":  0.5,
+    "effects":  {
+                    "foliage_color":  "#2d2d2d",
+                    "grass_color":  "#2d2d2d",
+                    "water_color":  "#2a2d50"
+                },
+    "features":  [
+                     [
+                         "betterend:round_cave",
+                         "betterend:tunel_cave"
+                     ],
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+                         "minecraft:end_gateway_return"
+                     ],
+                     [
+
+                     ],
+                     [
+                         "betterend:violecite_layer",
+                         "betterend:thallasium_ore",
+                         "betterend:ender_ore"
+                     ],
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+                         "betterend:dragon_tree",
+                         "betterend:dragon_tree_bush",
+                         "betterend:shadow_plant",
+                         "betterend:murkweed",
+                         "betterend:needlegrass",
+                         "betterend:shadow_berry",
+                         "betterend:twisted_vine",
+                         "betterend:purple_polypore",
+                         "betterend:tail_moss",
+                         "betterend:tail_moss_wood",
+                         "betterend:charnia_purple",
+                         "betterend:charnia_red_rare"
+                     ]
+                 ],
+    "has_precipitation":  false,
+    "spawn_costs":  {
+
+                    },
+    "spawners":  {
+                     "ambient":  [
+
+                                 ],
+                     "axolotls":  [
+
+                                  ],
+                     "creature":  [
+
+                                  ],
+                     "misc":  [
+
+                              ],
+                     "monster":  [
+                                     {
+                                         "type":  "betterend:shadow_walker",
+                                         "maxCount":  4,
+                                         "minCount":  2,
+                                         "weight":  80
+                                     },
+                                     {
+                                         "type":  "minecraft:enderman",
+                                         "maxCount":  4,
+                                         "minCount":  1,
+                                         "weight":  3
+                                     },
+                                     {
+                                         "type":  "minecraft:phantom",
+                                         "maxCount":  2,
+                                         "minCount":  1,
+                                         "weight":  1
+                                     }
+                                 ],
+                     "underground_water_creature":  [
+
+                                                    ],
+                     "water_ambient":  [
+
+                                       ],
+                     "water_creature":  [
+
+                                        ]
+                 },
+    "temperature":  0.5
 }

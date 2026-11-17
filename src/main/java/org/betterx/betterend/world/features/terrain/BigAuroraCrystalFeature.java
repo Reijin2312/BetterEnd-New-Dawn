@@ -20,9 +20,16 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import org.joml.Vector3f;
 
 public class BigAuroraCrystalFeature extends DefaultFeature {
+    // Upstream changed the old 1-in-10 placement chance to 1-in-7 (roughly 40% more common).
+    private static final int RARITY_DIVISOR = 7;
+
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
         final RandomSource random = featureConfig.random();
+        if (random.nextInt(RARITY_DIVISOR) != 0) {
+            return false;
+        }
+
         BlockPos pos = featureConfig.origin();
         final WorldGenLevel world = featureConfig.level();
         int maxY = pos.getY() + BlocksHelper.upRay(world, pos, 16);

@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.SkyRenderer;
 import net.minecraft.world.level.Level;
 import org.betterx.betterend.client.render.BetterEndSkyRenderer;
 import org.betterx.betterend.config.Configs;
+import org.betterx.bclib.util.BackgroundInfo;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -15,6 +16,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = SkyRenderer.class, priority = 1100)
 public class EndSkyRendererMixin {
+    @Unique private static final float BETTEREND_HORIZON_RED = 0.38F;
+    @Unique private static final float BETTEREND_HORIZON_GREEN = 0.13F;
+    @Unique private static final float BETTEREND_HORIZON_BLUE = 0.40F;
     @Unique private final BetterEndSkyRenderer betterend$skyRenderer = new BetterEndSkyRenderer();
 
     @Inject(method = "renderEndSky", at = @At("HEAD"), cancellable = true, remap = false)
@@ -23,8 +27,14 @@ public class EndSkyRendererMixin {
         if (!Configs.CLIENT_CONFIG.customSky.get()
                 || minecraft.level == null
                 || minecraft.level.dimension() != Level.END) {
+            BackgroundInfo.hasSkyHorizonColor = false;
             return;
         }
+
+        BackgroundInfo.skyHorizonRed = BETTEREND_HORIZON_RED;
+        BackgroundInfo.skyHorizonGreen = BETTEREND_HORIZON_GREEN;
+        BackgroundInfo.skyHorizonBlue = BETTEREND_HORIZON_BLUE;
+        BackgroundInfo.hasSkyHorizonColor = true;
 
         PoseStack poseStack = new PoseStack();
         poseStack.last().pose().set(RenderSystem.getModelViewMatrix());
