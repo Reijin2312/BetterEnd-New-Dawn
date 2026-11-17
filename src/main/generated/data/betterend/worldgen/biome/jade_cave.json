@@ -1,59 +1,89 @@
 {
-  "attributes": {
-    "minecraft:audio/ambient_sounds": {
-      "loop": "betterend:betterend.ambient.caves",
-      "mood": {
-        "block_search_extent": 8,
-        "offset": 2.0,
-        "sound": "betterend:betterend.ambient.dust_wastelands",
-        "tick_delay": 6000
-      }
-    },
-    "minecraft:audio/background_music": {
-      "default": {
-        "max_delay": 2400,
-        "min_delay": 600,
-        "replace_current_music": true,
-        "sound": "betterend:betterend.music.caves"
-      }
-    },
-    "minecraft:visual/fog_color": "#769670",
-    "minecraft:visual/sky_color": "#000000",
-    "minecraft:visual/water_fog_color": "#5fdfff"
-  },
-  "carvers": [],
-  "downfall": 0.5,
-  "effects": {
-    "water_color": "#5fdfff"
-  },
-  "features": [
-    [],
-    [],
-    [],
-    [],
-    [
-      "betterend:crashed_ship"
-    ],
-    [],
-    [
-      "betterend:thallasium_ore",
-      "betterend:ender_ore"
-    ],
-    [
-      "betterend:jade_cave_cave_populator"
-    ]
-  ],
-  "has_precipitation": false,
-  "spawn_costs": {},
-  "spawners": {
-    "ambient": [],
-    "axolotls": [],
-    "creature": [],
-    "misc": [],
-    "monster": [],
-    "underground_water_creature": [],
-    "water_ambient": [],
-    "water_creature": []
-  },
-  "temperature": 0.5
+    "attributes":  {
+                       "minecraft:audio/ambient_sounds":  {
+                                                              "loop":  "betterend:betterend.ambient.caves",
+                                                              "mood":  {
+                                                                           "block_search_extent":  8,
+                                                                           "offset":  2.0,
+                                                                           "sound":  "betterend:betterend.ambient.dust_wastelands",
+                                                                           "tick_delay":  6000
+                                                                       }
+                                                          },
+                       "minecraft:audio/background_music":  {
+                                                                "default":  {
+                                                                                "max_delay":  2400,
+                                                                                "min_delay":  600,
+                                                                                "replace_current_music":  true,
+                                                                                "sound":  "betterend:betterend.music.caves"
+                                                                            }
+                                                            },
+                       "minecraft:visual/fog_color":  "#769670",
+                       "minecraft:visual/sky_color":  "#000000",
+                       "minecraft:visual/water_fog_color":  "#5fdfff"
+                   },
+    "carvers":  [
+
+                ],
+    "downfall":  0.5,
+    "effects":  {
+                    "water_color":  "#5fdfff"
+                },
+    "features":  [
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+                         "betterend:thallasium_ore",
+                         "betterend:ender_ore"
+                     ],
+                     [
+                         "betterend:jade_cave_cave_populator"
+                     ]
+                 ],
+    "has_precipitation":  false,
+    "spawn_costs":  {
+
+                    },
+    "spawners":  {
+                     "ambient":  [
+
+                                 ],
+                     "axolotls":  [
+
+                                  ],
+                     "creature":  [
+
+                                  ],
+                     "misc":  [
+
+                              ],
+                     "monster":  [
+
+                                 ],
+                     "underground_water_creature":  [
+
+                                                    ],
+                     "water_ambient":  [
+
+                                       ],
+                     "water_creature":  [
+
+                                        ]
+                 },
+    "temperature":  0.5
 }

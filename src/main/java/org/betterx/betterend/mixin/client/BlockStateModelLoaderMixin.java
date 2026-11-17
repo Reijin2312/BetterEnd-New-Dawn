@@ -2,6 +2,8 @@ package org.betterx.betterend.mixin.client;
 
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.world.generator.GeneratorOptions;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 
 import net.minecraft.client.resources.model.BlockStateModelLoader;
 import net.minecraft.resources.FileToIdConverter;
@@ -11,7 +13,6 @@ import net.minecraft.server.packs.resources.ResourceManager;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,13 +29,7 @@ public abstract class BlockStateModelLoaderMixin {
     private static final Identifier CUSTOM_FLOWER_FILE =
             BetterEnd.C.mk("blockstates/custom_chorus_flower.json");
 
-    /**
-     * Keep the vanilla block-state ID so BlockStateDefinitions resolves the
-     * actual ChorusPlantBlock, but use BetterEnd's resource stack as its
-     * definition. Rewriting fileToId changed the block ID itself and left all
-     * vanilla chorus states without a model on 26.1.
-     */
-    @Redirect(
+    @WrapOperation(
             method = "lambda$loadBlockStates$0",
             at = @At(
                     value = "INVOKE",
@@ -44,9 +39,10 @@ public abstract class BlockStateModelLoaderMixin {
     )
     private static Map<Identifier, List<Resource>> betterend$replaceChorusDefinitions(
             FileToIdConverter converter,
-            ResourceManager resourceManager
+            ResourceManager resourceManager,
+            Operation<Map<Identifier, List<Resource>>> original
     ) {
-        Map<Identifier, List<Resource>> resources = converter.listMatchingResourceStacks(resourceManager);
+        Map<Identifier, List<Resource>> resources = original.call(converter, resourceManager);
         if (!GeneratorOptions.changeChorusPlant()) {
             return resources;
         }

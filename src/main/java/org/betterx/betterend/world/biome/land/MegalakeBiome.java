@@ -8,7 +8,10 @@ import org.betterx.betterend.registry.EndStructures;
 import org.betterx.betterend.registry.features.EndVegetationFeatures;
 import org.betterx.betterend.world.biome.EndBiome;
 import org.betterx.betterend.world.biome.EndBiomeBuilder;
+import org.betterx.wover.surface.api.Conditions;
+import org.betterx.wover.surface.api.SurfaceRuleBuilder;
 
+import net.minecraft.util.valueproviders.UniformFloat;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -57,6 +60,18 @@ public class MegalakeBiome extends EndBiome.Config {
             @Override
             public BlockState getAltTopMaterial() {
                 return EndBlocks.ENDSTONE_DUST.defaultBlockState();
+            }
+
+            @Override
+            public SurfaceRuleBuilder surface() {
+                return SurfaceRuleBuilder
+                        .start()
+                        .chancedFloor(
+                                getTopMaterial(),
+                                getAltTopMaterial(),
+                                Conditions.threshold(4141, -0.58, UniformFloat.of(-0.4f, 0.4f), 0.1, 0.1)
+                        )
+                        .filler(getUnderMaterial());
             }
         };
     }

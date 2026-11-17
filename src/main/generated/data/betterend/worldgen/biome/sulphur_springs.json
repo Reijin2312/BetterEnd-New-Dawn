@@ -1,100 +1,125 @@
 {
-  "attributes": {
-    "minecraft:audio/ambient_sounds": {
-      "loop": "betterend:betterend.ambient.sulphur_springs",
-      "mood": {
-        "block_search_extent": 8,
-        "offset": 2.0,
-        "sound": "betterend:betterend.ambient.dust_wastelands",
-        "tick_delay": 6000
-      }
-    },
-    "minecraft:audio/background_music": {
-      "default": {
-        "max_delay": 2400,
-        "min_delay": 600,
-        "replace_current_music": true,
-        "sound": "betterend:betterend.music.openspace"
-      }
-    },
-    "minecraft:visual/ambient_particles": [
-      {
-        "particle": {
-          "type": "betterend:sulphur_particle"
-        },
-        "probability": 0.001
-      }
-    ],
-    "minecraft:visual/fog_color": "#cfc23e",
-    "minecraft:visual/sky_color": "#000000",
-    "minecraft:visual/water_fog_color": "#1e413d"
-  },
-  "carvers": [],
-  "downfall": 0.5,
-  "effects": {
-    "water_color": "#195a9d"
-  },
-  "features": [
-    [],
-    [
-      "betterend:geyser",
-      "betterend:sulphuric_lake"
-    ],
-    [],
-    [],
-    [
-      "minecraft:end_gateway_return",
-      "betterend:surface_vent",
-      "betterend:crashed_ship"
-    ],
-    [],
-    [
-      "betterend:thallasium_ore",
-      "betterend:ender_ore"
-    ],
-    [
-      "betterend:sulphur_spike",
-      "betterend:sulphur_spike_hanging"
-    ],
-    [],
-    [
-      "betterend:hydralux",
-      "betterend:charnia_green",
-      "betterend:charnia_orange",
-      "betterend:charnia_red_rare"
-    ]
-  ],
-  "has_precipitation": false,
-  "spawn_costs": {},
-  "spawners": {
-    "ambient": [],
-    "axolotls": [],
-    "creature": [],
-    "misc": [],
-    "monster": [
-      {
-        "type": "minecraft:enderman",
-        "maxCount": 4,
-        "minCount": 1,
-        "weight": 1
-      }
-    ],
-    "underground_water_creature": [],
-    "water_ambient": [
-      {
-        "type": "betterend:end_fish",
-        "maxCount": 8,
-        "minCount": 3,
-        "weight": 50
-      },
-      {
-        "type": "betterend:cubozoa",
-        "maxCount": 8,
-        "minCount": 3,
-        "weight": 50
-      }
-    ],
-    "water_creature": []
-  },
-  "temperature": 0.5
+    "attributes":  {
+                       "minecraft:audio/ambient_sounds":  {
+                                                              "loop":  "betterend:betterend.ambient.sulphur_springs",
+                                                              "mood":  {
+                                                                           "block_search_extent":  8,
+                                                                           "offset":  2.0,
+                                                                           "sound":  "betterend:betterend.ambient.dust_wastelands",
+                                                                           "tick_delay":  6000
+                                                                       }
+                                                          },
+                       "minecraft:audio/background_music":  {
+                                                                "default":  {
+                                                                                "max_delay":  2400,
+                                                                                "min_delay":  600,
+                                                                                "replace_current_music":  true,
+                                                                                "sound":  "betterend:betterend.music.openspace"
+                                                                            }
+                                                            },
+                       "minecraft:visual/ambient_particles":  [
+                                                                  {
+                                                                      "particle":  {
+                                                                                       "type":  "betterend:sulphur_particle"
+                                                                                   },
+                                                                      "probability":  0.001
+                                                                  }
+                                                              ],
+                       "minecraft:visual/fog_color":  "#cfc23e",
+                       "minecraft:visual/sky_color":  "#000000",
+                       "minecraft:visual/water_fog_color":  "#1e413d"
+                   },
+    "carvers":  [
+
+                ],
+    "downfall":  0.5,
+    "effects":  {
+                    "water_color":  "#195a9d"
+                },
+    "features":  [
+                     [
+
+                     ],
+                     [
+                         "betterend:geyser",
+                         "betterend:sulphuric_lake"
+                     ],
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+                         "minecraft:end_gateway_return",
+                         "betterend:surface_vent"
+                     ],
+                     [
+
+                     ],
+                     [
+                         "betterend:thallasium_ore",
+                         "betterend:ender_ore"
+                     ],
+                     [
+                         "betterend:sulphur_spike",
+                         "betterend:sulphur_spike_hanging"
+                     ],
+                     [
+
+                     ],
+                     [
+                         "betterend:hydralux",
+                         "betterend:charnia_green",
+                         "betterend:charnia_orange",
+                         "betterend:charnia_red_rare"
+                     ]
+                 ],
+    "has_precipitation":  false,
+    "spawn_costs":  {
+
+                    },
+    "spawners":  {
+                     "ambient":  [
+
+                                 ],
+                     "axolotls":  [
+
+                                  ],
+                     "creature":  [
+
+                                  ],
+                     "misc":  [
+
+                              ],
+                     "monster":  [
+                                     {
+                                         "type":  "minecraft:enderman",
+                                         "maxCount":  4,
+                                         "minCount":  1,
+                                         "weight":  1
+                                     }
+                                 ],
+                     "underground_water_creature":  [
+
+                                                    ],
+                     "water_ambient":  [
+                                           {
+                                               "type":  "betterend:end_fish",
+                                               "maxCount":  8,
+                                               "minCount":  3,
+                                               "weight":  50
+                                           },
+                                           {
+                                               "type":  "betterend:cubozoa",
+                                               "maxCount":  8,
+                                               "minCount":  3,
+                                               "weight":  50
+                                           }
+                                       ],
+                     "water_creature":  [
+
+                                        ]
+                 },
+    "temperature":  0.5
 }
