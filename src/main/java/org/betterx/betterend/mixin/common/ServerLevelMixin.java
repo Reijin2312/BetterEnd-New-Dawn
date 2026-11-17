@@ -5,6 +5,8 @@ import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.world.generator.GeneratorOptions;
 import org.betterx.betterend.world.generator.TerrainGenerator;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
@@ -26,7 +28,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
@@ -48,12 +49,12 @@ public abstract class ServerLevelMixin extends Level {
         super(writableLevelData, resourceKey, registryAccess, holder, bl, bl2, l, i);
     }
 
-    @Redirect(
+    @WrapOperation(
             method = "<init>",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/dimension/DimensionType;hasEnderDragonFight()Z")
     )
-    private boolean be_dragonFight(DimensionType dimensionType) {
-        return GeneratorOptions.hasDragonFights() && dimensionType.hasEnderDragonFight();
+    private boolean be_dragonFight(DimensionType dimensionType, Operation<Boolean> original) {
+        return GeneratorOptions.hasDragonFights() && original.call(dimensionType);
     }
 
     @Inject(
