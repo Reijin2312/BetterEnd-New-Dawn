@@ -9,6 +9,7 @@ import org.betterx.wover.structure.api.StructureUtils;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelHeightAccessor;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.StructureType;
@@ -62,6 +63,11 @@ public class EternalPortalStructure extends TemplateStructure {
     @Override
     protected boolean cover(RandomSource rnd) {
         return true;
+    }
+
+    @Override
+    protected Block alwaysBroken() {
+        return org.betterx.betterend.registry.EndBlocks.FLAVOLITE_RUNED_ETERNAL;
     }
 
     public static TemplateStructure.Config cfg(String name, int offsetY, StructurePlacementType type, float chance) {

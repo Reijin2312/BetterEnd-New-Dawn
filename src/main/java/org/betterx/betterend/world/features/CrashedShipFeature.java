@@ -8,7 +8,6 @@ import org.betterx.betterend.util.BlockFixer;
 import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.WorldGenLevel;
@@ -25,7 +24,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 
 public class CrashedShipFeature extends NBTFeature<NBTFeatureConfig> {
     private static final StructureProcessor REPLACER;
-    private static final String STRUCTURE_PATH = "/data/minecraft/structure/end_city/ship.nbt";
+    private static final String STRUCTURE_PATH = "/data/betterend/structure/crashed_ship.nbt";
     private StructureTemplate structure;
 
     public CrashedShipFeature() {
@@ -40,10 +39,7 @@ public class CrashedShipFeature extends NBTFeature<NBTFeatureConfig> {
             RandomSource random
     ) {
         if (structure == null) {
-            structure = world
-                    .getLevel()
-                    .getStructureManager()
-                    .getOrCreate(ResourceLocation.withDefaultNamespace("end_city/ship"));
+            structure = world.getLevel().getStructureManager().getOrCreate(org.betterx.betterend.BetterEnd.C.mk("crashed_ship"));
             if (structure == null) {
                 structure = StructureHelper.readStructure(STRUCTURE_PATH);
             }

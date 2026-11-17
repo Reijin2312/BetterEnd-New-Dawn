@@ -13,6 +13,7 @@ import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.resources.ResourceLocation;
@@ -28,6 +29,32 @@ import net.minecraft.world.item.Items;
 import java.util.List;
 
 public final class BetterEndGameTests implements FabricGameTest {
+    @GameTest(template = FabricGameTest.EMPTY_STRUCTURE)
+    public void novemberStructuresAndWorldgenTuningAreLoaded(GameTestHelper helper) {
+        var structures = helper.getLevel().registryAccess().registryOrThrow(Registries.STRUCTURE);
+        var structureSets = helper.getLevel().registryAccess().registryOrThrow(Registries.STRUCTURE_SET);
+        for (String path : List.of(
+                "crashed_ship", "blossoming_spires_house", "blossoming_spires_ruins",
+                "chorus_forest_fallen_tree", "chorus_forest_ruins", "chorus_forest_stump",
+                "foggy_mushroomland_tree_house", "lantern_woods_cabin",
+                "shadow_forest_small_mansion", "umbrella_jungle_house_1"
+        )) {
+            ResourceLocation id = id(path);
+            helper.assertTrue(structures.containsKey(id), "Missing runtime structure betterend:" + path);
+            helper.assertTrue(structureSets.containsKey(id), "Missing runtime structure set betterend:" + path);
+        }
+        try {
+            var rarity = org.betterx.betterend.world.features.terrain.BigAuroraCrystalFeature.class
+                    .getDeclaredField("RARITY_DIVISOR");
+            rarity.setAccessible(true);
+            helper.assertTrue(rarity.getInt(null) == 7, "Aurora crystal rarity is not the upstream 1-in-7 value");
+        } catch (ReflectiveOperationException exception) {
+            helper.fail("Could not verify Aurora crystal rarity: " + exception);
+            return;
+        }
+        helper.succeed();
+    }
+
     @GameTest(template = FabricGameTest.EMPTY_STRUCTURE)
     public void pathsRestoreTheirEndTerrain(GameTestHelper helper) {
         BlockPos pos = new BlockPos(1, 1, 1);

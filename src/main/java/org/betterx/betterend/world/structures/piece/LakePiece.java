@@ -289,6 +289,7 @@ public class LakePiece extends BasePiece {
             }
         }
         fixWater(world, chunk, mut, random, sx, sz);
+        LakeFloorLife.place(world, chunk, sx, sz, waterLevel - 1, biomeID, seed);
     }
 
     /** Marker for "no solid ground found within {@link #GROUND_SEARCH_DEPTH}". */

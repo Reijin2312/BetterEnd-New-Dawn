@@ -1,5 +1,6 @@
 package org.betterx.betterend.world.features.terrain;
 
+
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.sdf.SDF;
 import org.betterx.bclib.sdf.operator.SDFRotation;
@@ -18,9 +19,16 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import org.joml.Vector3f;
 
 public class BigAuroraCrystalFeature extends DefaultFeature {
+    // Upstream changed the old 1-in-10 placement chance to 1-in-7 (roughly 40% more common).
+    private static final int RARITY_DIVISOR = 7;
+
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
         final RandomSource random = featureConfig.random();
+        if (random.nextInt(RARITY_DIVISOR) != 0) {
+            return false;
+        }
+
         BlockPos pos = featureConfig.origin();
         final WorldGenLevel world = featureConfig.level();
         int maxY = pos.getY() + BlocksHelper.upRay(world, pos, 16);
@@ -32,6 +40,7 @@ public class BigAuroraCrystalFeature extends DefaultFeature {
 
         int y = MHelper.randRange(minY, maxY, random);
         pos = new BlockPos(pos.getX(), y, pos.getZ());
+
         int height = MHelper.randRange(5, 25, random);
         SDF prism = new SDFHexPrism().setHeight(height)
                                      .setRadius(MHelper.randRange(1.7F, 3F, random))

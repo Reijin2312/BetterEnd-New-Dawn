@@ -14,7 +14,7 @@ import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -33,7 +33,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.border.WorldBorder;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.portal.DimensionTransition;
 import net.minecraft.world.level.portal.PortalShape;
@@ -42,6 +41,8 @@ import net.minecraft.world.phys.Vec3;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class EndPortalBlock extends NetherPortalBlock implements RenderLayerProvider, CustomColorProvider, Portal {
@@ -137,44 +138,58 @@ public class EndPortalBlock extends NetherPortalBlock implements RenderLayerProv
 
     @Override
     public DimensionTransition getPortalDestination(ServerLevel serverLevel, Entity entity, BlockPos blockPos) {
-        final ResourceKey<Level> destination = serverLevel.dimension() == Level.END ? Level.OVERWORLD : Level.END;
-        final ServerLevel destinationLevel = serverLevel.getServer().getLevel(destination);
-        if (destinationLevel == null) {
-            return null;
-        } else {
-            WorldBorder worldBorder = destinationLevel.getWorldBorder();
-            final double d = DimensionType.getTeleportationScale(serverLevel.dimensionType(), destinationLevel.dimensionType());
-            final BlockPos startPos = worldBorder.clampToBounds(entity.getX() * d, entity.getY(), entity.getZ() * d);
-            return this.getExitPortal(serverLevel, destinationLevel, entity, blockPos, startPos, worldBorder);
+        final BlockState entrance = serverLevel.getBlockState(blockPos);
+        final int portalId = entrance.hasProperty(PORTAL) ? entrance.getValue(PORTAL) : 0;
+        final List<ServerLevel> destinations = getDestinationLevels(serverLevel, portalId);
+        for (ServerLevel destinationLevel : destinations) {
+            final PortalBuilder builder = new PortalBuilder(serverLevel, destinationLevel);
+            final Optional<PortalBuilder.FoundPortalRect> portal = builder.findPortalAround(
+                    getStartPos(serverLevel, destinationLevel, entity), destinationLevel.getWorldBorder());
+            if (portal.isPresent()) return transition(entity, destinationLevel, blockPos, portal.get());
         }
+        if (destinations.isEmpty()) return null;
+        final ServerLevel destinationLevel = destinations.get(0);
+        final PortalBuilder builder = new PortalBuilder(serverLevel, destinationLevel);
+        final Direction.Axis entranceAxis = entrance.getOptionalValue(BlockStateProperties.HORIZONTAL_AXIS)
+                                                    .orElse(Direction.Axis.X);
+        final Optional<PortalBuilder.FoundPortalRect> created = builder.createPortal(
+                getStartPos(serverLevel, destinationLevel, entity),
+                entranceAxis == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X,
+                portalId
+        ).map(builder::getPortalAt);
+        if (created.isPresent()) return transition(entity, destinationLevel, blockPos, created.get());
+        BetterEnd.C.LOG.error("Unable to find or build a portal exit in " + destinationLevel.dimension().location());
+        return null;
     }
 
-    private DimensionTransition getExitPortal(
-            ServerLevel sourceLevel,
-            ServerLevel destinationLevel,
-            Entity entity,
-            BlockPos pos,
-            BlockPos startPos,
-            WorldBorder worldBorder
-    ) {
-        final PortalBuilder builder = new PortalBuilder(sourceLevel, destinationLevel);
-        final Optional<PortalBuilder.FoundPortalRect> portalRectangle = builder.findPortalAround(
-                startPos,
-                worldBorder
-        );
-        if (portalRectangle.isPresent()) {
-            BlockUtil.FoundRectangle foundRectangle = portalRectangle.get().rect();
-            DimensionTransition.PostDimensionTransition postDimensionTransition = DimensionTransition.PLAY_PORTAL_SOUND.then((x) -> {
-                x.placePortalTicket(portalRectangle.get().pos());
-                if (entity instanceof ServerPlayer sp) {
-                    BECriteria.PORTAL_TRAVEL.trigger(sp);
-                }
-            });
-            return getDimensionTransitionFromExit(entity, destinationLevel, pos, foundRectangle, postDimensionTransition);
-        } else {
-            BetterEnd.C.LOG.error("Unable to find portal exit.");
-            return null;
+    private static List<ServerLevel> getDestinationLevels(ServerLevel source, int portalId) {
+        final MinecraftServer server = source.getServer();
+        final List<ServerLevel> levels = new ArrayList<>();
+        if (source.dimension() != Level.END) {
+            final ServerLevel end = server.getLevel(Level.END);
+            if (end != null) levels.add(end);
+            return levels;
         }
+        final ServerLevel preferred = EndPortals.getWorld(server, portalId);
+        if (preferred != null) levels.add(preferred);
+        for (ServerLevel level : server.getAllLevels()) {
+            if (level.dimension() != Level.END && !levels.contains(level)) levels.add(level);
+        }
+        return levels;
+    }
+
+    private static BlockPos getStartPos(ServerLevel source, ServerLevel target, Entity entity) {
+        final double scale = DimensionType.getTeleportationScale(source.dimensionType(), target.dimensionType());
+        return target.getWorldBorder().clampToBounds(entity.getX() * scale, entity.getY(), entity.getZ() * scale);
+    }
+
+    private static DimensionTransition transition(Entity entity, ServerLevel target, BlockPos entrance,
+                                                  PortalBuilder.FoundPortalRect portal) {
+        DimensionTransition.PostDimensionTransition post = DimensionTransition.PLAY_PORTAL_SOUND.then(x -> {
+            x.placePortalTicket(portal.pos());
+            if (entity instanceof ServerPlayer sp) BECriteria.PORTAL_TRAVEL.trigger(sp);
+        });
+        return getDimensionTransitionFromExit(entity, target, entrance, portal.rect(), post);
     }
 
     private static DimensionTransition getDimensionTransitionFromExit(

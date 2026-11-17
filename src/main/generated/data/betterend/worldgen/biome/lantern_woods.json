@@ -1,89 +1,119 @@
 {
-  "carvers": {
-    "air": [],
-    "liquid": []
-  },
-  "downfall": 0.5,
-  "effects": {
-    "fog_color": -4369850,
-    "foliage_color": -109255,
-    "grass_color": -109255,
-    "mood_sound": {
-      "block_search_extent": 8,
-      "offset": 2.0,
-      "sound": "betterend:betterend.ambient.dust_wastelands",
-      "tick_delay": 6000
-    },
-    "music": {
-      "max_delay": 2400,
-      "min_delay": 600,
-      "replace_current_music": true,
-      "sound": "betterend:betterend.music.forest"
-    },
-    "particle": {
-      "options": {
-        "type": "betterend:glowing_sphere"
-      },
-      "probability": 0.001
-    },
-    "sky_color": 0,
-    "water_color": -5510430,
-    "water_fog_color": -5510430
-  },
-  "features": [
-    [
-      "betterend:round_cave",
-      "betterend:tunel_cave"
-    ],
-    [],
-    [],
-    [],
-    [
-      "minecraft:end_gateway_return",
-      "betterend:crashed_ship",
-      "betterend:lantern_woods_structures"
-    ],
-    [],
-    [
-      "betterend:thallasium_ore",
-      "betterend:ender_ore"
-    ],
-    [],
-    [],
-    [
-      "betterend:flamaea",
-      "betterend:lucernia",
-      "betterend:lucernia_bush",
-      "betterend:filalux",
-      "betterend:aeridium",
-      "betterend:lamellarium",
-      "betterend:bolux_mushroom",
-      "betterend:aurant_polypore",
-      "betterend:pond_anemone",
-      "betterend:charnia_orange",
-      "betterend:charnia_red",
-      "betterend:ruscus",
-      "betterend:ruscus_wood"
-    ]
-  ],
-  "has_precipitation": false,
-  "spawn_costs": {},
-  "spawners": {
-    "ambient": [],
-    "axolotls": [],
-    "creature": [],
-    "misc": [],
-    "monster": [
-      {
-        "type": "minecraft:enderman",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 3
-      }
-    ],
-    "underground_water_creature": [],
-    "water_ambient": [],
-    "water_creature": []
-  },
-  "temperature": 0.5
+    "carvers":  {
+                    "air":  [
+
+                            ],
+                    "liquid":  [
+
+                               ]
+                },
+    "downfall":  0.5,
+    "effects":  {
+                    "fog_color":  -4369850,
+                    "foliage_color":  -109255,
+                    "grass_color":  -109255,
+                    "mood_sound":  {
+                                       "block_search_extent":  8,
+                                       "offset":  2.0,
+                                       "sound":  "betterend:betterend.ambient.dust_wastelands",
+                                       "tick_delay":  6000
+                                   },
+                    "music":  {
+                                  "max_delay":  2400,
+                                  "min_delay":  600,
+                                  "replace_current_music":  true,
+                                  "sound":  "betterend:betterend.music.forest"
+                              },
+                    "particle":  {
+                                     "options":  {
+                                                     "type":  "betterend:glowing_sphere"
+                                                 },
+                                     "probability":  0.001
+                                 },
+                    "sky_color":  0,
+                    "water_color":  -5510430,
+                    "water_fog_color":  -5510430
+                },
+    "features":  [
+                     [
+                         "betterend:round_cave",
+                         "betterend:tunel_cave"
+                     ],
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+                         "minecraft:end_gateway_return"
+                     ],
+                     [
+
+                     ],
+                     [
+                         "betterend:thallasium_ore",
+                         "betterend:ender_ore"
+                     ],
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+                         "betterend:flamaea",
+                         "betterend:lucernia",
+                         "betterend:lucernia_bush",
+                         "betterend:filalux",
+                         "betterend:aeridium",
+                         "betterend:lamellarium",
+                         "betterend:bolux_mushroom",
+                         "betterend:aurant_polypore",
+                         "betterend:pond_anemone",
+                         "betterend:charnia_orange",
+                         "betterend:charnia_red",
+                         "betterend:ruscus",
+                         "betterend:ruscus_wood"
+                     ]
+                 ],
+    "has_precipitation":  false,
+    "spawn_costs":  {
+
+                    },
+    "spawners":  {
+                     "ambient":  [
+
+                                 ],
+                     "axolotls":  [
+
+                                  ],
+                     "creature":  [
+
+                                  ],
+                     "misc":  [
+
+                              ],
+                     "monster":  [
+                                     {
+                                         "type":  "minecraft:enderman",
+                                         "maxCount":  2,
+                                         "minCount":  1,
+                                         "weight":  3
+                                     }
+                                 ],
+                     "underground_water_creature":  [
+
+                                                    ],
+                     "water_ambient":  [
+
+                                       ],
+                     "water_creature":  [
+
+                                        ]
+                 },
+    "temperature":  0.5
 }
