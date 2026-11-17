@@ -5,6 +5,8 @@ import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.world.generator.GeneratorOptions;
 import org.betterx.betterend.world.generator.TerrainGenerator;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
@@ -12,12 +14,10 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.RandomSequences;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.CustomSpawner;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.storage.LevelStorageSource.LevelStorageAccess;
@@ -36,12 +36,6 @@ import java.util.concurrent.Executor;
 @Mixin(ServerLevel.class)
 public abstract class ServerLevelMixin extends Level {
 
-    private final static List<ResourceKey<DimensionType>> BE_TEST_DIMENSIONS = List.of(
-            BuiltinDimensionTypes.OVERWORLD,
-            BuiltinDimensionTypes.OVERWORLD_CAVES,
-            BuiltinDimensionTypes.NETHER
-    );
-
     protected ServerLevelMixin(
             WritableLevelData writableLevelData,
             ResourceKey<Level> resourceKey,
@@ -55,17 +49,16 @@ public abstract class ServerLevelMixin extends Level {
         super(writableLevelData, resourceKey, registryAccess, holder, bl, bl2, l, i);
     }
 
-    @ModifyArg(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/Holder;is(Lnet/minecraft/resources/ResourceKey;)Z"))
-    ResourceKey<DimensionType> be_dragonFight(ResourceKey<DimensionType> resourceKey) {
-        if (!GeneratorOptions.hasDragonFights()) {
-            //this object would pass the test for the End-Dimension, so make sure we compare against something else to disabled the Dragon-Fight
-            if (this.dimensionTypeRegistration().is(BuiltinDimensionTypes.END)) return BuiltinDimensionTypes.OVERWORLD;
-        }
-        return resourceKey;
+    @WrapOperation(
+            method = "<init>",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/dimension/DimensionType;hasEnderDragonFight()Z")
+    )
+    private boolean be_dragonFight(DimensionType dimensionType, Operation<Boolean> original) {
+        return GeneratorOptions.hasDragonFights() && original.call(dimensionType);
     }
 
     @Inject(
-            method = "<init>(Lnet/minecraft/server/MinecraftServer;Ljava/util/concurrent/Executor;Lnet/minecraft/world/level/storage/LevelStorageSource$LevelStorageAccess;Lnet/minecraft/world/level/storage/ServerLevelData;Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/world/level/dimension/LevelStem;ZJLjava/util/List;ZLnet/minecraft/world/RandomSequences;)V",
+            method = "<init>(Lnet/minecraft/server/MinecraftServer;Ljava/util/concurrent/Executor;Lnet/minecraft/world/level/storage/LevelStorageSource$LevelStorageAccess;Lnet/minecraft/world/level/storage/ServerLevelData;Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/world/level/dimension/LevelStem;ZJLjava/util/List;Z)V",
             at = @At("TAIL"),
             require = 0
     )
@@ -80,7 +73,6 @@ public abstract class ServerLevelMixin extends Level {
             long seed,
             List<CustomSpawner> list,
             boolean bl2,
-            RandomSequences randomSequences,
             CallbackInfo ci
     ) {
         TerrainGenerator.onServerLevelInit(ServerLevel.class.cast(this), levelStem, seed);

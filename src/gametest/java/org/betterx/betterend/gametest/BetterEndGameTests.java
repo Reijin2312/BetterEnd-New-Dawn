@@ -50,6 +50,7 @@ public final class BetterEndGameTests {
     public static void registerGameTests(RegisterGameTestsEvent event) {
         Holder<TestEnvironmentDefinition> environment = event.registerEnvironment(
                 id("upstream_regressions"), new TestEnvironmentDefinition.AllOf());
+        register(event, environment, "november_structures_and_worldgen_tuning_are_loaded", BetterEndGameTests::novemberStructuresAndWorldgenTuningAreLoaded);
         register(event, environment, "paths_restore_their_end_terrain", BetterEndGameTests::pathsRestoreTheirEndTerrain);
         register(event, environment, "late_pedestal_has_block_entity", BetterEndGameTests::latePedestalHasBlockEntity);
         register(event, environment, "lone_eternal_pedestal_does_not_create_broken_ritual", BetterEndGameTests::loneEternalPedestalDoesNotCreateBrokenRitual);
@@ -99,6 +100,37 @@ public final class BetterEndGameTests {
     }
 
     private BetterEndGameTests() {
+    }
+
+    public static void novemberStructuresAndWorldgenTuningAreLoaded(GameTestHelper helper) {
+        assertNovemberStructuresAndWorldgen(helper);
+    }
+
+    private static void assertNovemberStructuresAndWorldgen(GameTestHelper helper) {
+        var structures = helper.getLevel().registryAccess().lookupOrThrow(Registries.STRUCTURE);
+        var structureSets = helper.getLevel().registryAccess().lookupOrThrow(Registries.STRUCTURE_SET);
+        for (String path : List.of(
+                "crashed_ship", "blossoming_spires_house", "blossoming_spires_ruins",
+                "chorus_forest_fallen_tree", "chorus_forest_ruins", "chorus_forest_stump",
+                "foggy_mushroomland_tree_house", "lantern_woods_cabin",
+                "shadow_forest_small_mansion", "umbrella_jungle_house_1"
+        )) {
+            Identifier identifier = id(path);
+            helper.assertTrue(structures.get(ResourceKey.create(Registries.STRUCTURE, identifier)).isPresent(),
+                    "Missing runtime structure betterend:" + path);
+            helper.assertTrue(structureSets.get(ResourceKey.create(Registries.STRUCTURE_SET, identifier)).isPresent(),
+                    "Missing runtime structure set betterend:" + path);
+        }
+        try {
+            var rarity = org.betterx.betterend.world.features.terrain.BigAuroraCrystalFeature.class
+                    .getDeclaredField("RARITY_DIVISOR");
+            rarity.setAccessible(true);
+            helper.assertTrue(rarity.getInt(null) == 7, "Aurora crystal rarity is not the upstream 1-in-7 value");
+        } catch (ReflectiveOperationException exception) {
+            helper.fail("Could not verify Aurora crystal rarity: " + exception);
+            return;
+        }
+        helper.succeed();
     }
 
     public static void armorKeepsConfiguredDurability(GameTestHelper helper) {
@@ -310,4 +342,3 @@ public final class BetterEndGameTests {
         return Identifier.fromNamespaceAndPath("betterend", path);
     }
 }
-
