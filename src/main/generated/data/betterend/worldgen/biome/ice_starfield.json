@@ -1,70 +1,97 @@
 {
-  "carvers": {
-    "air": [],
-    "liquid": []
-  },
-  "downfall": 0.5,
-  "effects": {
-    "fog_color": -2034178,
-    "foliage_color": -4066060,
-    "mood_sound": {
-      "block_search_extent": 8,
-      "offset": 2.0,
-      "sound": "betterend:betterend.ambient.dust_wastelands",
-      "tick_delay": 6000
-    },
-    "music": {
-      "max_delay": 2400,
-      "min_delay": 600,
-      "replace_current_music": true,
-      "sound": "minecraft:music.end"
-    },
-    "particle": {
-      "options": {
-        "type": "betterend:snowflake"
-      },
-      "probability": 0.002
-    },
-    "sky_color": 0,
-    "water_color": 4159204,
-    "water_fog_color": 329011
-  },
-  "features": [
-    [
-      "betterend:ice_star",
-      "betterend:ice_star_small"
-    ],
-    [],
-    [],
-    [],
-    [
-      "minecraft:end_gateway_return",
-      "betterend:crashed_ship"
-    ],
-    [],
-    [
-      "betterend:thallasium_ore",
-      "betterend:ender_ore"
-    ]
-  ],
-  "has_precipitation": false,
-  "spawn_costs": {},
-  "spawners": {
-    "ambient": [],
-    "axolotls": [],
-    "creature": [],
-    "misc": [],
-    "monster": [
-      {
-        "type": "minecraft:enderman",
-        "maxCount": 4,
-        "minCount": 1,
-        "weight": 3
-      }
-    ],
-    "underground_water_creature": [],
-    "water_ambient": [],
-    "water_creature": []
-  },
-  "temperature": 0.0
+    "carvers":  {
+                    "air":  [
+
+                            ],
+                    "liquid":  [
+
+                               ]
+                },
+    "downfall":  0.5,
+    "effects":  {
+                    "fog_color":  -2034178,
+                    "foliage_color":  -4066060,
+                    "mood_sound":  {
+                                       "block_search_extent":  8,
+                                       "offset":  2.0,
+                                       "sound":  "betterend:betterend.ambient.dust_wastelands",
+                                       "tick_delay":  6000
+                                   },
+                    "music":  {
+                                  "max_delay":  2400,
+                                  "min_delay":  600,
+                                  "replace_current_music":  true,
+                                  "sound":  "minecraft:music.end"
+                              },
+                    "particle":  {
+                                     "options":  {
+                                                     "type":  "betterend:snowflake"
+                                                 },
+                                     "probability":  0.002
+                                 },
+                    "sky_color":  0,
+                    "water_color":  4159204,
+                    "water_fog_color":  329011
+                },
+    "features":  [
+                     [
+                         "betterend:ice_star",
+                         "betterend:ice_star_small"
+                     ],
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+                         "minecraft:end_gateway_return"
+                     ],
+                     [
+
+                     ],
+                     [
+                         "betterend:thallasium_ore",
+                         "betterend:ender_ore"
+                     ]
+                 ],
+    "has_precipitation":  false,
+    "spawn_costs":  {
+
+                    },
+    "spawners":  {
+                     "ambient":  [
+
+                                 ],
+                     "axolotls":  [
+
+                                  ],
+                     "creature":  [
+
+                                  ],
+                     "misc":  [
+
+                              ],
+                     "monster":  [
+                                     {
+                                         "type":  "minecraft:enderman",
+                                         "maxCount":  4,
+                                         "minCount":  1,
+                                         "weight":  3
+                                     }
+                                 ],
+                     "underground_water_creature":  [
+
+                                                    ],
+                     "water_ambient":  [
+
+                                       ],
+                     "water_creature":  [
+
+                                        ]
+                 },
+    "temperature":  0.0
 }

@@ -27,7 +27,10 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 
 public class CrystalMountainPiece extends MountainPiece {
+    private static final int CROWN_SEARCH_RADIUS = 8;
+    private static final int CROWN_MIN_PEAK_HEIGHT = 12;
     private BlockState top;
+    private volatile long peak = Long.MIN_VALUE;
 
     public CrystalMountainPiece(BlockPos center, float radius, float height, RandomSource random, Holder<Biome> biome) {
         super(EndStructures.MOUNTAIN_PIECE, center, radius, height, random, biome);
@@ -96,6 +99,60 @@ public class CrystalMountainPiece extends MountainPiece {
                 }
             }
         }
+
+        placeCrown(chunk, chunkPos, pos);
+    }
+
+    private void placeCrown(ChunkAccess chunk, ChunkPos chunkPos, MutableBlockPos pos) {
+        final long packedPeak = findPeak();
+        final int peakX = BlockPos.getX(packedPeak);
+        final int peakZ = BlockPos.getZ(packedPeak);
+        final RandomSource crownRandom = RandomSource.create(((long) seed1 << 32) ^ (seed2 & 0xFFFFFFFFL) ^ 0x63726F776EL);
+        final Heightmap map = chunk.getOrCreateHeightmapUnprimed(Types.WORLD_SURFACE);
+        for (int i = 0; i < 4; i++) {
+            final float angle = crownRandom.nextFloat() * Mth.TWO_PI;
+            final float spread = i == 0 ? 0.0F : MHelper.randRange(3.5F, 6.0F, crownRandom);
+            final int radius = i == 0 ? 3 : MHelper.randRange(2, 3, crownRandom);
+            final int worldX = peakX + Math.round(Mth.sin(angle) * spread);
+            final int worldZ = peakZ + Math.round(Mth.cos(angle) * spread);
+            if ((worldX >> 4) != chunkPos.x || (worldZ >> 4) != chunkPos.z) continue;
+            final int x = Mth.clamp(worldX - chunkPos.getMinBlockX(), radius, 15 - radius);
+            final int z = Mth.clamp(worldZ - chunkPos.getMinBlockZ(), radius, 15 - radius);
+            final int y = map.getFirstAvailable(x, z);
+            if (y < center.getY() + CROWN_MIN_PEAK_HEIGHT) continue;
+            pos.set(x, y, z);
+            if (!isCrystalBase(chunk.getBlockState(pos.below()))) continue;
+            final int crystalHeight = MHelper.floor(radius * MHelper.randRange(2.5F, 4.0F, crownRandom)
+                    + Math.max(0, y - 80) * 0.3F);
+            crystal(chunk, pos, radius, crystalHeight, MHelper.randRange(0.3F, 1.0F, crownRandom), crownRandom, true);
+        }
+    }
+
+    private long findPeak() {
+        long cached = peak;
+        if (cached != Long.MIN_VALUE) return cached;
+        int bestX = center.getX();
+        int bestZ = center.getZ();
+        float best = Float.NEGATIVE_INFINITY;
+        for (int dx = -CROWN_SEARCH_RADIUS; dx <= CROWN_SEARCH_RADIUS; dx++) {
+            for (int dz = -CROWN_SEARCH_RADIUS; dz <= CROWN_SEARCH_RADIUS; dz++) {
+                final float distance = dx * dx + dz * dz;
+                if (distance >= r2) continue;
+                final int x = center.getX() + dx;
+                final int z = center.getZ() + dz;
+                float value = 1.0F - (float) Math.pow(distance / r2, 0.3D);
+                value *= (float) noise1.eval(x * 0.05, z * 0.05) * 0.3F + 0.7F;
+                value *= (float) noise1.eval(x * 0.1, z * 0.1) * 0.1F + 0.8F;
+                if (value > best) {
+                    best = value;
+                    bestX = x;
+                    bestZ = z;
+                }
+            }
+        }
+        cached = BlockPos.asLong(bestX, 0, bestZ);
+        peak = cached;
+        return cached;
     }
 
     private static boolean isCrystalBase(BlockState state) {
@@ -185,12 +242,16 @@ public class CrystalMountainPiece extends MountainPiece {
     }
 
     private void crystal(ChunkAccess chunk, BlockPos pos, int radius, int height, float fill, RandomSource random) {
+        crystal(chunk, pos, radius, height, fill, random, false);
+    }
+
+    private void crystal(ChunkAccess chunk, BlockPos pos, int radius, int height, float fill, RandomSource random, boolean straight) {
         MutableBlockPos mut = new MutableBlockPos();
         int max = MHelper.floor(fill * radius + radius + 0.5F);
         height += pos.getY();
         Heightmap map = chunk.getOrCreateHeightmapUnprimed(Types.WORLD_SURFACE);
-        int coefX = MHelper.randRange(-1, 1, random);
-        int coefZ = MHelper.randRange(-1, 1, random);
+        int coefX = straight ? 0 : MHelper.randRange(-1, 1, random);
+        int coefZ = straight ? 0 : MHelper.randRange(-1, 1, random);
         for (int x = -radius; x <= radius; x++) {
             mut.setX(x + pos.getX());
             if (mut.getX() >= 0 && mut.getX() < 16) {

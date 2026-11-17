@@ -1,94 +1,124 @@
 {
-  "carvers": {
-    "air": [],
-    "liquid": []
-  },
-  "downfall": 0.5,
-  "effects": {
-    "ambient_sound": "betterend:betterend.ambient.chorus_forest",
-    "fog_color": -11068841,
-    "foliage_color": -8770182,
-    "grass_color": -8770182,
-    "mood_sound": {
-      "block_search_extent": 8,
-      "offset": 2.0,
-      "sound": "betterend:betterend.ambient.dust_wastelands",
-      "tick_delay": 6000
-    },
-    "music": {
-      "max_delay": 2400,
-      "min_delay": 600,
-      "replace_current_music": true,
-      "sound": "betterend:betterend.music.dark"
-    },
-    "particle": {
-      "options": {
-        "type": "minecraft:portal"
-      },
-      "probability": 0.01
-    },
-    "sky_color": 0,
-    "water_color": -11985335,
-    "water_fog_color": -11985335
-  },
-  "features": [
-    [
-      "betterend:round_cave",
-      "betterend:tunel_cave"
-    ],
-    [],
-    [],
-    [],
-    [
-      "minecraft:end_gateway_return",
-      "betterend:crashed_ship",
-      "betterend:chorus_forest_structures"
-    ],
-    [],
-    [
-      "betterend:violecite_layer",
-      "betterend:thallasium_ore",
-      "betterend:ender_ore"
-    ],
-    [],
-    [],
-    [
-      "betterend:pythadendron_tree",
-      "betterend:pythadendron_bush",
-      "minecraft:chorus_plant",
-      "betterend:purple_polypore",
-      "betterend:chorus_grass",
-      "betterend:chorus_mushroom",
-      "betterend:tail_moss",
-      "betterend:tail_moss_wood",
-      "betterend:charnia_purple",
-      "betterend:charnia_red_rare"
-    ]
-  ],
-  "has_precipitation": false,
-  "spawn_costs": {},
-  "spawners": {
-    "ambient": [],
-    "axolotls": [],
-    "creature": [],
-    "misc": [],
-    "monster": [
-      {
-        "type": "betterend:end_slime",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 5
-      },
-      {
-        "type": "minecraft:enderman",
-        "maxCount": 4,
-        "minCount": 1,
-        "weight": 3
-      }
-    ],
-    "underground_water_creature": [],
-    "water_ambient": [],
-    "water_creature": []
-  },
-  "temperature": 0.5
+    "carvers":  {
+                    "air":  [
+
+                            ],
+                    "liquid":  [
+
+                               ]
+                },
+    "downfall":  0.5,
+    "effects":  {
+                    "ambient_sound":  "betterend:betterend.ambient.chorus_forest",
+                    "fog_color":  -11068841,
+                    "foliage_color":  -8770182,
+                    "grass_color":  -8770182,
+                    "mood_sound":  {
+                                       "block_search_extent":  8,
+                                       "offset":  2.0,
+                                       "sound":  "betterend:betterend.ambient.dust_wastelands",
+                                       "tick_delay":  6000
+                                   },
+                    "music":  {
+                                  "max_delay":  2400,
+                                  "min_delay":  600,
+                                  "replace_current_music":  true,
+                                  "sound":  "betterend:betterend.music.dark"
+                              },
+                    "particle":  {
+                                     "options":  {
+                                                     "type":  "minecraft:portal"
+                                                 },
+                                     "probability":  0.01
+                                 },
+                    "sky_color":  0,
+                    "water_color":  -11985335,
+                    "water_fog_color":  -11985335
+                },
+    "features":  [
+                     [
+                         "betterend:round_cave",
+                         "betterend:tunel_cave"
+                     ],
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+                         "minecraft:end_gateway_return"
+                     ],
+                     [
+
+                     ],
+                     [
+                         "betterend:violecite_layer",
+                         "betterend:thallasium_ore",
+                         "betterend:ender_ore"
+                     ],
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+                         "betterend:pythadendron_tree",
+                         "betterend:pythadendron_bush",
+                         "minecraft:chorus_plant",
+                         "betterend:purple_polypore",
+                         "betterend:chorus_grass",
+                         "betterend:chorus_mushroom",
+                         "betterend:tail_moss",
+                         "betterend:tail_moss_wood",
+                         "betterend:charnia_purple",
+                         "betterend:charnia_red_rare"
+                     ]
+                 ],
+    "has_precipitation":  false,
+    "spawn_costs":  {
+
+                    },
+    "spawners":  {
+                     "ambient":  [
+
+                                 ],
+                     "axolotls":  [
+
+                                  ],
+                     "creature":  [
+
+                                  ],
+                     "misc":  [
+
+                              ],
+                     "monster":  [
+                                     {
+                                         "type":  "betterend:end_slime",
+                                         "maxCount":  2,
+                                         "minCount":  1,
+                                         "weight":  5
+                                     },
+                                     {
+                                         "type":  "minecraft:enderman",
+                                         "maxCount":  4,
+                                         "minCount":  1,
+                                         "weight":  3
+                                     }
+                                 ],
+                     "underground_water_creature":  [
+
+                                                    ],
+                     "water_ambient":  [
+
+                                       ],
+                     "water_creature":  [
+
+                                        ]
+                 },
+    "temperature":  0.5
 }

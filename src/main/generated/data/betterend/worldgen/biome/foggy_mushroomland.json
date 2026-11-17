@@ -1,115 +1,141 @@
 {
-  "carvers": {
-    "air": [],
-    "liquid": []
-  },
-  "downfall": 0.5,
-  "effects": {
-    "ambient_sound": "betterend:betterend.ambient.foggy_mushroomland",
-    "fog_color": -14058835,
-    "foliage_color": -11939119,
-    "grass_color": -11939119,
-    "mood_sound": {
-      "block_search_extent": 8,
-      "offset": 2.0,
-      "sound": "betterend:betterend.ambient.dust_wastelands",
-      "tick_delay": 6000
-    },
-    "music": {
-      "max_delay": 2400,
-      "min_delay": 600,
-      "replace_current_music": true,
-      "sound": "betterend:betterend.music.forest"
-    },
-    "particle": {
-      "options": {
-        "type": "betterend:glowing_sphere"
-      },
-      "probability": 0.001
-    },
-    "sky_color": 0,
-    "water_color": -8920070,
-    "water_fog_color": -8920070
-  },
-  "features": [
-    [
-      "betterend:round_cave",
-      "betterend:tunel_cave"
-    ],
-    [],
-    [],
-    [],
-    [
-      "minecraft:end_gateway_return",
-      "betterend:crashed_ship",
-      "betterend:foggy_mushroomland_structures"
-    ],
-    [],
-    [
-      "betterend:thallasium_ore",
-      "betterend:ender_ore"
-    ],
-    [],
-    [],
-    [
-      "betterend:mossy_glowshroom",
-      "betterend:blue_vine",
-      "betterend:umbrella_moss",
-      "betterend:creeping_moss",
-      "betterend:dense_vine",
-      "betterend:cyan_moss",
-      "betterend:cyan_moss_wood",
-      "betterend:end_lily",
-      "betterend:bubble_coral",
-      "betterend:charnia_cyan",
-      "betterend:charnia_light_blue",
-      "betterend:charnia_red_rare"
-    ]
-  ],
-  "has_precipitation": false,
-  "spawn_costs": {},
-  "spawners": {
-    "ambient": [
-      {
-        "type": "betterend:dragonfly",
-        "maxCount": 5,
-        "minCount": 2,
-        "weight": 80
-      }
-    ],
-    "axolotls": [],
-    "creature": [],
-    "misc": [],
-    "monster": [
-      {
-        "type": "betterend:end_slime",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 3
-      },
-      {
-        "type": "minecraft:enderman",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 10
-      }
-    ],
-    "underground_water_creature": [],
-    "water_ambient": [
-      {
-        "type": "betterend:end_fish",
-        "maxCount": 5,
-        "minCount": 2,
-        "weight": 20
-      },
-      {
-        "type": "betterend:cubozoa",
-        "maxCount": 8,
-        "minCount": 3,
-        "weight": 10
-      }
-    ],
-    "water_creature": []
-  },
-  "temperature": 0.5
+    "carvers":  {
+                    "air":  [
+
+                            ],
+                    "liquid":  [
+
+                               ]
+                },
+    "downfall":  0.5,
+    "effects":  {
+                    "ambient_sound":  "betterend:betterend.ambient.foggy_mushroomland",
+                    "fog_color":  -14058835,
+                    "foliage_color":  -11939119,
+                    "grass_color":  -11939119,
+                    "mood_sound":  {
+                                       "block_search_extent":  8,
+                                       "offset":  2.0,
+                                       "sound":  "betterend:betterend.ambient.dust_wastelands",
+                                       "tick_delay":  6000
+                                   },
+                    "music":  {
+                                  "max_delay":  2400,
+                                  "min_delay":  600,
+                                  "replace_current_music":  true,
+                                  "sound":  "betterend:betterend.music.forest"
+                              },
+                    "particle":  {
+                                     "options":  {
+                                                     "type":  "betterend:glowing_sphere"
+                                                 },
+                                     "probability":  0.001
+                                 },
+                    "sky_color":  0,
+                    "water_color":  -8920070,
+                    "water_fog_color":  -8920070
+                },
+    "features":  [
+                     [
+                         "betterend:round_cave",
+                         "betterend:tunel_cave"
+                     ],
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+                         "minecraft:end_gateway_return"
+                     ],
+                     [
+
+                     ],
+                     [
+                         "betterend:thallasium_ore",
+                         "betterend:ender_ore"
+                     ],
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+                         "betterend:mossy_glowshroom",
+                         "betterend:blue_vine",
+                         "betterend:umbrella_moss",
+                         "betterend:creeping_moss",
+                         "betterend:dense_vine",
+                         "betterend:cyan_moss",
+                         "betterend:cyan_moss_wood",
+                         "betterend:end_lily",
+                         "betterend:bubble_coral",
+                         "betterend:charnia_cyan",
+                         "betterend:charnia_light_blue",
+                         "betterend:charnia_red_rare"
+                     ]
+                 ],
+    "has_precipitation":  false,
+    "spawn_costs":  {
+
+                    },
+    "spawners":  {
+                     "ambient":  [
+                                     {
+                                         "type":  "betterend:dragonfly",
+                                         "maxCount":  5,
+                                         "minCount":  2,
+                                         "weight":  80
+                                     }
+                                 ],
+                     "axolotls":  [
+
+                                  ],
+                     "creature":  [
+
+                                  ],
+                     "misc":  [
+
+                              ],
+                     "monster":  [
+                                     {
+                                         "type":  "betterend:end_slime",
+                                         "maxCount":  2,
+                                         "minCount":  1,
+                                         "weight":  3
+                                     },
+                                     {
+                                         "type":  "minecraft:enderman",
+                                         "maxCount":  2,
+                                         "minCount":  1,
+                                         "weight":  10
+                                     }
+                                 ],
+                     "underground_water_creature":  [
+
+                                                    ],
+                     "water_ambient":  [
+                                           {
+                                               "type":  "betterend:end_fish",
+                                               "maxCount":  5,
+                                               "minCount":  2,
+                                               "weight":  20
+                                           },
+                                           {
+                                               "type":  "betterend:cubozoa",
+                                               "maxCount":  8,
+                                               "minCount":  3,
+                                               "weight":  10
+                                           }
+                                       ],
+                     "water_creature":  [
+
+                                        ]
+                 },
+    "temperature":  0.5
 }

@@ -1,64 +1,96 @@
-﻿{
-  "carvers": {
-    "air": [],
-    "liquid": []
-  },
-  "downfall": 0.5,
-  "effects": {
-    "ambient_sound": "betterend:betterend.ambient.caves",
-    "fog_color": -16712266,
-    "foliage_color": -16743535,
-    "grass_color": -16743535,
-    "mood_sound": {
-      "block_search_extent": 8,
-      "offset": 2.0,
-      "sound": "betterend:betterend.ambient.dust_wastelands",
-      "tick_delay": 6000
-    },
-    "music": {
-      "max_delay": 2400,
-      "min_delay": 600,
-      "replace_current_music": true,
-      "sound": "betterend:betterend.music.caves"
-    },
-    "particle": {
-      "options": {
-        "type": "betterend:smaragdant_particle"
-      },
-      "probability": 0.001
-    },
-    "sky_color": 0,
-    "water_color": -14702636,
-    "water_fog_color": -14702636
-  },
-  "features": [
-    [],
-    [],
-    [],
-    [],
-    [
-      "betterend:crashed_ship"
-    ],
-    [],
-    [
-      "betterend:thallasium_ore",
-      "betterend:ender_ore"
-    ],
-    [
-      "betterend:lush_smaragdant_cave_cave_populator"
-    ]
-  ],
-  "has_precipitation": false,
-  "spawn_costs": {},
-  "spawners": {
-    "ambient": [],
-    "axolotls": [],
-    "creature": [],
-    "misc": [],
-    "monster": [],
-    "underground_water_creature": [],
-    "water_ambient": [],
-    "water_creature": []
-  },
-  "temperature": 0.5
+{
+    "carvers":  {
+                    "air":  [
+
+                            ],
+                    "liquid":  [
+
+                               ]
+                },
+    "downfall":  0.5,
+    "effects":  {
+                    "ambient_sound":  "betterend:betterend.ambient.caves",
+                    "fog_color":  -16712266,
+                    "foliage_color":  -16743535,
+                    "grass_color":  -16743535,
+                    "mood_sound":  {
+                                       "block_search_extent":  8,
+                                       "offset":  2.0,
+                                       "sound":  "betterend:betterend.ambient.dust_wastelands",
+                                       "tick_delay":  6000
+                                   },
+                    "music":  {
+                                  "max_delay":  2400,
+                                  "min_delay":  600,
+                                  "replace_current_music":  true,
+                                  "sound":  "betterend:betterend.music.caves"
+                              },
+                    "particle":  {
+                                     "options":  {
+                                                     "type":  "betterend:smaragdant_particle"
+                                                 },
+                                     "probability":  0.001
+                                 },
+                    "sky_color":  0,
+                    "water_color":  -14702636,
+                    "water_fog_color":  -14702636
+                },
+    "features":  [
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+                         "betterend:thallasium_ore",
+                         "betterend:ender_ore"
+                     ],
+                     [
+                         "betterend:lush_smaragdant_cave_cave_populator"
+                     ]
+                 ],
+    "has_precipitation":  false,
+    "spawn_costs":  {
+
+                    },
+    "spawners":  {
+                     "ambient":  [
+
+                                 ],
+                     "axolotls":  [
+
+                                  ],
+                     "creature":  [
+
+                                  ],
+                     "misc":  [
+
+                              ],
+                     "monster":  [
+
+                                 ],
+                     "underground_water_creature":  [
+
+                                                    ],
+                     "water_ambient":  [
+
+                                       ],
+                     "water_creature":  [
+
+                                        ]
+                 },
+    "temperature":  0.5
 }

@@ -203,6 +203,18 @@ public class PortalBuilder {
         });
     }
 
+    public FoundPortalRect getPortalAt(BlockPos portalPos) {
+        BlockState blockState = this.targetLevel.getBlockState(portalPos);
+        return new FoundPortalRect(BlockUtil.getLargestRectangleAround(
+                portalPos,
+                blockState.getValue(BlockStateProperties.HORIZONTAL_AXIS),
+                21,
+                Direction.Axis.Y,
+                21,
+                bp -> this.targetLevel.getBlockState(bp) == blockState
+        ), portalPos);
+    }
+
     public static BlockPos getStartingPos(
             Level sourceLevel,
             Level targetLevel,

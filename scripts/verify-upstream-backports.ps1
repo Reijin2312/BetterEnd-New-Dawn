@@ -52,6 +52,19 @@ $commonTags = @(
     'src/main/generated/data/minecraft/tags/item/bars.json',
     'src/main/generated/data/minecraft/tags/item/chains.json'
 )
+$novemberStructures = @(
+    'blossoming_spires_house', 'blossoming_spires_ruins',
+    'chorus_forest_fallen_tree', 'chorus_forest_ruins', 'chorus_forest_stump',
+    'crashed_ship',
+    'foggy_mushroomland_fallen_tree', 'foggy_mushroomland_library',
+    'foggy_mushroomland_ruins', 'foggy_mushroomland_stump', 'foggy_mushroomland_tree_house',
+    'lantern_woods_cabin', 'lantern_woods_light_1', 'lantern_woods_log',
+    'lantern_woods_ruins', 'lantern_woods_stump',
+    'shadow_forest_fallen_log', 'shadow_forest_ruins',
+    'shadow_forest_small_mansion', 'shadow_forest_stump',
+    'umbrella_jungle_house_1', 'umbrella_jungle_house_2',
+    'umbrella_jungle_jellyshroom_cluster', 'umbrella_jungle_ruins'
+)
 
 foreach ($repo in $repos) {
     Write-Host "[BetterEnd backports] $repo"
@@ -60,7 +73,7 @@ foreach ($repo in $repos) {
     Assert-Check (Test-Path -LiteralPath $root) $repo 'repository is missing'
     if (-not (Test-Path -LiteralPath $root)) { continue }
 
-    $subjects = git -C $root log --format=%s -12
+    $subjects = git -C $root log --format=%s -100
     Assert-Check ($subjects -contains 'Backport upstream stability and gameplay fixes') $repo 'upstream stability/gameplay commit is missing'
     Assert-Check ($subjects -contains 'Fix structures across chunk reloads') $repo 'structure reload commit is missing'
     Assert-Check ($subjects -contains 'Keep large End features inside worldgen bounds') $repo 'worldgen bounds commit is missing'
@@ -171,6 +184,42 @@ foreach ($repo in $repos) {
     Assert-Match $lang 'biome\.betterend\.waterfall_ponds' $repo 'Waterfall Ponds translation'
     Assert-Match $lang 'look at Endermen' $repo 'End Veil plural translation'
     Assert-Match $lang 'give_guide_book' $repo 'guidebook configuration translation'
+
+    # November 2026 upstream releases: structures are data-driven so /locate sees them,
+    # while the legacy placed-feature entries must be gone to prevent double generation.
+    foreach ($structureId in $novemberStructures) {
+        $structure = Assert-Json $root "src/main/generated/data/betterend/worldgen/structure/$structureId.json" $repo
+        $set = Assert-Json $root "src/main/generated/data/betterend/worldgen/structure_set/$structureId.json" $repo
+        Assert-Match $structure 'minecraft:jigsaw' $repo "$structureId is a real jigsaw structure"
+        Assert-Match $set ("betterend:" + [regex]::Escape($structureId)) $repo "$structureId has a structure set"
+    }
+    $shipProcessor = Assert-Json $root 'src/main/generated/data/betterend/worldgen/processor_list/crashed_ship.json' $repo
+    Assert-Match $shipProcessor 'minecraft:block_(ignore|rot)' $repo 'crashed ship processor list'
+    $shipNbt = Join-Path $root 'src/main/resources/data/betterend/structure/crashed_ship.nbt'
+    Assert-Check ((Test-Path -LiteralPath $shipNbt) -and ((Get-Item -LiteralPath $shipNbt).Length -gt 100)) $repo 'crashed ship template is present'
+
+    $biomeJson = (Get-ChildItem -LiteralPath (Join-Path $root 'src/main/generated/data/betterend/worldgen/biome') -File -Filter '*.json' |
+        ForEach-Object { Get-Content -LiteralPath $_.FullName -Raw }) -join [Environment]::NewLine
+    Assert-NoMatch $biomeJson 'betterend:crashed_ship' $repo 'legacy crashed-ship placed feature must not double-generate'
+    Assert-NoMatch $biomeJson 'betterend:(blossoming_spires|chorus_forest|foggy_mushroomland|lantern_woods|shadow_forest|umbrella_jungle)_structures' $repo 'legacy biome structure placed features must not double-generate'
+
+    $aurora = Read-Relative $root 'src/main/java/org/betterx/betterend/world/features/terrain/BigAuroraCrystalFeature.java'
+    Assert-Match $aurora 'RARITY_DIVISOR\s*=\s*7' $repo 'Aurora crystal formations are about 40 percent more common'
+    $smaragdant = Read-Relative $root 'src/main/java/org/betterx/betterend/world/features/terrain/SmaragdantCrystalFeature.java'
+    Assert-Match $smaragdant 'j\s*==\s*0\s*&&\s*random\.nextInt' $repo 'budding Smaragdant is restricted to the column base'
+
+    $eternalStructure = Read-Relative $root 'src/main/java/org/betterx/betterend/world/structures/features/EternalPortalStructure.java'
+    Assert-Match $eternalStructure 'alwaysBroken\(\).*FLAVOLITE_RUNED_ETERNAL' $repo 'generated Eternal Portal always needs one repaired frame block'
+    $featureBase = Read-Relative $root 'src/main/java/org/betterx/betterend/world/structures/features/FeatureBaseStructure.java'
+    Assert-Match $featureBase 'HEIGHT_CACHE' $repo 'density-worldgen structure height cache'
+    Assert-Match $featureBase 'mayStartInBiome' $repo 'biome rejection occurs before expensive height sampling'
+    $lake = Read-Relative $root 'src/main/java/org/betterx/betterend/world/structures/piece/LakePiece.java'
+    Assert-Match $lake 'LakeFloorLife\.place' $repo 'Megalake underwater life placement'
+    Assert-Check (Test-Path -LiteralPath (Join-Path $root 'src/main/java/org/betterx/betterend/world/structures/piece/LakeFloorLife.java')) $repo 'Megalake underwater life implementation is missing'
+
+    $smelter = Read-Relative $root 'src/main/java/org/betterx/betterend/client/gui/EndStoneSmelterMenu.java'
+    Assert-Match $smelter 'quickMoveStack' $repo 'End Stone Smelter shift-click implementation'
+    Assert-Match $smelter 'INGREDIENT_SLOT_A.*FUEL_SLOT' $repo 'End Stone Smelter routes smeltable inventory stacks'
 }
 
 if ($failures.Count) {
