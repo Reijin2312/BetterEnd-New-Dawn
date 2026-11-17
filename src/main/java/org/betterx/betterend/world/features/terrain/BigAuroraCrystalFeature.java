@@ -23,6 +23,7 @@ import org.joml.Vector3f;
 
 public class BigAuroraCrystalFeature extends DefaultFeature {
     public static final MapCodec<BigAuroraCrystalFeature> CODEC = MapCodec.unit(BigAuroraCrystalFeature::new);
+    private static final int RARITY_DIVISOR = 7;
 
     @Override
     public MapCodec<BigAuroraCrystalFeature> codec() {
@@ -31,6 +32,9 @@ public class BigAuroraCrystalFeature extends DefaultFeature {
     @Override
     public boolean place(WorldGenLevel featureWorld, ChunkGenerator featureGenerator, RandomSource featureRandom, BlockPos featureOrigin) {
         final RandomSource random = featureRandom;
+        if (random.nextInt(RARITY_DIVISOR) != 0) {
+            return false;
+        }
         BlockPos pos = featureOrigin;
         final WorldGenLevel world = featureWorld;
         int maxY = pos.getY() + BlocksHelper.upRay(world, pos, 16);

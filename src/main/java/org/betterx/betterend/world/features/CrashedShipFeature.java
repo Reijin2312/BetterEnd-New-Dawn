@@ -31,7 +31,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 public class CrashedShipFeature extends NBTFeature<NBTFeatureConfig> {
     public static final MapCodec<CrashedShipFeature> CODEC = NBTFeatureConfig.CODEC.xmap(CrashedShipFeature::new, f -> f.config);
     private static final StructureProcessor REPLACER;
-    private static final String STRUCTURE_PATH = "/data/minecraft/structure/end_city/ship.nbt";
+    private static final String STRUCTURE_PATH = "/data/betterend/structure/crashed_ship.nbt";
     private StructureTemplate structure;
 
     public CrashedShipFeature(NBTFeatureConfig config) {
@@ -54,7 +54,7 @@ public class CrashedShipFeature extends NBTFeature<NBTFeatureConfig> {
             structure = world
                     .getLevel()
                     .getStructureTemplateManager()
-                    .getOrCreate(Identifier.withDefaultNamespace("end_city/ship"));
+                    .getOrCreate(org.betterx.betterend.BetterEnd.C.mk("crashed_ship"));
             if (structure == null) {
                 structure = EndStructureHelper.readStructure(STRUCTURE_PATH);
             }

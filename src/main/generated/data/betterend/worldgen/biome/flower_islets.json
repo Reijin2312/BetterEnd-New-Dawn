@@ -1,97 +1,128 @@
 {
-  "attributes": {
-    "minecraft:audio/ambient_sounds": {
-      "mood": {
-        "block_search_extent": 8,
-        "offset": 2,
-        "sound": "betterend:betterend.ambient.dust_wastelands",
-        "tick_delay": 6000
-      }
-    },
-    "minecraft:audio/background_music": {
-      "default": {
-        "max_delay": 2400,
-        "min_delay": 600,
-        "replace_current_music": true,
-        "sound": "betterend:betterend.music.openspace"
-      }
-    },
-    "minecraft:visual/ambient_particles": [
-      {
-        "particle": {
-          "type": "betterend:tenanea_petal"
-        },
-        "probability": 0.0007
-      }
-    ],
-    "minecraft:visual/fog_color": "#d7a5f0",
-    "minecraft:visual/sky_color": "#000000",
-    "minecraft:visual/water_fog_color": "#96d2e6",
-    "minecraft:gameplay/natural_mob_spawns": {
-      "argument": {
-        "spawn_costs": {},
-        "spawns_by_category": {
-          "ambient": [],
-          "axolotls": [],
-          "creature": [],
-          "misc": [],
-          "monster": [
-            {
-              "type": "minecraft:enderman",
-              "count": {
-                "type": "minecraft:uniform",
-                "min_inclusive": 1,
-                "max_inclusive": 2
-              },
-              "weight": 3
-            }
-          ],
-          "underground_water_creature": [],
-          "water_ambient": [],
-          "water_creature": []
-        }
-      },
-      "modifier": "overlay"
-    }
-  },
-  "carvers": [],
-  "downfall": 0.5,
-  "effects": {
-    "foliage_color": "#8cc878",
-    "grass_color": "#8cc878",
-    "water_color": "#96d2e6"
-  },
-  "features": [
-    [],
-    [],
-    [],
-    [],
-    [
-      "minecraft:end_gateway_return",
-      "betterend:crashed_ship"
-    ],
-    [],
-    [
-      "betterend:thallasium_ore",
-      "betterend:ender_ore"
-    ],
-    [],
-    [],
-    [
-      "betterend:blooming_cooksonia",
-      "betterend:salteago",
-      "betterend:vaiolush_fern",
-      "betterend:aeridium",
-      "betterend:lutebus",
-      "betterend:lamellarium",
-      "betterend:fracturn",
-      "betterend:glow_pillar",
-      "betterend:amaranita_patch",
-      "betterend:umbrella_moss",
-      "betterend:creeping_moss_rare",
-      "betterend:twisted_umbrella_moss_rare"
-    ]
-  ],
-  "has_precipitation": false,
-  "temperature": 0.5
+    "attributes":  {
+                       "minecraft:audio/ambient_sounds":  {
+                                                              "mood":  {
+                                                                           "block_search_extent":  8,
+                                                                           "offset":  2,
+                                                                           "sound":  "betterend:betterend.ambient.dust_wastelands",
+                                                                           "tick_delay":  6000
+                                                                       }
+                                                          },
+                       "minecraft:audio/background_music":  {
+                                                                "default":  {
+                                                                                "max_delay":  2400,
+                                                                                "min_delay":  600,
+                                                                                "replace_current_music":  true,
+                                                                                "sound":  "betterend:betterend.music.openspace"
+                                                                            }
+                                                            },
+                       "minecraft:visual/ambient_particles":  [
+                                                                  {
+                                                                      "particle":  {
+                                                                                       "type":  "betterend:tenanea_petal"
+                                                                                   },
+                                                                      "probability":  0.0007
+                                                                  }
+                                                              ],
+                       "minecraft:visual/fog_color":  "#d7a5f0",
+                       "minecraft:visual/sky_color":  "#000000",
+                       "minecraft:visual/water_fog_color":  "#96d2e6",
+                       "minecraft:gameplay/natural_mob_spawns":  {
+                                                                     "argument":  {
+                                                                                      "spawn_costs":  {
+
+                                                                                                      },
+                                                                                      "spawns_by_category":  {
+                                                                                                                 "ambient":  [
+
+                                                                                                                             ],
+                                                                                                                 "axolotls":  [
+
+                                                                                                                              ],
+                                                                                                                 "creature":  [
+
+                                                                                                                              ],
+                                                                                                                 "misc":  [
+
+                                                                                                                          ],
+                                                                                                                 "monster":  [
+                                                                                                                                 {
+                                                                                                                                     "type":  "minecraft:enderman",
+                                                                                                                                     "count":  {
+                                                                                                                                                   "type":  "minecraft:uniform",
+                                                                                                                                                   "min_inclusive":  1,
+                                                                                                                                                   "max_inclusive":  2
+                                                                                                                                               },
+                                                                                                                                     "weight":  3
+                                                                                                                                 }
+                                                                                                                             ],
+                                                                                                                 "underground_water_creature":  [
+
+                                                                                                                                                ],
+                                                                                                                 "water_ambient":  [
+
+                                                                                                                                   ],
+                                                                                                                 "water_creature":  [
+
+                                                                                                                                    ]
+                                                                                                             }
+                                                                                  },
+                                                                     "modifier":  "overlay"
+                                                                 }
+                   },
+    "carvers":  [
+
+                ],
+    "downfall":  0.5,
+    "effects":  {
+                    "foliage_color":  "#8cc878",
+                    "grass_color":  "#8cc878",
+                    "water_color":  "#96d2e6"
+                },
+    "features":  [
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+                         "minecraft:end_gateway_return"
+                     ],
+                     [
+
+                     ],
+                     [
+                         "betterend:thallasium_ore",
+                         "betterend:ender_ore"
+                     ],
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+                         "betterend:blooming_cooksonia",
+                         "betterend:salteago",
+                         "betterend:vaiolush_fern",
+                         "betterend:aeridium",
+                         "betterend:lutebus",
+                         "betterend:lamellarium",
+                         "betterend:fracturn",
+                         "betterend:glow_pillar",
+                         "betterend:amaranita_patch",
+                         "betterend:umbrella_moss",
+                         "betterend:creeping_moss_rare",
+                         "betterend:twisted_umbrella_moss_rare"
+                     ]
+                 ],
+    "has_precipitation":  false,
+    "temperature":  0.5
 }

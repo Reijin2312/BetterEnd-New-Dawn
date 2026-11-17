@@ -191,16 +191,24 @@ public class PortalBuilder {
 
         return oPos.map(poiPos -> {
             this.targetLevel.getChunkSource().addTicketWithRadius(TicketType.PORTAL, ChunkPos.containing(poiPos), 3);
-            BlockState blockState = this.targetLevel.getBlockState(poiPos);
-            return new FoundPortalRect(BlockUtil.getLargestRectangleAround(
-                    poiPos,
-                    blockState.getValue(BlockStateProperties.HORIZONTAL_AXIS),
-                    21,
-                    Direction.Axis.Y,
-                    21,
-                    bp -> this.targetLevel.getBlockState(bp) == blockState
-            ), poiPos);
+            return this.getPortalAt(poiPos);
         });
+    }
+
+    /**
+     * The portal that contains the portal block at {@code portalPos}. Use this right after {@link #createPortal}:
+     * the level registers the new blocks as POI only in a later task, so {@link #findPortalAround} may not see them yet.
+     */
+    public FoundPortalRect getPortalAt(BlockPos portalPos) {
+        BlockState blockState = this.targetLevel.getBlockState(portalPos);
+        return new FoundPortalRect(BlockUtil.getLargestRectangleAround(
+                portalPos,
+                blockState.getValue(BlockStateProperties.HORIZONTAL_AXIS),
+                21,
+                Direction.Axis.Y,
+                21,
+                bp -> this.targetLevel.getBlockState(bp) == blockState
+        ), portalPos);
     }
 
     public static BlockPos getStartingPos(
@@ -246,15 +254,9 @@ public class PortalBuilder {
         for (BlockPos.MutableBlockPos testPosition : BlockPos.spiralAround(
                 startPosition, SPIRAL_SEARCH_RADIUS, Direction.EAST, Direction.SOUTH
         )) {
-            final int ring = Math.max(
-                    Math.abs(testPosition.getX() - startPosition.getX()),
-                    Math.abs(testPosition.getZ() - startPosition.getZ())
-            );
+            final int ring = Math.max(Math.abs(testPosition.getX() - startPosition.getX()), Math.abs(testPosition.getZ() - startPosition.getZ()));
             if (d != -1.0 && (double) ring * ring >= d) break;
-            if (ring > GENERATE_SEARCH_RADIUS && !this.isColumnLoaded(
-                    testPosition.getX(), testPosition.getZ(),
-                    genMinChunkX, genMaxChunkX, genMinChunkZ, genMaxChunkZ
-            )) continue;
+            if (ring > GENERATE_SEARCH_RADIUS && !this.isColumnLoaded(testPosition.getX(), testPosition.getZ(), genMinChunkX, genMaxChunkX, genMinChunkZ, genMaxChunkZ)) continue;
 
             final int levelHeight = Math.min(
                     maxHeight,
@@ -370,16 +372,12 @@ public class PortalBuilder {
         return portalID;
     }
 
-    private boolean isColumnLoaded(
-            int x, int z,
-            int genMinChunkX, int genMaxChunkX, int genMinChunkZ, int genMaxChunkZ
-    ) {
+    private boolean isColumnLoaded(int x, int z, int genMinChunkX, int genMaxChunkX, int genMinChunkZ, int genMaxChunkZ) {
         for (int dx = -PROBE_FOOTPRINT; dx <= PROBE_FOOTPRINT; dx += 2 * PROBE_FOOTPRINT) {
             for (int dz = -PROBE_FOOTPRINT; dz <= PROBE_FOOTPRINT; dz += 2 * PROBE_FOOTPRINT) {
                 final int chunkX = SectionPos.blockToSectionCoord(x + dx);
                 final int chunkZ = SectionPos.blockToSectionCoord(z + dz);
-                if (chunkX >= genMinChunkX && chunkX <= genMaxChunkX
-                        && chunkZ >= genMinChunkZ && chunkZ <= genMaxChunkZ) continue;
+                if (chunkX >= genMinChunkX && chunkX <= genMaxChunkX && chunkZ >= genMinChunkZ && chunkZ <= genMaxChunkZ) continue;
                 if (this.targetLevel.getChunkSource().getChunkNow(chunkX, chunkZ) == null) return false;
             }
         }
