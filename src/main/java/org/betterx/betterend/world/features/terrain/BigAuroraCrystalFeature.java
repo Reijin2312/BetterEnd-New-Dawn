@@ -1,5 +1,6 @@
 package org.betterx.betterend.world.features.terrain;
 
+
 import org.betterx.bclib.api.v2.levelgen.features.features.DefaultFeature;
 import org.betterx.bclib.sdf.SDF;
 import org.betterx.bclib.sdf.operator.SDFRotation;
@@ -7,6 +8,7 @@ import org.betterx.bclib.sdf.primitive.SDFHexPrism;
 import org.betterx.bclib.util.BlocksHelper;
 import org.betterx.bclib.util.MHelper;
 import org.betterx.betterend.registry.EndBlocks;
+import org.betterx.wover.feature.api.WriteZone;
 import org.betterx.wover.tag.api.predefined.CommonBlockTags;
 
 import net.minecraft.core.BlockPos;
@@ -18,9 +20,16 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import org.joml.Vector3f;
 
 public class BigAuroraCrystalFeature extends DefaultFeature {
+    // Upstream changed the old 1-in-10 placement chance to 1-in-7 (roughly 40% more common).
+    private static final int RARITY_DIVISOR = 7;
+
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featureConfig) {
         final RandomSource random = featureConfig.random();
+        if (random.nextInt(RARITY_DIVISOR) != 0) {
+            return false;
+        }
+
         BlockPos pos = featureConfig.origin();
         final WorldGenLevel world = featureConfig.level();
         int maxY = pos.getY() + BlocksHelper.upRay(world, pos, 16);
@@ -32,6 +41,7 @@ public class BigAuroraCrystalFeature extends DefaultFeature {
 
         int y = MHelper.randRange(minY, maxY, random);
         pos = new BlockPos(pos.getX(), y, pos.getZ());
+
         int height = MHelper.randRange(5, 25, random);
         SDF prism = new SDFHexPrism().setHeight(height)
                                      .setRadius(MHelper.randRange(1.7F, 3F, random))
@@ -43,7 +53,10 @@ public class BigAuroraCrystalFeature extends DefaultFeature {
                     || BlocksHelper.replaceableOrPlant(bState)
                     || bState.is(CommonBlockTags.LEAVES);
         });
-        prism.fillRecursive(world, pos);
+        // The prism is randomly tilted (any axis, up to a full turn) and height reaches 25, so a shallow
+        // tilt can swing tens of blocks horizontally - well past the 3x3 chunks a feature may touch. Clip
+        // the flood-fill to the write zone; see WriteZone.
+        prism.fillRecursive(world, pos, WriteZone.of(world).toBoundingBox());
         BlocksHelper.setWithoutUpdate(world, pos, EndBlocks.AURORA_CRYSTAL);
 
         return true;

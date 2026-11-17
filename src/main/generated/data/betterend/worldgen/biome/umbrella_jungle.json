@@ -1,97 +1,125 @@
 {
-  "attributes": {
-    "minecraft:audio/ambient_sounds": {
-      "loop": "betterend:betterend.ambient.umbrella_jungle",
-      "mood": {
-        "block_search_extent": 8,
-        "offset": 2.0,
-        "sound": "betterend:betterend.ambient.dust_wastelands",
-        "tick_delay": 6000
-      }
-    },
-    "minecraft:audio/background_music": {
-      "default": {
-        "max_delay": 2400,
-        "min_delay": 600,
-        "replace_current_music": true,
-        "sound": "betterend:betterend.music.forest"
-      }
-    },
-    "minecraft:visual/ambient_particles": [
-      {
-        "particle": {
-          "type": "betterend:jungle_spore"
-        },
-        "probability": 0.001
-      }
-    ],
-    "minecraft:visual/fog_color": "#57dfdd",
-    "minecraft:visual/sky_color": "#000000",
-    "minecraft:visual/water_fog_color": "#77c6fd"
-  },
-  "carvers": [],
-  "downfall": 0.5,
-  "effects": {
-    "foliage_color": "#1bb7c2",
-    "water_color": "#77c6fd"
-  },
-  "features": [
-    [
-      "betterend:round_cave",
-      "betterend:tunel_cave"
-    ],
-    [],
-    [],
-    [],
-    [
-      "minecraft:end_gateway_return",
-      "betterend:crashed_ship",
-      "betterend:umbrella_jungle_structures"
-    ],
-    [],
-    [
-      "betterend:thallasium_ore",
-      "betterend:ender_ore"
-    ],
-    [],
-    [],
-    [
-      "betterend:umbrella_tree",
-      "betterend:jellyshroom",
-      "betterend:twisted_umbrella_moss",
-      "betterend:small_jellyshroom_floor",
-      "betterend:jungle_grass",
-      "betterend:cyan_moss",
-      "betterend:cyan_moss_wood",
-      "betterend:jungle_fern_wood",
-      "betterend:small_jellyshroom_wall",
-      "betterend:small_jellyshroom_wood",
-      "betterend:small_jellyshroom_ceil",
-      "betterend:jungle_vine",
-      "betterend:charnia_cyan",
-      "betterend:charnia_green",
-      "betterend:charnia_light_blue",
-      "betterend:charnia_red_rare"
-    ]
-  ],
-  "has_precipitation": false,
-  "spawn_costs": {},
-  "spawners": {
-    "ambient": [],
-    "axolotls": [],
-    "creature": [],
-    "misc": [],
-    "monster": [
-      {
-        "type": "minecraft:enderman",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 3
-      }
-    ],
-    "underground_water_creature": [],
-    "water_ambient": [],
-    "water_creature": []
-  },
-  "temperature": 0.5
+    "attributes":  {
+                       "minecraft:audio/ambient_sounds":  {
+                                                              "loop":  "betterend:betterend.ambient.umbrella_jungle",
+                                                              "mood":  {
+                                                                           "block_search_extent":  8,
+                                                                           "offset":  2.0,
+                                                                           "sound":  "betterend:betterend.ambient.dust_wastelands",
+                                                                           "tick_delay":  6000
+                                                                       }
+                                                          },
+                       "minecraft:audio/background_music":  {
+                                                                "default":  {
+                                                                                "max_delay":  2400,
+                                                                                "min_delay":  600,
+                                                                                "replace_current_music":  true,
+                                                                                "sound":  "betterend:betterend.music.forest"
+                                                                            }
+                                                            },
+                       "minecraft:visual/ambient_particles":  [
+                                                                  {
+                                                                      "particle":  {
+                                                                                       "type":  "betterend:jungle_spore"
+                                                                                   },
+                                                                      "probability":  0.001
+                                                                  }
+                                                              ],
+                       "minecraft:visual/fog_color":  "#57dfdd",
+                       "minecraft:visual/sky_color":  "#000000",
+                       "minecraft:visual/water_fog_color":  "#77c6fd"
+                   },
+    "carvers":  [
+
+                ],
+    "downfall":  0.5,
+    "effects":  {
+                    "foliage_color":  "#1bb7c2",
+                    "water_color":  "#77c6fd"
+                },
+    "features":  [
+                     [
+                         "betterend:round_cave",
+                         "betterend:tunel_cave"
+                     ],
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+                         "minecraft:end_gateway_return"
+                     ],
+                     [
+
+                     ],
+                     [
+                         "betterend:thallasium_ore",
+                         "betterend:ender_ore"
+                     ],
+                     [
+
+                     ],
+                     [
+
+                     ],
+                     [
+                         "betterend:umbrella_tree",
+                         "betterend:jellyshroom",
+                         "betterend:twisted_umbrella_moss",
+                         "betterend:small_jellyshroom_floor",
+                         "betterend:jungle_grass",
+                         "betterend:cyan_moss",
+                         "betterend:cyan_moss_wood",
+                         "betterend:jungle_fern_wood",
+                         "betterend:small_jellyshroom_wall",
+                         "betterend:small_jellyshroom_wood",
+                         "betterend:small_jellyshroom_ceil",
+                         "betterend:jungle_vine",
+                         "betterend:charnia_cyan",
+                         "betterend:charnia_green",
+                         "betterend:charnia_light_blue",
+                         "betterend:charnia_red_rare"
+                     ]
+                 ],
+    "has_precipitation":  false,
+    "spawn_costs":  {
+
+                    },
+    "spawners":  {
+                     "ambient":  [
+
+                                 ],
+                     "axolotls":  [
+
+                                  ],
+                     "creature":  [
+
+                                  ],
+                     "misc":  [
+
+                              ],
+                     "monster":  [
+                                     {
+                                         "type":  "minecraft:enderman",
+                                         "maxCount":  2,
+                                         "minCount":  1,
+                                         "weight":  3
+                                     }
+                                 ],
+                     "underground_water_creature":  [
+
+                                                    ],
+                     "water_ambient":  [
+
+                                       ],
+                     "water_creature":  [
+
+                                        ]
+                 },
+    "temperature":  0.5
 }
