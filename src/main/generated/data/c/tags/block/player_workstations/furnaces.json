@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "betterend:end_stone_furnace",
+    "betterend:flavolite_furnace",
+    "betterend:violecite_furnace",
+    "betterend:sulphuric_rock_furnace",
+    "betterend:virid_jadestone_furnace",
+    "betterend:azure_jadestone_furnace",
+    "betterend:sandy_jadestone_furnace",
+    "betterend:umbralith_furnace"
+  ]
+}
