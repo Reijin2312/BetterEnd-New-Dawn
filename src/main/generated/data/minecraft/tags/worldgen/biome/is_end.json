@@ -1,0 +1,26 @@
+{
+  "replace": false,
+  "values": [
+    "betterend:amber_land",
+    "betterend:blossoming_spires",
+    "betterend:chorus_forest",
+    "betterend:crystal_mountains",
+    "betterend:dragon_graveyards",
+    "betterend:dry_shrubland",
+    "betterend:dust_wastelands",
+    "betterend:flower_islets",
+    "betterend:foggy_mushroomland",
+    "betterend:glowing_grasslands",
+    "betterend:ice_starfield",
+    "betterend:lantern_woods",
+    "betterend:megalake",
+    "betterend:megalake_grove",
+    "betterend:neon_oasis",
+    "betterend:painted_mountains",
+    "betterend:shadow_forest",
+    "betterend:sulphur_springs",
+    "betterend:umbra_valley",
+    "betterend:umbrella_jungle",
+    "betterend:waterfall_ponds"
+  ]
+}

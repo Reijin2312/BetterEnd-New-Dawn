@@ -7,13 +7,16 @@ import org.betterx.betterend.blocks.UmbrellaTreeClusterEmptyBlock;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndItems;
 import org.betterx.betterend.registry.EndPortals;
+import org.betterx.betterend.registry.EndTags;
 import org.betterx.betterend.rituals.EternalRitual;
+import org.betterx.betterend.registry.EndBiomes;
 
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -59,6 +62,8 @@ public final class BetterEndGameTests {
             helper.fail("Could not verify Aurora crystal rarity: " + exception);
             return;
         }
+        assertCrystalMountainTuning(helper);
+        assertCrashedShipLoot(helper);
         helper.succeed();
     }
 
@@ -235,6 +240,101 @@ public final class BetterEndGameTests {
                 actual == expected,
                 BuiltInRegistries.ITEM.getKey(item) + " has max damage " + actual + ", expected " + expected
         );
+    }
+
+    @GameTest
+    public void compatibilityTagsContainAllBiomesAndFurnaces(GameTestHelper helper) {
+        var biomes = helper.getLevel().registryAccess().lookupOrThrow(Registries.BIOME);
+        assertAllEndBiomesTagged(helper, biomes);
+        for (Block furnace : List.of(
+                EndBlocks.END_STONE_FURNACE,
+                EndBlocks.FLAVOLITE.furnace,
+                EndBlocks.VIOLECITE.furnace,
+                EndBlocks.SULPHURIC_ROCK.furnace,
+                EndBlocks.VIRID_JADESTONE.furnace,
+                EndBlocks.AZURE_JADESTONE.furnace,
+                EndBlocks.SANDY_JADESTONE.furnace,
+                EndBlocks.UMBRALITH.furnace
+        )) {
+            helper.assertTrue(
+                    furnace.defaultBlockState().is(EndTags.FURNACES),
+                    "Furnace is missing from common workstation tag: " + furnace
+            );
+        }
+        helper.succeed();
+    }
+
+    private static void assertAllEndBiomesTagged(GameTestHelper helper, net.minecraft.core.HolderLookup.RegistryLookup<net.minecraft.world.level.biome.Biome> biomes) {
+        try {
+            for (var field : EndBiomes.class.getFields()) {
+                if (java.lang.reflect.Modifier.isStatic(field.getModifiers())
+                        && org.betterx.betterend.world.biome.EndBiomeKey.class.isAssignableFrom(field.getType())) {
+                    var key = (org.betterx.betterend.world.biome.EndBiomeKey<?, ?>) field.get(null);
+                    var biome = biomes.getOrThrow(key.key);
+                    if (biome.is(EndTags.IS_END_CAVE)) {
+                        helper.assertFalse(biome.is(BiomeTags.IS_END),
+                                "BetterEnd cave biome leaked into the surface minecraft:is_end tag: " + key.key);
+                    } else {
+                        helper.assertTrue(biome.is(BiomeTags.IS_END),
+                                "BetterEnd surface biome is missing from minecraft:is_end: " + key.key);
+                    }
+                }
+            }
+        } catch (IllegalAccessException exception) {
+            helper.fail("Could not inspect BetterEnd biome keys: " + exception);
+        }
+    }
+
+    private static void assertCrystalMountainTuning(GameTestHelper helper) {
+        try {
+            Class<?> type = org.betterx.betterend.world.structures.piece.CrystalMountainPiece.class;
+            helper.assertTrue(intConstant(type, "CRYSTAL_BIG_MAX_COUNT") == 6,
+                    "Crystal Mountain large-crystal budget differs from upstream");
+            helper.assertTrue(intConstant(type, "CROWN_MIN_COUNT") == 3,
+                    "Crystal Mountain crown minimum differs from upstream");
+            helper.assertTrue(intConstant(type, "CROWN_MAX_COUNT") == 5,
+                    "Crystal Mountain crown maximum differs from upstream");
+            helper.assertTrue(Math.abs(floatConstant(type, "CRYSTAL_END_STONE_CRYSTAL_CHANCE") - 0.03F) < 0.0001F,
+                    "Crystal Mountain end-stone crystal density differs from upstream");
+            helper.assertTrue(Math.abs(floatConstant(type, "CRYSTAL_MOSS_CRYSTAL_CHANCE") - 0.02F) < 0.0001F,
+                    "Crystal Mountain moss crystal density differs from upstream");
+        } catch (ReflectiveOperationException exception) {
+            helper.fail("Could not verify Crystal Mountain tuning: " + exception);
+        }
+    }
+
+    private static int intConstant(Class<?> type, String name) throws ReflectiveOperationException {
+        var field = type.getDeclaredField(name);
+        field.setAccessible(true);
+        return field.getInt(null);
+    }
+
+    private static float floatConstant(Class<?> type, String name) throws ReflectiveOperationException {
+        var field = type.getDeclaredField(name);
+        field.setAccessible(true);
+        return field.getFloat(null);
+    }
+
+    private static void assertCrashedShipLoot(GameTestHelper helper) {
+        String resource = "data/betterend/structure/crashed_ship.nbt";
+        try (var input = BetterEndGameTests.class.getClassLoader().getResourceAsStream(resource)) {
+            helper.assertTrue(input != null, "Missing crashed ship structure template");
+            if (input == null) return;
+            try (var gzip = new java.util.zip.GZIPInputStream(input)) {
+                String nbt = new String(gzip.readAllBytes(), java.nio.charset.StandardCharsets.ISO_8859_1);
+                String lootTable = "minecraft:chests/end_city_treasure";
+                int first = nbt.indexOf(lootTable);
+                int second = first < 0 ? -1 : nbt.indexOf(lootTable, first + lootTable.length());
+                helper.assertTrue(first >= 0 && second >= 0,
+                        "Both crashed ship containers must use End City treasure");
+                helper.assertTrue(nbt.indexOf(lootTable, second + lootTable.length()) < 0,
+                        "Crashed ship has an unexpected third loot container");
+                helper.assertTrue(!nbt.contains("LootTableSeed"),
+                        "Crashed ship loot must use an independent random seed when opened");
+            }
+        } catch (java.io.IOException exception) {
+            helper.fail("Could not inspect crashed ship loot: " + exception);
+        }
     }
 
     private static void assertSurvivesOn(GameTestHelper helper, String saplingId, String soilId, BlockPos pos) {
