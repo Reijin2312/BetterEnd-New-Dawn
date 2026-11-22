@@ -1,6 +1,7 @@
 package org.betterx.datagen.betterend.tags;
 
 import org.betterx.betterend.registry.EndBiomes;
+import org.betterx.datagen.betterend.worldgen.EndBiomesProvider;
 import org.betterx.betterend.registry.EndStructures;
 import org.betterx.betterend.registry.EndTags;
 import org.betterx.wover.core.api.ModCore;
@@ -10,6 +11,7 @@ import org.betterx.wover.tag.api.predefined.CommonBiomeTags;
 
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.tags.BiomeTags;
 
 public class BiomeTagProvider extends WoverTagProvider.ForBiomes {
     public BiomeTagProvider(ModCore modCore) {
@@ -18,6 +20,9 @@ public class BiomeTagProvider extends WoverTagProvider.ForBiomes {
 
     @Override
     public void prepareTags(TagBootstrapContext<Biome> context) {
+        EndBiomesProvider.BIOMES.entrySet().stream()
+                         .filter(entry -> !entry.getValue().tag().equals(EndTags.IS_END_CAVE))
+                         .forEach(entry -> context.add(BiomeTags.IS_END, entry.getKey().key));
         context.add(CommonBiomeTags.IS_END_BARRENS, EndBiomes.ICE_STARFIELD.key);
 
         context.add(

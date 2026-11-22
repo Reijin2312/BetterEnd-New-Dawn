@@ -7,13 +7,17 @@ import org.betterx.betterend.blocks.UmbrellaTreeClusterEmptyBlock;
 import org.betterx.betterend.registry.EndBlocks;
 import org.betterx.betterend.registry.EndItems;
 import org.betterx.betterend.registry.EndPortals;
+import org.betterx.betterend.registry.EndTags;
 import org.betterx.betterend.rituals.EternalRitual;
+import org.betterx.datagen.betterend.worldgen.EndBiomesProvider;
+import org.betterx.bclib.recipes.WoodenChestRecipe;
 
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.resources.ResourceLocation;
@@ -25,6 +29,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingInput;
 
 import java.util.List;
 
@@ -52,6 +58,8 @@ public final class BetterEndGameTests implements FabricGameTest {
             helper.fail("Could not verify Aurora crystal rarity: " + exception);
             return;
         }
+        assertCrystalMountainTuning(helper);
+        assertCrashedShipLoot(helper);
         helper.succeed();
     }
 
@@ -193,6 +201,120 @@ public final class BetterEndGameTests implements FabricGameTest {
         helper.assertTrue(state.getSoundType() == Blocks.SPONGE.defaultBlockState().getSoundType(),
                 "Menger Sponge does not use sponge sounds");
         helper.succeed();
+    }
+
+    @GameTest(template = FabricGameTest.EMPTY_STRUCTURE)
+    public void compatibilityTagsContainAllBiomesAndFurnaces(GameTestHelper helper) {
+        var biomes = helper.getLevel().registryAccess().registryOrThrow(Registries.BIOME);
+        EndBiomesProvider.BIOMES.forEach((key, info) -> {
+            var biome = biomes.getHolderOrThrow(key.key);
+            if (info.tag().equals(EndTags.IS_END_CAVE)) {
+                helper.assertTrue(biome.is(EndTags.IS_END_CAVE),
+                        "BetterEnd cave biome is missing from betterend:is_end_cave: " + key.key);
+                helper.assertFalse(biome.is(BiomeTags.IS_END),
+                        "BetterEnd cave biome leaked into the surface minecraft:is_end tag: " + key.key);
+            } else {
+                helper.assertTrue(biome.is(BiomeTags.IS_END),
+                        "BetterEnd surface biome is missing from minecraft:is_end: " + key.key);
+            }
+        });
+        for (Block furnace : List.of(
+                EndBlocks.END_STONE_FURNACE,
+                EndBlocks.FLAVOLITE.furnace,
+                EndBlocks.VIOLECITE.furnace,
+                EndBlocks.SULPHURIC_ROCK.furnace,
+                EndBlocks.VIRID_JADESTONE.furnace,
+                EndBlocks.AZURE_JADESTONE.furnace,
+                EndBlocks.SANDY_JADESTONE.furnace,
+                EndBlocks.UMBRALITH.furnace
+        )) {
+            helper.assertTrue(
+                    furnace.defaultBlockState().is(EndTags.FURNACES),
+                    "Furnace is missing from common workstation tag: " + furnace
+            );
+        }
+        helper.succeed();
+    }
+
+    @GameTest(template = FabricGameTest.EMPTY_STRUCTURE)
+    public void woodenChestsCraftAndDropWithoutHiddenComponents(GameTestHelper helper) {
+        Block planks = block("pythadendron_planks");
+        Block chest = block("pythadendron_chest");
+        List<ItemStack> ingredients = java.util.stream.IntStream.range(0, 9)
+                .mapToObj(index -> index == 4 ? ItemStack.EMPTY : new ItemStack(planks))
+                .toList();
+        CraftingInput input = CraftingInput.of(3, 3, ingredients);
+        ItemStack result = new WoodenChestRecipe(CraftingBookCategory.MISC)
+                .assemble(input, helper.getLevel().registryAccess());
+        helper.assertTrue(result.is(chest.asItem()), "Pythadendron planks crafted the wrong chest: " + result);
+        helper.assertTrue(
+                helper.getLevel().getRecipeManager().byKey(ResourceLocation.withDefaultNamespace("chest"))
+                        .orElseThrow().value().getSerializer() == WoodenChestRecipe.SERIALIZER,
+                "The vanilla chest recipe was not replaced by BCLib's variant-aware recipe"
+        );
+
+        BlockPos pos = new BlockPos(1, 1, 1);
+        helper.setBlock(pos, chest);
+        var absolutePos = helper.absolutePos(pos);
+        BlockState state = helper.getLevel().getBlockState(absolutePos);
+        var blockEntity = helper.getLevel().getBlockEntity(absolutePos);
+        List<ItemStack> drops = Block.getDrops(state, helper.getLevel(), absolutePos, blockEntity);
+        helper.assertTrue(drops.size() == 1
+                        && ItemStack.isSameItemSameComponents(drops.get(0), new ItemStack(chest)),
+                "An empty placed chest no longer stacks with a fresh chest: " + drops);
+        helper.succeed();
+    }
+
+    private static void assertCrystalMountainTuning(GameTestHelper helper) {
+        try {
+            Class<?> type = org.betterx.betterend.world.structures.piece.CrystalMountainPiece.class;
+            helper.assertTrue(intConstant(type, "CRYSTAL_BIG_MAX_COUNT") == 6,
+                    "Crystal Mountain large-crystal budget differs from upstream");
+            helper.assertTrue(intConstant(type, "CROWN_MIN_COUNT") == 3,
+                    "Crystal Mountain crown minimum differs from upstream");
+            helper.assertTrue(intConstant(type, "CROWN_MAX_COUNT") == 5,
+                    "Crystal Mountain crown maximum differs from upstream");
+            helper.assertTrue(Math.abs(floatConstant(type, "CRYSTAL_END_STONE_CRYSTAL_CHANCE") - 0.03F) < 0.0001F,
+                    "Crystal Mountain end-stone crystal density differs from upstream");
+            helper.assertTrue(Math.abs(floatConstant(type, "CRYSTAL_MOSS_CRYSTAL_CHANCE") - 0.02F) < 0.0001F,
+                    "Crystal Mountain moss crystal density differs from upstream");
+        } catch (ReflectiveOperationException exception) {
+            helper.fail("Could not verify Crystal Mountain tuning: " + exception);
+        }
+    }
+
+    private static int intConstant(Class<?> type, String name) throws ReflectiveOperationException {
+        var field = type.getDeclaredField(name);
+        field.setAccessible(true);
+        return field.getInt(null);
+    }
+
+    private static float floatConstant(Class<?> type, String name) throws ReflectiveOperationException {
+        var field = type.getDeclaredField(name);
+        field.setAccessible(true);
+        return field.getFloat(null);
+    }
+
+    private static void assertCrashedShipLoot(GameTestHelper helper) {
+        String resource = "data/betterend/structure/crashed_ship.nbt";
+        try (var input = BetterEndGameTests.class.getClassLoader().getResourceAsStream(resource)) {
+            helper.assertTrue(input != null, "Missing crashed ship structure template");
+            if (input == null) return;
+            try (var gzip = new java.util.zip.GZIPInputStream(input)) {
+                String nbt = new String(gzip.readAllBytes(), java.nio.charset.StandardCharsets.ISO_8859_1);
+                String lootTable = "minecraft:chests/end_city_treasure";
+                int first = nbt.indexOf(lootTable);
+                int second = first < 0 ? -1 : nbt.indexOf(lootTable, first + lootTable.length());
+                helper.assertTrue(first >= 0 && second >= 0,
+                        "Both crashed ship containers must use End City treasure");
+                helper.assertTrue(nbt.indexOf(lootTable, second + lootTable.length()) < 0,
+                        "Crashed ship has an unexpected third loot container");
+                helper.assertTrue(!nbt.contains("LootTableSeed"),
+                        "Crashed ship loot must use an independent random seed when opened");
+            }
+        } catch (java.io.IOException exception) {
+            helper.fail("Could not inspect crashed ship loot: " + exception);
+        }
     }
 
     private static void assertSurvivesOn(GameTestHelper helper, String saplingId, String soilId, BlockPos pos) {
