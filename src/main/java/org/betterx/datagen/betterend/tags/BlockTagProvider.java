@@ -69,6 +69,17 @@ public class BlockTagProvider extends WoverTagProvider.ForBlocks {
         );
         context.add(CommonBlockTags.END_STONES, EndBlocks.BRIMSTONE);
         context.add(BlockTags.ANVIL, EndBlocks.AETERNIUM_ANVIL);
+        context.add(
+                EndTags.FURNACES,
+                EndBlocks.END_STONE_FURNACE,
+                EndBlocks.FLAVOLITE.furnace,
+                EndBlocks.VIOLECITE.furnace,
+                EndBlocks.SULPHURIC_ROCK.furnace,
+                EndBlocks.VIRID_JADESTONE.furnace,
+                EndBlocks.AZURE_JADESTONE.furnace,
+                EndBlocks.SANDY_JADESTONE.furnace,
+                EndBlocks.UMBRALITH.furnace
+        );
         context.add(BlockTags.BEACON_BASE_BLOCKS, EndBlocks.AETERNIUM_BLOCK);
         context.add(BlockTags.MINEABLE_WITH_AXE, EndBlocks.AMARANITA_STEM, EndBlocks.AMARANITA_HYPHAE);
         context.add(
