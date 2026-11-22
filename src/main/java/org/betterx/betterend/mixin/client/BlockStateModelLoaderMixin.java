@@ -30,12 +30,13 @@ public abstract class BlockStateModelLoaderMixin {
             BetterEnd.C.mk("blockstates/custom_chorus_flower.json");
 
     @WrapOperation(
-            method = "lambda$loadBlockStates$0",
+            // Mojang's synthetic lambda name is not preserved in Fabric's intermediary namespace.
+            // Target the stable intermediary name used by this Minecraft version instead.
+            method = "method_65717",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/resources/FileToIdConverter;listMatchingResourceStacks(Lnet/minecraft/server/packs/resources/ResourceManager;)Ljava/util/Map;"
-            ),
-            remap = false
+            )
     )
     private static Map<Identifier, List<Resource>> betterend$replaceChorusDefinitions(
             FileToIdConverter converter,

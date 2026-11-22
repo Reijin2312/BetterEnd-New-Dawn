@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.RandomSequences;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.CustomSpawner;
 import net.minecraft.world.level.block.Blocks;
@@ -51,16 +52,19 @@ public abstract class ServerLevelMixin extends Level {
 
     @WrapOperation(
             method = "<init>",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/dimension/DimensionType;hasEnderDragonFight()Z")
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/core/Holder;is(Lnet/minecraft/resources/ResourceKey;)Z")
     )
-    private boolean be_dragonFight(DimensionType dimensionType, Operation<Boolean> original) {
-        return GeneratorOptions.hasDragonFights() && original.call(dimensionType);
+    private boolean be_dragonFight(
+            Holder<DimensionType> dimensionType,
+            ResourceKey<DimensionType> expectedType,
+            Operation<Boolean> original
+    ) {
+        return GeneratorOptions.hasDragonFights() && original.call(dimensionType, expectedType);
     }
 
     @Inject(
-            method = "<init>(Lnet/minecraft/server/MinecraftServer;Ljava/util/concurrent/Executor;Lnet/minecraft/world/level/storage/LevelStorageSource$LevelStorageAccess;Lnet/minecraft/world/level/storage/ServerLevelData;Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/world/level/dimension/LevelStem;ZJLjava/util/List;Z)V",
-            at = @At("TAIL"),
-            require = 0
+            method = "<init>(Lnet/minecraft/server/MinecraftServer;Ljava/util/concurrent/Executor;Lnet/minecraft/world/level/storage/LevelStorageSource$LevelStorageAccess;Lnet/minecraft/world/level/storage/ServerLevelData;Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/world/level/dimension/LevelStem;ZJLjava/util/List;ZLnet/minecraft/world/RandomSequences;)V",
+            at = @At("TAIL")
     )
     private void be_onServerWorldInit(
             MinecraftServer minecraftServer,
@@ -73,6 +77,7 @@ public abstract class ServerLevelMixin extends Level {
             long seed,
             List<CustomSpawner> list,
             boolean bl2,
+            RandomSequences randomSequences,
             CallbackInfo ci
     ) {
         TerrainGenerator.onServerLevelInit(ServerLevel.class.cast(this), levelStem, seed);

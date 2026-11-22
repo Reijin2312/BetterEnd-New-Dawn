@@ -3,7 +3,6 @@ package org.betterx.datagen.betterend.worldgen;
 import org.betterx.betterend.BetterEnd;
 import org.betterx.betterend.registry.EndStructures;
 import org.betterx.betterend.registry.features.EndOreFeatures;
-import org.betterx.betterend.registry.features.EndTerrainFeatures;
 import org.betterx.wover.biome.api.modification.BiomeModification;
 import org.betterx.wover.biome.api.modification.BiomeModificationRegistry;
 import org.betterx.wover.biome.api.modification.predicates.BiomePredicate;
@@ -35,7 +34,6 @@ public class EndBiomeModificationProvider extends WoverRegistryContentProvider<B
                 .addFeature(EndOreFeatures.FLAVOLITE_LAYER)
                 .addFeature(EndOreFeatures.THALLASIUM_ORE)
                 .addFeature(EndOreFeatures.ENDER_ORE)
-                .addFeature(EndTerrainFeatures.CRASHED_SHIP)
                 .register();
 
         BiomeModification
