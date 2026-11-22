@@ -28,6 +28,8 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.*;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class StructureDataProvider extends WoverStructureProvider {
     public StructureDataProvider(@NotNull ModCore modCore) {
         super(modCore);
@@ -315,6 +317,17 @@ public class StructureDataProvider extends WoverStructureProvider {
 
     @Override
     protected void bootstrapProcessors(BootstrapContext<StructureProcessorList> bootstapContext) {
+        EndProcessors
+                .BIOME_BUILDING
+                .bootstrap(bootstapContext)
+                .add(new BlockIgnoreProcessor(List.of(Blocks.STRUCTURE_BLOCK, Blocks.AIR, Blocks.END_STONE)))
+                .register();
+        EndProcessors
+                .BIOME_BUILDING_MOUND
+                .bootstrap(bootstapContext)
+                .add(new BlockIgnoreProcessor(List.of(Blocks.STRUCTURE_BLOCK, Blocks.AIR)))
+                .register();
+
         EndProcessors
                 .CRYING_10_PERCENT
                 .bootstrap(bootstapContext).startRule().add(new ProcessorRule(
