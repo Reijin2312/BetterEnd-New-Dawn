@@ -66,7 +66,7 @@ public class EndLakePiece extends BasePiece {
     private float depth;
     private ResourceKey<Biome> biomeID;
     private BlockState cachedBorderMaterial;
-    private BlockState sampledSurfaceMaterial;
+    private final ThreadLocal<BlockState> sampledSurfaceMaterial = new ThreadLocal<>();
 
     public EndLakePiece(
             BlockPos center,
@@ -133,8 +133,9 @@ public class EndLakePiece extends BasePiece {
      * the chunks that make up one lake and cannot trigger the "Requested chunk unavailable" crash.
      */
     private BlockState borderMaterial(WorldGenLevel world) {
-        if (sampledSurfaceMaterial != null) {
-            return sampledSurfaceMaterial;
+        BlockState sampled = sampledSurfaceMaterial.get();
+        if (sampled != null) {
+            return sampled;
         }
         if (cachedBorderMaterial != null) {
             return cachedBorderMaterial;
@@ -168,7 +169,7 @@ public class EndLakePiece extends BasePiece {
         if (state.is(CommonBlockTags.TERRAIN)
                 && !state.is(Blocks.END_STONE)
                 && !state.is(EndBlocks.ENDSTONE_DUST)) {
-            sampledSurfaceMaterial = state;
+            sampledSurfaceMaterial.set(state);
         }
     }
 
@@ -324,6 +325,7 @@ public class EndLakePiece extends BasePiece {
             ChunkPos chunkPos,
             BlockPos blockPos
     ) {
+        sampledSurfaceMaterial.remove();
         final ChunkAccess chunk = world.getChunk(chunkPos.x(), chunkPos.z());
         final int sx = SectionPos.sectionToBlockCoord(chunkPos.x());
         final int sz = SectionPos.sectionToBlockCoord(chunkPos.z());
