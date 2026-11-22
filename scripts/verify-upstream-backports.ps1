@@ -208,6 +208,15 @@ foreach ($repo in $repos) {
     $smaragdant = Read-Relative $root 'src/main/java/org/betterx/betterend/world/features/terrain/SmaragdantCrystalFeature.java'
     Assert-Match $smaragdant 'j\s*==\s*0\s*&&\s*random\.nextInt' $repo 'budding Smaragdant is restricted to the column base'
 
+    $crystalMountain = Read-Relative $root 'src/main/java/org/betterx/betterend/world/structures/piece/CrystalMountainPiece.java'
+    Assert-Match $crystalMountain 'CROWN_MIN_COUNT\s*=\s*3' $repo 'Crystal Mountain crowns keep the upstream minimum branch count'
+    Assert-Match $crystalMountain 'CROWN_MAX_COUNT\s*=\s*5' $repo 'Crystal Mountain crowns keep the upstream maximum branch count'
+    Assert-Match $crystalMountain 'slantBlocks' $repo 'Crystal Mountain crowns retain their independent slanted cap'
+    Assert-Match $crystalMountain 'if\s*\(straight\)\s*\{\s*leanBlocks\s*=\s*0' $repo 'straight Crystal Mountain crowns disable lean without flattening the cap'
+    Assert-Match $crystalMountain 'CRYSTAL_BIG_MAX_COUNT\s*=\s*6' $repo 'Crystal Mountain large-crystal density is bounded'
+    Assert-Match $crystalMountain 'CRYSTAL_END_STONE_CRYSTAL_CHANCE\s*=\s*0\.03' $repo 'Crystal Mountain small-crystal endstone density matches upstream'
+    Assert-Match $crystalMountain 'CRYSTAL_MOSS_CRYSTAL_CHANCE\s*=\s*0\.02' $repo 'Crystal Mountain small-crystal moss density matches upstream'
+
     $eternalStructure = Read-Relative $root 'src/main/java/org/betterx/betterend/world/structures/features/EternalPortalStructure.java'
     Assert-Match $eternalStructure 'alwaysBroken\(\).*FLAVOLITE_RUNED_ETERNAL' $repo 'generated Eternal Portal always needs one repaired frame block'
     $featureBase = Read-Relative $root 'src/main/java/org/betterx/betterend/world/structures/features/FeatureBaseStructure.java'
@@ -215,6 +224,12 @@ foreach ($repo in $repos) {
     Assert-Match $featureBase 'mayStartInBiome' $repo 'biome rejection occurs before expensive height sampling'
     $lake = Read-Relative $root 'src/main/java/org/betterx/betterend/world/structures/piece/LakePiece.java'
     Assert-Match $lake 'LakeFloorLife\.place' $repo 'Megalake underwater life placement'
+    Assert-Match $lake 'ConcurrentHashMap' $repo 'Megalake height cache is safe across parallel chunk generation'
+    Assert-Match $lake 'ThreadLocal<BlockState>\s+lastSurfaceMaterial' $repo 'Megalake shore material is isolated per worldgen thread'
+    Assert-Match $lake 'lastSurfaceMaterial\.remove\(\)' $repo 'Megalake shore material does not leak between chunks'
+    $endLake = Read-Relative $root 'src/main/java/org/betterx/betterend/world/structures/piece/EndLakePiece.java'
+    Assert-Match $endLake 'ThreadLocal<BlockState>\s+sampledSurfaceMaterial' $repo 'End lake shore material is isolated per worldgen thread'
+    Assert-Match $endLake 'sampledSurfaceMaterial\.remove\(\)' $repo 'End lake shore material does not leak between chunks'
     Assert-Check (Test-Path -LiteralPath (Join-Path $root 'src/main/java/org/betterx/betterend/world/structures/piece/LakeFloorLife.java')) $repo 'Megalake underwater life implementation is missing'
 
     $smelter = Read-Relative $root 'src/main/java/org/betterx/betterend/client/gui/EndStoneSmelterMenu.java'
