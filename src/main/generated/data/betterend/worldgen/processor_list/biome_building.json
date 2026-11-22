@@ -1,0 +1,12 @@
+{
+  "processors": [
+    {
+      "blocks": [
+        "minecraft:structure_block",
+        "minecraft:air",
+        "minecraft:end_stone"
+      ],
+      "processor_type": "minecraft:block_ignore"
+    }
+  ]
+}

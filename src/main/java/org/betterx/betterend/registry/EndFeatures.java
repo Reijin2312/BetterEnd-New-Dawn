@@ -172,7 +172,6 @@ public class EndFeatures {
    public static void addDefaultFeatures(EndBiomeBuilder builder, boolean hasCaves) {
       builder.feature(EndOreFeatures.THALLASIUM_ORE);
       builder.feature(EndOreFeatures.ENDER_ORE);
-      builder.feature(EndTerrainFeatures.CRASHED_SHIP);
       if (hasCaves) {
          builder.feature(EndTerrainFeatures.ROUND_CAVE);
          builder.feature(EndTerrainFeatures.TUNEL_CAVE);

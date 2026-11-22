@@ -17,6 +17,7 @@ public class EndTags {
 
     // Block Tags
     public static final TagKey<Block> PEDESTALS = TagManager.BLOCKS.makeTag(BetterEnd.C, "pedestal");
+    public static final TagKey<Block> FURNACES = TagManager.BLOCKS.makeCommonTag("player_workstations/furnaces");
     public static final TagKey<Block> SURVIVES_ON_END_MOSS = TagManager.BLOCKS.makeTag(BetterEnd.C, "survives_on/end_moss");
     public static final TagKey<Block> SURVIVES_ON_SHADOW_GRASS = TagManager.BLOCKS.makeTag(BetterEnd.C, "survives_on/shadow_grass");
     public static final TagKey<Block> SURVIVES_ON_AMBER_MOSS = TagManager.BLOCKS.makeTag(BetterEnd.C, "survives_on/amber_moss");

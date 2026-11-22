@@ -32,9 +32,8 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.material.FluidState;
 
-import com.google.common.collect.Maps;
-
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class LakePiece extends BasePiece {
     private static final BlockState ENDSTONE = Blocks.END_STONE.defaultBlockState();
@@ -75,7 +74,7 @@ public class LakePiece extends BasePiece {
         }
         return rimPlants;
     }
-    private final Map<Integer, Byte> heightmap = Maps.newHashMap();
+    private final Map<Integer, Byte> heightmap = new ConcurrentHashMap<>();
     private OpenSimplexNoise noise;
     private BlockPos center;
     private float radius;
@@ -89,7 +88,7 @@ public class LakePiece extends BasePiece {
     private int waterLevel;
 
     private ResourceKey<Biome> biomeID;
-    private BlockState lastSurfaceMaterial;
+    private final ThreadLocal<BlockState> lastSurfaceMaterial = new ThreadLocal<>();
 
     public LakePiece(
             BlockPos center,
@@ -145,8 +144,9 @@ public class LakePiece extends BasePiece {
      * ({@link EndBiome#findTopMaterial(Holder)}) before the very first block has been sampled.
      */
     private BlockState surfaceMaterial(WorldGenLevel world) {
-        if (lastSurfaceMaterial != null) {
-            return lastSurfaceMaterial;
+        BlockState sampled = lastSurfaceMaterial.get();
+        if (sampled != null) {
+            return sampled;
         }
         if (biomeID != null) {
             Holder<Biome> biome = world.registryAccess()
@@ -183,6 +183,7 @@ public class LakePiece extends BasePiece {
             ChunkPos chunkPos,
             BlockPos blockPos
     ) {
+        lastSurfaceMaterial.remove();
         int minY = carveMinY();
         int maxY = this.boundingBox.maxY();
         int sx = SectionPos.sectionToBlockCoord(chunkPos.x());
@@ -226,7 +227,7 @@ public class LakePiece extends BasePiece {
                         if (state.is(CommonBlockTags.TERRAIN)
                                 && !state.is(Blocks.END_STONE)
                                 && !state.is(EndBlocks.ENDSTONE_DUST)) {
-                            lastSurfaceMaterial = state;
+                            lastSurfaceMaterial.set(state);
                         }
                         if (state.is(CommonBlockTags.END_STONES) || state.isAir()) {
                             state = mut.getY() < waterLevel ? WATER : CAVE_AIR;
